@@ -26,11 +26,11 @@ class Wordless {
 
   public static function parse_request(&$wp) {
     if (array_key_exists('wordless_sass_precompile', $wp->query_vars)) {
-      require_once 'wordless/sass_compiler.php';
+      require_once 'wordless/asset_compiler.php';
       exit();
     }
     if (array_key_exists('wordless_coffee_precompile', $wp->query_vars)) {
-      require_once 'wordless/coffee_compiler.php';
+      require_once 'wordless/asset_compiler.php';
       exit();
     }
   }

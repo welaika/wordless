@@ -1,7 +1,7 @@
 <?php
 
-require 'process.php';
-require 'process_builder.php';
+require_once 'process.php';
+require_once 'process_builder.php';
 
 class CompassCompiler
 {
