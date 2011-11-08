@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: SassImportNode.php 49 2010-04-04 10:51:24Z chris.l.yates $ */
+/* SVN FILE: $Id: SassImportNode.php 112 2010-08-30 09:24:46Z chris.l.yates@gmail.com $ */
 /**
  * SassImportNode class file.
  * @author			Chris Yates <chris.l.yates@gmail.com>

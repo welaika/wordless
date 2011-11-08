@@ -4,16 +4,16 @@
  * SassParser class file.
  * See the {@link http://sass-lang.com/docs Sass documentation}
  * for details of Sass.
- *
+ * 
  * Credits:
  * This is a port of Sass to PHP. All the genius comes from the people that
  * invented and develop Sass; in particular:
  * + {@link http://hamptoncatlin.com/ Hampton Catlin},
  * + {@link http://nex-3.com/ Nathan Weizenbaum},
  * + {@link http://chriseppstein.github.com/ Chris Eppstein}
- *
+ * 
  * The bugs are mine. Please report any found at {@link http://code.google.com/p/phamlp/issues/list}
- *
+ * 
  * @author			Chris Yates <chris.l.yates@gmail.com>
  * @copyright 	Copyright (c) 2010 PBM Web Development
  * @license			http://phamlp.googlecode.com/files/license.txt
@@ -66,40 +66,40 @@ class SassParser {
 	 * Used to calculate {@link Level} if {@link indentChar} is space.
 	 */
 	private $indentSpaces = 2;
-
+	
 	/**
 	 * @var string source
 	 */
 	private $source;
-
+	 
 	/**#@+
 	 * Option
 	 */
 	/**
-	 * cache:
+	 * cache: 
 	 * @var boolean Whether parsed Sass files should be cached, allowing greater
 	 * speed.
-	 *
+	 * 
 	 * Defaults to true.
 	 */
 	private $cache;
-
+	
 	/**
 	 * cache_location:
 	 * @var string The path where the cached sassc files should be written to.
-	 *
+	 * 
 	 * Defaults to './sass-cache'.
 	 */
 	private $cache_location;
-
+	
 	/**
 	 * css_location:
 	 * @var string The path where CSS output should be written to.
-	 *
+	 * 
 	 * Defaults to './css'.
 	 */
 	private $css_location;
-
+	
 	/**
 	 * debug_info:
 	 * @var boolean When true the line number and file where a selector is defined
@@ -107,12 +107,12 @@ class SassParser {
 	 * {@link https://addons.mozilla.org/en-US/firefox/addon/103988/
 	 * FireSass Firebug extension}.
 	 * Disabled when using the compressed output style.
-	 *
+	 * 
 	 * Defaults to false.
 	 * @see style
 	 */
 	private $debug_info;
-
+	
 	/**
 	 * extensions:
 	 * @var array Sass extensions, e.g. Compass. An associative array of the form
@@ -120,76 +120,76 @@ class SassParser {
 	 * is an array of name=>value options pairs.
 	 */
 	protected $extensions;
-
+	
 	/**
 	 * filename:
-	 * @var string The filename of the file being rendered.
+	 * @var string The filename of the file being rendered. 
 	 * This is used solely for reporting errors.
 	 */
 	protected $filename;
-
+	
 	/**
 	 * function_paths:
 	 * @var array An array of filesystem paths which should be searched for
 	 * SassScript functions.
 	 */
 	private $function_paths;
-
+	
 	/**
 	 * line:
 	 * @var integer The number of the first line of the Sass template. Used for
 	 * reporting line numbers for errors. This is useful to set if the Sass
 	 * template is embedded.
-	 *
-	 * Defaults to 1.
+	 * 
+	 * Defaults to 1. 
 	 */
 	private $line;
-
+	
 	/**
 	 * line_numbers:
 	 * @var boolean When true the line number and filename where a selector is
 	 * defined is emitted into the compiled CSS as a comment. Useful for debugging
 	 * especially when using imports and mixins.
 	 * Disabled when using the compressed output style or the debug_info option.
-	 *
+	 * 
 	 * Defaults to false.
 	 * @see debug_info
 	 * @see style
 	 */
 	 private $line_numbers;
-
+	
 	/**
 	 * load_paths:
 	 * @var array An array of filesystem paths which should be searched for
 	 * Sass templates imported with the @import directive.
-	 *
+	 * 
 	 * Defaults to './sass-templates'.
 	 */
 	private $load_paths;
-
+	
 	/**
-	 * property_syntax:
+	 * property_syntax: 
 	 * @var string Forces the document to use one syntax for
-	 * properties. If the correct syntax isn't used, an error is thrown.
+	 * properties. If the correct syntax isn't used, an error is thrown. 
 	 * Value can be:
 	 * + new - forces the use of a colon or equals sign after the property name.
 	 * For example	 color: #0f3 or width: $main_width.
 	 * + old -  forces the use of a colon before the property name.
 	 * For example: :color #0f3 or :width = $main_width.
-	 *
+	 * 
 	 * By default, either syntax is valid.
-	 *
+	 * 
 	 * Ignored for SCSS files which alaways use the new style.
 	 */
 	private $property_syntax;
-
+	
 	/**
 	 * quiet:
 	 * @var boolean When set to true, causes warnings to be disabled.
 	 * Defaults to false.
 	 */
 	private $quiet;
-
+	
 	/**
 	 * style:
 	 * @var string the style of the CSS output.
@@ -208,16 +208,16 @@ class SassParser {
 	 * are separated by a blank line.
 	 * + compressed - Compressed has no whitespace except that necessary to separate
 	 * selectors and properties. It's not meant to be human-readable.
-	 *
+	 * 
 	 * Defaults to 'nested'.
 	 */
 	private $style;
-
+	
 	/**
 	 * syntax:
 	 * @var string The syntax of the input file.
 	 * 'sass' for the indented syntax and 'scss' for the CSS-extension syntax.
-	 *
+	 * 
 	 * This is set automatically when parsing a file, else defaults to 'sass'.
 	 */
 	private $syntax;
@@ -236,12 +236,12 @@ class SassParser {
 	 * @var mixed array: vendor properties, merged with the built-in vendor
 	 * properties, to automatically apply.
 	 * Boolean true: use built in vendor properties.
-	 *
+	 * 
 	 * Defaults to vendor_properties disabled.
 	 * @see _vendorProperties
 	 */
 	private $vendor_properties = array();
-
+	
 	/**#@-*/
 	/**
 	 * Defines the build-in vendor properties
@@ -260,7 +260,7 @@ class SassParser {
 			'-khtml-border-top-right-radius'
 		),
 		'border-bottom-right-radius' => array(
-			'-moz-border-radius-bottomright',
+			'-moz-border-radius-bottomright', 
 			'-webkit-border-bottom-right-radius',
 			'-khtml-border-bottom-right-radius'
 		),
@@ -292,23 +292,23 @@ class SassParser {
 		if (!empty($options['language'])) {
 			Phamlp::$language = $options['language'];
 		}
-
+		
 		if (!empty($options['extensions'])) {
 			foreach ($options['extensions'] as $extension=>$extOptions) {
 				include dirname(__FILE__).DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$extension.DIRECTORY_SEPARATOR.'config.php';
 				$configClass = 'SassExtentions'.$extension.'Config';
 				$config = new $configClass;
 				$config->config($extOptions);
-
+				
 				$lp = dirname(__FILE__).DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$extension.DIRECTORY_SEPARATOR.'frameworks';
 				$fp = dirname(__FILE__).DIRECTORY_SEPARATOR.'extensions'.DIRECTORY_SEPARATOR.$extension.DIRECTORY_SEPARATOR.'functions';
 				$options['load_paths'] = (empty($options['load_paths']) ?
 					array($lp) : array_merge($options['load_paths'], $lp));
 				$options['function_paths'] = (empty($options['function_paths']) ?
-					array($fp) : array_merge($options['function_paths'], $fp));
+					array($fp) : array_merge($options['function_paths'], $fp));			
 			}
 		}
-
+		
 		if (!empty($options['vendor_properties'])) {
 			if ($options['vendor_properties'] === true) {
 				$this->vendor_properties = $this->_vendorProperties;
@@ -318,7 +318,7 @@ class SassParser {
 			}
 		}
 		unset($options['language'], $options['vendor_properties']);
-
+		
 		$defaultOptions = array(
 			'cache' 				 => self::CACHE,
 			'cache_location' => dirname(__FILE__) . DIRECTORY_SEPARATOR . self::CACHE_LOCATION,
@@ -332,14 +332,14 @@ class SassParser {
 			'style' 				 => SassRenderer::STYLE_NESTED,
 			'syntax'				 => SassFile::SASS
 		);
-
+		
 		foreach (array_merge($defaultOptions, $options) as $name=>$value) {
 			if (property_exists($this, $name)) {
 				$this->$name = $value;
 			}
 		}
 	}
-
+	
 	/**
 	 * Getter.
 	 * @param string name of property to get
@@ -352,71 +352,71 @@ class SassParser {
 		}
 		throw new SassException('No getter function for {what}', array('{what}'=>$name));
 	}
-
+	
 	public function getCache() {
-		return $this->cache;
+		return $this->cache; 
 	}
-
+	
 	public function getCache_location() {
-		return $this->cache_location;
+		return $this->cache_location; 
 	}
-
+	
 	public function getCss_location() {
-		return $this->css_location;
+		return $this->css_location; 
 	}
-
+	
 	public function getDebug_info() {
-		return $this->debug_info;
+		return $this->debug_info; 
 	}
-
+	
 	public function getFilename() {
-		return $this->filename;
+		return $this->filename; 
 	}
-
+	
 	public function getLine() {
-		return $this->line;
+		return $this->line; 
 	}
-
+	
 	public function getSource() {
-		return $this->source;
+		return $this->source; 
 	}
-
+	
 	public function getLine_numbers() {
-		return $this->line_numbers;
+		return $this->line_numbers; 
 	}
-
+	
 	public function getFunction_paths() {
-		return $this->function_paths;
+		return $this->function_paths; 
 	}
-
+	
 	public function getLoad_paths() {
-		return $this->load_paths;
+		return $this->load_paths; 
 	}
-
+	
 	public function getProperty_syntax() {
-		return $this->property_syntax;
+		return $this->property_syntax; 
 	}
-
+	
 	public function getQuiet() {
-		return $this->quiet;
+		return $this->quiet; 
 	}
-
+	
 	public function getStyle() {
-		return $this->style;
+		return $this->style; 
 	}
-
+	
 	public function getSyntax() {
-		return $this->syntax;
+		return $this->syntax; 
 	}
-
+	
 	public function getTemplate_location() {
-		return $this->template_location;
+		return $this->template_location; 
 	}
-
+	
 	public function getVendor_properties() {
 		return $this->vendor_properties;
 	}
-
+	
 	public function getOptions() {
 		return array(
 			'cache' => $this->cache,
@@ -458,7 +458,7 @@ class SassParser {
 	public function parse($source, $isFile = true) {
 		if ($isFile) {
 			$this->filename = SassFile::getFile($source, $this);
-
+			
 			if ($isFile) {
 				$this->syntax = substr($this->filename, -4);
 			}
@@ -472,7 +472,7 @@ class SassParser {
 					return $cached;
 				}
 			}
-
+			
 			$tree = $this->toTree(file_get_contents($this->filename));
 
 			if ($this->cache) {
@@ -559,7 +559,7 @@ class SassParser {
 				break;
 		} // switch
 	}
-
+	
 	/**
 	 * Returns a token object that contains the next source statement and
 	 * meta data about it.
@@ -568,31 +568,31 @@ class SassParser {
 	private function getToken() {
 		return ($this->syntax === SassFile::SASS ? $this->sass2Token() : $this->scss2Token());
 	}
-
+	
 	/**
 	 * Returns an object that contains the next source statement and meta data
 	 * about it from SASS source.
 	 * Sass statements are passed over. Statements spanning multiple lines, e.g.
 	 * CSS comments and selectors, are assembled into a single statement.
-	 * @return object Statement token. Null if end of source.
+	 * @return object Statement token. Null if end of source. 
 	 */
 	private function sass2Token() {
 		$statement = ''; // source line being tokenised
 		$token = null;
-
+		
 		while (is_null($token) && !empty($this->source)) {
 			while (empty($statement) && !empty($this->source)) {
 				$source = array_shift($this->source);
 				$statement = trim($source);
 				$this->line++;
 			}
-
+			
 			if (empty($statement)) {
 				break;
 			}
-
+			
 			$level = $this->getLevel($source);
-
+			
 			// Comment statements can span multiple lines
 			if ($statement[0] === self::BEGIN_COMMENT) {
 				// Consume Sass comments
@@ -626,7 +626,7 @@ class SassParser {
 					$this->line++;
 				}
 			}
-
+			
 			$token = (object) array(
 				'source' => $statement,
 				'level' => $level,
@@ -634,7 +634,7 @@ class SassParser {
 				'line' => $this->line - 1,
 			);
 		}
-		return $token;
+		return $token;		 
 	}
 
 	/**
@@ -654,16 +654,16 @@ class SassParser {
 		}
 		return $level;
 	}
-
+	
 	/**
 	 * Returns an object that contains the next source statement and meta data
 	 * about it from SCSS source.
-	 * @return object Statement token. Null if end of source.
+	 * @return object Statement token. Null if end of source. 
 	 */
 	private function scss2Token() {
 		static $srcpos = 0; // current position in the source stream
 		static $srclen; // the length of the source stream
-
+		
 		$statement = '';
 		$token = null;
 		if (empty($srclen)) {
@@ -672,7 +672,7 @@ class SassParser {
 		while (is_null($token) && $srcpos < $srclen) {
 			$c = $this->source[$srcpos++];
 			switch ($c) {
-				case self::BEGIN_COMMENT:
+				case self::BEGIN_COMMENT:	
 					if (substr($this->source, $srcpos-1, strlen(self::BEGIN_SASS_COMMENT))
 							=== self::BEGIN_SASS_COMMENT) {
 						while ($this->source[$srcpos++] !== "\n");
@@ -717,24 +717,24 @@ class SassParser {
 						$statement .= $this->source[$srcpos++];
 					}
 					break;
-				case self::BEGIN_BLOCK:
+				case self::BEGIN_BLOCK:				
 				case self::END_BLOCK:
 				case self::END_STATEMENT:
 					$token = $this->createToken($statement . $c);
 					if (is_null($token)) $statement = '';
-					break;
+					break;	
 				default:
 					$statement .= $c;
 					break;
-			}
+			}	
 		}
-
+		
 		if (is_null($token))
 			$srclen = $srcpos = 0;
 
-		return $token;
+		return $token; 
 	}
-
+	
 	/**
 	 * Returns an object that contains the source statement and meta data about
 	 * it.
@@ -744,10 +744,10 @@ class SassParser {
 	 */
 	private function createToken($statement) {
 		static $level = 0;
-
+		
 		$this->line += substr_count($statement, "\n");
 		$statement = trim($statement);
-		if (substr($statement, 0, strlen(self::BEGIN_CSS_COMMENT)) !== self::BEGIN_CSS_COMMENT) {
+		if (substr($statement, 0, strlen(self::BEGIN_CSS_COMMENT)) !== self::BEGIN_CSS_COMMENT) { 
 			$statement = str_replace(array("\n","\r"), '', $statement);
 		}
 		$last = substr($statement, -1);
@@ -785,7 +785,7 @@ class SassParser {
 				if ($this->syntax == SassFile::SASS) {
 					$i = 0;
 					$source = '';
-					while (sizeof($this->source) > $i && !empty($this->source) && empty($source)) {
+					while (!empty($this->source) && empty($source)) {
 						$source = $this->source[$i++];
 					}
 					if (!empty($source) && $this->getLevel($source) > $token->level) {

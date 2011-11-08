@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: SassRootNode.php 49 2010-04-04 10:51:24Z chris.l.yates $ */
+/* SVN FILE: $Id: SassRootNode.php 106 2010-08-29 11:11:49Z chris.l.yates@gmail.com $ */
 /**
  * SassRootNode class file.
  * @author			Chris Yates <chris.l.yates@gmail.com>

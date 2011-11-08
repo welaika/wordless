@@ -29,17 +29,24 @@ class Wordless {
       require_once 'wordless/sass_compiler.php';
       exit();
     }
+    if (array_key_exists('wordless_coffee_precompile', $wp->query_vars)) {
+      require_once 'wordless/coffee_compiler.php';
+      exit();
+    }
   }
 
   public static function query_vars($query_vars) {
     $query_vars[] = 'wordless_sass_precompile';
     $query_vars[] = 'sass_file_path';
+    $query_vars[] = 'wordless_coffee_precompile';
+    $query_vars[] = 'coffee_file_path';
     return $query_vars;
   }
 
   public static function assets_rewrite_rules() {
     global $wp_rewrite;
     add_rewrite_rule('(.*)\.sass.css$', 'index.php?wordless_sass_precompile=true&sass_file_path=$matches[1]', 'top');
+    add_rewrite_rule('(.*)\.coffee.js$', 'index.php?wordless_coffee_precompile=true&coffee_file_path=$matches[1]', 'top');
   }
 
   public static function load_i18n() {
@@ -82,6 +89,10 @@ class Wordless {
 
   public static function theme_stylesheets_path() {
     return self::join_paths(get_template_directory(), 'theme/assets/stylesheets');
+  }
+
+  public static function theme_javascripts_path() {
+    return self::join_paths(get_template_directory(), 'theme/assets/javascripts');
   }
 
   public static function theme_temp_path() {

@@ -1,0 +1,23 @@
+K 25
+svn:wc:ra_dav:version-url
+V 49
+/svn/!svn/ver/63/trunk/Yii/phamlp/demo/views/site
+END
+index.haml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/63/trunk/Yii/phamlp/demo/views/site/index.haml
+END
+login.haml
+K 25
+svn:wc:ra_dav:version-url
+V 60
+/svn/!svn/ver/63/trunk/Yii/phamlp/demo/views/site/login.haml
+END
+contact.haml
+K 25
+svn:wc:ra_dav:version-url
+V 62
+/svn/!svn/ver/63/trunk/Yii/phamlp/demo/views/site/contact.haml
+END

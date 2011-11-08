@@ -25,6 +25,11 @@ function latest_post_of_category($category, $post_type = 'post', $taxonomy = 'ca
   return $posts[0];
 }
 
+function is_post_type($type) {
+  global $post;
+  return $post->post_type == $type;
+}
+
 function get_the_first_categories_except($limit, $except) {
   global $post;
   $categories = get_the_category();

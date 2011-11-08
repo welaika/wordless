@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: SassNodeExceptions.php 61 2010-04-16 10:19:59Z chris.l.yates $ */
+/* SVN FILE: $Id: SassNodeExceptions.php 106 2010-08-29 11:11:49Z chris.l.yates@gmail.com $ */
 /**
  * SassNode exception classes.
  * @author			Chris Yates <chris.l.yates@gmail.com>

@@ -1,0 +1,50 @@
+-# Haml version of the Yii main layout
+-#
+  Copy this file to application.views.layouts
+  Enable the Haml view renderer in your config file by configuring it as
+  an application component named "viewRenderer" in the application configuration:
+  array(
+    'components'=>array(
+      ......
+      'viewRenderer'=>array(
+        'class'=>'HamlViewRenderer',
+        .... options ....
+      ),
+    ),
+  )
+  A good option is 'ugly'=>false to get nicely formatted XHTML
+!!!
+%html(xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en")
+  %head
+    %meta(http-equiv="Content-Type" content="text/html; charset=utf-8")
+    %meta(name="language" content="en")
+    %link(rel="stylesheet" type="text/css" href="#(Yii::app()->request->baseUrl)/css/main.css")
+    %link(rel="stylesheet" type="text/css" href="#(Yii::app()->request->baseUrl)/css/form.css")
+    %title= $this->pageTitle
+  %body
+    #page
+      #header
+        #logo= CHtml::encode(Yii::app()->name)
+        #mainmenu
+          :php
+            $this->widget('application.components.MainMenu',array(
+              'items'=>array(
+                array('label'=>'Home', 'url'=>array('/site/index')),
+                array('label'=>'Contact', 'url'=>array('/site/contact')),
+                array('label'=>'Login', 'url'=>array('/site/login'), 'visible'=>Yii::app()->user->isGuest),
+                array('label'=>'Logout', 'url'=>array('/site/logout'), 'visible'=>!Yii::app()->user->isGuest)
+              ),
+            ));
+        / mainmenu
+      / header
+      #content
+        = $content
+      / content
+      #footer
+        Copyright &copy; 2009 by My Company
+        %br
+        All Rights Reserved
+        %br
+        = Yii::powered()
+      / footer
+    / page

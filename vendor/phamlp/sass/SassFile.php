@@ -19,7 +19,7 @@ class SassFile {
 	const SASS = 'sass';
 	const SCSS = 'scss';
 	const SASSC = 'sassc';
-
+	
 	private static $extensions = array(self::SASS, self::SCSS);
 
 	/**
@@ -59,7 +59,7 @@ class SassFile {
 	 */
 	public static function getFile($filename, $parser) {
 		$ext = substr($filename, -5);
-
+		
 		foreach (self::$extensions as $i=>$extension) {
 			if ($ext !== '.'.self::SASS && $ext !== '.'.self::SCSS) {
 				if ($i===0) {
@@ -89,7 +89,7 @@ class SassFile {
 				if ($path !== false) {
 					return $path;
 				}
-			}
+			}		
 		}
 
 		throw new SassException('Unable to find {what}: {filename}', array('{what}'=>'import file', '{filename}'=>$filename));
@@ -104,11 +104,11 @@ class SassFile {
 	 */
 	public static function findFile($filename, $dir) {
 		$partialname = dirname($filename).DIRECTORY_SEPARATOR.'_'.basename($filename);
-
-		foreach (array($filename, $partialname) as $file) {
+		
+		foreach (array($filename, $partialname) as $file) {		
 			if (file_exists($dir . DIRECTORY_SEPARATOR . $file)) {
 				return realpath($dir . DIRECTORY_SEPARATOR . $file);
-			}
+			}		
 		}
 
 		$files = array_slice(scandir($dir), 2);

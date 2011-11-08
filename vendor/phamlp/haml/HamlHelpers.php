@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: HamlHelpers.php 92 2010-05-20 17:42:59Z chris.l.yates $ */
+/* SVN FILE: $Id: HamlHelpers.php 95 2010-05-21 14:01:36Z chris.l.yates $ */
 /**
  * HamlHelpers class file.
  * 

@@ -1,0 +1,39 @@
+-# Haml version of the Yii Login Page
+-#
+  Copy this file to application.views.site
+  Enable the Haml view renderer in your config file by configuring it as
+  an application component named "viewRenderer" in the application configuration:
+  array(
+    'components'=>array(
+      ......
+      'viewRenderer'=>array(
+        'class'=>'HamlViewRenderer',
+        .... options ....
+      ),
+    ),
+  )
+  A good option is 'ugly'=>false to get nicely formatted XHTML
+- $this->pageTitle=Yii::app()->name . ' - Login'
+%h1 Login
+.yiiForm
+  = CHtml::beginForm()
+  = CHtml::errorSummary($form)
+  .simple
+    = CHtml::activeLabel($form,'username')
+    = CHtml::activeTextField($form,'username')
+  .simple
+    = CHtml::activeLabel($form,'password')
+    = CHtml::activePasswordField($form,'password')
+    %p.hint
+      Hint: You may login with
+      %tt demo/demo
+      or
+      %tt admin/admin
+      .
+  .action
+    = CHtml::activeCheckBox($form,'rememberMe')
+    = CHtml::activeLabel($form,'rememberMe')
+    %br
+    = CHtml::submitButton('Login')
+= CHtml::endForm()
+/ yiiForm

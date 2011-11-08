@@ -1,5 +1,5 @@
 <?php
-/* SVN FILE: $Id: HamlRootNode.php 49 2010-04-04 10:51:24Z chris.l.yates $ */
+/* SVN FILE: $Id: HamlRootNode.php 106 2010-08-29 11:11:49Z chris.l.yates@gmail.com $ */
 /**
  * HamlRootNode class file.
  * @author			Chris Yates <chris.l.yates@gmail.com>

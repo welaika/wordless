@@ -4,18 +4,18 @@
  * HamlParser class file.
  * HamlParser allows you to write view files in
  * {@link http://haml-lang.com/ Haml}.
- * 
+ *
  * Please see the {@link http://haml-lang.com/docs/yardoc/file.Haml_REFERENCE.html#plain_text Haml documentation} for the syntax.
- * 
+ *
  * Credits:
  * This is a port of Haml to PHP. All the genius comes from the people that
  * invented and develop Haml; in particular:
  * + {@link http://hamptoncatlin.com/ Hampton Catlin},
  * + {@link http://nex-3.com/ Nathan Weizenbaum},
  * + {@link http://chriseppstein.github.com/ Chris Eppstein}
- * 
+ *
  * The bugs are mine. Please report any found at {@link http://code.google.com/p/phamlp/issues/list}
- * 
+ *
  * Notes
  * <ul>
  * <li>Debug (addition)<ul>
@@ -44,7 +44,7 @@
  * + <b>markdown</b>: Parses the filtered text with Markdown.
  * + <b>textile</b>: Parses the filtered text with Textile.
  * PHP can be used in all the filters (except php) by wrapping expressions in #().
- * 
+ *
  * @author			Chris Yates <chris.l.yates@gmail.com>
  * @copyright 	Copyright (c) 2010 PBM Web Development
  * @license			http://phamlp.googlecode.com/files/license.txt
@@ -125,7 +125,7 @@ class HamlParser {
 	const BLOCK_LEFT_OUTER_WHITESPACE_REMOVAL = '|>';
 	const BLOCK_RIGHT_OUTER_WHITESPACE_REMOVAL = '>|';
 	/**#@-*/
-	
+
 	const MULTILINE= ' |';
 
 	/**#@+
@@ -151,7 +151,7 @@ class HamlParser {
 	const XML_ENCODING = '{encoding}';
 
 	/**
-	 * @var string Doctype format. Determines how the Haml Doctype declaration is 
+	 * @var string Doctype format. Determines how the Haml Doctype declaration is
 	 * rendered.
 	 * @see doctypes
 	 */
@@ -219,7 +219,7 @@ class HamlParser {
 	 */
 	private $debug = self::DEBUG_NONE;
 	/**
-	 * @var string Path to the directory containing user defined filters. If 
+	 * @var string Path to the directory containing user defined filters. If
 	 * specified this dirctory will be searched before PHamlP looks for the filter
 	 * in it's collection. This allows the default filters to be overridden and
 	 * new filters to be installed. Note: No trailing directory separator.
@@ -334,7 +334,7 @@ class HamlParser {
 		foreach ($options as $name => $value) {
 			$this->$name = $value;
 		} // foreach
-		
+
 		if ($this->ugly) {
 			$this->style = 'compressed';
 		}
@@ -347,17 +347,17 @@ class HamlParser {
 
 		$this->showSource = $this->debug & HamlParser::DEBUG_SHOW_SOURCE;
 		$this->showOutput = $this->debug & HamlParser::DEBUG_SHOW_OUTPUT;
-		
+
 		require_once dirname(__FILE__).DIRECTORY_SEPARATOR.'HamlHelpers.php';
 		if (isset($this->helperFile)) {
 			require_once $this->helperFile;
-			$this->helperClass = basename($this->helperFile, ".php"); 
+			$this->helperClass = basename($this->helperFile, ".php");
 			if (!is_subclass_of($this->helperClass, 'HamlHelpers')) {
 				throw new HamlException('{what} must extend {base} class', array('{what}'=>$this->helperClass, '{base}'=>'HamlHelpers'), $this);
 			}
-		} 
+		}
 	}
-	
+
 	/**
 	 * Getter.
 	 * @param string name of property to get
@@ -370,17 +370,17 @@ class HamlParser {
 		}
 		throw new HamlException('No getter function for {what}', array('{what}'=>$name));
 	}
-	
+
 	public function getFilename() {
-		return $this->filename; 
+		return $this->filename;
 	}
-	
+
 	public function getLine() {
-		return $this->line; 
+		return $this->line;
 	}
-	
+
 	public function getSource() {
-		return $this->source; 
+		return $this->source;
 	}
 
 	/**
@@ -404,7 +404,7 @@ class HamlParser {
 						dirname($sourceFile));
 			}
 			$outputFile = $cacheDir.DIRECTORY_SEPARATOR.
-					basename($sourceFile, $sourceExtension).$outputExtension;
+					md5($sourceFile).$outputExtension;
 			if (@filemtime($sourceFile) > @filemtime($outputFile)) {
 				if (!is_dir($cacheDir)) {
 					@mkdir($cacheDir, $permission);
@@ -426,7 +426,7 @@ class HamlParser {
 	}
 
 	/**
-	 * Parses a Haml file into PHP.  
+	 * Parses a Haml file into PHP.
 	 * @param string path to file to parse
 	 * @return string the resulting PHP
 	 */
@@ -796,7 +796,7 @@ class HamlParser {
 	private function getFilter($filter) {
 		static $firstRun = true;
 		$imported = false;
-		
+
 		if (empty($this->filters[$filter])) {
 			if ($firstRun) {
 				require_once('filters/HamlBaseFilter.php');
@@ -809,19 +809,19 @@ class HamlParser {
 						substr($this->filterDir, 0, -1):$this->filterDir);
 				if (file_exists($this->filterDir.DIRECTORY_SEPARATOR."$filterclass.php")) {
 					require_once($this->filterDir.DIRECTORY_SEPARATOR."$filterclass.php");
-					$imported = true; 
+					$imported = true;
 				}
 			}
 
 			if (!$imported && file_exists(dirname(__FILE__).DIRECTORY_SEPARATOR.'filters'.DIRECTORY_SEPARATOR."$filterclass.php")) {
 				require_once("filters/$filterclass.php");
-				$imported = true; 
+				$imported = true;
 			}
-			
+
 			if (!$imported) {
 				throw new HamlException('Unable to find {what}: {filename}', array('{what}'=>$filter.' filter', '{filename}'=>$filterclass.'.php'), $this);
 			}
-			
+
 			$this->filters[$filter] = new $filterclass();
 
 			if (!($this->filters[$filter] instanceof HamlBaseFilter)) {
@@ -861,11 +861,11 @@ class HamlParser {
 					$multiLine = array_shift($this->source);
 					$line[self::HAML_XML_ATTRIBUTES] .= $multiLine[self::HAML_CONTENT];
 				}	while (substr($line[self::HAML_XML_ATTRIBUTES], -1) !==
-						self::CLOSE_XML_ATTRIBUTES);		
+						self::CLOSE_XML_ATTRIBUTES);
 			}
 			if (preg_match(self::HTML_ATTRS, $line[self::HAML_XML_ATTRIBUTES], $htmlAttrs)) {
 				$line[self::HAML_XML_ATTRIBUTES] = preg_replace(self::HTML_ATTRS, '', $line[self::HAML_XML_ATTRIBUTES]);
-				$attributes = array_merge($attributes, $this->htmlAttrs($htmlAttrs));			
+				$attributes = array_merge($attributes, $this->htmlAttrs($htmlAttrs));
 			}
 			$attributes = array_merge(
 					$attributes,
@@ -880,11 +880,11 @@ class HamlParser {
 					$multiLine = array_shift($this->source);
 					$line[self::HAML_RUBY_ATTRIBUTES] .= $multiLine[self::HAML_CONTENT];
 				}	while (substr($line[self::HAML_RUBY_ATTRIBUTES], -1) !==
-						self::CLOSE_RUBY_ATTRIBUTES);		
+						self::CLOSE_RUBY_ATTRIBUTES);
 			}
 			if (preg_match(self::HTML_ATTRS, $line[self::HAML_RUBY_ATTRIBUTES], $htmlAttrs)) {
 				$line[self::HAML_RUBY_ATTRIBUTES] = preg_replace(self::HTML_ATTRS, '', $line[self::HAML_RUBY_ATTRIBUTES]);
-				$attributes = array_merge($attributes, $this->htmlAttrs($htmlAttrs));			
+				$attributes = array_merge($attributes, $this->htmlAttrs($htmlAttrs));
 			}
 			$attributes = array_merge(
 					$attributes,
@@ -933,13 +933,13 @@ class HamlParser {
 			$attributes[0] = "<?php echo $subject; ?>";
 			return $attributes;
 		}
-		
+
 		preg_match_all(self::REGEX_ATTRIBUTES, $subject, $attrs, PREG_SET_ORDER);
 		foreach ($attrs as $attr) {
 			if (!empty($attr[1])) { // HTML5 Custom Data Attributes
 				$dataAttributes = $this->parseAttributeHash(substr($attr[2], 1));
 				foreach ($dataAttributes as $key=>$value) {
-					$attributes["data-$key"] = $value;				
+					$attributes["data-$key"] = $value;
 				} // foreach
 			}
 			elseif (!empty($attr[4])) {
@@ -970,10 +970,10 @@ class HamlParser {
 		} // foreach
 		return $attributes;
 	}
-	
+
 	/**
 	 * Returns an array of attributes for the html element.
-	 * @param array arguments for HamlHelpers::html_attrs 
+	 * @param array arguments for HamlHelpers::html_attrs
 	 * @return array attributes for the html element
 	 */
 	private function htmlAttrs($htmlAttrs) {
@@ -993,7 +993,7 @@ class HamlParser {
 			}
 		}
 	}
-	
+
 	/**
 	 * Parse code
 	 * @param array line to parse
@@ -1121,7 +1121,7 @@ class HamlParser {
 				$output = $this->doctypes[$this->format][$content[0]];
 			}
 			elseif (!empty($this->doctype)) {
-				$output = $this->doctype;				
+				$output = $this->doctype;
 			}
 			else {
 				$_doctypes = array_keys($this->doctypes[$this->format]);
