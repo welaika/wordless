@@ -12,8 +12,11 @@ function lastest_post_of_type($type, $order = 'date') {
 function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date') {
   return query_posts(array(
     'posts_per_page' => $limit,
-    'taxonomy' => $taxonomy,
-    'term' => $category,
+    'tax_query' => array(
+      'taxonomy' => $taxonomy,
+      'field' => 'slug',
+      'terms' => array($category)
+    ),
     'offset' => $offset,
     'post_type' => $post_type,
     'orderby' => $order

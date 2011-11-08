@@ -67,101 +67,31 @@ class Process
      *
      * @api
      */
-    public function run($callback = null)
+    public function run()
     {
         $this->stdout = '';
         $this->stderr = '';
-        $that = $this;
-        $callback = function ($type, $data) use ($that, $callback)
-        {
-            if ('out' == $type) {
-                $that->addOutput($data);
-            } else {
-                $that->addErrorOutput($data);
-            }
-
-            if (null !== $callback) {
-                call_user_func($callback, $type, $data);
-            }
-        };
 
         $descriptors = array(array('pipe', 'r'), array('pipe', 'w'), array('pipe', 'w'));
 
         $process = proc_open($this->commandline, $descriptors, $pipes, $this->cwd, $this->env, $this->options);
 
         if (!is_resource($process)) {
-            throw new \RuntimeException('Unable to launch a new process.');
+            throw new Exception('Unable to launch a new process.');
         }
 
-        foreach ($pipes as $pipe) {
-            stream_set_blocking($pipe, false);
-        }
+        fwrite($pipes[0], $this->stdin);
+        fclose($pipes[0]);
 
-        if (null === $this->stdin) {
-            fclose($pipes[0]);
-            $writePipes = null;
-        } else {
-            $writePipes = array($pipes[0]);
-            $stdinLen = strlen($this->stdin);
-            $stdinOffset = 0;
-        }
-        unset($pipes[0]);
+        $this->stdout = stream_get_contents($pipes[1]);
+        fclose($pipes[1]);
 
-        while ($pipes || $writePipes) {
-            $r = $pipes;
-            $w = $writePipes;
-            $e = null;
-
-            $n = @stream_select($r, $w, $e, $this->timeout);
-
-            if (false === $n) {
-                break;
-            } elseif ($n === 0) {
-                proc_terminate($process);
-
-                throw new \RuntimeException('The process timed out.');
-            }
-
-            if ($w) {
-                $written = fwrite($writePipes[0], (binary) substr($this->stdin, $stdinOffset), 8192);
-                if (false !== $written) {
-                    $stdinOffset += $written;
-                }
-                if ($stdinOffset >= $stdinLen) {
-                    fclose($writePipes[0]);
-                    $writePipes = null;
-                }
-            }
-
-            foreach ($r as $pipe) {
-                $type = array_search($pipe, $pipes);
-                $data = fread($pipe, 8192);
-                if (strlen($data) > 0) {
-                    call_user_func($callback, $type == 1 ? 'out' : 'err', $data);
-                }
-                if (false === $data || feof($pipe)) {
-                    fclose($pipe);
-                    unset($pipes[$type]);
-                }
-            }
-        }
-
-        $this->status = proc_get_status($process);
-
-        $time = 0;
-        while (1 == $this->status['running'] && $time < 1000000) {
-            $time += 1000;
-            usleep(1000);
-            $this->status = proc_get_status($process);
-        }
+        $this->stderr = stream_get_contents($pipes[2]);
+        fclose($pipes[2]);
 
         $exitcode = proc_close($process);
 
-        if ($this->status['signaled']) {
-            throw new \RuntimeException(sprintf('The process stopped because of a "%s" signal.', $this->status['stopsig']));
-        }
-
-        return $this->exitcode = $this->status['running'] ? $exitcode : $this->status['exitcode'];
+        return $this->exitcode;
     }
 
     /**
@@ -218,61 +148,6 @@ class Process
         return 0 == $this->exitcode;
     }
 
-    /**
-     * Returns true if the child process has been terminated by an uncaught signal.
-     *
-     * It always returns false on Windows.
-     *
-     * @return Boolean
-     *
-     * @api
-     */
-    public function hasBeenSignaled()
-    {
-        return $this->status['signaled'];
-    }
-
-    /**
-     * Returns the number of the signal that caused the child process to terminate its execution.
-     *
-     * It is only meaningful if hasBeenSignaled() returns true.
-     *
-     * @return integer
-     *
-     * @api
-     */
-    public function getTermSignal()
-    {
-        return $this->status['termsig'];
-    }
-
-    /**
-     * Returns true if the child process has been stopped by a signal.
-     *
-     * It always returns false on Windows.
-     *
-     * @return Boolean
-     *
-     * @api
-     */
-    public function hasBeenStopped()
-    {
-        return $this->status['stopped'];
-    }
-
-    /**
-     * Returns the number of the signal that caused the child process to stop its execution
-     *
-     * It is only meaningful if hasBeenStopped() returns true.
-     *
-     * @return integer
-     *
-     * @api
-     */
-    public function getStopSignal()
-    {
-        return $this->status['stopsig'];
-    }
 
     public function addOutput($line)
     {

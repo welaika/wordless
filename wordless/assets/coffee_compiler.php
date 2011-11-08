@@ -22,26 +22,40 @@ class CoffeeCompiler
         $this->bare = $bare;
     }
 
-    public function filter($path, $tempDir)
+    public function filter($input_path, $cache_path)
     {
-        $pb = new ProcessBuilder(array(
-            $this->nodePath,
-            $this->coffeePath,
-            '-cp',
-        ));
 
-        if ($this->bare) {
-            $pb->add('--bare');
+        $input_content = file_get_contents($input_path);
+        $cached_path = Wordless::join_paths($cache_path, "coffee-".md5($input_content));
+
+        if (file_exists($cached_path)) {
+
+          return "/** cached version! **/\n".file_get_contents($cached_path);
+
+        } else {
+
+          $pb = new ProcessBuilder(array(
+              $this->nodePath,
+              $this->coffeePath,
+              '-cp',
+          ));
+
+          if ($this->bare) {
+              $pb->add('--bare');
+          }
+
+          $pb->add($input_path);
+          $proc = $pb->getProcess();
+          $code = $proc->run();
+
+          if (0 < $code) {
+              throw new Exception($proc->getErrorOutput());
+          }
+
+          $output = $proc->getOutput();
+          file_put_contents($cached_path, $output);
+
+          return $output;
         }
-
-        $pb->add($path);
-        $proc = $pb->getProcess();
-        $code = $proc->run();
-
-        if (0 < $code) {
-            throw new \RuntimeException($proc->getErrorOutput());
-        }
-
-        return $proc->getOutput();
     }
 }

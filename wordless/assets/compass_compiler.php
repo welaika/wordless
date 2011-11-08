@@ -123,10 +123,8 @@ class CompassCompiler
         $this->httpJavascriptsPath = $httpJavascriptsPath;
     }
 
-    public function filter($path, $tempDir)
+    private function realFilter($path, $tempDir)
     {
-
-        $this->loadPaths[] = dirname(path);
 
         // compass does not seems to handle symlink, so we use realpath()
 
@@ -200,7 +198,6 @@ class CompassCompiler
             $optionsConfig['http_javascripts_path'] = $this->httpJavascriptsPath;
         }
 
-
         // options in configuration file
         if (false && count($optionsConfig)) {
             $config = array();
@@ -236,14 +233,13 @@ class CompassCompiler
         // output
         $output = $tempDir . "/" . basename($path, ".$type") . '.css';
 
-        // it's not really usefull but... https://github.com/chriseppstein/compass/issues/376
         $proc = $pb->getProcess();
+        $start = time();
         $code = $proc->run();
+        $end = time();
 
         if (0 < $code) {
-            echo "ERRORE";
-            echo $proc->getErrorOutput();
-            die(1);
+          throw new Exception($proc->getErrorOutput());
         }
 
         $output = file_get_contents($output);
@@ -252,7 +248,27 @@ class CompassCompiler
             unlink($configFile);
         }
 
+        return sprintf("/* compile time: ~%d secs /*\n", $end - $start) . $output;
+    }
+
+    public function filter($input_path, $cache_path) {
+      $base_path = dirname($input_path);
+      $files = $this->folderTree("*.sass", 0, dirname($base_path));
+      sort($files);
+      $modification_times = array();
+      foreach ($files as $file) {
+        $modification_times[] = file_get_contents($file);
+      }
+      $hash = "compass-".md5(join($modification_times));
+      $cached_path = Wordless::join_paths($cache_path, $hash);
+
+      if (file_exists($cached_path)) {
+        return "/** cached version **/\n" . file_get_contents($cached_path);
+      } else {
+        $output = $this->realFilter($input_path, $cache_path);
+        file_put_contents($cached_path, $output);
         return $output;
+      }
     }
 
     private function formatArrayToRuby($array)
@@ -273,5 +289,31 @@ class CompassCompiler
         }
 
         return $output;
+    }
+
+    /* to use:
+    pattern = glob pattern to match
+    flags = glob flags
+    path = path to search
+    depth = how deep to travel, -1 for unlimited, 0 for only current directory
+    */
+
+    private function folderTree($pattern = '*', $flags = 0, $path = false, $depth = -1, $level = 0) {
+      $files = glob($path.$pattern, $flags);
+      if (!is_array($files)) {
+        $files = array();
+      }
+      $paths = glob($path.'*', GLOB_ONLYDIR|GLOB_NOSORT);
+
+      if (!empty($paths) && ($level < $depth || $depth == -1)) {
+        $level++;
+        foreach ($paths as $sub_path) {
+          $subfiles = $this->folderTree($pattern, $flags, $sub_path.DIRECTORY_SEPARATOR, $depth, $level);
+          if (is_array($subfiles))
+            $files = array_merge($files, $subfiles);
+        }
+      }
+
+      return $files;
     }
 }
