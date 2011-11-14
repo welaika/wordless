@@ -35,9 +35,9 @@ function yield() {
   render_partial($current_view);
 }
 
-function render_view($name) {
+function render_view($name, $layout = 'default') {
   global $current_view;
   $current_view = $name;
-  render_template("template");
+  render_template("layouts/$layout");
 }
 

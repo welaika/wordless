@@ -64,7 +64,7 @@ function pluralize( $string )
   return $string;
 }
 
-function limit_words($string, $word_limit) {
+function truncate($string, $word_limit) {
   $words = explode(' ', $string);
   if (count($words) < $word_limit) {
     return $string;
