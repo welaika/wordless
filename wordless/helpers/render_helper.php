@@ -30,6 +30,11 @@ function render_partial($name) {
   render_template(implode($parts, "/"));
 }
 
+function yield() {
+  global $current_view;
+  render_partial($current_view);
+}
+
 function render_view($name) {
   global $current_view;
   $current_view = $name;
