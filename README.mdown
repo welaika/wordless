@@ -76,7 +76,7 @@ Don't you already feel better?
 
 ### Layouts (`theme/views/layouts` directory)
 
-Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `yaml()` helper to combine it with the main content:
+Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `yield()` helper to combine it with the main content:
 
 ```haml
 !!! 5
@@ -157,20 +157,19 @@ Just install the Wordless plugin, and you should ready to go. If you need to spe
 
 ```php
 <?php
-
 Wordless::set_preference("compass.compass_path",     "/usr/bin/compass");
 Wordless::set_preference("coffeescript.nodejs_path", "/usr/bin/node");
 Wordless::set_preference("coffeescript.coffee_path", "/usr/bin/coffee");
 Wordless::set_preference("coffeescript.bare",        true)
 Wordless::set_preference("compass.output_style",     "compressed");
-
-
 ```
 
 ## Known problems and limitations
+* Missing documentation;
+* There should be some kind of utility to generate a theme skeleton
+* The compilation of assets, to be used in production, is still pre-alpha and needs some rewrite (but it works);
 * This is alpha software, everything is still subject to change :)
 * The routing part can be drammaticaly improved to make it more readable and DRY
-
 
 ## License
 
