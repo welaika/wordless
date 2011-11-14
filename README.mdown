@@ -68,7 +68,7 @@ That's the directory where you'll find yourself coding for most of the time. Her
 
 Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great PHP port of the Haml ruby gem. In this little snippet, please note the following:
 
-* The view is delegating some rendering work to a view partial called "_single.haml" (partial files start with an underscore). Partials are shared between views, and can be used as many times as you want;
+* The view is delegating some rendering work to a view partial called `_single.haml` (partial files start with an underscore). Partials are shared between views, and can be used as many times as you want;
 * There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
 * We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view. 
 
