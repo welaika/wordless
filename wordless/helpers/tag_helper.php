@@ -1,14 +1,16 @@
 <?php
 
 function include_stylesheet($url) {
-  if (!preg_match("/\.css$/", $url)) $url .= ".css";
-  if (!preg_match("/^http:\/\//", $url)) $url = asset_url($url);
+  if (!preg_match("/^http:\/\//", $url)) {
+    $url = stylesheet_url($url);
+    if (!preg_match("/\.css$/", $url)) $url .= ".css";
+  }
   return '<link href="' . $url . '" media="all" rel="stylesheet" type="text/css" />';
 }
 
 function include_javascript($url) {
   if (!preg_match("/^http:\/\//", $url)) {
-    $url = asset_url($url);
+    $url = javascript_url($url);
     if (!preg_match("/.js$/", $url)) $url .= ".js";
   }
   return '<script src="' . $url . '" type="text/javascript"></script>';
@@ -45,7 +47,7 @@ function link_to($text = '', $link = '', $class = '') {
 }
 
 function image_tag($img) {
-  if (!preg_match("/^http/", $img)) {
+  if (!preg_match("/^(http|\/)/", $img)) {
     $img = public_url("images/$img");
   }
   return "<img src='$img' alt=''/>";

@@ -9,44 +9,93 @@ Author URI: http://welaika.com/
 License: GPL2
 */
 
+require_once "wordless/preprocessors.php";
+
+/**
+ * Wordless holds all the plugin setup and initialization.
+ */
 class Wordless {
+
+  private static $preprocessors = array();
+  private static $preferences = array();
 
   public static function initialize() {
     self::load_i18n();
     self::require_helpers();
     self::require_theme_initializers();
-    self::add_assets_rewrite_rules();
+    self::register_preprocessors("CoffeePreprocessor", "CompassPreprocessor");
+    self::register_preprocessor_actions();
   }
 
-  public static function add_assets_rewrite_rules() {
+  public static function register_preprocessors() {
+    foreach (func_get_args() as $preprocessor_class) {
+      self::$preprocessors[] = new $preprocessor_class();
+    }
+  }
+
+  /**
+   * Register all the actions we need to setup custom rewrite rules
+   */
+  public static function register_preprocessor_actions() {
     add_action('init', array('Wordless', 'assets_rewrite_rules'));
     add_action('query_vars', array('Wordless', 'query_vars'));
     add_action('parse_request', array('Wordless', 'parse_request'));
   }
 
-  public static function parse_request(&$wp) {
-    if (array_key_exists('wordless_sass_precompile', $wp->query_vars)) {
-      require_once 'wordless/asset_compiler.php';
-      exit();
-    }
-    if (array_key_exists('wordless_coffee_precompile', $wp->query_vars)) {
-      require_once 'wordless/asset_compiler.php';
-      exit();
-    }
-  }
-
+  /**
+   * Register some custom query vars we need to handle file multiplexing of file preprocessors
+   */
   public static function query_vars($query_vars) {
-    $query_vars[] = 'wordless_sass_precompile';
-    $query_vars[] = 'sass_file_path';
-    $query_vars[] = 'wordless_coffee_precompile';
-    $query_vars[] = 'coffee_file_path';
+    foreach (self::$preprocessors as $preprocessor) {
+      /* this query_var will be set to true when the requested URL needs this preprocessor */
+      array_push($query_vars, $preprocessor->query_var_name());
+      /* this query_var will be set to the url of the file preprocess */
+      array_push($query_vars, $preprocessor->query_var_name('original_url'));
+    }
     return $query_vars;
   }
 
+  /**
+   * For each preprocessor, it creates a new rewrite rule.
+   */
   public static function assets_rewrite_rules() {
     global $wp_rewrite;
-    add_rewrite_rule('(.*)\.sass.css$', 'index.php?wordless_sass_precompile=true&sass_file_path=$matches[1]', 'top');
-    add_rewrite_rule('(.*)\.coffee.js$', 'index.php?wordless_coffee_precompile=true&coffee_file_path=$matches[1]', 'top');
+
+    foreach (self::$preprocessors as $preprocessor) {
+      add_rewrite_rule('^(.*\.'.$preprocessor->to_extension().')$', 'index.php?'.$preprocessor->query_var_name().'=true&'.$preprocessor->query_var_name('original_url').'=$matches[1]', 'top');
+    }
+  }
+
+  /**
+   * If we get back our custom query vars, then redirect the request to the preprocessor.
+   */
+  public static function parse_request(&$wp) {
+    foreach (self::$preprocessors as $preprocessor) {
+      if (array_key_exists($preprocessor->query_var_name(), $wp->query_vars)) {
+        $original_url = $wp->query_vars[$preprocessor->query_var_name('original_url')];
+        $relative_path = str_replace(preg_replace("/^\//", "", self::theme_url()), '', $original_url);
+        $processed_file_path = Wordless::join_paths(get_template_directory(), $relative_path);
+        $relative_path = preg_replace("/^.*\/assets\//", "", $relative_path);
+        $to_process_file_path = Wordless::join_paths(self::theme_assets_path(), $relative_path);
+        $to_process_file_path = preg_replace("/\." . $preprocessor->to_extension() . "$/", "", $to_process_file_path);
+        $preprocessor->process_file_with_caching($to_process_file_path, $processed_file_path, Wordless::theme_temp_path());
+        exit();
+      }
+    }
+  }
+
+  /**
+   * Set a Wordless preference
+   */
+  public static function set_preference($name, $value) {
+    self::$preferences[$name] = $value;
+  }
+
+  /**
+   * Get a Wordless preference
+   */
+  public static function preference($name, $default = '') {
+    return isset(self::$preferences[$name]) ? self::$preferences[$name] : $default;
   }
 
   public static function load_i18n() {
@@ -87,6 +136,10 @@ class Wordless {
     return self::join_paths(get_template_directory(), 'theme/views');
   }
 
+  public static function theme_assets_path() {
+    return self::join_paths(get_template_directory(), 'theme/assets');
+  }
+
   public static function theme_stylesheets_path() {
     return self::join_paths(get_template_directory(), 'theme/assets/stylesheets');
   }
@@ -97,6 +150,10 @@ class Wordless {
 
   public static function theme_temp_path() {
     return self::join_paths(get_template_directory(), 'tmp');
+  }
+
+  public static function theme_url() {
+    return str_replace(get_bloginfo('siteurl'), '', get_bloginfo('template_url'));
   }
 
   public static function join_paths() {

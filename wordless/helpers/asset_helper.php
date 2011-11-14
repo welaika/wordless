@@ -8,3 +8,12 @@ function asset_url($path) {
   return public_url("assets/$path");
 }
 
+function stylesheet_url($path) {
+  return asset_url("stylesheets/$path");
+}
+
+function javascript_url($path) {
+  return asset_url("javascripts/$path");
+}
+
+
