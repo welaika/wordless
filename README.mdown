@@ -1,6 +1,6 @@
 # Wordless
 
-Wordless is an opionated Wordpress plugin that dramatically speed up and enhances your custom themes creation. Some of its features are:
+Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean theme organization (taken directly from Rails);
 * Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
