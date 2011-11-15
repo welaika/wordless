@@ -63,29 +63,84 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
   display: block;
 }
 
-/* line 7, ../../src/sass/screen.sass */
+/* line 5, ../../src/sass/screen.sass */
+body {
+  background: url('../images/fancy_deboss.png?1321391385');
+  font-family: Actor, Helvetica, Arial, sans-serif;
+  color: #222222;
+  font-size: 20px;
+  line-height: 20rx;
+}
+/* line 12, ../../src/sass/screen.sass */
 body .github_badge {
   position: absolute;
   right: 0;
   top: 0;
 }
-/* line 12, ../../src/sass/screen.sass */
+/* line 17, ../../src/sass/screen.sass */
 body .page-wrapper {
-  width: 800px;
+  width: 798.63px;
   margin: 30px auto;
   overflow: hidden;
   *zoom: 1;
 }
-/* line 17, ../../src/sass/screen.sass */
-body .page-wrapper h1 {
+/* line 22, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar {
+  width: 283px;
+  margin-right: 60px;
   float: left;
-  width: 385px;
-  height: 214px;
-  text-indent: -1000em;
-  background: url('../images/wordless.png?1321350838') no-repeat;
 }
-/* line 24, ../../src/sass/screen.sass */
+/* line 27, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar h1 {
+  width: 100%;
+  height: 103px;
+  text-indent: -1000em;
+  background: url('../images/wordless.png?1321392906') no-repeat;
+  margin-bottom: 30px;
+}
+/* line 34, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a {
+  text-align: center;
+  display: block;
+  color: #2d64b3;
+  margin-bottom: 10px;
+  font-size: 22px;
+  text-decoration: none;
+}
+/* line 42, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content {
   float: left;
-  width: 415px;
+  width: 455.63px;
+}
+/* line 46, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content h2 {
+  font-size: 38px;
+  line-height: 38px;
+  margin-bottom: 20px;
+  font-family: Coustard;
+  color: #2d64b3;
+}
+/* line 53, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content h3 {
+  font-size: 30px;
+  line-height: 30px;
+  margin-bottom: 15px;
+  font-family: Coustard;
+  color: #5e9dc2;
+}
+/* line 60, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content p.bigger {
+  font-size: 22px;
+  line-height: 22px;
+  margin-bottom: 30px;
+}
+/* line 65, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content ul, body .page-wrapper section.page-content p {
+  margin-bottom: 20px;
+}
+/* line 68, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content li {
+  margin-left: 25px;
+  list-style-type: square;
+  margin-bottom: 5px;
 }

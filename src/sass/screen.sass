@@ -3,6 +3,11 @@
 +global-reset
 
 body
+  background: image-url("fancy_deboss.png")
+  font-family: Actor, Helvetica, Arial, sans-serif
+  color: #222
+  font-size: 20px
+  line-height: 20rx
 
   .github_badge
     position: absolute
@@ -10,17 +15,57 @@ body
     top: 0
 
   .page-wrapper
-    width: 800px
+    width: image-width("wordless.png") * (1.61 + 1) + 60px
     margin: 30px auto
     +clearfix
 
-    h1
+    section.sidebar
+      width: image-width("wordless.png")
+      margin-right: 60px
       float: left
-      width: 385px
-      height: 214px
-      text-indent: -1000em
-      background: image-url("wordless.png") no-repeat
+
+      h1
+        width: 100%
+        height: image-height("wordless.png")
+        text-indent: -1000em
+        background: image-url("wordless.png") no-repeat
+        margin-bottom: 30px
+
+      nav ul li a
+        text-align: center
+        display: block
+        color: #2D64B3
+        margin-bottom: 10px
+        font-size: 22px
+        text-decoration: none
 
     section.page-content
       float: left
-      width: 800px - 385px
+      width: image-width("wordless.png") * 1.61
+
+      h2
+        font-size: 38px
+        line-height: 38px
+        margin-bottom: 20px
+        font-family: Coustard
+        color: #2D64B3
+
+      h3
+        font-size: 30px
+        line-height: 30px
+        margin-bottom: 15px
+        font-family: Coustard
+        color: #5E9DC2
+
+      p.bigger
+        font-size: 22px
+        line-height: 22px
+        margin-bottom: 30px
+
+      ul, p
+        margin-bottom: 20px
+
+      li
+        margin-left: 25px
+        list-style-type: square
+        margin-bottom: 5px

@@ -2,16 +2,41 @@
 %html
   %head
     %title Wordless
+    %link(href='http://fonts.googleapis.com/css?family=Coustard|Actor' rel='stylesheet' type='text/css')
     %link(href="assets/stylesheets/screen.css" media="screen" rel="stylesheet" type="text/css")
     /[if lt IE 9]
       %script(src="http://html5shiv.googlecode.com/svn/trunk/html5.js" type="text/javascript")
   %body
-    %img.github_badge(src="https://a248.e.akamai.net/assets.github.com/img/e6bef7a091f5f3138b8cd40bc3e114258dd68ddf/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f7265645f6161303030302e706e67")
+    %img.github_badge(src="https://a248.e.akamai.net/assets.github.com/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67")
     .page-wrapper
-      %h1 Wordless
+      %section.sidebar
+        %h1 Wordless
+
+        %nav
+          %ul
+            %li
+              %a(href="#") Download the Plugin
+            %li
+              %a(href="https://github.com/welaika/wordless#readme") Getting Started
+            %li
+              %a(href="https://github.com/welaika/wordless") Browse Code
+
       %section.page-content
-        %p
+
+        %h2 Stop writing Wordpress themes like it's 1998.
+
+        %p.bigger
           Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances
-          your custom themes creation. Some of its features are:
+          your custom theme creation.
+
+        %h3 Alright, what does it offer?
+        %ul
+          %li A Rails-like directory organization
+          %li Partial support
+          %li 40+ Helpers methods
+          %li Haml views
+          %li Sass & Compass stylesheets
+          %li Coffeescript logic
+
 
 
