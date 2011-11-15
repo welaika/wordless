@@ -32,7 +32,7 @@ That's a typical Wordless theme directory structure:
 
 Let's see in detail what is the purpose of all those directories:
 
-### Wordless "routes"
+### Routing
 
 The `index.php` serves as a router to all the theme views. 
 
@@ -44,14 +44,15 @@ if (is_front_page()) {
 } else if (is_post_type_archive("portfolio_work")) {
   render_view("portfolio/index");
 } else if (is_post_type("portfolio_work")) {
-  render_view("portfolio/single");
+  render_view("portfolio/show");
 } 
 ```
 As you can see, you first determine the type of the page using [Wordpress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
 ### Theme Views (`theme/views/*.haml`)
 
-That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax. Feel free to create subdirectories, too. Here's what could be an example for the typical [Wordpress loop](http://codex.wordpress.org/The_Loop):
+That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax.
+Feel free to create subdirectories to group toghether the files. Here's what could be an example for the typical [Wordpress loop](http://codex.wordpress.org/The_Loop) in an archive page:
 
 ```haml
 / theme/views/posts/archive.haml
@@ -68,8 +69,8 @@ That's the directory where you'll find yourself coding for most of the time. Her
 
 Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great PHP port of the Haml ruby gem. In this little snippet, please note the following:
 
-* The view is delegating some rendering work to a view partial called `_single.haml` (partial files start with an underscore). Partials are shared between views, and can be used as many times as you want;
-* There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
+* The view is delegating some rendering work to a partial called `_single.haml`. Partial templates – usually just called “partials” – are another device for breaking the rendering process into more manageable chunks. Partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore.
+* There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory (see next section);
 * We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view. 
 
 Don't you already feel better?
@@ -100,6 +101,8 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
     = include_javascript("jquery")
 	= include_javascript("application")
 ```
+
+Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
 
 ### Helpers (`config/helpers/*.php` files)
 
@@ -165,11 +168,12 @@ Wordless::set_preference("compass.output_style",     "compressed");
 ```
 
 ## Known problems and limitations
-* Missing documentation;
-* There should be some kind of utility to generate a theme skeleton
-* The compilation of assets, to be used in production, is still pre-alpha and needs some rewrite (but it works);
+* Wordless has not been tested on Windows machines or PHP4;
+* Documentation still to be written;
+* There should be some kind of utility to generate a theme skeleton;
+* The assets compilation-phase is still pre-alpha and needs some rewrite (but it works);
 * This is alpha software, everything is still subject to change :)
-* The routing part can be drammaticaly improved to make it more readable and DRY
+* The routing part can be drammaticaly improved to make it more readable and DRY;
 
 ## License
 
