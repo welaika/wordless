@@ -15,7 +15,6 @@ That's a typical Wordless theme directory structure:
 
 	your_theme_dir
 	├── config
-	│   ├── helpers
 	│   ├── initializers
 	│   └── locales
 	├── public
@@ -27,6 +26,7 @@ That's a typical Wordless theme directory structure:
 	│   ├── assets
 	│   │   ├── javascripts
 	│   │   └── stylesheets
+	│   ├── helpers
 	│   └── views
     │       └── layouts
 	└── index.php
@@ -105,7 +105,7 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
 
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
 
-### Helpers (`config/helpers/*.php` files)
+### Helpers (`theme/helpers/*.php` files)
 
 Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ helpers Wordless gives you for free:
 
