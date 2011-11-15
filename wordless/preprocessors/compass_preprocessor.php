@@ -40,6 +40,8 @@ class CompassPreprocessor extends WordlessPreprocessor
 
   public function process_file($file_path, $result_path, $temp_path) {
 
+    $this->validate_executable($this->pref("compass.compass_path"));
+
     // On cache miss, we build the JS file from scratch
     $pb = new ProcessBuilder(array(
       $this->pref("compass.compass_path"),
@@ -93,7 +95,7 @@ class CompassPreprocessor extends WordlessPreprocessor
   }
 
   public function die_with_error($description) {
-    return sprintf("body::before { content: '%s'; font-family: monospace; };", addslashes($description));
+    echo sprintf("body::before { content: '%s'; font-family: monospace; };", addslashes($description));
     die();
   }
 

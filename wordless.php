@@ -10,6 +10,7 @@ License: GPL2
 */
 
 require_once "wordless/preprocessors.php";
+require_once "wordless/admin.php";
 
 /**
  * Wordless holds all the plugin setup and initialization.
@@ -25,6 +26,12 @@ class Wordless {
     self::require_theme_initializers();
     self::register_preprocessors("CoffeePreprocessor", "CompassPreprocessor");
     self::register_preprocessor_actions();
+    self::load_admin_page();
+  }
+
+  public static function load_admin_page()
+  {
+    WordlessAdmin::initialize();
   }
 
   public static function register_preprocessors() {
@@ -43,7 +50,7 @@ class Wordless {
   }
 
   /**
-   * Register some custom query vars we need to handle file multiplexing of file preprocessors
+   * Register some custom query vars we need to handle multiplexing of file preprocessors
    */
   public static function query_vars($query_vars) {
     foreach (self::$preprocessors as $preprocessor) {
@@ -120,8 +127,27 @@ class Wordless {
     }
   }
 
+  public static function theme_is_wordless_compatible() {
+    $required_directories = array(
+      self::theme_helpers_path(),
+      self::theme_initializers_path(),
+      self::theme_locales_path(),
+      self::theme_views_path(),
+      self::theme_assets_path(),
+      self::theme_stylesheets_path(),
+      self::theme_javascripts_path(),
+      self::theme_temp_path()
+    );
+    foreach ($required_directories as $dir) {
+      if (!file_exists($dir) || !is_dir($dir)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static function theme_helpers_path() {
-    return self::join_paths(get_template_directory(), 'config/helpers');
+    return self::join_paths(get_template_directory(), 'theme/helpers');
   }
 
   public static function theme_initializers_path() {

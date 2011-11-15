@@ -54,6 +54,15 @@ class WordlessPreprocessor
     return Wordless::join_paths($cache_path, $cached_file_path);
   }
 
+  public function validate_executable($path) {
+    if (!is_executable($this->pref("coffeescript.nodejs_path"))) {
+      $this->die_with_error(sprintf(
+        __("The path %s doesn't seem to be an executable!"),
+        $this->pref("coffeescript.nodejs_path")
+      ));
+    }
+  }
+
   public function process_file_with_caching($file_path_without_extension, $result_path, $cache_path) {
     header("Content-Type: " . $this->content_type());
 

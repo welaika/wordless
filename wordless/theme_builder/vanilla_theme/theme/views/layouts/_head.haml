@@ -1,0 +1,15 @@
+/ Charset
+%meta(http-equiv="Content-type" content="text/html;charset=UTF-8")
+
+/ Title
+%title= get_page_title(bloginfo('name'), " – ")
+
+/ Stylesheets
+= include_stylesheet("screen")
+
+/ HTML5 Shiv
+/[if lt IE 9]
+  = include_javascript("http://html5shiv.googlecode.com/svn/trunk/html5.js")
+
+- wp_head()
+

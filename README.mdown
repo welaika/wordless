@@ -3,6 +3,7 @@
 Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean theme organization (taken directly from Rails);
+* Ability to create a new theme skeleton directly within the Wordpress backend interface;
 * Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
 * Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
 * Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
@@ -70,10 +71,10 @@ Feel free to create subdirectories to group toghether the files. Here's what cou
 Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great PHP port of the Haml ruby gem. In this little snippet, please note the following:
 
 * The view is delegating some rendering work to a partial called `_single.haml`. Partial templates – usually just called “partials” – are another device for breaking the rendering process into more manageable chunks. Partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore.
-* There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory (see next section);
+* There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
 * We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view. 
 
-Don't you already feel better?
+Don't you already feel so much better?
 
 ### Layouts (`theme/views/layouts` directory)
 
@@ -120,6 +121,7 @@ Helpers are basically small functions that can be called in your views to help k
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
 Wordless let you split you code into many modular initializer files, each one with a specific target:
 
+	config/initializers
 	├── custom_post_types.php
 	├── hooks.php
 	├── menus.php
@@ -156,7 +158,9 @@ The production machine doesn't need any extra-dependencies, as all the assets ge
 
 ## Installation and Configuration
 
-Just install the Wordless plugin, and you should ready to go. If you need to specify some preferences, you can do it within an initializers, these are the current Wordless defaults:
+Just install the Wordless plugin, and you should ready to go. You can create a Wordless theme skeleton directly within the Wordpress interface, in the "New Wordless Theme" page under the "Appearance" section.
+
+If you need to specify some preferences, you can do it within an initializer. The following is a list of default values for Wordless preferences.
 
 ```php
 <?php
@@ -172,8 +176,8 @@ Wordless::set_preference("compass.output_style",     "compressed");
 * Documentation still to be written;
 * There should be some kind of utility to generate a theme skeleton;
 * The assets compilation-phase is still pre-alpha and needs some rewrite (but it works);
-* This is alpha software, everything is still subject to change :)
 * The routing part can be drammaticaly improved to make it more readable and DRY;
+* This is alpha software, everything is still subject to change :)
 
 ## License
 

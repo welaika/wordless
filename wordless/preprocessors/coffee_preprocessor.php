@@ -8,8 +8,8 @@ require_once "wordless_preprocessor.php";
 class CoffeePreprocessor extends WordlessPreprocessor
 {
   protected $preferences = array(
-    "coffeescript.nodejs_path" => '/usr/bin/node',
-    "coffeescript.coffee_path" => '/usr/bin/coffee',
+    "coffeescript.nodejs_path" => '/usr/local/bin/node',
+    "coffeescript.coffee_path" => '/usr/local/bin/coffee',
     "coffeescript.bare" => false
   );
 
@@ -35,6 +35,8 @@ class CoffeePreprocessor extends WordlessPreprocessor
   }
 
   public function process_file($file_path, $result_path, $temp_path) {
+
+    $this->validate_executable($this->pref("coffeescript.nodejs_path"));
 
     // On cache miss, we build the JS file from scratch
     $pb = new ProcessBuilder(array(
