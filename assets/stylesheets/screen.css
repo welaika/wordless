@@ -62,3 +62,30 @@ a img {
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
+
+/* line 7, ../../src/sass/screen.sass */
+body .github_badge {
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+/* line 12, ../../src/sass/screen.sass */
+body .page-wrapper {
+  width: 800px;
+  margin: 30px auto;
+  overflow: hidden;
+  *zoom: 1;
+}
+/* line 17, ../../src/sass/screen.sass */
+body .page-wrapper h1 {
+  float: left;
+  width: 385px;
+  height: 214px;
+  text-indent: -1000em;
+  background: url('../images/wordless.png?1321350838') no-repeat;
+}
+/* line 24, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content {
+  float: left;
+  width: 415px;
+}
