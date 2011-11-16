@@ -5,9 +5,9 @@
 body
   background: image-url("fancy_deboss.png")
   font-family: Actor, Helvetica, Arial, sans-serif
-  color: #222
+  color: #3F4357
   font-size: 20px
-  line-height: 20rx
+  line-height: 21px
 
   .github_badge
     position: absolute
@@ -16,7 +16,7 @@ body
 
   .page-wrapper
     width: image-width("wordless.png") * (1.61 + 1) + 60px
-    margin: 30px auto
+    margin: 60px auto
     +clearfix
 
     section.sidebar
@@ -29,37 +29,62 @@ body
         height: image-height("wordless.png")
         text-indent: -1000em
         background: image-url("wordless.png") no-repeat
-        margin-bottom: 30px
+        margin-bottom: 60px
 
-      nav ul li a
-        text-align: center
-        display: block
-        color: #2D64B3
-        margin-bottom: 10px
-        font-size: 22px
-        text-decoration: none
+      nav ul li
+        a
+          text-align: center
+          display: block
+          margin-bottom: 15px
+          color: #2D64B3
+          text-decoration: none
+
+          &:hover
+            color: lighten(#2D64B3, 15%)
+
+        a.important
+          +background(linear-gradient(#F5C320, #E66F08))
+          border: 1px solid #96590A
+          color: #64320A
+          padding: 12px
+          width: 210px
+          margin: 0 auto
+          margin-bottom: 20px
+          +text-shadow(#F4BD10 0px 1px 0px)
+          +box-shadow(#FBEA2F 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
+          +border-radius(3px)
+
+          &:hover
+            +background(linear-gradient(#F8D428, #ED920A))
+            +box-shadow(#F8DB2D 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
 
     section.page-content
       float: left
       width: image-width("wordless.png") * 1.61
+
+      a
+        color: darken(#3F4357, 10%)
+
+        &:hover
+          color: #3F4357
 
       h2
         font-size: 38px
         line-height: 38px
         margin-bottom: 20px
         font-family: Coustard
-        color: #2D64B3
+        color: #103366
 
       h3
         font-size: 30px
         line-height: 30px
         margin-bottom: 15px
         font-family: Coustard
-        color: #5E9DC2
+        color: #5A9EFF
 
       p.bigger
-        font-size: 22px
-        line-height: 22px
+        font-size: 25px
+        line-height: 26px
         margin-bottom: 30px
 
       ul, p
