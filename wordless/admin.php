@@ -79,6 +79,6 @@ class WordlessAdmin
     }
 
     // Just render the page
-    require 'admin/admin_view.php';
+    require 'admin/admin_form.php';
   }
 }

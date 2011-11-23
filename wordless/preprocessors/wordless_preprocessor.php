@@ -46,6 +46,7 @@ class WordlessPreprocessor
     foreach ($this->preferences as $pref => $value) {
       $file_content .= $pref . '=' . $this->pref($pref) . ';';
     }
+
     return $file_content;
   }
 

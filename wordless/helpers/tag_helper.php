@@ -46,11 +46,15 @@ function link_to($text = '', $link = '', $class = '') {
   return "<a href='$link'$class>$text</a>";
 }
 
-function image_tag($img) {
+function image_tag($img, $attributes = array()) {
   if (!preg_match("/^(http|\/)/", $img)) {
     $img = public_url("images/$img");
   }
-  return "<img src='$img' alt=''/>";
+  $attributes_html = array();
+  foreach($attributes as $key => $value) {
+    $attributes_html[] = "$key = \"$value\"";
+  }
+  return "<img src='$img' alt='' " . implode(" ", $attributes_html) . " />";
 }
 
 function active_if($active_check) {
