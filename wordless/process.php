@@ -81,15 +81,20 @@ class Process
         }
 
         fwrite($pipes[0], $this->stdin);
+        $status = proc_get_status($process);
+
+        while($status['running']) {
+          $this->stdout .= stream_get_contents($pipes[1]);
+          $this->stderr .= stream_get_contents($pipes[2]);
+          $status = proc_get_status($process);
+        }
+
+
         fclose($pipes[0]);
-
-        $this->stdout = stream_get_contents($pipes[1]);
         fclose($pipes[1]);
-
-        $this->stderr = stream_get_contents($pipes[2]);
         fclose($pipes[2]);
 
-        $exitcode = proc_close($process);
+        $this->exitcode = $status['exitcode'];
 
         return $this->exitcode;
     }

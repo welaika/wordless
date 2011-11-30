@@ -99,23 +99,5 @@ class CompassPreprocessor extends WordlessPreprocessor
     die();
   }
 
-  private function folder_tree($pattern = '*', $flags = 0, $path = false, $depth = -1, $level = 0) {
-    $files = glob($path.$pattern, $flags);
-    if (!is_array($files)) {
-      $files = array();
-    }
-    $paths = glob($path.'*', GLOB_ONLYDIR|GLOB_NOSORT);
-
-    if (!empty($paths) && ($level < $depth || $depth == -1)) {
-      $level++;
-      foreach ($paths as $sub_path) {
-        $subfiles = $this->folder_tree($pattern, $flags, $sub_path.DIRECTORY_SEPARATOR, $depth, $level);
-        if (is_array($subfiles))
-          $files = array_merge($files, $subfiles);
-      }
-    }
-
-    return $files;
-  }
 }
 

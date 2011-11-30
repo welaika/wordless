@@ -56,10 +56,10 @@ class WordlessPreprocessor
   }
 
   public function validate_executable($path) {
-    if (!is_executable($this->pref("coffeescript.nodejs_path"))) {
+    if (!is_executable($path)) {
       $this->die_with_error(sprintf(
         __("The path %s doesn't seem to be an executable!"),
-        $this->pref("coffeescript.nodejs_path")
+        $path
       ));
     }
   }
@@ -96,5 +96,25 @@ class WordlessPreprocessor
 
     $this->die_with_error("File '$file_path_without_extension.(".join("|", $this->supported_extensions()).")' does not exists!");
   }
+
+  protected function folder_tree($pattern = '*', $flags = 0, $path = false, $depth = -1, $level = 0) {
+    $files = glob($path.$pattern, $flags);
+    if (!is_array($files)) {
+      $files = array();
+    }
+    $paths = glob($path.'*', GLOB_ONLYDIR|GLOB_NOSORT);
+
+    if (!empty($paths) && ($level < $depth || $depth == -1)) {
+      $level++;
+      foreach ($paths as $sub_path) {
+        $subfiles = $this->folder_tree($pattern, $flags, $sub_path.DIRECTORY_SEPARATOR, $depth, $level);
+        if (is_array($subfiles))
+          $files = array_merge($files, $subfiles);
+      }
+    }
+
+    return $files;
+  }
+
 
 }

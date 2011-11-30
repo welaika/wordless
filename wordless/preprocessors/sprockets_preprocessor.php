@@ -5,16 +5,26 @@ require_once "wordless_preprocessor.php";
 /**
  * CoffeePreprocessor is able to compile Coffeescript files using the `coffee` executable.
  **/
-class CoffeePreprocessor extends WordlessPreprocessor
+class SprocketsPreprocessor extends WordlessPreprocessor
 {
   protected $preferences = array(
-    "coffeescript.nodejs_path" => '/usr/local/bin/node',
-    "coffeescript.coffee_path" => '/usr/local/bin/coffee',
-    "coffeescript.bare" => false
+    "sprockets.ruby_path" => '/usr/bin/ruby'
   );
 
   public function supported_extensions() {
-    return array("coffee", "coffeescript");
+    return array("js", "js.coffee");
+  }
+
+  public function cache_hash($file_path) {
+    $hash = array(parent::cache_hash($file_path));
+    $base_path = dirname($file_path);
+    $files = $this->folder_tree("*.coffee", 0, dirname($base_path));
+    sort($files);
+    $contents = array();
+    foreach ($files as $file) {
+      $hash[] = file_get_contents($file);
+    }
+    return join($hash);
   }
 
   public function to_extension() {
@@ -36,24 +46,23 @@ class CoffeePreprocessor extends WordlessPreprocessor
 
   public function process_file($file_path, $result_path, $temp_path) {
 
-    $this->validate_executable($this->pref("coffeescript.nodejs_path"));
+    $this->validate_executable($this->pref("sprockets.ruby_path"));
 
     // On cache miss, we build the JS file from scratch
     $pb = new ProcessBuilder(array(
-      $this->pref("coffeescript.nodejs_path"),
-      $this->pref("coffeescript.coffee_path"),
-      '-cp'
+      $this->pref("sprockets.ruby_path"),
+      Wordless::join_paths(dirname(__FILE__), "sprockets_preprocessor.rb")
     ));
 
-    if ($this->pref("coffeescript.bare")) {
-      $pb->add('--bare');
-    }
+    $pb->add('/Users/steffoz/dev/sites/php/molino_valente/wp-content/themes/valente/assets/javascripts');
+    $pb->add('/Users/steffoz/dev/sites/php/molino_valente/wp-content/themes/valente/theme/assets/javascripts');
 
     $pb->add($file_path);
+
     $proc = $pb->getProcess();
     $code = $proc->run();
 
-    if (0 < $code) {
+    if ($code != 0) {
       $this->die_with_error($proc->getErrorOutput());
     }
 
@@ -61,3 +70,4 @@ class CoffeePreprocessor extends WordlessPreprocessor
   }
 
 }
+

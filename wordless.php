@@ -24,7 +24,7 @@ class Wordless {
     self::load_i18n();
     self::require_helpers();
     self::require_theme_initializers();
-    self::register_preprocessors("CoffeePreprocessor", "CompassPreprocessor");
+    self::register_preprocessors("SprocketsPreprocessor", "CompassPreprocessor");
     self::register_preprocessor_actions();
     self::load_admin_page();
   }
