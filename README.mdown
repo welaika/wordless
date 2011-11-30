@@ -35,7 +35,7 @@ Let's see in detail what is the purpose of all those directories:
 
 ### Routing
 
-The `index.php` serves as a router to all the theme views. 
+The `index.php` serves as a router to all the theme views.
 
 ```php
 <?php
@@ -46,7 +46,7 @@ if (is_front_page()) {
   render_view("portfolio/index");
 } else if (is_post_type("portfolio_work")) {
   render_view("portfolio/show");
-} 
+}
 ```
 As you can see, you first determine the type of the page using [Wordpress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
@@ -72,7 +72,7 @@ Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great
 
 * The view is delegating some rendering work to a partial called `_single.haml`. Partial templates – usually just called “partials” – are another device for breaking the rendering process into more manageable chunks. Partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore.
 * There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
-* We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view. 
+* We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view.
 
 Don't you already feel so much better?
 
@@ -136,40 +136,86 @@ Just drop all your theme locale files in this directory. Wordless will take care
 
 ### Assets
 
-Working with assets is pretty easy in Wordless:
+Wordpress has to different places where you want to put your assets:
 
-* Put all the images, the CSS and the Javascript files inside the `public` directory;
-* Put all your Coffeescript and Sass files within the `theme/assets` directory;
+* Place all the static images and vendor assets (i.e. jQuery and vendor JS plugins) into the `assets/*` directory;
+* Place all your custom, project related assets into the `theme/assets/*`.
 
-At this point, simply include the assets in your Haml template using the `include_javascript()` and `include_stylesheet()` helpers. 
+#### Stylesheets
 
-Wordless will take care of compiling all the required files, caching them if they do not change between two consecutive requests.
+Include the assets in your Haml views using `include_stylesheet()` helper.
 
-## Requirements
+```haml
+= include_stylesheet("screen")
+```
+
+This will produce the following HTML, pointing to the `assets/stylesheets` directory:
+
+```html
+<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/screen.css" media="all" rel="stylesheet" type="text/css" />
+```
+
+If Wordless can't find this static file, it will search for a file named `screen.sass` or `screen.scss` inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover. 
+
+To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
+
+#### Javacripts
+
+Include the assets in your Haml views using `include_stylesheet()` helper.
+
+```haml
+= include_javascript("application")
+```
+
+This will produce the following HTML, pointing to the `assets/javascripts` directory:
+
+```html
+<script src="/wp-content/themes/YOUR_THEME/assets/javascripts/application.js" type="text/javascript"></script>
+```
+
+If Wordless can't find this static file, it will search for a file named `application.js.coffee` inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using the Sprockets preprocessor under the cover. 
+
+To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
+
+## Requirements, installation and configuration
 
 Your development machine needs the following executables:
 
-* [NodeJS](http://nodejs.org/) (`brew install node`);
-* [npm](http://npmjs.org/) (`curl http://npmjs.org/install.sh | sh`);
-* [Coffeescript](http://jashkenas.github.com/coffee-script/) (`npm install -g coffee-script`);
-* Ruby and the [compass](https://github.com/chriseppstein/compass) gem (`gem install compass`)
+* Ruby
+* The [compass](https://github.com/chriseppstein/compass) gem (`gem install compass`)
+* The [sprockets](https://github.com/sstephenson/sprockets) gem (`gem install sprockets`)
+* The [coffee-script](https://github.com/josh/ruby-coffee-script) gem (`gem install coffee-script`)
 
-The production machine doesn't need any extra-dependencies, as all the assets gets cached by Wordless.
+The production machine doesn't need any extra-dependencies, as all the assets get automatically cached by Wordless.
 
-## Installation and Configuration
-
-Just install the Wordless plugin, and you should ready to go. You can create a Wordless theme skeleton directly within the Wordpress interface, in the "New Wordless Theme" page under the "Appearance" section.
+When you're ready, simply install the Wordless plugin, and you should ready to go. You can create a Wordless theme skeleton directly within the Wordpress interface, in the "New Wordless Theme" page under the "Appearance" section.
 
 If you need to specify some preferences, you can do it within an initializer. The following is a list of default values for Wordless preferences.
 
 ```php
 <?php
 Wordless::set_preference("compass.compass_path",     "/usr/bin/compass");
-Wordless::set_preference("coffeescript.nodejs_path", "/usr/bin/node");
-Wordless::set_preference("coffeescript.coffee_path", "/usr/bin/coffee");
-Wordless::set_preference("coffeescript.bare",        true)
-Wordless::set_preference("compass.output_style",     "compressed");
+Wordless::set_preference("sprockets.ruby_path",      "/usr/bin/ruby");
 ```
+
+### RVM
+
+It's recommended to use RVM to handle ruby gems. Type the following from your terminal:
+
+```
+rvm use 1.8.7
+rvm gemset create wordless
+rvm use 1.8.7@wordless
+gem install sprockets compass coffee-script
+rvm wrapper 1.8.7@wordless wordless compass ruby
+```
+
+Then configure Wordpress like this:
+
+```php
+<?php
+Wordless::set_preference("compass.compass_path", "/Users/YOUR_USER/.rvm/bin/wordless_compass");
+Wordless::set_preference("sprockets.ruby_path", "/Users/YOUR_USER/.rvm/bin/wordless_ruby");```
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines or PHP4;
