@@ -54,8 +54,8 @@ class SprocketsPreprocessor extends WordlessPreprocessor
       Wordless::join_paths(dirname(__FILE__), "sprockets_preprocessor.rb")
     ));
 
-    $pb->add('/Users/steffoz/dev/sites/php/molino_valente/wp-content/themes/valente/assets/javascripts');
-    $pb->add('/Users/steffoz/dev/sites/php/molino_valente/wp-content/themes/valente/theme/assets/javascripts');
+    $pb->add(Wordless::theme_static_javascripts_path());
+    $pb->add(Wordless::theme_javascripts_path());
 
     $pb->add($file_path);
 

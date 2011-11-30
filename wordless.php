@@ -174,6 +174,10 @@ class Wordless {
     return self::join_paths(get_template_directory(), 'theme/assets/javascripts');
   }
 
+  public static function theme_static_javascripts_path() {
+    return self::join_paths(get_template_directory(), 'assets/javascripts');
+  }
+
   public static function theme_temp_path() {
     return self::join_paths(get_template_directory(), 'tmp');
   }
