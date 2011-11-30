@@ -215,7 +215,8 @@ Then configure Wordpress like this:
 ```php
 <?php
 Wordless::set_preference("compass.compass_path", "/Users/YOUR_USER/.rvm/bin/wordless_compass");
-Wordless::set_preference("sprockets.ruby_path", "/Users/YOUR_USER/.rvm/bin/wordless_ruby");```
+Wordless::set_preference("sprockets.ruby_path", "/Users/YOUR_USER/.rvm/bin/wordless_ruby");
+```
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines or PHP4;
