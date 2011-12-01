@@ -76,6 +76,11 @@ class QueryHelper {
     the_content();
     return ob_get_clean();
   }
+
+  function get_post_type_singular_name() {
+    $obj = get_post_type_object(get_post_type());
+    return $obj->labels->name;
+  }
 }
 
 Wordless::register_helper("QueryHelper");

@@ -2,6 +2,7 @@
 
 class RenderHelper {
   function render_error($title, $description) {
+    ob_end_clean();
     require "templates/error_template.php";
     die();
   }
@@ -52,9 +53,12 @@ class RenderHelper {
   }
 
   function render_view($name, $layout = 'default') {
+    ob_start();
     global $current_view;
     $current_view = $name;
     render_template("layouts/$layout");
+    $partial_content = ob_get_contents();
+    ob_end_clean();
   }
 }
 

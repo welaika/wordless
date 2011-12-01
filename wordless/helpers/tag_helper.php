@@ -1,12 +1,12 @@
 <?php
 /**
  * TagHelper
- * 
+ *
  * Provides methods to generate HTML tags programmatically when you can't use a Builder.
  * @package Wordless
  */
 class TagHelper {
-  
+
   private function tag_options($options, $prefix = "") {
 
     $html_content = "";
@@ -19,11 +19,11 @@ class TagHelper {
           if($option_key == "data"){
             $html_content .= $this->tag_options($option_value, $option_key . "-");
           } else {
-            $html_content .= " " . $prefix . $option_key . "=" . "\"". addslashes(json_encode($option_value))  . "\"";  
+            $html_content .= " " . $prefix . $option_key . "=" . "\"". addslashes(json_encode($option_value))  . "\"";
           }
         } else {
           if (is_null($option_value) || (empty($option_value)) || ($option_value == $option_key)) {
-            $html_content .= " " . $prefix . $option_key; 
+            $html_content .= " " . $prefix . $option_key;
           } else {
             $html_content .= " " . $prefix . $option_key . "=" . "\"". $option_value  . "\"";
           }
@@ -35,7 +35,7 @@ class TagHelper {
     }
 
     return $html_content;
-      
+
   }
 
   function content_tag($name, $content, $options = NULL, $escape = false) {
@@ -52,7 +52,7 @@ class TagHelper {
         $html_content .= $this->tag_options($options);
       }
       $html_content .= ">";
-      $html_content .= ((bool) $escape) ? addslashes($content) : $content;
+      $html_content .= ((bool) $escape) ? htmlentities($content) : $content;
       $html_content .= "</" . $name . ">";
     }
 
@@ -91,7 +91,7 @@ class TagHelper {
   }
 
   function rss_link($title, $url) {
-    
+
     $options = array( "href"  => $url,
                       "title" => $title,
                       "rel"   => "alternate",
@@ -124,7 +124,7 @@ class TagHelper {
       $link = "#link_not_available";
     }
 
-    $options = array( "href"  => $link);
+    $options = array("href"  => $link);
     if(is_array($attributes)){
       $options = array_merge($options, $attributes);
     } else {
@@ -149,11 +149,6 @@ class TagHelper {
 
   function active_if($active_check) {
     return $active_check ? "active" : "inactive";
-  }
-
-  function get_post_type_singular_name() {
-    $obj = get_post_type_object(get_post_type());
-    return $obj->labels->name;
   }
 
   function get_page_title($prefix = "", $separator = "") {
