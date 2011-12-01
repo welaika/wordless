@@ -117,16 +117,27 @@ class Wordless {
   public static function require_helpers() {
     require_once 'wordless/helpers.php';
     $helpers_path = self::theme_helpers_path();
-    foreach (glob("$helpers_path/*.php") as $filename) {
-      require_once $filename;
-    }
+    self::require_once_dir("$helpers_path/*.php");
   }
 
   public static function require_theme_initializers() {
     $initializers_path = self::theme_initializers_path();
-    foreach (glob("$initializers_path/*.php") as $filename) {
-      require_once $filename;
+    self::require_once_dir("$initializers_path/*.php");
+  }
+
+  /**
+   * Require one directory 
+   * @param string $path
+   */
+  private static function require_once_dir($path) {
+
+    $list_files = glob($path);
+    if (is_array($list_files)) {
+        foreach ($list_files as $filename) {
+          require_once $filename;
+        }
     }
+    
   }
 
   public static function theme_is_wordless_compatible() {
@@ -142,7 +153,6 @@ class Wordless {
     );
     foreach ($required_directories as $dir) {
       if (!file_exists($dir) || !is_dir($dir)) {
-        echo $dir;
         return false;
       }
     }
