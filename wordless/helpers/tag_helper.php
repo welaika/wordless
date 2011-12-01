@@ -24,6 +24,8 @@ class TagHelper {
         } else {
           if (is_null($option_value) || (empty($option_value)) || ($option_value == $option_key)) {
             $html_content .= " " . $prefix . $option_key;
+          } elseif(is_bool($option_value) && ($option_value == true)) { 
+            $html_content .= " " . $prefix . $option_key . "=" . "\"". $prefix . $option_key  . "\"";
           } else {
             $html_content .= " " . $prefix . $option_key . "=" . "\"". $option_value  . "\"";
           }
@@ -132,19 +134,6 @@ class TagHelper {
     }
 
     return $this->content_tag("a", $text, $options);
-  }
-
-  function image_tag($img, $attributes = NULL) {
-    if (!preg_match("/^(http|\/)/", $img)) {
-      $img = public_url("images/$img");
-    }
-
-    $options = array( "src"  => $img );
-    if(is_array($attributes)){
-      $options = array_merge($options, $attributes);
-    }
-
-    return $this->content_tag("img", NULL, $options);
   }
 
   function active_if($active_check) {
