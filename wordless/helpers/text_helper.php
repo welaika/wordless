@@ -1,7 +1,36 @@
 <?php
 
+class Cycle {
+
+  function __construct($values) {
+    $this->values = $values;
+    $this->index = 0;
+  }
+
+  function reset() {
+    $this->index = 0;
+  }
+
+  function current_value() {
+    return $this->values[$this->index];
+  }
+
+  function value() {
+    $value = $this->current_value();
+    $this->next();
+    return $value;
+  }
+
+  function next() {
+    $this->index = ($this->index + 1) % count($this->values);
+  }
+}
+
 class TextHelper {
-  function pluralize( $string )
+
+  private static $cycles = array();
+
+  function pluralize($string)
   {
 
     $plural = array(
@@ -65,6 +94,22 @@ class TextHelper {
     return $string;
   }
 
+
+  function cycle() {
+    $values = func_get_args();
+    if (is_array($values[count($values)-1])) {
+      $options = array_pop($values);
+    }
+    $name = isset($options["name"]) ? $options["name"] : "default";
+
+    if (!isset(self::$cycles[$name])) {
+      self::$cycles[$name] = new Cycle($values);
+    }
+
+    $cycle = self::$cycles[$name];
+    return $cycle->value();
+  }
+
   function truncate($text, $options = array()) {
     $options = array_merge(
       array(
@@ -91,6 +136,7 @@ class TextHelper {
       return $text;
     }
   }
+
 }
 
 Wordless::register_helper("TextHelper");
