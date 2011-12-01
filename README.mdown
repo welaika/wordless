@@ -208,10 +208,10 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 * [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local Wordpress installations and DB data back and forth from your local development machine to the remote staging server;
 
 ## Known problems and limitations
-* Wordless has not been tested on Windows machines or PHP4;
+* Wordless has not been tested on Windows machines;
+* From WP 3.2 Wordpress has ceased to support PHP4, and so does Wordless;
 * Documentation still to be written;
-* There should be some kind of utility to generate a theme skeleton;
-* The assets compilation-phase is still pre-alpha and needs some rewrite (but it works);
+* The assets static backing for production is still pre-alpha and needs some rewrite (it's rough, but it works);
 * The routing part can be drammaticaly improved to make it more readable and DRY;
 * This is alpha software, everything is still subject to change :)
 
