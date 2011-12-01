@@ -179,26 +179,14 @@ To make things faster, Wordless handles nicely precompilation caching, so a new 
 
 ## Requirements, installation and configuration
 
-Your development machine needs the following executables:
+1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
+2. The production machine doesn't need any extra-dependencies, as all the compiled assets automatically get statically backend by Wordless;
+3. Install the Wordless plugin and enable it from the "Plugins" section;
+4. Enable the use of nice permalinks from the "Settings > Permalink" section. That is, we need the .htaccess file;
+5. Create a brand new Wordless theme directly within the WP backend, from the "Appearance > New Wordless Theme" section;
+6. Specify the path of your ruby executables, you can do it within the `config/initializers/wordpress_preferences.php` file. 
 
-* Ruby
-* The [compass](https://github.com/chriseppstein/compass) gem (`gem install compass`)
-* The [sprockets](https://github.com/sstephenson/sprockets) gem (`gem install sprockets`)
-* The [coffee-script](https://github.com/josh/ruby-coffee-script) gem (`gem install coffee-script`)
-
-The production machine doesn't need any extra-dependencies, as all the assets get automatically cached by Wordless.
-
-When you're ready, simply install the Wordless plugin, and you should ready to go. You can create a Wordless theme skeleton directly within the Wordpress interface, in the "New Wordless Theme" page under the "Appearance" section.
-
-If you need to specify some preferences, you can do it within an initializer. The following is a list of default values for Wordless preferences.
-
-```php
-<?php
-Wordless::set_preference("compass.compass_path",     "/usr/bin/compass");
-Wordless::set_preference("sprockets.ruby_path",      "/usr/bin/ruby");
-```
-
-### RVM
+### Wordpress and RVM (recommended setup)
 
 It's recommended to use RVM to handle ruby gems. Type the following from your terminal:
 
@@ -209,14 +197,15 @@ rvm use 1.8.7@wordless
 gem install sprockets compass coffee-script
 rvm wrapper 1.8.7@wordless wordless compass ruby
 ```
+Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`. Write them down into the `config/initializers/wordpress_preferences.php` file.
 
-Then configure Wordpress like this:
+## Additional recommended plugins
 
-```php
-<?php
-Wordless::set_preference("compass.compass_path", "/Users/YOUR_USER/.rvm/bin/wordless_compass");
-Wordless::set_preference("sprockets.ruby_path", "/Users/YOUR_USER/.rvm/bin/wordless_ruby");
-```
+Wordless is not meant to be an all-included tools. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
+
+* [Simple Fields](http://wordpress.org/extend/plugins/simple-fields/): a complete solution to add different types of custom fields to your custom posts. We love Simple fields so much that Wordless embeds a [dedicated helper file](https://github.com/welaika/wordless/blob/master/wordless/helpers/simple_fields_helper.php) just for it;
+* [Options Framework](http://wordpress.org/extend/plugins/options-framework/): makes it easy to include an options panel in any WordPress theme;
+* [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local Wordpress installations and DB data back and forth from your local development machine to the remote staging server;
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines or PHP4;
