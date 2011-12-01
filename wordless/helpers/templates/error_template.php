@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><?= $title ?></title>
+  <title><?php echo $title ?></title>
   <style type="text/css">
     body { background-color: #fff; color: #666; text-align: center; font-family: arial, sans-serif; }
     div.dialog {
@@ -17,8 +17,8 @@
 </head>
 <body>
   <div class="dialog">
-    <h1><?= $title ?></h1>
-    <p><?= $description ?></p>
+    <h1><?php echo $title ?></h1>
+    <p><?php echo $description ?></p>
   </div>
 </body>
 </html>
