@@ -36,6 +36,15 @@ class Wordless {
     WordlessAdmin::initialize();
   }
 
+  public static function register_helper($class_name) {
+    foreach (get_class_methods($class_name) as $method) {
+      if (!function_exists($method)) {
+        $global_function_definition = "function $method() { return call_user_func_array(array(new $class_name(), '$method'), func_get_args()); }";
+        eval($global_function_definition);
+      }
+    }
+  }
+
   public static function register_preprocessors() {
     foreach (func_get_args() as $preprocessor_class) {
       self::$preprocessors[] = new $preprocessor_class();
@@ -117,27 +126,25 @@ class Wordless {
   public static function require_helpers() {
     require_once 'wordless/helpers.php';
     $helpers_path = self::theme_helpers_path();
-    self::require_once_dir("$helpers_path/*.php");
+    self::require_once_dir("$helpers_path");
   }
 
   public static function require_theme_initializers() {
     $initializers_path = self::theme_initializers_path();
-    self::require_once_dir("$initializers_path/*.php");
+    self::require_once_dir("$initializers_path");
   }
 
   /**
-   * Require one directory 
+   * Require one directory
    * @param string $path
    */
   private static function require_once_dir($path) {
-
-    $list_files = glob($path);
+    $list_files = glob(Wordless::join_paths($path, "*.php"));
     if (is_array($list_files)) {
         foreach ($list_files as $filename) {
           require_once $filename;
         }
     }
-    
   }
 
   public static function theme_is_wordless_compatible() {
