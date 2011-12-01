@@ -7,15 +7,15 @@
         <?php foreach ($theme_options as $name => $properties): ?>
           <tr valign="top">
             <th scope="row">
-              <label for="<?= $name ?>"><?= $properties['label'] ?></label>
+              <label for="<?php echo $name ?>"><?php echo $properties['label'] ?></label>
             </th>
             <td>
-              <input name="<?= $name ?>" type="text" id="<?= $name ?>" value="<?= $_POST[$name] ?>" class="regular-text">
+              <input name="<?php echo $name ?>" type="text" id="<?php echo $name ?>" value="<?php echo (!isset($_POST[$name])) ? $properties['default_value'] : $_POST[$name] ?>" class="regular-text">
               <br/>
-              <span class="description"><?= $properties['description'] ?></span>
+              <span class="description"><?php echo $properties['description'] ?></span>
               <?php if (isset($properties['error'])): ?>
                 <br/>
-                <span class="error" style="color:red"><?= $properties['error'] ?></span>
+                <span class="error" style="color:red"><?php echo $properties['error'] ?></span>
               <?php endif; ?>
             </td>
           </tr>

@@ -21,11 +21,13 @@ class Wordless {
   private static $preferences = array();
 
   public static function initialize() {
-    self::load_i18n();
-    self::require_helpers();
-    self::require_theme_initializers();
-    self::register_preprocessors("SprocketsPreprocessor", "CompassPreprocessor");
-    self::register_preprocessor_actions();
+    if (Wordless::theme_is_wordless_compatible()){
+        self::load_i18n();
+        self::require_helpers();
+        self::require_theme_initializers();
+        self::register_preprocessors("SprocketsPreprocessor", "CompassPreprocessor");
+        self::register_preprocessor_actions();
+    }
     self::load_admin_page();
   }
 
@@ -140,6 +142,7 @@ class Wordless {
     );
     foreach ($required_directories as $dir) {
       if (!file_exists($dir) || !is_dir($dir)) {
+        echo $dir;
         return false;
       }
     }

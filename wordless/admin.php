@@ -56,6 +56,11 @@ class WordlessAdmin
       "theme_path" => array(
         "label" => "Theme Directory",
         "description" => "Specify the <code>wp-content/themes</code> subdirectory name for this theme."
+      ),
+      "chmod_set" => array(
+        "label" => "Permissions",
+        "description" => "Specify three octal number components specifying access restrictions",
+        "default_value" => "0774"
       )
     );
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
@@ -70,7 +75,7 @@ class WordlessAdmin
       }
 
       if ($valid) {
-        $builder = new WordlessThemeBuilder($_POST["theme_name"], $_POST["theme_path"]);
+        $builder = new WordlessThemeBuilder($_POST["theme_name"], $_POST["theme_path"], intval($_POST["chmod_set"], 8));
         $builder->build();
         $builder->set_as_current_theme();
         require 'admin/admin_success.php';

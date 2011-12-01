@@ -5,9 +5,10 @@
  **/
 class WordlessThemeBuilder {
 
-  function __construct($theme_name, $theme_dir) {
+  function __construct($theme_name, $theme_dir, $chmod_set) {
     $this->theme_dir = Wordless::join_paths(dirname(get_template_directory()), $theme_dir);
     $this->theme_name = $theme_name;
+    $this->chmod_set = $chmod_set;
   }
 
   public function build() {
@@ -32,6 +33,7 @@ class WordlessThemeBuilder {
           $source_content = file_get_contents($src . '/' . $file);
           $source_content = str_replace("%THEME_NAME%", $this->theme_name, $source_content);
           file_put_contents($dst . '/' . $file, $source_content);
+          chmod($dst . '/' . $file, $this->chmod_set);
         }
       }
     }
@@ -40,7 +42,8 @@ class WordlessThemeBuilder {
 
   private function make_directory($path) {
     if (!file_exists($path)) {
-      mkdir($path, 0774);
+      mkdir($path, $this->chmod_set);
+      chmod($path, $this->chmod_set);
     }
   }
 
