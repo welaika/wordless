@@ -1,20 +1,44 @@
 <?php
 
 require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/lorem/LoremIpsum.class.php');
+Wordless::require_once_dir(Wordless::join_paths(dirname(__FILE__), "placeholder_images"));
 
 class FakerHelper {
 
-  function fake_image_url($size = "thumb") {
-    $images = array(
-      "thumb" => array( "http://farm3.static.flickr.com/2087/2517530277_2a037980a1_t.jpg", "http://farm4.static.flickr.com/3073/2426872739_3a41911dd5_t.jpg", "http://farm3.static.flickr.com/2063/2396782314_62875cf054_t.jpg", "http://farm4.static.flickr.com/3286/2396780380_e9758aec9f_t.jpg", "http://farm3.static.flickr.com/2354/2396777028_dcbde3eacc_t.jpg", "http://farm4.static.flickr.com/3122/2395940715_bbfe25447d_t.jpg", "http://farm4.static.flickr.com/3061/2366482240_a54cb12809_t.jpg", "http://farm3.static.flickr.com/2409/2366459414_4446cab28a_t.jpg", "http://farm4.static.flickr.com/3271/2365623947_9a7be42aa8_t.jpg", "http://farm4.static.flickr.com/3226/2334923034_015bd739a4_t.jpg", "http://farm4.static.flickr.com/3129/2321073405_cbec074522_t.jpg", "http://farm4.static.flickr.com/3136/2321851880_349b664998_t.jpg", "http://farm3.static.flickr.com/2319/2302208099_55a6503c98_t.jpg", "http://farm3.static.flickr.com/2403/2268595667_045ba2cb18_t.jpg", "http://farm4.static.flickr.com/3080/2302209421_a86af57d3d_t.jpg", "http://farm3.static.flickr.com/2264/2269315208_afdfff3422_t.jpg", "http://farm3.static.flickr.com/2317/2268414433_7679f7c8fa_t.jpg", "http://farm3.static.flickr.com/2365/2268316227_8395ba552e_t.jpg", "http://farm3.static.flickr.com/2370/2268315631_e07272f3ae_t.jpg", "http://farm3.static.flickr.com/2333/2248592461_7d3ae08e83_t.jpg", "http://farm3.static.flickr.com/2344/2249387530_1eb1787759_t.jpg", "http://farm3.static.flickr.com/2131/2249386466_eda7b544ab_t.jpg", "http://farm3.static.flickr.com/2258/2244579191_12a55f86b3_t.jpg", "http://farm3.static.flickr.com/2139/1935842468_de1475cc7e_t.jpg", "http://farm3.static.flickr.com/2312/1934993957_c3f50b7ab8_t.jpg", "http://farm3.static.flickr.com/2083/1934826925_c9725f2f4a_t.jpg", "http://farm3.static.flickr.com/2398/1840136296_d1e8f91865_t.jpg", "http://farm3.static.flickr.com/2040/1839305559_5ef9a147cf_t.jpg"),
-      "medium" => array( "http://farm3.static.flickr.com/2087/2517530277_2a037980a1_m.jpg", "http://farm4.static.flickr.com/3073/2426872739_3a41911dd5_m.jpg", "http://farm3.static.flickr.com/2063/2396782314_62875cf054_m.jpg", "http://farm4.static.flickr.com/3286/2396780380_e9758aec9f_m.jpg", "http://farm3.static.flickr.com/2354/2396777028_dcbde3eacc_m.jpg", "http://farm4.static.flickr.com/3122/2395940715_bbfe25447d_m.jpg", "http://farm4.static.flickr.com/3061/2366482240_a54cb12809_m.jpg", "http://farm3.static.flickr.com/2409/2366459414_4446cab28a_m.jpg", "http://farm4.static.flickr.com/3271/2365623947_9a7be42aa8_m.jpg", "http://farm4.static.flickr.com/3226/2334923034_015bd739a4_m.jpg", "http://farm4.static.flickr.com/3129/2321073405_cbec074522_m.jpg", "http://farm4.static.flickr.com/3136/2321851880_349b664998_m.jpg", "http://farm3.static.flickr.com/2319/2302208099_55a6503c98_m.jpg", "http://farm3.static.flickr.com/2403/2268595667_045ba2cb18_m.jpg", "http://farm4.static.flickr.com/3080/2302209421_a86af57d3d_m.jpg", "http://farm3.static.flickr.com/2264/2269315208_afdfff3422_m.jpg", "http://farm3.static.flickr.com/2317/2268414433_7679f7c8fa_m.jpg", "http://farm3.static.flickr.com/2365/2268316227_8395ba552e_m.jpg", "http://farm3.static.flickr.com/2370/2268315631_e07272f3ae_m.jpg", "http://farm3.static.flickr.com/2333/2248592461_7d3ae08e83_m.jpg", "http://farm3.static.flickr.com/2344/2249387530_1eb1787759_m.jpg", "http://farm3.static.flickr.com/2131/2249386466_eda7b544ab_m.jpg", "http://farm3.static.flickr.com/2258/2244579191_12a55f86b3_m.jpg", "http://farm3.static.flickr.com/2139/1935842468_de1475cc7e_m.jpg", "http://farm3.static.flickr.com/2312/1934993957_c3f50b7ab8_m.jpg", "http://farm3.static.flickr.com/2083/1934826925_c9725f2f4a_m.jpg", "http://farm3.static.flickr.com/2398/1840136296_d1e8f91865_m.jpg", "http://farm3.static.flickr.com/2040/1839305559_5ef9a147cf_m.jpg")
+  function placeholder_image($width, $height, $options = array()) {
+
+    $services_class = array(
+      'placehold' => 'PlaceholdImage',
+      'lorem_pixel' => 'LoremPixelImage'
     );
-    return $images[$size][array_rand($images[$size])];
+
+    $service = $options['service'];
+    $service = isset($service) ? $service : 'placehold';
+
+    $service_class = $services_class[$service];
+    if (class_exists($service_class)) {
+      $service = new $service_class($width, $height, $options);
+      return $service->url();
+    } else {
+      render_error("No placeholder image service called #{$service} exists!");
+    }
   }
 
-  function lorem($count, $format = 'plain', $loremipsum = false) {
+  function placeholder_text($count, $options = array()) {
+    $options = array_merge(
+      array(
+        'html' => false,
+        'lorem' => true
+      ),
+      $options
+    );
+
     $generator = new LoremIpsumGenerator;
-    return ucfirst($generator->getContent($count, $format, $loremipsum));
+
+    $html_format = $options['html'] ? 'plain' : 'html';
+    $start_with_lorem_ipsum = $options['lorem'];
+
+    return ucfirst($generator->getContent($count, $html_format, $start_with_lorem_ipsum));
   }
 }
 
