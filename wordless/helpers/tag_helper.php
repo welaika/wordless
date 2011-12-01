@@ -136,19 +136,6 @@ class TagHelper {
     return $this->content_tag("a", $text, $options);
   }
 
-  function image_tag($img, $attributes = NULL) {
-    if (!preg_match("/^(http|\/)/", $img)) {
-      $img = public_url("images/$img");
-    }
-
-    $options = array( "src"  => $img );
-    if(is_array($attributes)){
-      $options = array_merge($options, $attributes);
-    }
-
-    return $this->content_tag("img", NULL, $options);
-  }
-
   function active_if($active_check) {
     return $active_check ? "active" : "inactive";
   }
