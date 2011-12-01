@@ -24,6 +24,8 @@ class TagHelper {
         } else {
           if (is_null($option_value) || (empty($option_value)) || ($option_value == $option_key)) {
             $html_content .= " " . $prefix . $option_key;
+          } elseif(is_bool($option_value) && ($option_value == true)) { 
+            $html_content .= " " . $prefix . $option_key . "=" . "\"". $prefix . $option_key  . "\"";
           } else {
             $html_content .= " " . $prefix . $option_key . "=" . "\"". $option_value  . "\"";
           }
