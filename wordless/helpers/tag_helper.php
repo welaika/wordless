@@ -24,7 +24,7 @@ class TagHelper {
         } else {
           if (is_null($option_value) || (empty($option_value)) || ($option_value == $option_key)) {
             $html_content .= " " . $prefix . $option_key;
-          } elseif(is_bool($option_value) && ($option_value == true)) { 
+          } elseif(is_bool($option_value) && ($option_value == true)) {
             $html_content .= " " . $prefix . $option_key . "=" . "\"". $prefix . $option_key  . "\"";
           } else {
             $html_content .= " " . $prefix . $option_key . "=" . "\"". $option_value  . "\"";
@@ -68,11 +68,12 @@ class TagHelper {
       if (!preg_match("/\.css$/", $url)) $url .= ".css";
     }
 
-    $options = array( "href"  => $url,
-                      "media" => "all",
-                      "rel"   => "stylesheet",
-                      "type"  => "text/css"
-              );
+    $options = array(
+      "href"  => $url,
+      "media" => "all",
+      "rel"   => "stylesheet",
+      "type"  => "text/css"
+    );
 
     return $this->content_tag("link", NULL, $options);
   }
@@ -83,34 +84,34 @@ class TagHelper {
       if (!preg_match("/.js$/", $url)) $url .= ".js";
     }
 
-    $options = array( "src"  => $url,
-                      "media" => "all",
-                      "rel"   => "stylesheet",
-                      "type"  => "text/javascript"
-              );
+    $options = array(
+      "src"  => $url,
+      "media" => "all",
+      "rel"   => "stylesheet",
+      "type"  => "text/javascript"
+    );
 
     return $this->content_tag("script", "", $options);
   }
 
   function rss_link($title, $url) {
 
-    $options = array( "href"  => $url,
-                      "title" => $title,
-                      "rel"   => "alternate",
-                      "type"  => "application/rss+xml"
-              );
+    $options = array(
+      "href"  => $url,
+      "title" => $title,
+      "rel"   => "alternate",
+      "type"  => "application/rss+xml"
+    );
 
     return $this->content_tag("link", NULL, $options);
   }
 
   function option_tag($text, $name, $value, $selected) {
-    if (is_wp_error($value)) {
-      return print_r($value);
-    }
+    $options = array( "
+      name"  => $name,
+      "value" => $value
+    );
 
-    $options = array( "name"  => $name,
-                      "value" => $value
-              );
     if ($selected) {
       $options["selected"] = "selected";
     }
