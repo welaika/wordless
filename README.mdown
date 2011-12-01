@@ -201,7 +201,7 @@ Now you should be able to know the location of your RVM-wrapped ruby executables
 
 ## Additional recommended plugins
 
-Wordless is not meant to be an all-included tools. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
+Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
 
 * [Simple Fields](http://wordpress.org/extend/plugins/simple-fields/): a complete solution to add different types of custom fields to your custom posts. We love Simple fields so much that Wordless embeds a [dedicated helper file](https://github.com/welaika/wordless/blob/master/wordless/helpers/simple_fields_helper.php) just for it;
 * [Options Framework](http://wordpress.org/extend/plugins/options-framework/): makes it easy to include an options panel in any WordPress theme;
