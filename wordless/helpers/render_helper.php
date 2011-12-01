@@ -57,8 +57,7 @@ class RenderHelper {
     global $current_view;
     $current_view = $name;
     render_template("layouts/$layout");
-    $partial_content = ob_get_contents();
-    ob_end_clean();
+    ob_flush();
   }
 }
 

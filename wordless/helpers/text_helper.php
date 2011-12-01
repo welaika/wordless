@@ -65,15 +65,32 @@ class TextHelper {
     return $string;
   }
 
-  function truncate($string, $word_limit) {
-    $words = explode(' ', $string);
-    if (count($words) < $word_limit) {
-      return $string;
+  function truncate($text, $options = array()) {
+    $options = array_merge(
+      array(
+        'length' => 30,
+        'omission' => '...',
+        'separator' => false
+      ),
+      $options
+    );
+
+    $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
+    if ($options['separator']) {
+      $stop = strrpos($text, $options['separator'], $length_with_room_for_omission);
+      if ($stop === FALSE) {
+        $stop = $length_with_room_for_omission;
+      }
     } else {
-      return implode(' ', array_slice($words, 0, $word_limit)) . "...";
+      $stop = $length_with_room_for_omission;
+    }
+
+    if (strlen($text) > $options['length']) {
+      return substr($text, 0, $stop) . $options['omission'];
+    } else {
+      return $text;
     }
   }
-
 }
 
 Wordless::register_helper("TextHelper");
