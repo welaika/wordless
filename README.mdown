@@ -13,9 +13,9 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 ## Requirements, installation and configuration
 
 1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
-2. The production machine doesn't need any extra-dependencies, as all the compiled assets automatically get statically backend by Wordless;
+2. The production server doesn't need any extra-dependencies, as all the assets get pre-compiled by Wordless on the development machine and statically served;
 3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
-4. Enable the use of nice permalinks from the WP "Settings > Permalink" section. That is, we need the .htaccess file;
+4. Enable the use of nice permalinks from the WP "Settings > Permalink" section (that is, we need the `.htaccess` file);
 5. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
 6. Specify the path of your ruby executables, you can do it within your theme's `config/initializers/wordless_preferences.php` config file.
 
