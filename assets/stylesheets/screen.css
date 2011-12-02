@@ -1,4 +1,4 @@
-/* line 17, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,115 +20,64 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 20, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 20, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 body {
   line-height: 1;
 }
 
-/* line 22, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 24, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 26, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 28, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 101, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 101, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 30, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 114, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 114, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
 
-/* line 5, ../../src/sass/screen.sass */
+/* line 10, ../../src/sass/screen.sass */
 body {
-  background: url('../images/fancy_deboss.png?1321391385');
+  background: url('../images/fancy_deboss.png?1322815874');
   font-family: Actor, Helvetica, Arial, sans-serif;
-  color: #3f4357;
+  color: #5d5d5d;
   font-size: 20px;
   line-height: 21px;
 }
-/* line 12, ../../src/sass/screen.sass */
-body .github_badge {
-  position: absolute;
-  right: 0;
-  top: 0;
-}
 /* line 17, ../../src/sass/screen.sass */
-body .page-wrapper {
-  width: 798.63px;
-  margin: 60px auto;
-  overflow: hidden;
-  *zoom: 1;
-}
-/* line 22, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar {
-  width: 283px;
-  margin-right: 60px;
-  float: left;
-}
-/* line 27, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar h1 {
-  width: 100%;
-  height: 103px;
-  text-indent: -1000em;
-  background: url('../images/wordless.png?1321392906') no-repeat;
-  margin-bottom: 60px;
-}
-/* line 35, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar nav ul li a {
-  text-align: center;
-  display: block;
-  margin-bottom: 15px;
-  color: #2d64b3;
-  text-decoration: none;
-}
-/* line 42, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar nav ul li a:hover {
-  color: #588bd5;
-}
-/* line 45, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar nav ul li a.important {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f5c320), color-stop(100%, #e66f08));
-  background: -webkit-linear-gradient(#f5c320, #e66f08);
-  background: -moz-linear-gradient(#f5c320, #e66f08);
-  background: -o-linear-gradient(#f5c320, #e66f08);
-  background: -ms-linear-gradient(#f5c320, #e66f08);
-  background: linear-gradient(#f5c320, #e66f08);
-  border: 1px solid #96590a;
-  color: #64320a;
-  padding: 12px;
-  width: 210px;
-  margin: 0 auto;
-  margin-bottom: 20px;
-  text-shadow: #f4bd10 0px 1px 0px;
-  -moz-box-shadow: #fbea2f 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  -webkit-box-shadow: #fbea2f 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  -o-box-shadow: #fbea2f 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  box-shadow: #fbea2f 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+body code {
+  font-family: "Monaco", "Lucida Console", monospace;
+  background: white;
+  border: 1px solid #999999;
+  padding: 2px 4px;
+  font-size: 15px;
   -moz-border-radius: 3px;
   -webkit-border-radius: 3px;
   -o-border-radius: 3px;
@@ -136,59 +85,170 @@ body .page-wrapper section.sidebar nav ul li a.important {
   -khtml-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 57, ../../src/sass/screen.sass */
-body .page-wrapper section.sidebar nav ul li a.important:hover {
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f8d428), color-stop(100%, #ed920a));
-  background: -webkit-linear-gradient(#f8d428, #ed920a);
-  background: -moz-linear-gradient(#f8d428, #ed920a);
-  background: -o-linear-gradient(#f8d428, #ed920a);
-  background: -ms-linear-gradient(#f8d428, #ed920a);
-  background: linear-gradient(#f8d428, #ed920a);
-  -moz-box-shadow: #f8db2d 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  -webkit-box-shadow: #f8db2d 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  -o-box-shadow: #f8db2d 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
-  box-shadow: #f8db2d 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+/* line 25, ../../src/sass/screen.sass */
+body .github_badge {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
-/* line 61, ../../src/sass/screen.sass */
+/* line 30, ../../src/sass/screen.sass */
+body .page-wrapper {
+  width: 838.63px;
+  padding: 90px 20px 110px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+  *zoom: 1;
+}
+/* line 37, ../../src/sass/screen.sass */
+body .page-wrapper::before, body .page-wrapper section.footer {
+  content: "";
+  position: absolute;
+  height: 100px;
+  top: -50px;
+  left: -10%;
+  width: 120%;
+  background: #26ade4;
+  -moz-transform: rotate(2deg);
+  -webkit-transform: rotate(2deg);
+  -o-transform: rotate(2deg);
+  -ms-transform: rotate(2deg);
+  transform: rotate(2deg);
+}
+/* line 47, ../../src/sass/screen.sass */
+body .page-wrapper section.footer {
+  color: white;
+  top: auto;
+  bottom: -20px;
+}
+/* line 52, ../../src/sass/screen.sass */
+body .page-wrapper section.footer p {
+  width: 798.63px;
+  padding-top: 20px;
+  margin: 0px auto;
+  line-height: 30px;
+}
+/* line 58, ../../src/sass/screen.sass */
+body .page-wrapper section.footer p span {
+  width: 109px;
+  height: 109px;
+  display: inline-block;
+  text-indent: -1000em;
+  background: url('../images/welaika.png?1322823364') no-repeat;
+}
+/* line 66, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar {
+  width: 283px;
+  margin-right: 60px;
+  float: left;
+}
+/* line 71, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar h1 {
+  width: 100%;
+  text-indent: -1000em;
+  background: url('../images/wordless.png?1322821851') no-repeat;
+  margin-bottom: 40px;
+  height: 145px;
+}
+/* line 78, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav {
+  text-align: center;
+}
+/* line 82, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a {
+  display: block;
+  margin-bottom: 15px;
+  color: #367bbb;
+  text-decoration: none;
+}
+/* line 88, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a:hover {
+  text-decoration: underline;
+}
+/* line 91, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a.important {
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d2ec7f), color-stop(100%, #b2de27));
+  background: -webkit-linear-gradient(#d2ec7f, #b2de27);
+  background: -moz-linear-gradient(#d2ec7f, #b2de27);
+  background: -o-linear-gradient(#d2ec7f, #b2de27);
+  background: -ms-linear-gradient(#d2ec7f, #b2de27);
+  background: linear-gradient(#d2ec7f, #b2de27);
+  border: 1px solid #6e8a15;
+  color: #4b5e0e;
+  display: block;
+  padding: 15px;
+  font-size: 23px;
+  margin-bottom: 20px;
+  text-shadow: #daef95 0px 1px 0px;
+  -moz-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  -webkit-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  -o-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  -moz-border-radius: 3px;
+  -webkit-border-radius: 3px;
+  -o-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -khtml-border-radius: 3px;
+  border-radius: 3px;
+}
+/* line 103, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a.important span {
+  font-size: 14px;
+  display: block;
+  margin-top: 4px;
+  color: #6e8a15;
+  font-style: italic;
+}
+/* line 110, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a.important:hover {
+  text-decoration: none;
+  color: #39480b;
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #daef95), color-stop(100%, #bae23d));
+  background: -webkit-linear-gradient(#daef95, #bae23d);
+  background: -moz-linear-gradient(#daef95, #bae23d);
+  background: -o-linear-gradient(#daef95, #bae23d);
+  background: -ms-linear-gradient(#daef95, #bae23d);
+  background: linear-gradient(#daef95, #bae23d);
+  -moz-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  -webkit-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  -o-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+  box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
+}
+/* line 116, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content {
   float: left;
   width: 455.63px;
 }
-/* line 65, ../../src/sass/screen.sass */
+/* line 120, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content a {
-  color: #2a2c39;
+  color: #373737;
 }
-/* line 68, ../../src/sass/screen.sass */
+/* line 123, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content a:hover {
-  color: #3f4357;
+  color: #5d5d5d;
 }
-/* line 71, ../../src/sass/screen.sass */
+/* line 126, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content h2 {
-  font-size: 38px;
-  line-height: 38px;
-  margin-bottom: 20px;
+  font-size: 30px;
+  line-height: 37px;
+  margin-bottom: 40px;
   font-family: Coustard;
-  color: #103366;
+  height: 145px;
+  color: #367bbb;
 }
-/* line 78, ../../src/sass/screen.sass */
-body .page-wrapper section.page-content h3 {
+/* line 134, ../../src/sass/screen.sass */
+body .page-wrapper section.page-content h4 {
   font-size: 30px;
   line-height: 30px;
   margin-bottom: 15px;
   font-family: Coustard;
-  color: #5a9eff;
+  color: #4dbce9;
 }
-/* line 85, ../../src/sass/screen.sass */
-body .page-wrapper section.page-content p.bigger {
-  font-size: 25px;
-  line-height: 26px;
-  margin-bottom: 30px;
-}
-/* line 90, ../../src/sass/screen.sass */
+/* line 141, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content ul, body .page-wrapper section.page-content p {
   margin-bottom: 20px;
 }
-/* line 93, ../../src/sass/screen.sass */
+/* line 144, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content li {
   margin-left: 25px;
   list-style-type: square;

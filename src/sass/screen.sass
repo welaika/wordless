@@ -2,12 +2,25 @@
 
 +global-reset
 
+$grayish: #5D5D5D
+$lime: #C2E553
+$light-blue: #4DBCE9
+$blue: #367bbb
+
 body
   background: image-url("fancy_deboss.png")
   font-family: Actor, Helvetica, Arial, sans-serif
-  color: #3F4357
+  color: $grayish
   font-size: 20px
   line-height: 21px
+
+  code
+    font-family: "Monaco", "Lucida Console", monospace
+    background: white
+    border: 1px solid #999
+    padding: 2px 4px
+    font-size: 15px
+    +border-radius(3px)
 
   .github_badge
     position: absolute
@@ -15,9 +28,40 @@ body
     top: 0
 
   .page-wrapper
-    width: image-width("wordless.png") * (1.61 + 1) + 60px
-    margin: 60px auto
+    width: image-width("wordless.png") * (1.61 + 1) + 60px + 20px * 2
+    padding: 90px 20px 110px
+    margin: 0 auto
+    position: relative
     +clearfix
+
+    &::before, section.footer
+      content: ""
+      position: absolute
+      height: 100px
+      top: -50px
+      left: -10%
+      width: 120%
+      background: #26ADE4
+      +rotate(2deg)
+
+    section.footer
+      color: white
+      top: auto
+      bottom: -20px
+
+      p
+        width: image-width("wordless.png") * (1.61 + 1) + 60px
+        padding-top: 20px
+        margin: 0px auto
+        line-height: 30px
+
+        span
+          width: image-width("welaika.png")
+          height: image-width("welaika.png")
+          display: inline-block
+          text-indent: -1000em
+          background: image-url("welaika.png") no-repeat
+
 
     section.sidebar
       width: image-width("wordless.png")
@@ -26,66 +70,73 @@ body
 
       h1
         width: 100%
-        height: image-height("wordless.png")
         text-indent: -1000em
         background: image-url("wordless.png") no-repeat
-        margin-bottom: 60px
+        margin-bottom: 40px
+        height: 145px
 
-      nav ul li
-        a
-          text-align: center
-          display: block
-          margin-bottom: 15px
-          color: #2D64B3
-          text-decoration: none
+      nav
+        text-align: center
 
-          &:hover
-            color: lighten(#2D64B3, 15%)
+        ul li
+          a
+            display: block
+            margin-bottom: 15px
+            color: $blue
+            text-decoration: none
 
-        a.important
-          +background(linear-gradient(#F5C320, #E66F08))
-          border: 1px solid #96590A
-          color: #64320A
-          padding: 12px
-          width: 210px
-          margin: 0 auto
-          margin-bottom: 20px
-          +text-shadow(#F4BD10 0px 1px 0px)
-          +box-shadow(#FBEA2F 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
-          +border-radius(3px)
+            &:hover
+              text-decoration: underline
 
-          &:hover
-            +background(linear-gradient(#F8D428, #ED920A))
-            +box-shadow(#F8DB2D 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
+          a.important
+            +background(linear-gradient(lighten($lime, 10%), darken($lime, 10%)))
+            border: 1px solid darken($lime, 30%)
+            color: darken($lime, 40%)
+            display: block
+            padding: 15px
+            font-size: 23px
+            margin-bottom: 20px
+            +text-shadow(lighten($lime, 15%) 0px 1px 0px)
+            +box-shadow(lighten($lime, 15%) 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
+            +border-radius(3px)
+
+            span
+              font-size: 14px
+              display: block
+              margin-top: 4px
+              color: darken($lime, 30%)
+              font-style: italic
+
+            &:hover
+              text-decoration: none
+              color: darken($lime, 45%)
+              +background(linear-gradient(lighten($lime, 15%), darken($lime, 5%)))
+              +box-shadow(lighten($lime, 15%) 0 1px 0 0 inset, #AEB3B5 0px 1px 1px)
 
     section.page-content
       float: left
       width: image-width("wordless.png") * 1.61
 
       a
-        color: darken(#3F4357, 10%)
+        color: darken(#5D5D5D, 15%)
 
         &:hover
-          color: #3F4357
+          color: #5D5D5D
 
       h2
-        font-size: 38px
-        line-height: 38px
-        margin-bottom: 20px
+        font-size: 30px
+        line-height: 37px
+        margin-bottom: 40px
         font-family: Coustard
-        color: #103366
+        height: 145px
+        color: $blue
 
-      h3
+      h4
         font-size: 30px
         line-height: 30px
         margin-bottom: 15px
         font-family: Coustard
-        color: #5A9EFF
-
-      p.bigger
-        font-size: 25px
-        line-height: 26px
-        margin-bottom: 30px
+        color: $light-blue
 
       ul, p
         margin-bottom: 20px

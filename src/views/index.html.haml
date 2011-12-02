@@ -16,29 +16,37 @@
         %nav
           %ul
             %li
-              %a.important(href="#") Download the Plugin!
+              %a.important(href="#")
+                Download the Plugin!
+                %span (and stop writing themes like it's 1998)
             %li
-              %a(href="https://github.com/welaika/wordless#readme") Getting Started
+              %a(href="https://github.com/welaika/wordless#readme") Learn More
             %li
               %a(href="https://github.com/welaika/wordless") Browse Code
 
       %section.page-content
+        %h2
+          Wordless is an opinionated Wordpress plugin that dramatically speeds up your custom theme creation.
 
-        %h2 Stop writing Wordpress themes like it's 1998.
-
-        %p.bigger
-          Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances
-          your custom theme creation.
-
-        %h3 Alright, what does it offer?
+        %h4 What does it offer me?
         :markdown
-          * A structured and clean theme organization
-          * [Haml](http://haml-lang.com/) views
+          * A structured and clean [theme organization](https://github.com/welaika/wordless#theme-anatomy)
+          * [Haml](http://haml-lang.com/) views (with support to layouts and partials)
           * [Sass](http://sass-lang.com/) & [Compass](http://compass-style.org) stylesheets
-          * [Coffeescript](http://jashkenas.github.com/coffee-script/) logic
-          * 40+ Rails-like [helper methods](https://github.com/welaika/wordless/tree/master/wordless/helpers)
-          * Support to view layouts and partials
-          * It is released under the MIT, a nice permissive license
+          * [Coffeescript](http://jashkenas.github.com/coffee-script/)-powered logic
+          * 50+ Rails-like [helper functions](https://github.com/welaika/wordless/tree/master/wordless/helpers)
+          * Released under the [MIT license](https://github.com/welaika/wordless#license)
+
+        %h4 Requirements
+        :markdown
+          * Wordpress `.htaccess` file present
+          * Ruby (any version, full RVM support)
+          * Compass and Sprockets gems installed
+
+      %section.footer
+        %p
+          Wordless has been crafted in
+          %span weLaika
 
     :javascript
       var _gaq = _gaq || [];
