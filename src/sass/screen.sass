@@ -1,12 +1,8 @@
 @import "compass"
 
 =rotate_plus($deg)
-  -moz-transform: rotate(#{$deg}deg)
-  -o-transform: rotate(#{$deg}deg)
-  -webkit-transform: rotate(#{$deg}deg) translate3d( 0, 0, 0)
-  filter: progid:DXImageTransform.Microsoft.Matrix(sizingMethod='auto expand', M11=0.99144486137381, M12=--0.130526192220052, M21=0.130526192220052, M22=0.99144486137381)
-  -ms-filter: quote(progid:DXImageTransform.Microsoft.Matrix(SizingMethod='auto expand', M11=0.99144486137381, M12=--0.130526192220052, M21=0.130526192220052, M22=0.99144486137381))
-  zoom: 1
+  +rotate(#{$deg}deg)
+  -webkit-backface-visibility: hidden
 
 +global-reset
 
