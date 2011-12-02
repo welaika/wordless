@@ -9,6 +9,28 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 * Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
 * A growing set of handy and documented helper functions ready to be used within your views;
 
+## Requirements, installation and configuration
+
+1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
+2. The production machine doesn't need any extra-dependencies, as all the compiled assets automatically get statically backend by Wordless;
+3. Install the Wordless plugin and enable it from the "Plugins" section;
+4. Enable the use of nice permalinks from the "Settings > Permalink" section. That is, we need the .htaccess file;
+5. Create a brand new Wordless theme directly within the WP backend, from the "Appearance > New Wordless Theme" section;
+6. Specify the path of your ruby executables, you can do it within the `config/initializers/wordpress_preferences.php` file.
+
+### RVM (recommended setup)
+
+It's recommended to use [RVM](http://rvm.beginrescueend.com) to handle ruby gems. Type the following from your terminal:
+
+```
+rvm use 1.8.7
+rvm gemset create wordless
+rvm use 1.8.7@wordless
+gem install sprockets compass coffee-script
+rvm wrapper 1.8.7@wordless wordless compass ruby
+```
+Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`. Write them down into the `config/initializers/wordpress_preferences.php` file.
+
 ## Wordless Theme anatomy
 
 That's a typical Wordless theme directory structure:
@@ -155,7 +177,7 @@ This will produce the following HTML, pointing to the `assets/stylesheets` direc
 <link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/screen.css" media="all" rel="stylesheet" type="text/css" />
 ```
 
-If Wordless can't find this static file, it will search for a file named `screen.sass` or `screen.scss` inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover. 
+If Wordless can't find this static file, it will search for a file named `screen.sass` or `screen.scss` inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
@@ -173,31 +195,9 @@ This will produce the following HTML, pointing to the `assets/javascripts` direc
 <script src="/wp-content/themes/YOUR_THEME/assets/javascripts/application.js" type="text/javascript"></script>
 ```
 
-If Wordless can't find this static file, it will search for a file named `application.js.coffee` inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using the Sprockets preprocessor under the cover. 
+If Wordless can't find this static file, it will search for a file named `application.js.coffee` inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using the Sprockets preprocessor under the cover.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
-
-## Requirements, installation and configuration
-
-1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
-2. The production machine doesn't need any extra-dependencies, as all the compiled assets automatically get statically backend by Wordless;
-3. Install the Wordless plugin and enable it from the "Plugins" section;
-4. Enable the use of nice permalinks from the "Settings > Permalink" section. That is, we need the .htaccess file;
-5. Create a brand new Wordless theme directly within the WP backend, from the "Appearance > New Wordless Theme" section;
-6. Specify the path of your ruby executables, you can do it within the `config/initializers/wordpress_preferences.php` file. 
-
-### Wordpress and RVM (recommended setup)
-
-It's recommended to use RVM to handle ruby gems. Type the following from your terminal:
-
-```
-rvm use 1.8.7
-rvm gemset create wordless
-rvm use 1.8.7@wordless
-gem install sprockets compass coffee-script
-rvm wrapper 1.8.7@wordless wordless compass ruby
-```
-Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`. Write them down into the `config/initializers/wordpress_preferences.php` file.
 
 ## Additional recommended plugins
 
