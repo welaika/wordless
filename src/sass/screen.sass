@@ -43,8 +43,7 @@ body
     position: relative
     +clearfix
 
-    &::before, section.footer
-      content: ""
+    section.header, section.footer
       position: absolute
       height: 100px
       top: -50px
@@ -53,24 +52,30 @@ body
       background: #26ADE4
       +rotate_plus(2)
 
+      p
+        width: image-width("wordless.png") * (1.61 + 1) + 60px
+        margin: 0px auto
+        line-height: 30px
+        text-align: right
+        padding-top: 50px
+
+        a
+          width: image-width("welaika.png")
+          height: image-height("welaika.png")
+          display: inline-block
+          text-indent: -1000em
+          letter-spacing: -1000em
+          overflow: hidden
+          background: image-url("welaika.png") no-repeat
+
     section.footer
       color: white
       top: auto
       bottom: -20px
 
       p
-        width: image-width("wordless.png") * (1.61 + 1) + 60px
         padding-top: 20px
-        margin: 0px auto
-        line-height: 30px
-
-        a
-          width: image-width("welaika.png")
-          height: image-width("welaika.png")
-          display: inline-block
-          text-indent: -1000em
-          background: image-url("welaika.png") no-repeat
-
+        text-align: left
 
     section.sidebar
       width: image-width("wordless.png")
