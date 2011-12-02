@@ -1,7 +1,7 @@
 <?php
 /**
  * AssetTagHelper
- * 
+ *
  * This module provides methods for generating HTML that links views to assets such
  * as images, javascripts, stylesheets, and feeds. These methods do not verify
  * the assets exist before linking to them
@@ -11,7 +11,7 @@ class AssetTagHelper {
 
   private function get_feed($type, $model) {
     if (($model=="posts") || ($model=="post"))  {
-        
+
         switch ($type) {
           case "rdf":
             return bloginfo('rdf_url');
@@ -31,10 +31,10 @@ class AssetTagHelper {
       return bloginfo('comments_rss2_url');
 
     } else {
-      
+
       return NULL;
     }
-    
+
   }
 
   function auto_discovery_link_tag($type = "rss", $url_options = NULL, $tag_options = NULL) {
@@ -86,12 +86,12 @@ class AssetTagHelper {
     $options = array_merge($options, $attributes);
 
     return content_tag("link", NULL, $options);
-  
+
   }
 
   function image_tag($source, $attributes = NULL) {
     if (!preg_match("/^(http|\/)/", $img)) {
-      $img = public_url("images/$img");
+      $img = image_url($img);
     }
 
     $options = array( "src"  => $source );
@@ -112,7 +112,7 @@ class AssetTagHelper {
 
     if(is_array($sources)) {
       $html_content = "";
-        
+
       foreach($sources as $source) {
         if(is_string($source)){
           $html_content .=  content_tag("source", NULL, array("src" => $source));
@@ -121,7 +121,7 @@ class AssetTagHelper {
         }
       }
 
-      return content_tag("video", $html_content, $attributes);      
+      return content_tag("video", $html_content, $attributes);
 
     } else {
 
@@ -137,11 +137,7 @@ class AssetTagHelper {
       return content_tag("audio", NULL, $options);
 
     }
-    
   }
-
-  
-  
 }
 
 Wordless::register_helper("AssetTagHelper");

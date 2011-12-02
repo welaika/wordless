@@ -39,7 +39,7 @@ class Wordless {
   public static function register_helper($class_name) {
     foreach (get_class_methods($class_name) as $method) {
       if (!function_exists($method)) {
-        $global_function_definition = "function $method() { return call_user_func_array(array(new $class_name(), '$method'), func_get_args()); }";
+        $global_function_definition = "function $method() { \$args = func_get_args(); return call_user_func_array(array(new $class_name(), '$method'), \$args); }";
         eval($global_function_definition);
       }
     }
