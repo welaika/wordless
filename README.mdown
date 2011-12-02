@@ -9,6 +9,7 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 * Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
 * A growing set of handy and documented helper functions ready to be used within your views;
 
+<a name="installation"></a>
 ## Requirements, installation and configuration
 
 1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
@@ -18,6 +19,7 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 5. Create a brand new Wordless theme directly within the WP backend, from the "Appearance > New Wordless Theme" section;
 6. Specify the path of your ruby executables, you can do it within your theme's `config/initializers/wordless_preferences.php` config file.
 
+<a name="rvm"></a>
 ### RVM (recommended setup)
 
 It's recommended to use [RVM](http://rvm.beginrescueend.com) to handle ruby gems. Type the following from your terminal:
@@ -31,6 +33,7 @@ rvm wrapper 1.8.7@wordless wordless compass ruby
 ```
 Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`. Write them down into the `config/initializers/wordpress_preferences.php` file.
 
+<a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
 
 That's a typical Wordless theme directory structure:
@@ -55,6 +58,7 @@ That's a typical Wordless theme directory structure:
 
 Let's see in detail what is the purpose of all those directories:
 
+<a name="routing"></a>
 ### Routing
 
 The `index.php` serves as a router to all the theme views.
@@ -98,6 +102,7 @@ Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great
 
 Don't you already feel so much better?
 
+<a name="layouts"></a>
 ### Layouts (`theme/views/layouts` directory)
 
 Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `yield()` helper to combine it with the main content:
@@ -127,6 +132,7 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
 
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
 
+<a name="helpers"></a>
 ### Helpers (`theme/helpers/*.php` files)
 
 Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ helpers Wordless gives you for free:
@@ -137,7 +143,7 @@ Helpers are basically small functions that can be called in your views to help k
 * `new_post_type()` and `new_taxonomy()` - Help you create custom posts and taxonomy;
 * `get_the_time_ago()` - Reports the approximate distance in time between two dates;
 
-
+<a name="initializers"></a>
 ### Initializers (`config/initializers/*.php` files)
 
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
@@ -152,10 +158,12 @@ Wordless let you split you code into many modular initializer files, each one wi
 
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
+<a name="locales"></a>
 ### Locale files (`config/locales` directory)
 
 Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you.
 
+<a name="assets"></a>
 ### Assets
 
 Wordpress has to different places where you want to put your assets:
@@ -163,6 +171,7 @@ Wordpress has to different places where you want to put your assets:
 * Place all the static images and vendor assets (i.e. jQuery and vendor JS plugins) into the `assets/*` directory;
 * Place all your custom, project related assets into the `theme/assets/*`.
 
+<a name="stylesheets"></a>
 #### Stylesheets
 
 Include the assets in your Haml views using `include_stylesheet()` helper.
@@ -181,6 +190,7 @@ If Wordless can't find this static file, it will search for a file named `screen
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
+<a name="javascripts"></a>
 #### Javacripts
 
 Include the assets in your Haml views using `include_stylesheet()` helper.
@@ -199,6 +209,7 @@ If Wordless can't find this static file, it will search for a file named `applic
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
+<a name="additional-plugins"></a>
 ## Additional recommended plugins
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
@@ -215,6 +226,7 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 * The routing part can be drammaticaly improved to make it more readable and DRY;
 * This is alpha software, everything is still subject to change :)
 
+<a name="license"></a>
 ## License
 
 (The MIT License)
