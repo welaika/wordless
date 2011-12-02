@@ -122,7 +122,7 @@ class TextHelper {
 
     $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
     if ($options['separator']) {
-      $stop = strrpos($text, $options['separator'], $length_with_room_for_omission);
+      $stop = strrpos($text, $options['separator'], min(strlen($text), $length_with_room_for_omission));
       if ($stop === FALSE) {
         $stop = $length_with_room_for_omission;
       }
