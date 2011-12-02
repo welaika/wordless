@@ -129,12 +129,12 @@ body .page-wrapper section.footer p {
   line-height: 30px;
 }
 /* line 58, ../../src/sass/screen.sass */
-body .page-wrapper section.footer p span {
+body .page-wrapper section.footer p a {
   width: 109px;
   height: 109px;
   display: inline-block;
   text-indent: -1000em;
-  background: url('../images/welaika.png?1322823364') no-repeat;
+  background: url('../images/welaika.png?1322823639') no-repeat;
 }
 /* line 66, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar {
