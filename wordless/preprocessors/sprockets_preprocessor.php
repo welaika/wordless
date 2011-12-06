@@ -54,7 +54,10 @@ class SprocketsPreprocessor extends WordlessPreprocessor
       $this->pref("sprockets.ruby_path"),
       Wordless::join_paths(dirname(__FILE__), "sprockets_preprocessor.rb")
     ));
+
+    // Fix for MAMP environments, see http://goo.gl/S5KFe for details
     $pb->setEnv("DYLD_LIBRARY_PATH", "");
+
     $pb->add(Wordless::theme_static_javascripts_path());
     $pb->add(Wordless::theme_javascripts_path());
 
