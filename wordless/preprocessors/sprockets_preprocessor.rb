@@ -4,7 +4,7 @@ require 'rubygems'
 require 'sprockets'
 require 'coffee-script'
 
-puts "// Compiled using #{ExecJS::Runtimes.best_available.name}"
+puts "/* Compiled by Sprockets using #{ExecJS::Runtimes.best_available.name} */"
 
 # last argument is the file path
 file_path = ARGV.pop

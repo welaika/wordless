@@ -25,6 +25,7 @@ class Wordless {
         self::load_i18n();
         self::require_helpers();
         self::require_theme_initializers();
+        self::register_activation();
         self::register_preprocessors("SprocketsPreprocessor", "CompassPreprocessor");
         self::register_preprocessor_actions();
     }
@@ -51,13 +52,21 @@ class Wordless {
     }
   }
 
+  public static function register_activation() {
+    register_activation_hook(__FILE__, array(__CLASS__, 'install') );
+  }
+
+  public static function install() {
+    self::assets_rewrite_rules();
+  }
+
   /**
    * Register all the actions we need to setup custom rewrite rules
    */
   public static function register_preprocessor_actions() {
-    add_action('init', array('Wordless', 'assets_rewrite_rules'));
-    add_action('query_vars', array('Wordless', 'query_vars'));
-    add_action('parse_request', array('Wordless', 'parse_request'));
+    add_action('init', array(__CLASS__, 'assets_rewrite_rules'));
+    add_action('query_vars', array(__CLASS__, 'query_vars'));
+    add_action('parse_request', array(__CLASS__, 'parse_request'));
   }
 
   /**
@@ -77,11 +86,10 @@ class Wordless {
    * For each preprocessor, it creates a new rewrite rule.
    */
   public static function assets_rewrite_rules() {
-    global $wp_rewrite;
-
     foreach (self::$preprocessors as $preprocessor) {
       add_rewrite_rule('^(.*\.'.$preprocessor->to_extension().')$', 'index.php?'.$preprocessor->query_var_name().'=true&'.$preprocessor->query_var_name('original_url').'=$matches[1]', 'top');
     }
+    flush_rewrite_rules(true);
   }
 
   /**
