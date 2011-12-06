@@ -1,4 +1,5 @@
 # -*- encoding: utf-8 -*-
+# This file is used by sprockets_preprocessor.php to run coffescript processing
 
 require 'rubygems'
 require 'sprockets'
