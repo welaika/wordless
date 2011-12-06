@@ -40,7 +40,7 @@ class WordlessAdmin
   public static function add_page() {
     $page = add_theme_page(
       'Create a new Wordless theme',
-      'New Wordless Theme',
+      'New Wordless theme',
       'edit_theme_options',
       'create_wordless_theme',
       array('WordlessAdmin', 'page_content')
