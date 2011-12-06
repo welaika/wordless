@@ -42,8 +42,8 @@ class WordlessThemeBuilder {
 
   private function make_directory($path) {
     if (!file_exists($path)) {
-      mkdir($path, $this->chmod_set);
-      chmod($path, $this->chmod_set);
+      mkdir($path, 0775);
+      chmod($path, 0775);
     }
   }
 

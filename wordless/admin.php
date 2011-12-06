@@ -30,7 +30,7 @@ class WordlessAdmin
   public static function add_notice() {
 	  echo '<div class="error"><p>';
     echo sprintf(
-      __('Your current theme does not have support for the Wordless plugin.  <a href="%2$s" target="_blank">%1$s</a>'),
+      __('Your current theme does seem to be a Wordless-compatible theme!  <a href="%2$s" target="_blank">%1$s</a>'),
       __('Learn more'),
       'https://github.com/welaika/wordless#readme'
     );
@@ -60,7 +60,7 @@ class WordlessAdmin
       "chmod_set" => array(
         "label" => "Permissions",
         "description" => "Specify three octal number components specifying access restrictions",
-        "default_value" => "0774"
+        "default_value" => "0664"
       )
     );
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
