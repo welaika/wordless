@@ -40,7 +40,8 @@ class SprocketsPreprocessor extends WordlessPreprocessor
   }
 
   public function die_with_error($description) {
-    echo sprintf("alert('%s');", addslashes($description));
+    $description = preg_replace('/\n/', '\n', addslashes($description));
+    echo sprintf("alert('%s');", $description);
     die();
   }
 
@@ -70,4 +71,3 @@ class SprocketsPreprocessor extends WordlessPreprocessor
   }
 
 }
-
