@@ -75,7 +75,7 @@ class WordlessPreprocessor
         $cached_file_path = $this->cached_file_path($file_path, $cache_path);
 
         // On cache hit
-        if (file_exists($cached_file_path)) {
+        if (Wordless::preference('assets.cache_enabled', true) && file_exists($cached_file_path)) {
 
           // Just return the cache result
           echo $this->comment_line("This is a cached version!") . file_get_contents($cached_file_path);
