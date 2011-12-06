@@ -77,7 +77,7 @@ class AssetTagHelper {
     return content_tag("link", NULL, $options);
   }
 
-  function favicon_link_tag($source= "/favicon.ico", $attributes = NULL) {
+  function favicon_link_tag($source= "/favicon.ico", $attributes = array()) {
 
     $options = array( "rel"  => 'shortcut icon',
                       "href" => $source,
@@ -108,7 +108,7 @@ class AssetTagHelper {
     return content_tag("img", NULL, $options);
   }
 
-  function video_tag($sources, $attributes = NULL){
+  function video_tag($sources, $attributes = array()){
 
     if(is_array($sources)) {
       $html_content = "";
@@ -130,7 +130,7 @@ class AssetTagHelper {
 
     }
 
-    function audio_tag($source, $attributes = NULL){
+    function audio_tag($source, $attributes = array()){
 
       $options = array_merge(array("src" => $source), $attributes);
 
