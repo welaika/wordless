@@ -51,11 +51,13 @@ class WordlessAdmin
     $theme_options = array(
       "theme_name" => array(
         "label" => "Theme Name",
-        "description" => "This will be the name displayed inside Wordpress."
+        "description" => "This will be the name displayed inside Wordpress.",
+        "default_value" => "Wordless"
       ),
       "theme_path" => array(
         "label" => "Theme Directory",
-        "description" => "Specify the <code>wp-content/themes</code> subdirectory name for this theme."
+        "description" => "Specify the <code>wp-content/themes</code> subdirectory name for this theme.",
+        "default_value" => "wordless"
       ),
       "chmod_set" => array(
         "label" => "Permissions",
