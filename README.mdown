@@ -6,7 +6,7 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 * Ability to create a new theme skeleton directly within the Wordpress backend interface;
 * Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
 * Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
-* Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
+* Ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
 * A growing set of handy and documented helper functions ready to be used within your views;
 
 <a name="installation"></a>
@@ -193,7 +193,7 @@ To make things faster, Wordless handles nicely precompilation caching, so a new 
 <a name="javascripts"></a>
 #### Javacripts
 
-Include the assets in your Haml views using `include_stylesheet()` helper.
+Include the assets in your Haml views using `include_javascript()` helper.
 
 ```haml
 = include_javascript("application")
@@ -205,7 +205,7 @@ This will produce the following HTML, pointing to the `assets/javascripts` direc
 <script src="/wp-content/themes/YOUR_THEME/assets/javascripts/application.js" type="text/javascript"></script>
 ```
 
-If Wordless can't find this static file, it will search for a file named `application.js.coffee` inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using the Sprockets preprocessor under the cover.
+If Wordless can't find this static file, it will search for a file named `application.js.coffee` or `application.js` inside the `theme/assets/javascripts` directory, and will automatically compile (if needed) and serve it on the fly using the Sprockets preprocessor under the cover. Coffescript is optional, you can just write normal javascript as well.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
