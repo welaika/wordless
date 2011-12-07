@@ -63,7 +63,7 @@ class TagHelper {
   }
 
   function include_stylesheet($url) {
-    if (!preg_match("/^http:\/\//", $url)) {
+    if (!preg_match("/^https?:\/\//", $url)) {
       $url = stylesheet_url($url);
       if (!preg_match("/\.css$/", $url)) $url .= ".css";
     }
@@ -79,7 +79,7 @@ class TagHelper {
   }
 
   function include_javascript($url) {
-    if (!preg_match("/^http:\/\//", $url)) {
+    if (!preg_match("/^https?:\/\//", $url)) {
       $url = javascript_url($url);
       if (!preg_match("/.js$/", $url)) $url .= ".js";
     }
