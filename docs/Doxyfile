@@ -44,7 +44,7 @@ PROJECT_BRIEF          = "Stop writing themes like it's 1998."
 # exceed 55 pixels and the maximum width should not exceed 200 pixels.
 # Doxygen will copy the logo to the output directory.
 
-PROJECT_LOGO           = "logo.png"
+PROJECT_LOGO           = "docs/logo.png"
 
 # The OUTPUT_DIRECTORY tag is used to specify the (relative or absolute)
 # base path where the generated documentation will be put.
