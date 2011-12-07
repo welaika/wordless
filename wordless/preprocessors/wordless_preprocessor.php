@@ -158,7 +158,7 @@ class WordlessPreprocessor {
   }
 
   /**
-   * That's the main call of a WordpressPreprocessor subclass.
+   * That's the main call of a WordPressPreprocessor subclass.
    *
    * @attention Must be override by implemented preprocessors.
    *

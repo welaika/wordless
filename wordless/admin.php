@@ -51,7 +51,7 @@ class WordlessAdmin
     $theme_options = array(
       "theme_name" => array(
         "label" => "Theme Name",
-        "description" => "This will be the name displayed inside Wordpress.",
+        "description" => "This will be the name displayed inside WordPress.",
         "default_value" => "Wordless"
       ),
       "theme_path" => array(
