@@ -18,6 +18,7 @@ require_once "wordless_preprocessor.php";
 class CompassPreprocessor extends WordlessPreprocessor {
 
   public function __construct() {
+    parent::__construct();
     $this->set_preference_default_value("compass.compass_path", "/usr/bin/compass");
     $this->set_preference_default_value("compass.output_style", "compressed");
   }
@@ -37,7 +38,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
     foreach ($files as $file) {
       $hash[] = file_get_contents($file);
     }
-    return join($hash);
+    return md5(join($hash));
   }
 
   /**
@@ -68,7 +69,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
    * Execute the Compass executable, overriding the no-op function inside
    * WordlessPreprocessor.
    */
-  public function process_file($file_path, $result_path, $temp_path) {
+  protected function process_file($file_path, $result_path, $temp_path) {
 
     $this->validate_executable_or_die($this->preference("compass.compass_path"));
 

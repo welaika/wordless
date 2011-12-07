@@ -13,6 +13,10 @@ class WordlessPreprocessor {
    */
   private $preferences_defaults = array();
 
+  public function __construct() {
+    $this->set_preference_default_value("assets.cache_enabled", true);
+  }
+
   /**
    * Returns the path for the file that caches a the result
    * of a previous compilation of the same asset file.
@@ -28,7 +32,7 @@ class WordlessPreprocessor {
    * @see WordlessPreprocessor::class_name()
    */
   private function cached_file_path($file_path, $cache_path) {
-    $cached_file_path = $this->class_name() . "-" . $this->asset_hash($file_path);
+    $cached_file_path = $this->class_name() . "_" . $this->asset_hash($file_path);
     return Wordless::join_paths($cache_path, $cached_file_path);
   }
 
@@ -118,7 +122,7 @@ class WordlessPreprocessor {
 
     if (!empty($paths)) {
       foreach ($paths as $sub_path) {
-        $subfiles = $this->folder_tree($pattern, $flags, $sub_path . DIRECTORY_SEPARATOR);
+        $subfiles = $this->folder_tree($sub_path . DIRECTORY_SEPARATOR, $pattern, $flags);
         if (is_array($subfiles)) {
           $files = array_merge($files, $subfiles);
         }
@@ -154,7 +158,7 @@ class WordlessPreprocessor {
   }
 
   /**
-   * That's the main call of a WordpressPreprocessor.
+   * That's the main call of a WordpressPreprocessor subclass.
    *
    * @attention Must be override by implemented preprocessors.
    *
@@ -169,7 +173,7 @@ class WordlessPreprocessor {
    *   Returns the content of the processed file.
    *
    */
-  public function process_file($file_path, $result_path, $cache_path) {
+  protected function process_file($file_path, $result_path, $cache_path) {
     return NULL;
   }
 
@@ -192,7 +196,7 @@ class WordlessPreprocessor {
    * @see WordlessPreprocessor::process_file()
    * @see WordlessPreprocessor::supported_extensions()
    */
-  private function process_file_with_caching($file_path_without_extension, $result_path, $cache_path) {
+  public function process_file_with_caching($file_path_without_extension, $result_path, $cache_path) {
     header("Content-Type: " . $this->content_type());
     foreach ($this->supported_extensions() as $extension) {
       $file_path = $file_path_without_extension . ".$extension";
@@ -200,7 +204,7 @@ class WordlessPreprocessor {
         // We check we already processed the same file previously
         $cached_file_path = $this->cached_file_path($file_path, $cache_path);
         // On cache hit
-        if (Wordless::preference('assets.cache_enabled', true) && file_exists($cached_file_path)) {
+        if ($this->preference('assets.cache_enabled') && file_exists($cached_file_path)) {
           // Just return the cache result
           echo $this->comment_line("This is a cached version!") . file_get_contents($cached_file_path);
         } else {
@@ -254,7 +258,7 @@ class WordlessPreprocessor {
    * @doubt maybe is better if returns TRUE on success?
    * @warning die_with_error() is not defined in this class!
    */
-  private function validate_executable_or_die($path) {
+  protected function validate_executable_or_die($path) {
     if (!is_executable($path)) {
       $this->die_with_error(sprintf(
         __("The path %s doesn't seem to be an executable!"),

@@ -16,6 +16,7 @@ require_once "wordless_preprocessor.php";
 class SprocketsPreprocessor extends WordlessPreprocessor {
 
   public function __construct() {
+    parent::__construct();
     $this->set_preference_default_value("sprockets.ruby_path", '/usr/bin/ruby');
   }
 
@@ -34,7 +35,7 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
     foreach ($files as $file) {
       $hash[] = file_get_contents($file);
     }
-    return join($hash);
+    return md5(join($hash));
   }
 
   /**
@@ -63,7 +64,7 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
   /**
    * Overrides WordlessPreprocessor::process_file()
    */
-  public function process_file($file_path, $result_path, $temp_path) {
+  protected function process_file($file_path, $result_path, $temp_path) {
 
     $this->validate_executable_or_die($this->preference("sprockets.ruby_path"));
 
