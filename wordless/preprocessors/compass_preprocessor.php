@@ -95,7 +95,8 @@ class CompassPreprocessor extends WordlessPreprocessor
   }
 
   public function die_with_error($description) {
-    echo sprintf("body::before { content: '%s'; font-family: monospace; };", addslashes($description));
+    $description = preg_replace('/\n/', '\n', addslashes($description));
+    echo sprintf("body::before { content: '%s'; font-family: monospace; };", $description);
     die();
   }
 
