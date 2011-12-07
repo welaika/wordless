@@ -2,7 +2,7 @@
 
 function add_custom_post_types() {
   /*
-   * Create here your custom post types. You can both use the Wordpress register_post_type()
+   * Create here your custom post types. You can both use the WordPress register_post_type()
    * function, or the Wordless new_post_type() helper.
    */
 
@@ -11,7 +11,7 @@ function add_custom_post_types() {
 
 function add_custom_taxonomies() {
   /*
-   * Create here your custom post types. You can both use the Wordpress register_taxonomy()
+   * Create here your custom post types. You can both use the WordPress register_taxonomy()
    * function, or the Wordless new_taxonomy() helper.
    */
 

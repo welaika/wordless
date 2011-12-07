@@ -2,7 +2,7 @@
 
 /*
  * In this page, you need to setup Wordless routing: you first
- * determine the type of the page using Wordpress conditional tags,
+ * determine the type of the page using WordPress conditional tags,
  * and then delegate the rendering to some particular view using
  * the `render_view()` helper.
  *

@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Enable Wordpress menu support uncommenting the line below
+ * Enable WordPress menu support uncommenting the line below
  */
 // add_theme_support('menus');
 

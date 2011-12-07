@@ -1,9 +1,9 @@
 ![Wordless logo](http://welaika.github.com/wordless/assets/images/wordless.png)
 
-Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
+Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails);
-* Ability to create a new theme skeleton directly within the Wordpress backend interface;
+* Ability to create a new theme skeleton directly within the WordPress backend interface;
 * Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
 * Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
 * Ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
@@ -14,7 +14,7 @@ Wordless is an opinionated Wordpress plugin that dramatically speeds up and enha
 
 1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn the supported ones;
 2. The production server doesn't need any extra-dependencies, as all the assets get pre-compiled by Wordless on the development machine and statically served;
-3. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure Wordpress nice permalinks are enabled under the WP "Settings > Permalinks" section;
+3. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section;
 4. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
 5. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
 6. Specify the path of the `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
@@ -74,12 +74,12 @@ if (is_front_page()) {
   render_view("portfolio/show");
 }
 ```
-As you can see, you first determine the type of the page using [Wordpress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
+As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
 ### Theme Views (`theme/views/*.haml`)
 
 That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax.
-Feel free to create subdirectories to group toghether the files. Here's what could be an example for the typical [Wordpress loop](http://codex.wordpress.org/The_Loop) in an archive page:
+Feel free to create subdirectories to group toghether the files. Here's what could be an example for the typical [WordPress loop](http://codex.wordpress.org/The_Loop) in an archive page:
 
 ```haml
 / theme/views/posts/archive.haml
@@ -166,7 +166,7 @@ Just drop all your theme locale files in this directory. Wordless will take care
 <a name="assets"></a>
 ### Assets
 
-Wordpress has to different places where you want to put your assets:
+WordPress has to different places where you want to put your assets:
 
 * Place all the static images and vendor assets (i.e. jQuery and vendor JS plugins) into the `assets/*` directory;
 * Place all your custom, project related assets into the `theme/assets/*`.
@@ -216,11 +216,11 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 
 * [Simple Fields](http://wordpress.org/extend/plugins/simple-fields/): a complete solution to add different types of custom fields to your custom posts. We love Simple fields so much that Wordless embeds a [dedicated helper file](https://github.com/welaika/wordless/blob/master/wordless/helpers/simple_fields_helper.php) just for it;
 * [Options Framework](http://wordpress.org/extend/plugins/options-framework/): makes it easy to include an options panel in any WordPress theme;
-* [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local Wordpress installations and DB data back and forth from your local development machine to the remote staging server;
+* [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local WordPress installations and DB data back and forth from your local development machine to the remote staging server;
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines;
-* From WP 3.2 Wordpress has ceased to support PHP4, and so does Wordless;
+* From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless;
 * Documentation still to be written;
 * The assets static backing for production is still pre-alpha and needs some rewrite (it's rough, but it works);
 * The routing part can be drammaticaly improved to make it more readable and DRY;
