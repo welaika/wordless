@@ -11,10 +11,10 @@ creation, thanks to Sass, Compass, Haml and Coffeescript.
 
 == Description ==
 
-Wordless is an opinionated Wordpress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
+Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails);
-* Ability to create a new theme skeleton directly within the Wordpress backend interface;
+* Ability to create a new theme skeleton directly within the WordPress backend interface;
 * Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
 * Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
 * Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
@@ -25,7 +25,7 @@ detailed README, on [Github](https://github.com/welaika/wordless).
 
 == Installation ==
 
-1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup Wordpress on your machine using RVM;
+1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. See below to see how to setup WordPress on your machine using RVM;
 2. The production machine doesn't need any extra-dependencies, as all the compiled assets automatically get statically backend by Wordless;
 3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
 4. Enable the use of nice permalinks from the WP "Settings > Permalink" section. That is, we need the .htaccess file;
