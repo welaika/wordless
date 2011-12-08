@@ -5,9 +5,6 @@
  * verify the assets exist before linking to them.
  * 
  * @ingroup helperclass
- * 
- * @doubt Assumed that function without explicit access keyword ( public, 
- * private, protected ) are public functions.
  */
 class AssetTagHelper {
 
@@ -17,7 +14,7 @@ class AssetTagHelper {
    * @param string $source
    *   The path to the audio source.
    * @param array $attributes
-   *   ( optional ) An array of HTML attributes to be added to the rendered tag.
+   *   (optional) An array of HTML attributes to be added to the rendered tag.
    */
   function audio_tag($source, $attributes = array()){
     $options = array_merge(array("src" => $source), $attributes);
@@ -29,12 +26,12 @@ class AssetTagHelper {
    * Returns a valid <link /> HTML tag to a feed ( rss or atom ).
    * 
    * @param string $type
-   *   ( optional ) The type of the feed. Could be @e rss or @e atom. 
+   *   (optional) The type of the feed. Could be @e rss or @e atom. 
    *   Defaults to @e rss.
    * @param string|array $url_options
-   *   ( optional ) ??
+   *   (optional) ??
    * @param array $tag_options
-   *   ( optional ) ??
+   *   (optional) ??
    * 
    * @see AssetTagHelper::get_feed()
    * @see TagHelper::content_tag()
@@ -43,7 +40,8 @@ class AssetTagHelper {
    * 
    * @todo complete docs
    * 
-   * @doubt but really, what this function name means?? O.o and what it does??
+   * @doubt but really, what does this function name mean?? O.o and what it
+   *   does??
    */
   public function auto_discovery_link_tag($type = "rss", $url_options = NULL, $tag_options = NULL) {
 
@@ -89,7 +87,7 @@ class AssetTagHelper {
    * Return a valid <link /> HTML tag to add a favicon.
    * 
    * @param string $source
-   *   ( optional ) The path to the favicon file. Must be a valid path to an 
+   *   (optional) The path to the favicon file. Must be a valid path to an 
    *   .ico file.
    * 
    * @see TagHelper::content_tag()
@@ -150,7 +148,7 @@ class AssetTagHelper {
    * @param string $source
    *   The source path to the image.
    * @param string|array $attributes
-   *   ( optional ) A single HTML attribute or an array of HTML attributes to be
+   *   (optional) A single HTML attribute or an array of HTML attributes to be
    *   added to the rendered tag.
    * 
    * @ingroup helperfunc
@@ -189,7 +187,7 @@ class AssetTagHelper {
    * @param string|array $sources
    *   A single source or an array of sources for the video tag.
    * @param array $attributes
-   *  ( optional ) An array of HTML attributes to be added to the rendered tag.
+   *  (optional) An array of HTML attributes to be added to the rendered tag.
    * 
    * @ingroup helperfunc
    * 
