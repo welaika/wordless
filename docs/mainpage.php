@@ -39,8 +39,12 @@
  * You can use some Doxygen commands create only for wordless:
  * - @b \@doubt: This section, which appears also in "Related Pages" is used to
  *   express doubt about code implementation.
+ * - <b>\@l{url,text}</b>: Usewful command to create a link to an external source.
+ *   The first parameter is the url of the link, the second is the displayed ù
+ *   text.
  *
- * @see https://github.com/welaika/wordless
+ * @see GitHub project page https://github.com/welaika/wordless
+ * @see Bugs at https://github.com/welaika/wordless/issues
  */
 
   # Now will define some project-wide groups!
