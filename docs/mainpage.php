@@ -13,19 +13,9 @@
  *
  * Automation is for robots, we are humans, after all! ;)
  *
- * Please refer to the <a href="https://github.com/welaika/wordless#readme">
- * online documentation</a> for more details and instructions.
+ * Please refer to the @l{https://github.com/welaika/wordless#readme,online 
+ * documentation} for more details and instructions.
  *
- * @section doxy_doc Doxygen documentation
- *
- * To know how to use Doxygen Documentation system please check the
- * <a href="http://www.stack.nl/~dimitri/doxygen/manual.html">Doxygen
- * Manual</a>.
- *
- * To search through all the commands available in Doxygen, please see the
- * <a href="http://www.stack.nl/~dimitri/doxygen/commands.html">Doxygen Command
- * List</a>.
- * 
  * @section groups Define groups used in Wordless documentation
  * 
  * Some groups are defined to collect informations about specific use classes
@@ -43,6 +33,16 @@
  *   The first parameter is the url of the link, the second is the displayed ù
  *   text.
  *
+ * @section doxy_doc Doxygen documentation
+ *
+ * To know how to use Doxygen Documentation system please check the
+ * @l{http://www.stack.nl/~dimitri/doxygen/manual.html,Doxygen Manual}.
+ *
+ * To search through all the commands available in Doxygen, please see the
+ * @l{http://www.stack.nl/~dimitri/doxygen/commands.html,Doxygen Command List}.
+ *
+ * @section see_more More about Wordless
+ * 
  * @see GitHub project page https://github.com/welaika/wordless
  * @see Bugs at https://github.com/welaika/wordless/issues
  */
