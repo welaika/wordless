@@ -9,12 +9,14 @@
 class AssetTagHelper {
 
   /**
-   * Return a valid <audio /> HTML tag.
+   * Return a valid \<audio /\> HTML tag.
    * 
    * @param string $source
    *   The path to the audio source.
    * @param array $attributes
    *   (optional) An array of HTML attributes to be added to the rendered tag.
+   * 
+   * @ingroup helperfunc
    */
   function audio_tag($source, $attributes = array()){
     $options = array_merge(array("src" => $source), $attributes);
@@ -23,7 +25,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Returns a valid <link /> HTML tag to a feed ( rss or atom ).
+   * Returns a valid \<link /\> HTML tag to a feed ( rss or atom ).
    * 
    * @param string $type
    *   (optional) The type of the feed. Could be @e rss or @e atom. 
@@ -84,7 +86,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid <link /> HTML tag to add a favicon.
+   * Return a valid \<link /\> HTML tag to a favicon.
    * 
    * @param string $source
    *   (optional) The path to the favicon file. Must be a valid path to an 
@@ -143,7 +145,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid <img /> HTML tag.
+   * Return a valid \<img /\> HTML tag.
    * 
    * @param string $source
    *   The source path to the image.
@@ -182,7 +184,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid <video /> HTML tag.
+   * Return a valid \<video /\> HTML tag.
    * 
    * @param string|array $sources
    *   A single source or an array of sources for the video tag.
