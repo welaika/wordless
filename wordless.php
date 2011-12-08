@@ -58,6 +58,7 @@ class Wordless {
 
   public static function install() {
     self::assets_rewrite_rules();
+    flush_rewrite_rules();
   }
 
   /**
@@ -89,7 +90,6 @@ class Wordless {
     foreach (self::$preprocessors as $preprocessor) {
       add_rewrite_rule('^(.*\.'.$preprocessor->to_extension().')$', 'index.php?'.$preprocessor->query_var_name().'=true&'.$preprocessor->query_var_name('original_url').'=$matches[1]', 'top');
     }
-    flush_rewrite_rules(true);
   }
 
   /**
