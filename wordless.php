@@ -211,7 +211,7 @@ class Wordless {
   }
 
   public static function theme_url() {
-    return str_replace(get_bloginfo('siteurl'), '', get_bloginfo('template_url'));
+    return str_replace(home_url(), '', get_bloginfo('template_url'));
   }
 
   public static function join_paths() {
