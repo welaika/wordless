@@ -104,9 +104,9 @@ class DateHelper {
   }
 
   function time_tag($date_or_time = NULL , $text = NULL, $attributes = array()) {
-    $date_or_time = $date_or_time ? date(DATE_W3C, $date_or_time) : date(DATE_W3C)
+    $date_or_time = $date_or_time ? date(DATE_W3C, $date_or_time) : date(DATE_W3C);
     $options  = array( "datetime" => $date_or_time );
-    $text = $text ? $text : strftime("%F", $date_or_time)
+    $text = $text ? $text : strftime("%F", $date_or_time);
     $options = array_merge($options, $attributes);
     return content_tag("time", $text, $options);
   }

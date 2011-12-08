@@ -137,6 +137,14 @@ class TextHelper {
     }
   }
 
+  function active_if($check, $active = "active", $inactive = "inactive") {
+    return $check ? $active : $inactive;
+  }
+
+  function capitalize($text) {
+    return ucwords($text);
+  }
+
 }
 
 Wordless::register_helper("TextHelper");

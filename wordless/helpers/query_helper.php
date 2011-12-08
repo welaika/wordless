@@ -81,6 +81,28 @@ class QueryHelper {
     $obj = get_post_type_object(get_post_type());
     return $obj->labels->name;
   }
+
+  function get_page_title($prefix = "", $separator = "") {
+    $title = "";
+    if (is_category()) {
+      $category = get_category(get_query_var('cat'),false);
+      $title = get_cat_name($category->cat_ID);
+    }
+    if (is_post_type_archive()) {
+      $title = get_post_type_singular_name();
+    }
+    if (is_single() || is_page()) {
+      $title = get_the_title();
+    }
+    if (is_search()) {
+      $title = "Ricerca";
+    }
+    if (is_front_page()) {
+      return $prefix;
+    }
+    return "$prefix$separator$title";
+  }
+
 }
 
 Wordless::register_helper("QueryHelper");
