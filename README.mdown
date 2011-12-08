@@ -3,10 +3,10 @@
 Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails);
-* Ability to create a new theme skeleton directly within the WordPress backend interface;
-* Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
-* Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
-* Ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
+* The ability to create a new theme skeleton directly within the WordPress backend interface;
+* The ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
+* The ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
+* The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
 * A growing set of handy and documented helper functions ready to be used within your views;
 
 <a name="installation"></a>
