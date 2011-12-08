@@ -9,12 +9,14 @@
 class AssetTagHelper {
 
   /**
-   * Return a valid \<audio /\> HTML tag.
+   * Builds a valid \<audio /\> HTML tag.
    * 
    * @param string $source
    *   The path to the audio source.
    * @param array $attributes
    *   (optional) An array of HTML attributes to be added to the rendered tag.
+   * @return @e string
+   *   A valid \<audio /\> HTML tag.
    * 
    * @ingroup helperfunc
    */
@@ -25,7 +27,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Returns a valid \<link /\> HTML tag to a feed ( rss or atom ).
+   * Builds a valid \<link /\> HTML tag to a feed ( rss or atom ).
    * 
    * @param string $type
    *   (optional) The type of the feed. Could be @e rss or @e atom. 
@@ -34,6 +36,8 @@ class AssetTagHelper {
    *   (optional) ??
    * @param array $tag_options
    *   (optional) ??
+   * @return @e string
+   *   A valid \<link /\> HTML tag to a feed ( rss or atom ).
    * 
    * @see AssetTagHelper::get_feed()
    * @see TagHelper::content_tag()
@@ -86,11 +90,13 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid \<link /\> HTML tag to a favicon.
+   * Builds a valid \<link /\> HTML tag to a favicon.
    * 
    * @param string $source
    *   (optional) The path to the favicon file. Must be a valid path to an 
    *   .ico file.
+   * @return @e string
+   *   A valid \<link /\> HTML tag to a favicon.
    * 
    * @see TagHelper::content_tag()
    * 
@@ -108,7 +114,7 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a WP valid feed, depending on the type or feed requested and of the
+   * Returns a WP valid feed, depending on the type or feed requested and of the
    * content for which the feed is created.
    * 
    * Post's feeds are different from comment's feeds, this function return the
@@ -145,13 +151,15 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid \<img /\> HTML tag.
+   * Builds a valid \<img /\> HTML tag.
    * 
    * @param string $source
    *   The source path to the image.
    * @param string|array $attributes
    *   (optional) A single HTML attribute or an array of HTML attributes to be
    *   added to the rendered tag.
+   * @return @e string
+   *   A valid \<img /\> HTML tag.
    * 
    * @ingroup helperfunc
    * 
@@ -184,12 +192,14 @@ class AssetTagHelper {
   }
 
   /**
-   * Return a valid \<video /\> HTML tag.
+   * Builds a valid \<video /\> HTML tag.
    * 
    * @param string|array $sources
    *   A single source or an array of sources for the video tag.
    * @param array $attributes
    *  (optional) An array of HTML attributes to be added to the rendered tag.
+   * @return @e string
+   *   A valid \<video /\> HTML tag.
    * 
    * @ingroup helperfunc
    * 
