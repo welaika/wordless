@@ -1,5 +1,6 @@
 <?php
 
+  # Main Page documentation
 /**
  * @mainpage Wordless, don't waste words on wordpress!
  *
@@ -24,6 +25,14 @@
  * To search through all the commands available in Doxygen, please see the
  * <a href="http://www.stack.nl/~dimitri/doxygen/commands.html">Doxygen Command
  * List</a>.
+ * 
+ * @section groups Define groups used in Wordless documentation
+ * 
+ * Some groups are defined to collect informations about specific use classes
+ * or functions:
+ * - @ref helpers "Helpers Group": the group of all existent Wordless helpers.
+ * - @ref helperclass "Helpers Classes"
+ * - @ref helperfunc "Helpers Functions"
  *
  * @section self_cmds Defined command for Wordless documentation
  *
@@ -32,4 +41,20 @@
  *   express doubt about code implementation.
  *
  * @see https://github.com/welaika/wordless
+ */
+
+  # Now will define some project-wide groups!
+/**
+ * @defgroup helpers Helpers 
+ *   All the defined helpers ( classes, functions, ...) you can find in 
+ *   Wordless.
+ * 
+ * @defgroup helperclass Helpers Classes
+ *   All the defined helpers classes in Wordless.
+ *   @ingroup helpers
+ * 
+ * @defgroup helperfunc Helpers Functions
+ *   All the helpers functions in Wordless.
+ *   @ingroup helpers
+ * 
  */

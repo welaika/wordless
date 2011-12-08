@@ -1,3 +1,4 @@
+desc "Create the project documentation using Doxygen."
 task :docs do
   docs_path = File.join(File.dirname(__FILE__), "docs")
   directory(docs_path)
