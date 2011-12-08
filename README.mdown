@@ -14,7 +14,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere.
 
-But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs it.
+But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs [Ruby](http://www.ruby-lang.org/en).
 
 If you are not familiar with Ruby you may follow the following tutorial for getting up a fully functional Ruby environment in less than 5 minutes.
 Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
