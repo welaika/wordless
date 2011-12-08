@@ -146,7 +146,7 @@ Helpers are basically small functions that can be called in your views to help k
 <a name="initializers"></a>
 ### Initializers (`config/initializers/*.php` files)
 
-Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
+Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, WordPress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
 Wordless let you split you code into many modular initializer files, each one with a specific target:
 
 	config/initializers
