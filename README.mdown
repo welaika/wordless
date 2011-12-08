@@ -14,17 +14,15 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere.
 
-But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en).
+But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs it.
 
-No I mean it, it seriously needs [Ruby](http://www.ruby-lang.org/en).
-
-If you are not familiar with Ruby you may follow the following tutorial for getting up a fully functional ruby environment in less than 5 minutes.
+If you are not familiar with Ruby you may follow the following tutorial for getting up a fully functional Ruby environment in less than 5 minutes.
 Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
 
 <a name="rvm-way"></a>
 ### The RVM Way
 
-Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this needs git):
+Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this requires `git` installed):
 
 ```
 bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
@@ -36,7 +34,7 @@ Now reload your shell and install your preferred Ruby version by running (this w
 rvm install 1.8.7
 ```
 
-Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gem set called wordless, install the gems
+Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gemset called `wordless`, install the gems
 wordless needs and create some handy symbolic links:
 
 ```
