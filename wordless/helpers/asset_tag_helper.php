@@ -116,15 +116,17 @@ class AssetTagHelper {
    * correct feed (rss/atom) for the specified content.
    *
    * @param string $model
-   *   Return the correct feed type, depending on content type. Can be @b post
-   *   or @b comment.
+   *   Return the correct feed type, depending on content type. Can be @b posts
+   *   or @b comments.
    * @param string $type
    *   The type of the feed. Can be @b rdf, @b rss1, @b rss092, @b rss, @b rss2.
    *
+   * @ingroup helperfunc
+   *
    * @see https://codex.wordpress.org/Function_Reference/bloginfo
    */
-  private function get_feed_url($model, $type = "rss") {
-    if ($model == "posts" || $model == "post")  {
+  public function get_feed_url($model, $type = "rss") {
+    if ($model == "posts")  {
         switch ($type) {
           case "rdf":
             return bloginfo('rdf_url');
@@ -139,7 +141,7 @@ class AssetTagHelper {
             return bloginfo('rss2_url');
         }
     }
-    elseif ($model=="comments" || $model=="comment")
+    elseif ($model=="comments")
       return bloginfo('comments_rss2_url');
     else
       return NULL;
