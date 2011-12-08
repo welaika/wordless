@@ -1,51 +1,69 @@
 <?php
-
+/**
+ * This module provides methods for handling dates and times in a user-friendly
+ * way.
+ * 
+ * @ingroup helperclass
+ */
 class DateHelper {
 
 
   /**
+   * Returns a user-friendly string representation of a time distance.
    * 
-   * Original author: James Rose
-   * @param int $from_time timestamp 
-   * @param int $to_time timestamp
-   * @param bool $include_seconds 
-   * @return type
+   * Given 2 timestamps, return a readable representation for their distance, 
+   * link "1 minute" or "about an hour", etc.
+   * 
+   * @author: James Rose
+   * 
+   * @param int $from_time
+   *   The timestamp for the initial time.
+   * @param int $to_time
+   *   (optional) The timestamp for the end time.
+   * @param boolean $include_seconds 
+   *   (optional) TRUE if you want to take  in account also seconds in the time
+   *   distance ( must be set if you want information about a time distance 
+   *   shorter than a minute ).
+   * @return string
+   *   A string representing the time distance.
+   * 
+   * @ingroup helperfunc
    */
-  function distance_of_time_in_words($from_time,$to_time = 0, $include_seconds = false) {
+  public function distance_of_time_in_words($from_time, $to_time = 0, $include_seconds = FALSE) {
     $dm = $distance_in_minutes = abs(($from_time - $to_time))/60;
     $ds = $distance_in_seconds = abs(($from_time - $to_time));
     
     switch ($distance_in_minutes) {
       case $dm > 0 && $dm < 1:
-      if($include_seconds == false) {
-        if ($dm == 0) {
-          return 'less than a minute';
-        } else {
-          return '1 minute';
-        }
-      } else {
-        switch ($distance_of_seconds) {
-          case $ds > 0 && $ds < 4:
-            return 'less than 5 seconds';
-            break;
-          case $ds > 5 && $ds < 9:
-            return 'less than 10 seconds';
-            break;
-          case $ds > 10 && $ds < 19:
-            return 'less than 20 seconds';
-            break;
-          case $ds > 20 && $ds < 39:
-            return 'half a minute';
-            break;
-          case $ds > 40 && $ds < 59:
+        if ($include_seconds == FALSE) {
+          if ($dm == 0)
             return 'less than a minute';
-            break;
-          default:
+          else
             return '1 minute';
-          break;
         }
-      }
-      break;
+        else {
+          switch ($distance_of_seconds) {
+            case $ds > 0 && $ds < 4:
+              return 'less than 5 seconds';
+              break;
+            case $ds > 5 && $ds < 9:
+              return 'less than 10 seconds';
+              break;
+            case $ds > 10 && $ds < 19:
+              return 'less than 20 seconds';
+              break;
+            case $ds > 20 && $ds < 39:
+              return 'half a minute';
+              break;
+            case $ds > 40 && $ds < 59:
+              return 'less than a minute';
+              break;
+            default:
+              return '1 minute';
+            break;
+          }
+        }
+        break;
       case $dm > 2 && $dm < 44:
         return round($dm) . ' minutes';
         break;
@@ -76,7 +94,24 @@ class DateHelper {
     }
   }
   
-  function get_the_time_ago($granularity=1) {
+  /**
+   * Returns a 'time ago' string based on the creation time of the current post.
+   * 
+   * For more details on how this function works please check the get_the_date()
+   * WordPress documentation.
+   * 
+   * @param int $granularity
+   *   (optional)
+   * @return string
+   *   A string representation of the time elapsed since the creation of the
+   *   current post.
+   * @ingroup helperfunc
+   * 
+   * @see https://codex.wordpress.org/Function_Reference/get_the_date
+   * 
+   * @doubt I didn't get the use of $granularity!
+   */
+  public function get_the_time_ago($granularity = 1) {
     $date = intval(get_the_date('U'));
     $difference = time() - $date;
     $periods = array(
@@ -94,24 +129,42 @@ class DateHelper {
       if ($difference >= $value) {
         $time = floor($difference/$value);
         $difference %= $value;
-        $retval .= ($retval ? ' ' : '').$time.' ';
+        $retval .= ($retval ? ' ' : '') . $time . ' ';
         $retval .= (($time > 1) ? $key[1]: $key[0]);
         $granularity--;
       }
       if ($granularity == '0') { break; }
     }
-    return $retval.' ago';
+    return $retval . ' ago';
   }
 
-  function time_tag($date_or_time = NULL , $text, $attributes = array() ){
+  /**
+   * Builds a valid \<time /\> HTML tag.
+   * 
+   * @param string $date_or_time
+   *   (optional) A valid timestamp representing a valid date or time objects.
+   *   If no timestamp is passed, use the current date with the  @l{
+   *   http://it.php.net/manual/en/class.datetime.php#datetime.constants.types,
+   *   DATE_W3C} PHP predefined DateTime constant as date description.
+   * @param string $text
+   *   The text of the time HTML tag.
+   * @param array $attributes
+   *   (optional) An array of HTML attributes to be added to the rendered tag.
+   * @return @e string
+   *   A valid HTML \<time /\> tag.
+   * 
+   * @ingroup helperfunc
+   * 
+   * @see TagHelper::content_tag()
+   */
+  function time_tag($date_or_time = NULL , $text, $attributes = array()) {
     $options  = array(
-      "datetime" =>  $date_or_time ? date(DATE_W3C, $date_or_time ) : date(DATE_W3C)
+      "datetime" =>  $date_or_time ? date(DATE_W3C, $date_or_time) : date(DATE_W3C)
     );
 
     $options = array_merge($options, $attributes);
 
     return content_tag("time", $text, $options);
-    
   }
 }
 
