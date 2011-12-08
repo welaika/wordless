@@ -4,17 +4,17 @@ class DateHelper {
 
 
   /**
-   * 
+   *
    * Original author: James Rose
-   * @param int $from_time timestamp 
+   * @param int $from_time timestamp
    * @param int $to_time timestamp
-   * @param bool $include_seconds 
+   * @param bool $include_seconds
    * @return type
    */
   function distance_of_time_in_words($from_time,$to_time = 0, $include_seconds = false) {
     $dm = $distance_in_minutes = abs(($from_time - $to_time))/60;
     $ds = $distance_in_seconds = abs(($from_time - $to_time));
-    
+
     switch ($distance_in_minutes) {
       case $dm > 0 && $dm < 1:
       if($include_seconds == false) {
@@ -75,7 +75,7 @@ class DateHelper {
       break;
     }
   }
-  
+
   function get_the_time_ago($granularity=1) {
     $date = intval(get_the_date('U'));
     $difference = time() - $date;
@@ -103,15 +103,12 @@ class DateHelper {
     return $retval.' ago';
   }
 
-  function time_tag($date_or_time = NULL , $text, $attributes = array() ){
-    $options  = array(
-      "datetime" =>  $date_or_time ? date(DATE_W3C, $date_or_time ) : date(DATE_W3C)
-    );
-
+  function time_tag($date_or_time = NULL , $text = NULL, $attributes = array()) {
+    $date_or_time = $date_or_time ? date(DATE_W3C, $date_or_time) : date(DATE_W3C)
+    $options  = array( "datetime" => $date_or_time );
+    $text = $text ? $text : strftime("%F", $date_or_time)
     $options = array_merge($options, $attributes);
-
     return content_tag("time", $text, $options);
-    
   }
 }
 
