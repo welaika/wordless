@@ -12,26 +12,50 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 <a name="installation"></a>
 ## Requirements, installation and configuration
 
-1. Your development machine needs a ruby environment, and the [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script) gem. The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn the supported ones;
-2. The production server doesn't need any extra-dependencies, as all the assets get pre-compiled by Wordless on the development machine and statically served;
-3. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section;
-4. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
-5. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
-6. Specify the path of the `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
+Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've loved before and there will be rainbows and ponies randomly popping up everywhere.
 
-<a name="rvm"></a>
-### RVM (recommended setup)
+But what's the catch?
 
-It's recommended to use [RVM](http://rvm.beginrescueend.com) to handle ruby gems. Type the following from your terminal:
+It needs [ruby](http://www.ruby-lang.org/en).
+
+No I mean it, it seriously needs [ruby](http://www.ruby-lang.org/en).
+
+If you are not familiar with ruby you may follow the following tutorial for getting up a fully functional ruby environment in less than 5 minutes.
+Otherwise, if you are already fluent in ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
+
+<a name="rvm-way"></a>
+### The RVM Way
+
+Our recommended way to get ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized ruby platform in your system. Moreover it's deadly easy to setup (this needs git):
 
 ```
-rvm use 1.8.7
-rvm gemset create wordless
-rvm use 1.8.7@wordless
-gem install sprockets compass coffee-script
-rvm wrapper 1.8.7@wordless wordless compass ruby
+bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
 ```
-Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`. Write them down into the `config/initializers/wordpress_preferences.php` file.
+
+Now reload your shell and install your preferred ruby version by running (this will take some time, go have a coffee or something):
+
+```
+rvm install 1.8.7
+```
+
+Whew, now you have a fully functional ruby environment! The following oneliner will create a new gem set called wordless, install the gems
+wordless needs and create some handy symbolic links:
+
+```
+rvm use 1.8.7@wordless --create --default && gem install therubyracer sprockets compass coffee-script && rvm wrapper 1.8.7@wordless wordless compass ruby
+```
+Now you should be able to know the location of your RVM-wrapped ruby executables using `which wordless_ruby` and `which wordless_compass`.
+
+<a name="the-cool-stuff"></a>
+### The Cool Stuff
+
+Okay, now we can get everything up and running :)
+
+1. The production server doesn't need any extra-dependencies, as all the assets get pre-compiled by Wordless on the development machine and then statically served;
+2. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`);
+3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
+4. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
+5. Specify the path of the `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
 
 <a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
@@ -222,7 +246,7 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 * Wordless has not been tested on Windows machines;
 * From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless;
 * Documentation still to be written;
-* The assets static backing for production is still pre-alpha and needs some rewrite (it's rough, but it works);
+* The assets static baking for production is still pre-alpha and needs some rewrite (it's rough, but it works);
 * The routing part can be drammaticaly improved to make it more readable and DRY;
 * This is alpha software, everything is still subject to change :)
 
