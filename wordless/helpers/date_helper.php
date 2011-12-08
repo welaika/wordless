@@ -103,7 +103,7 @@ class DateHelper {
     return $retval.' ago';
   }
 
-  function time_tag($date_or_time = NULL , $text, $attributes = array() ){
+  function time_tag($text, $date_or_time = NULL, $attributes = array() ){
     $options  = array(
       "datetime" =>  $date_or_time ? date(DATE_W3C, $date_or_time ) : date(DATE_W3C)
     );
