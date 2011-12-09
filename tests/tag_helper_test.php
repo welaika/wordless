@@ -1,5 +1,9 @@
 <?php
+
 require_once('simpletest/autorun.php');
+require_once('support/mocked_bloginfo.php');
+require_once('../wordless/wordless.php');
+require_once('../wordless/helpers.php');
 
 class TagHelperTest extends UnitTestCase {
 
