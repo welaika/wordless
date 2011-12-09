@@ -1,10 +1,15 @@
 <?php
 
+/* no-doc */
 class Cycle {
 
   function __construct($values) {
     $this->values = $values;
     $this->index = 0;
+  }
+
+  function values() {
+    return $this->values;
   }
 
   function reset() {
@@ -102,12 +107,18 @@ class TextHelper {
     }
     $name = isset($options["name"]) ? $options["name"] : "default";
 
-    if (!isset(self::$cycles[$name])) {
+    if (!isset(self::$cycles[$name]) || self::$cycles[$name]->values() != $values) {
       self::$cycles[$name] = new Cycle($values);
     }
 
     $cycle = self::$cycles[$name];
     return $cycle->value();
+  }
+
+  function reset_cycle($name = "default") {
+    if (isset(self::$cycles[$name])) {
+      self::$cycles[$name]->reset();
+    }
   }
 
   function truncate($text, $options = array()) {
@@ -122,7 +133,12 @@ class TextHelper {
 
     $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
     if ($options['separator']) {
-      $stop = strrpos($text, $options['separator'], min(strlen($text), $length_with_room_for_omission));
+      $stop = FALSE;
+      for ($i=0; $i<=min(strlen($text), $length_with_room_for_omission); $i++) {
+        if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
+          $stop = $i;
+        }
+      }
       if ($stop === FALSE) {
         $stop = $length_with_room_for_omission;
       }
@@ -145,6 +161,14 @@ class TextHelper {
     return ucwords($text);
   }
 
+  function titleize($text) {
+    $words = split(" ", $text);
+    $capitalized_words = array();
+    foreach ($words as $word) {
+      $capitalized_words[] = capitalize($word);
+    }
+    return join(" ", $capitalized_words);
+  }
 }
 
 Wordless::register_helper("TextHelper");

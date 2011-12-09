@@ -10,6 +10,7 @@ class Wordless {
 
   private static $preprocessors = array();
   private static $preferences = array();
+  private static $helpers = array();
 
   public static function initialize() {
     if (Wordless::theme_is_wordless_compatible()){
@@ -27,10 +28,17 @@ class Wordless {
     WordlessAdmin::initialize();
   }
 
+  public static function helper($class_name) {
+    if (!isset(self::$helpers[$class_name])) {
+      self::$helpers[$class_name] = new $class_name();
+    }
+    return self::$helpers[$class_name];
+  }
+
   public static function register_helper($class_name) {
     foreach (get_class_methods($class_name) as $method) {
       if (!function_exists($method)) {
-        $global_function_definition = "function $method() { \$args = func_get_args(); return call_user_func_array(array(new $class_name(), '$method'), \$args); }";
+        $global_function_definition = "function $method() { \$helper = Wordless::helper('$class_name'); \$args = func_get_args(); return call_user_func_array(array(\$helper, '$method'), \$args); }";
         eval($global_function_definition);
       }
     }

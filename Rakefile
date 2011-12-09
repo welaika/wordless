@@ -1,5 +1,5 @@
 def colorize(text, color_code)
-    "#{color_code}#{text}\033[0m"
+  "#{color_code}#{text}\033[0m"
 end
 
 def red(text)

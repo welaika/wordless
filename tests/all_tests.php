@@ -11,5 +11,6 @@ class AllTests extends TestSuite {
     $this->addFile('tag_helper_test.php');
     $this->addFile('asset_tag_helper_test.php');
     $this->addFile('date_helper_test.php');
+    $this->addFile('text_helper_test.php');
   }
 }
