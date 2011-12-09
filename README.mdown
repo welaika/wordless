@@ -137,17 +137,17 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
     / Title
     %title= get_page_title(bloginfo('name'), " – ")
     / Stylesheets
-    = include_stylesheet("application")
+    = stylesheet_link_tag("application")
     / HTML5 Shiv
     /[if lt IE 9]
-      = include_javascript("http://html5shiv.googlecode.com/svn/trunk/html5.js")
+      = javascript_include_tag("http://html5shiv.googlecode.com/svn/trunk/html5.js")
 
   %body.home-layout
     = render_partial("common/header")
     = yield()
     = render_partial("common/footer")
-    = include_javascript("jquery")
-	= include_javascript("application")
+    = javascript_include_tag("jquery")
+	= javascript_include_tag("application")
 ```
 
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
@@ -194,10 +194,10 @@ WordPress has to different places where you want to put your assets:
 <a name="stylesheets"></a>
 #### Stylesheets
 
-Include the assets in your Haml views using `include_stylesheet()` helper.
+Include the assets in your Haml views using `stylesheet_link_tag()` helper.
 
 ```haml
-= include_stylesheet("screen")
+= stylesheet_link_tag("screen")
 ```
 
 This will produce the following HTML, pointing to the `assets/stylesheets` directory:
@@ -213,10 +213,10 @@ To make things faster, Wordless handles nicely precompilation caching, so a new 
 <a name="javascripts"></a>
 #### Javacripts
 
-Include the assets in your Haml views using `include_javascript()` helper.
+Include the assets in your Haml views using `javascript_include_tag()` helper.
 
 ```haml
-= include_javascript("application")
+= javascript_include_tag("application")
 ```
 
 This will produce the following HTML, pointing to the `assets/javascripts` directory:
