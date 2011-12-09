@@ -161,7 +161,7 @@ Helpers are basically small functions that can be called in your views to help k
 * `pluralize()` - Attempts to pluralize words;
 * `truncate()`- Truncates a given text after a given length;
 * `new_post_type()` and `new_taxonomy()` - Help you create custom posts and taxonomy;
-* `get_the_time_ago()` - Reports the approximate distance in time between two dates;
+* `distance_of_time_in_words()` - Reports the approximate distance in time between two dates;
 
 <a name="initializers"></a>
 ### Initializers (`config/initializers/*.php` files)
