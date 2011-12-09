@@ -88,6 +88,69 @@ class AssetTagHelperTest extends UnitTestCase {
 
   }
 
+  // public function video_tag($sources, $attributes = NULL){
+  //   if (is_array($sources)) {
+  //     $html_content = "";
+
+  //     foreach ($sources as $source) {
+  //       if (is_string($source))
+  //         $html_content .= content_tag("source", NULL, array("src" => $source));
+  //       else
+  //         $html_content .= content_tag("source", NULL, $source);
+  //     }
+
+  //     return content_tag("video", $html_content, $attributes);
+  //   }
+  //   else {
+  //     $options = array_merge(array("src" => $sources), $attributes);
+  //     return content_tag("video", NULL, $options);
+  //   }
+  // }
+
+  function test_video_tag() {
+
+    $this->assertEqual(
+      '<video src="source"/>',
+      video_tag("source")
+    );
+
+    $this->assertEqual(
+      '<video><source src="source"/><source src="alternate_source"/></video>',
+      video_tag(array("source", "alternate_source"))
+    );
+
+    $this->assertEqual(
+      '<video id="test"><source src="source"/><source src="alternate_source"/></video>',
+      video_tag(array("source", "alternate_source"), array("id" => "test"))
+    );
+
+  }
+
+  function test_javascript_include_tag() {
+    $this->assertEqual(
+      '<script src="mocked_stylesheet_directory/assets/javascripts/source.js" type="text/javascript"></script>',
+      javascript_include_tag("source")
+    );
+
+    $this->assertEqual(
+      '<script src="mocked_stylesheet_directory/assets/javascripts/source.js" type="text/javascript"></script>' . "\n" .
+      '<script src="http://welaika.com/another_source.js" type="text/javascript"></script>',
+      javascript_include_tag("source", "http://welaika.com/another_source.js")
+    );
+
+    $this->assertEqual(
+      '<script src="mocked_stylesheet_directory/assets/javascripts/source.js" type="text/javascript" charset="utf-8"></script>',
+      javascript_include_tag("source", array("charset" => "utf-8"))
+    );
+
+     $this->assertEqual(
+      '<script src="mocked_stylesheet_directory/assets/javascripts/source.js" type="text/javascript" charset="utf-8"></script>' . "\n" .
+      '<script src="https://welaika.com/another_source.js" type="text/javascript" charset="utf-8"></script>',
+      javascript_include_tag("source", "https://welaika.com/another_source.js", array("charset" => "utf-8"))
+    );
+
+  }
+
   function test_stylesheet_link_tag() {
     $this->assertEqual(
       '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="all" rel="stylesheet" type="text/css"/>',
@@ -96,8 +159,8 @@ class AssetTagHelperTest extends UnitTestCase {
 
     $this->assertEqual(
       '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="all" rel="stylesheet" type="text/css"/>' . "\n" .
-      '<link href="mocked_stylesheet_directory/assets/stylesheets/another_source.css" media="all" rel="stylesheet" type="text/css"/>',
-      stylesheet_link_tag("source", "another_source")
+      '<link href="http://welaika.com/another_source.css" media="all" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source", "http://welaika.com/another_source.css")
     );
 
     $this->assertEqual(
@@ -107,11 +170,9 @@ class AssetTagHelperTest extends UnitTestCase {
 
      $this->assertEqual(
       '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="print" rel="stylesheet" type="text/css"/>' . "\n" .
-      '<link href="mocked_stylesheet_directory/assets/stylesheets/another_source.css" media="print" rel="stylesheet" type="text/css"/>',
-      stylesheet_link_tag("source", "another_source", array("media" => "print"))
+      '<link href="https://welaika.com/another_source.css" media="print" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source", "https://welaika.com/another_source.css", array("media" => "print"))
     );
-
-
   }
 
 }

@@ -212,15 +212,19 @@ class AssetTagHelper {
       return content_tag("video", $html_content, $attributes);
     }
     else {
-      $options = array_merge(array("src" => $sources), $attributes);
+      $options = array("src" => $sources);
+      if (is_array($attributes)){
+       $options = array_merge($options, $attributes);
+      }
       return content_tag("video", NULL, $options);
     }
   }
 
    /**
     * Returns a stylesheet link tag for the sources specified as arguments. If
-    * you don’t specify an extension, .css will be appended automatically.
+    * you don’t specify an extension, ".css" will be appended automatically.
     * Relative paths are assumed to be relative to assets/javascripts.
+    * If the last argument is an array, it will be used as tag attributes.
     *
     * @return @e string
     *   A valid \<link /\> HTML tag.
@@ -263,6 +267,7 @@ class AssetTagHelper {
     * Sources may be paths to JavaScript files. Relative paths are assumed to be
     * relative to assets/javascripts. When passing paths, the ".js" extension is
     * optional.
+    * If the last argument is an array, it will be used as tag attributes.
     *
     * @return @e string
     *   A valid \<script /\> HTML tag.
@@ -288,8 +293,6 @@ class AssetTagHelper {
       }
       $options = array(
         "src"  => $source,
-        "media" => "all",
-        "rel"   => "stylesheet",
         "type"  => "text/javascript"
       );
       if(is_array($attributes)){
