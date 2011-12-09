@@ -19,4 +19,3 @@ class UrlHelper {
 }
 
 Wordless::register_helper("UrlHelper");
-
