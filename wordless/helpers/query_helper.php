@@ -1,6 +1,7 @@
 <?php
 
 class QueryHelper {
+
   function latest_posts_of_type($type, $limit = -1, $order = 'date') {
     return query_posts("posts_per_page=$limit&post_type=$type&orderby=$order");
   }

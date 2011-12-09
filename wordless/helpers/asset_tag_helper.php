@@ -234,6 +234,10 @@ class AssetTagHelper {
     $sources = func_get_args();
     $tags = array();
 
+    if (is_array($sources[count($sources) - 1])) {
+      $attributes = array_pop($sources);
+    }
+
     foreach ($sources as $source) {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = stylesheet_url($source);
@@ -245,7 +249,10 @@ class AssetTagHelper {
         "rel"   => "stylesheet",
         "type"  => "text/css"
       );
-      $tags[] = $this->content_tag("link", NULL, $options);
+      if(is_array($attributes)){
+        $options = array_merge($options, $attributes);
+      }
+      $tags[] = content_tag("link", NULL, $options);
     }
 
     return join("\n", $tags);
@@ -267,11 +274,16 @@ class AssetTagHelper {
     */
   function javascript_include_tag() {
     $sources = func_get_args();
+
+    if (is_array($sources[count($sources) - 1])) {
+      $attributes = array_pop($sources);
+    }
+
     $tags = array();
 
     foreach ($sources as $source) {
       if (!preg_match("/^https?:\/\//", $source)) {
-        $source = stylesheet_url($source);
+        $source = javascript_url($source);
         if (!preg_match("/\.js$/", $source)) $source .= ".js";
       }
       $options = array(
@@ -280,7 +292,10 @@ class AssetTagHelper {
         "rel"   => "stylesheet",
         "type"  => "text/javascript"
       );
-      $tags[] = $this->content_tag("script", "", $options);
+      if(is_array($attributes)){
+        $options = array_merge($options, $attributes);
+      }
+      $tags[] = content_tag("script", "", $options);
     }
 
     return join("\n", $tags);

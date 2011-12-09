@@ -88,5 +88,31 @@ class AssetTagHelperTest extends UnitTestCase {
 
   }
 
+  function test_stylesheet_link_tag() {
+    $this->assertEqual(
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="all" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source")
+    );
+
+    $this->assertEqual(
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="all" rel="stylesheet" type="text/css"/>' . "\n" .
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/another_source.css" media="all" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source", "another_source")
+    );
+
+    $this->assertEqual(
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="print" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source", array("media" => "print"))
+    );
+
+     $this->assertEqual(
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/source.css" media="print" rel="stylesheet" type="text/css"/>' . "\n" .
+      '<link href="mocked_stylesheet_directory/assets/stylesheets/another_source.css" media="print" rel="stylesheet" type="text/css"/>',
+      stylesheet_link_tag("source", "another_source", array("media" => "print"))
+    );
+
+
+  }
+
 }
 

@@ -1,7 +1,7 @@
 <?php
 
-require_once "preprocessors.php";
-require_once "admin.php";
+require_once Wordless::join_paths(dirname(__FILE__), "admin.php");
+require_once Wordless::join_paths(dirname(__FILE__), "preprocessors.php");
 
 /**
  * Wordless holds all the plugin setup and initialization.
@@ -23,8 +23,7 @@ class Wordless {
     self::load_admin_page();
   }
 
-  public static function load_admin_page()
-  {
+  public static function load_admin_page() {
     WordlessAdmin::initialize();
   }
 
@@ -123,7 +122,7 @@ class Wordless {
   }
 
   public static function require_helpers() {
-    require_once 'wordless/helpers.php';
+    require_once Wordless::join_paths(dirname(__FILE__), "helpers.php");
     $helpers_path = self::theme_helpers_path();
     self::require_once_dir("$helpers_path");
   }
