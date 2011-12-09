@@ -5,11 +5,11 @@
 %title= get_page_title(bloginfo('name'), " – ")
 
 / Stylesheets
-= include_stylesheet("screen")
+= stylesheet_link_tag("screen")
 
 / HTML5 Shiv
 /[if lt IE 9]
-  = include_javascript("http://html5shiv.googlecode.com/svn/trunk/html5.js")
+  = javascript_include_tag("http://html5shiv.googlecode.com/svn/trunk/html5.js")
 
 - wp_head()
 
