@@ -88,25 +88,6 @@ class AssetTagHelperTest extends UnitTestCase {
 
   }
 
-  // public function video_tag($sources, $attributes = NULL){
-  //   if (is_array($sources)) {
-  //     $html_content = "";
-
-  //     foreach ($sources as $source) {
-  //       if (is_string($source))
-  //         $html_content .= content_tag("source", NULL, array("src" => $source));
-  //       else
-  //         $html_content .= content_tag("source", NULL, $source);
-  //     }
-
-  //     return content_tag("video", $html_content, $attributes);
-  //   }
-  //   else {
-  //     $options = array_merge(array("src" => $sources), $attributes);
-  //     return content_tag("video", NULL, $options);
-  //   }
-  // }
-
   function test_video_tag() {
 
     $this->assertEqual(
