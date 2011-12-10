@@ -1,2 +1,2 @@
 $ ->
-  "Tutto finito!"
+  "Yep, it works!"

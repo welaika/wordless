@@ -5,7 +5,7 @@ class UrlHelper {
     return parse_url(get_bloginfo('stylesheet_directory'), PHP_URL_PATH) . "/assets/$path";
   }
 
-  function image_url($image) {
+  function image_url($path) {
     return asset_url("images/$path");
   }
 
@@ -19,4 +19,3 @@ class UrlHelper {
 }
 
 Wordless::register_helper("UrlHelper");
-

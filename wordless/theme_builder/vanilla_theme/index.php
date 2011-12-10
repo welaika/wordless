@@ -1,8 +1,17 @@
 <?php
 
 /*
+ * Making sure Wordless plugin is enabled
+ */
+
+if (!class_exists("Wordless")) {
+  echo "This theme requires the <a href='https://github.com/welaika/wordless'>Wordless plugin</a> in order to work. Please, install it now!";
+  die();
+}
+
+/*
  * In this page, you need to setup Wordless routing: you first
- * determine the type of the page using Wordpress conditional tags,
+ * determine the type of the page using WordPress conditional tags,
  * and then delegate the rendering to some particular view using
  * the `render_view()` helper.
  *

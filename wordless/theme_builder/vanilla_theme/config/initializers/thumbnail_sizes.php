@@ -2,7 +2,7 @@
 
 function add_thumbnails_support() {
   /*
-   * Enable Wordpress post thumbnail uncommenting the line below and specifing the post types
+   * Enable WordPress post thumbnail uncommenting the line below and specifing the post types
    */
 
   // add_theme_support('post-thumbnails', array('page', 'post'));

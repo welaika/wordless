@@ -30,8 +30,10 @@ class WordlessAdmin
   public static function add_notice() {
 	  echo '<div class="error"><p>';
     echo sprintf(
-      __('Your current theme does seem to be a Wordless-compatible theme!  <a href="%2$s" target="_blank">%1$s</a>'),
-      __('Learn more'),
+      __('Your current theme does seem to be a Wordless-compatible theme! <a href="%2$s" target="_blank">%1$s</a> (or <a href="%4$s" target="_blank">%3$s</a>)'),
+      __('Create a new Wordless theme'),
+      admin_url('themes.php?page=create_wordless_theme'),
+      __('learn more about Wordless'),
       'https://github.com/welaika/wordless#readme'
     );
 		echo "</p></div>";
@@ -51,7 +53,7 @@ class WordlessAdmin
     $theme_options = array(
       "theme_name" => array(
         "label" => "Theme Name",
-        "description" => "This will be the name displayed inside Wordpress.",
+        "description" => "This will be the name displayed inside WordPress.",
         "default_value" => "Wordless"
       ),
       "theme_path" => array(

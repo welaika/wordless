@@ -9,7 +9,7 @@ class TagHelper {
 
   private function tag_options($options, $prefix = "") {
 
-    $html_content = "";
+    $attributes = array();
 
     if (is_array($options)) {
 
@@ -17,27 +17,26 @@ class TagHelper {
 
         if (is_array($option_value)){
           if($option_key == "data"){
-            $html_content .= $this->tag_options($option_value, $option_key . "-");
+            $attributes[] = $this->tag_options($option_value, $option_key . "-");
           } else {
-            $html_content .= " " . $prefix . $option_key . "=" . "\"". addslashes(json_encode($option_value))  . "\"";
+            $html_content[] = $prefix . $option_key . "=" . "\"". addslashes(json_encode($option_value)) . "\"";
           }
         } else {
           if (is_null($option_value) || (empty($option_value)) || ($option_value == $option_key)) {
-            $html_content .= " " . $prefix . $option_key;
+            $html_content[] = $prefix . $option_key;
           } elseif(is_bool($option_value) && ($option_value == true)) {
-            $html_content .= " " . $prefix . $option_key . "=" . "\"". $prefix . $option_key  . "\"";
+            $html_content[] = $prefix . $option_key . "=" . "\"". $prefix . $option_key . "\"";
           } else {
-            $html_content .= " " . $prefix . $option_key . "=" . "\"". $option_value  . "\"";
+            $html_content[] = $prefix . $option_key . "=" . "\"". $option_value . "\"";
           }
         }
       }
     } else {
       //We have only a simple string and not an array
-      $html_content .= " " . $options;
+      $html_content[] = $options;
     }
 
-    return $html_content;
-
+    return join(" ", $html_content);
   }
 
   function content_tag($name, $content, $options = NULL, $escape = false) {
@@ -45,13 +44,13 @@ class TagHelper {
     if (is_null($content)){
       $html_content = "<" . $name;
       if(!is_null($options)){
-        $html_content .= $this->tag_options($options);
+        $html_content .= " " . $this->tag_options($options);
       }
       $html_content .= "/>";
     } else {
       $html_content = "<" . $name;
       if(!is_null($options)){
-        $html_content .= $this->tag_options($options);
+        $html_content .= " " . $this->tag_options($options);
       }
       $html_content .= ">";
       $html_content .= ((bool) $escape) ? htmlentities($content) : $content;
@@ -59,108 +58,34 @@ class TagHelper {
     }
 
     return $html_content;
-
   }
 
-  function include_stylesheet($url) {
-    if (!preg_match("/^https?:\/\//", $url)) {
-      $url = stylesheet_url($url);
-      if (!preg_match("/\.css$/", $url)) $url .= ".css";
-    }
-
+  function option_tag($text, $name, $value, $selected = NULL) {
     $options = array(
-      "href"  => $url,
-      "media" => "all",
-      "rel"   => "stylesheet",
-      "type"  => "text/css"
-    );
-
-    return $this->content_tag("link", NULL, $options);
-  }
-
-  function include_javascript($url) {
-    if (!preg_match("/^https?:\/\//", $url)) {
-      $url = javascript_url($url);
-      if (!preg_match("/.js$/", $url)) $url .= ".js";
-    }
-
-    $options = array(
-      "src"  => $url,
-      "media" => "all",
-      "rel"   => "stylesheet",
-      "type"  => "text/javascript"
-    );
-
-    return $this->content_tag("script", "", $options);
-  }
-
-  function rss_link($title, $url) {
-
-    $options = array(
-      "href"  => $url,
-      "title" => $title,
-      "rel"   => "alternate",
-      "type"  => "application/rss+xml"
-    );
-
-    return $this->content_tag("link", NULL, $options);
-  }
-
-  function option_tag($text, $name, $value, $selected) {
-    $options = array( "
-      name"  => $name,
+      "name"  => $name,
       "value" => $value
     );
 
     if ($selected) {
-      $options["selected"] = "selected";
+      $options["selected"] = true;
     }
 
     return $this->content_tag("option", $text, $options);
   }
 
-  function link_to($text = '', $link = '', $attributes = NULL) {
-    if (!is_string($text)) {
-      $text = "Testo non disponibile";
-    }
+  function link_to($text = '', $link = NULL, $attributes = NULL) {
     if (!is_string($link)) {
-      $link = "#link_not_available";
+      $link = "#";
     }
 
-    $options = array("href"  => $link);
-    if(is_array($attributes)){
+    $options = array("href" => $link);
+    if (is_array($attributes)){
       $options = array_merge($options, $attributes);
-    } else {
-      $options = array_merge($options, array($attributes => NULL));
     }
 
     return $this->content_tag("a", $text, $options);
   }
 
-  function active_if($active_check) {
-    return $active_check ? "active" : "inactive";
-  }
-
-  function get_page_title($prefix = "", $separator = "") {
-    $title = "";
-    if (is_category()) {
-      $category = get_category(get_query_var('cat'),false);
-      $title = get_cat_name($category->cat_ID);
-    }
-    if (is_post_type_archive()) {
-      $title = get_post_type_singular_name();
-    }
-    if (is_single() || is_page()) {
-      $title = get_the_title();
-    }
-    if (is_search()) {
-      $title = "Ricerca";
-    }
-    if (is_front_page()) {
-      return $prefix;
-    }
-    return "$prefix$separator$title";
-  }
 }
 
 Wordless::register_helper("TagHelper");

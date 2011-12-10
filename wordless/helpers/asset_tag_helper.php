@@ -56,12 +56,10 @@ class AssetTagHelper {
     $options = array();
 
     switch ($type) {
-      case "rss":
-        $options['type'] = "application/rss+xml";
-        break;
       case "atom":
         $options['type'] = "application/atom+xml";
         break;
+      case "rss":
       default:
         $type = "rss";
         $options['type'] = "application/rss+xml";
@@ -72,6 +70,7 @@ class AssetTagHelper {
     case "posts":
     case "comments":
       $options['href'] = get_feed_url($model_or_url, $type);
+      break;
     default:
       $options['href'] = $model_or_url;
     }
@@ -127,24 +126,24 @@ class AssetTagHelper {
    */
   public function get_feed_url($model, $type = "rss") {
     if ($model == "posts")  {
-        switch ($type) {
-          case "rdf":
-            return bloginfo('rdf_url');
-          case "rss1":
-          case "rss092":
-            return bloginfo('rss_url');
-          case "atom":
-            return bloginfo('atom_url');
-          case "rss":
-          case "rss2":
-          default:
-            return bloginfo('rss2_url');
-        }
-    }
-    elseif ($model=="comments")
+      switch ($type) {
+        case "rdf":
+          return bloginfo('rdf_url');
+        case "rss1":
+        case "rss092":
+          return bloginfo('rss_url');
+        case "atom":
+          return bloginfo('atom_url');
+        case "rss":
+        case "rss2":
+        default:
+          return bloginfo('rss2_url');
+      }
+    } elseif ($model=="comments") {
       return bloginfo('comments_rss2_url');
-    else
-      return NULL;
+    }
+
+    return NULL;
   }
 
   /**
@@ -168,7 +167,12 @@ class AssetTagHelper {
       $source = image_url($source);
     }
 
-    $options = array( "src"  => $source );
+    $info = pathinfo($source);
+
+    $options = array(
+      "src"  => $source,
+      "alt"  => capitalize(basename($source,'.' . $info['extension']))
+    );
 
     if(is_array($attributes)){
       $options = array_merge($options, $attributes);
@@ -208,10 +212,100 @@ class AssetTagHelper {
       return content_tag("video", $html_content, $attributes);
     }
     else {
-      $options = array_merge(array("src" => $sources), $attributes);
+      $options = array("src" => $sources);
+      if (is_array($attributes)){
+       $options = array_merge($options, $attributes);
+      }
       return content_tag("video", NULL, $options);
     }
   }
+
+   /**
+    * Returns a stylesheet link tag for the sources specified as arguments. If
+    * you don’t specify an extension, ".css" will be appended automatically.
+    * Relative paths are assumed to be relative to assets/javascripts.
+    * If the last argument is an array, it will be used as tag attributes.
+    *
+    * @return @e string
+    *   A valid \<link /\> HTML tag.
+    *
+    * @ingroup helperfunc
+    *
+    * @see TagHelper::content_tag()
+    *
+    */
+  function stylesheet_link_tag() {
+    $sources = func_get_args();
+    $tags = array();
+
+    $attributes = NULL;
+    if (is_array($sources[count($sources) - 1])) {
+      $attributes = array_pop($sources);
+    }
+
+    foreach ($sources as $source) {
+      if (!preg_match("/^https?:\/\//", $source)) {
+        $source = stylesheet_url($source);
+        if (!preg_match("/\.css$/", $source)) $source .= ".css";
+      }
+      $options = array(
+        "href"  => $source,
+        "media" => "all",
+        "rel"   => "stylesheet",
+        "type"  => "text/css"
+      );
+      if(is_array($attributes)){
+        $options = array_merge($options, $attributes);
+      }
+      $tags[] = content_tag("link", NULL, $options);
+    }
+
+    return join("\n", $tags);
+  }
+
+   /**
+    * Returns an HTML script tag for each of the sources provided as arguments.
+    * Sources may be paths to JavaScript files. Relative paths are assumed to be
+    * relative to assets/javascripts. When passing paths, the ".js" extension is
+    * optional.
+    * If the last argument is an array, it will be used as tag attributes.
+    *
+    * @return @e string
+    *   A valid \<script /\> HTML tag.
+    *
+    * @ingroup helperfunc
+    *
+    * @see TagHelper::content_tag()
+    *
+    */
+  function javascript_include_tag() {
+    $sources = func_get_args();
+
+    $attributes = NULL;
+    if (is_array($sources[count($sources) - 1])) {
+      $attributes = array_pop($sources);
+    }
+
+    $tags = array();
+
+    foreach ($sources as $source) {
+      if (!preg_match("/^https?:\/\//", $source)) {
+        $source = javascript_url($source);
+        if (!preg_match("/\.js$/", $source)) $source .= ".js";
+      }
+      $options = array(
+        "src"  => $source,
+        "type"  => "text/javascript"
+      );
+      if(is_array($attributes)){
+        $options = array_merge($options, $attributes);
+      }
+      $tags[] = content_tag("script", "", $options);
+    }
+
+    return join("\n", $tags);
+  }
+
 }
 
 Wordless::register_helper("AssetTagHelper");
