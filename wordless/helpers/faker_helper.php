@@ -3,8 +3,37 @@
 require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/lorem/LoremIpsum.class.php');
 Wordless::require_once_dir(Wordless::join_paths(dirname(__FILE__), "placeholder_images"));
 
+/**
+ * This module provides methods for use of placeholders (images or text).
+ * 
+ * @copyright welaika &copy; 2011 - MIT License
+ * 
+ * @ingroup helperclass
+ */
 class FakerHelper {
 
+  /**
+   * Generate a placeholder image.
+   * 
+   * Using the specified sevice provide a placeholder image.
+   * 
+   * Placeholder Services available are described here @ref placeholders.
+   *
+   * To implement your service please check the @ref placeholderservices.
+   * 
+   * @param int $width
+   *   The width of the placeholder image.
+   * @param int $height
+   *   The height of the placeholder image.
+   * @param array $options
+   *   An option array to be passed to the PHP Class handling the placeholder
+   *   service. See the placeholder service docs for details.
+   * 
+   * @return @e string
+   *   The @e URL of the placeholder image generated with the specified service.
+   * 
+   * @ingroup helperfunc
+   */
   function placeholder_image($width, $height, $options = array()) {
 
     $services_class = array(
@@ -24,6 +53,25 @@ class FakerHelper {
     }
   }
 
+  /**
+   * Generate placeholder text.
+   * 
+   * Using the famous Lorem Ipsum base text, generate a dummy text based on 
+   * specified options.
+   * 
+   * @param int $count
+   *   The length in words of the dummy text.
+   * @param array $options
+   *   An array of options to manage text generation. Options available are:
+   *   - html: wheter to build HTML content or plain content. Default to false.
+   *   - lorem: if the text must start with "Lorem ipsum..." or not.
+   *     Default to true.
+   * 
+   * @return @e string 
+   *   The generated dummy text.
+   * 
+   * @ingroup helperfunc
+   */
   function placeholder_text($count, $options = array()) {
     $options = array_merge(
       array(
