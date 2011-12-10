@@ -23,7 +23,7 @@ class LoremPixelImage extends PlaceholderImage {
    * - gray
    * - offset
    */
-  function url() {
+  public function url() {
     $options = array_merge(
       array('category' => 'nightlife'),
       $this->options

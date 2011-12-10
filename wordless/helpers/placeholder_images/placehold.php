@@ -20,7 +20,7 @@ class PlaceholdImage extends PlaceholderImage {
    * - background_color
    * - foreground_color
    */
-  function url() {
+  public function url() {
     $options = array_merge(
       array(
         'background_color' => '777777',
