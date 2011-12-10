@@ -8,7 +8,6 @@
 class DateHelper {
 
   /**
-<<<<<<< HEAD
    * Returns a user-friendly string representation of a time distance.
    * 
    * Given 2 timestamps, return a readable representation for their distance, 
@@ -106,6 +105,7 @@ class DateHelper {
    * @return string
    *   A string representation of the time elapsed since the creation of the
    *   current post.
+   * 
    * @ingroup helperfunc
    * 
    * @see https://codex.wordpress.org/Function_Reference/get_the_date
@@ -148,7 +148,7 @@ class DateHelper {
    *   http://it.php.net/manual/en/class.datetime.php#datetime.constants.types,
    *   DATE_W3C} PHP predefined DateTime constant as date description.
    * @param string $text
-   *   The text of the time HTML tag.
+   *   (optional) The text of the time HTML tag.
    * @param array $attributes
    *   (optional) An array of HTML attributes to be added to the rendered tag.
    * @return @e string
@@ -166,6 +166,16 @@ class DateHelper {
     return content_tag("time", $text, $options);
   }
 
+  /**
+   * Like distance_of_time_in_words() but with fixed value of $to_time.
+   * 
+   * This functions is a shorthand for distance_of_time_in_words($from_time, 
+   * time(), $include_seconds).
+   * 
+   * @ingroup helperfunc
+   * 
+   * @see distance_of_time_in_words()
+   */
   function time_ago_in_words($from_time, $include_seconds = false) {
     return distance_of_time_in_words($from_time, time(), $include_seconds);
   }
