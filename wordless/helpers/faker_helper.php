@@ -35,7 +35,6 @@ class FakerHelper {
    * @ingroup helperfunc
    */
   public function placeholder_image($width, $height, $options = array()) {
-
     $services_class = array(
       'placehold' => 'PlaceholdImage',
       'lorem_pixel' => 'LoremPixelImage'
