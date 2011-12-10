@@ -612,7 +612,16 @@ WARN_LOGFILE           =
 # directories like "/usr/src/myproject". Separate the files or directories
 # with spaces.
 
-INPUT                  = . docs wordless wordless/admin wordless/helpers wordless/preprocessors
+INPUT                  = .
+INPUT                 += docs
+INPUT                 += wordless
+#INPUT                 += wordless/admin
+INPUT                 += wordless/helpers
+INPUT                 += wordless/helpers/placeholder_images
+INPUT                 += wordless/helpers/templates
+INPUT                 += wordless/preprocessors
+#INPUT                 += wordless/test
+#INPUT                 += wordless/test/support
 
 # This tag can be used to specify the character encoding of the source files
 # that doxygen parses. Internally doxygen uses the UTF-8 encoding, which is
