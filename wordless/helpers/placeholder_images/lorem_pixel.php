@@ -2,10 +2,27 @@
 
 require_once 'placeholder_image.php';
 
+/**
+ * Implements the LoremPixel service.
+ * 
+ * @copyright welaika &copy; 2011 - MIT License
+ * 
+ * @ingroup placeholders
+ * 
+ * @see http://lorempixel.com
+ */
 class LoremPixelImage extends PlaceholderImage {
 
   private static $offset = 0;
 
+  /**
+   * Implements PlaceholderImage::url().
+   * 
+   * @par Available options are:
+   * - category
+   * - gray
+   * - offset
+   */
   function url() {
     $options = array_merge(
       array('category' => 'nightlife'),
