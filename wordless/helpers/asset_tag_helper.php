@@ -238,6 +238,7 @@ class AssetTagHelper {
     $sources = func_get_args();
     $tags = array();
 
+    $attributes = NULL;
     if (is_array($sources[count($sources) - 1])) {
       $attributes = array_pop($sources);
     }
@@ -280,6 +281,7 @@ class AssetTagHelper {
   function javascript_include_tag() {
     $sources = func_get_args();
 
+    $attributes = NULL;
     if (is_array($sources[count($sources) - 1])) {
       $attributes = array_pop($sources);
     }

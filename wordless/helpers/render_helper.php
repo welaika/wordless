@@ -12,7 +12,7 @@ class RenderHelper {
     $template_path = Wordless::join_paths(Wordless::theme_views_path(), "$name.haml");
 
     if (!is_file($template_path)) {
-      render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$template_path</code> doesn't exists!");
+      render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$template_path</code> doesn't exist!");
     }
 
     if (!file_exists($tmp_dir)) {
@@ -27,7 +27,7 @@ class RenderHelper {
       $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false/*, 'helperFile' => dirname(__FILE__).'/../ThemeHamlHelpers.php'*/));
       include $haml->parse($template_path, $tmp_dir);
     } else {
-      render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>/tmp/</code> directory is not writable by the server! Go fix it!");
+      render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
     }
   }
 

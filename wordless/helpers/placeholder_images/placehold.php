@@ -2,9 +2,25 @@
 
 require_once 'placeholder_image.php';
 
+/**
+ * Implements the Placehold service.
+ * 
+ * @copyright welaika &copy; 2011 - MIT License
+ * 
+ * @ingroup placeholders
+ * 
+ * @see http://placehold.it
+ */
 class PlaceholdImage extends PlaceholderImage {
 
-  function url() {
+  /**
+   * Implements PlaceholderImage::url().
+   * 
+   * @par Available options are:
+   * - background_color
+   * - foreground_color
+   */
+  public function url() {
     $options = array_merge(
       array(
         'background_color' => '777777',
