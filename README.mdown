@@ -9,6 +9,9 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
 * A growing set of handy and documented helper functions ready to be used within your views;
 
+[![Build Status](http://travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
+
+
 <a name="installation"></a>
 ## Requirements, installation and configuration
 
