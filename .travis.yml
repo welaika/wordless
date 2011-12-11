@@ -6,7 +6,7 @@ script: "rake tests"
 notifications:
   email:
     on_failure: always
-    on_success: change
+    on_success: always
   recipients:
     - stefano.verna@welaika.com
     - edoardo.tenani@welaika.com
