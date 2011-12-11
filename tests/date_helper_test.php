@@ -163,11 +163,12 @@ class DateHelperTest extends UnitTestCase {
   function test_time_ago_in_words() {
     $this->assertEqual(
       'over 25 years',
-      time_ago_in_words(mktime(11,30,0,11,27,1986))
+      time_ago_in_words(mktime(11, 30, 0, 11, 27, date("Y") - 25))
     );
   }
 
   function test_time_tag() {
+    date_default_timezone_set("Europe/Rome");
     $this->assertEqual(
       '<time datetime="1986-11-27T11:30:00+01:00" birthday="true">foobar</time>',
       time_tag(mktime(11,30,0,11,27,1986), "foobar", array("birthday" => "true"))
