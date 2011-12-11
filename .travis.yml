@@ -2,4 +2,4 @@ language: php
 php:
   - 5.3
   - 5.4
-script: php tests/all_tests.php
+script: "cd tests && php all_tests.php"
