@@ -3,3 +3,12 @@ php:
   - 5.3
   - 5.4
 script: "rake tests"
+notifications:
+  email:
+    on_failure: always
+    on_success: change
+  recipients:
+    - stefano.verna@welaika.com
+    - edoardo.tenani@welaika.com
+    - ju.liu@welaika.com
+    - matteo.piotto@welaika.com
