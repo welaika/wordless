@@ -9,7 +9,7 @@ class UrlHelperTest extends UnitTestCase {
 
   function test_asset_url() {
     $this->assertEqual(
-      'mocked_stylesheet_directory/assets/coconuts1',
+      'mocked_stylesheet_directory/assets/coconuts',
       asset_url("coconuts")
     );
   }
