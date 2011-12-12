@@ -83,7 +83,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     $config = array(
       "http_path" => Wordless::theme_url(),
-      "images_dir" => "assets/images",
+      "images_dir" => "../assets/images",
       "css_path" => $temp_path,
       "relative_assets" => false,
       "output_style" => ":" . $this->preference("compass.output_style"),
