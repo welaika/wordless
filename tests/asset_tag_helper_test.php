@@ -53,17 +53,17 @@ class AssetTagHelperTest extends UnitTestCase {
   function test_auto_discovery_link_tag() {
 
     $this->assertEqual(
-      '<link type="application/rss+xml" href="mocked_rss2_url"/>',
+      '<link rel="alternate" title="RSS" type="application/rss+xml" href="mocked_rss2_url"/>',
       auto_discovery_link_tag()
     );
 
     $this->assertEqual(
-      '<link type="application/rss+xml" href="source"/>',
+      '<link rel="alternate" title="RSS" type="application/rss+xml" href="source"/>',
       auto_discovery_link_tag("source")
     );
 
     $this->assertEqual(
-      '<link type="application/atom+xml" href="source"/>',
+      '<link rel="alternate" title="ATOM" type="application/atom+xml" href="source"/>',
       auto_discovery_link_tag("source", "atom")
     );
 

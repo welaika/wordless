@@ -51,9 +51,12 @@ class AssetTagHelper {
    * @ingroup helperfunc
    *
    */
-  public function auto_discovery_link_tag($model_or_url = "posts", $type = "rss", $tag_options = NULL) {
+  public function auto_discovery_link_tag($model_or_url = "posts", $type = "rss", $additional_options = NULL) {
 
-    $options = array();
+    $options = array(
+      "rel" => "alternate",
+      "title" => strtoupper($type)
+    );
 
     switch ($type) {
       case "atom":
@@ -75,8 +78,8 @@ class AssetTagHelper {
       $options['href'] = $model_or_url;
     }
 
-    if (is_array($tag_options)) {
-      $options = array_merge($options, $tag_options);
+    if (is_array($additional_options)) {
+      $options = array_merge($options, $additional_options);
     }
 
     return content_tag("link", NULL, $options);
