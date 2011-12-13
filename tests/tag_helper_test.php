@@ -43,6 +43,11 @@ class TagHelperTest extends UnitTestCase {
       content_tag("select", "", array('multiple' => ''))
     );
 
+    $this->assertEqual(
+      '<title>Ciao</title>',
+      content_tag("title", "Ciao", array())
+    );
+
   }
 
   function test_option_tag() {

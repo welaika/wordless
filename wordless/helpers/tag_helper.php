@@ -10,6 +10,7 @@ class TagHelper {
   private function tag_options($options, $prefix = "") {
 
     $attributes = array();
+    $html_content = array();
 
     if (is_array($options)) {
 
@@ -43,14 +44,14 @@ class TagHelper {
 
     if (is_null($content)){
       $html_content = "<" . $name;
-      if(!is_null($options)){
-        $html_content .= " " . $this->tag_options($options);
+      if(!is_null($options) && $attrs = $this->tag_options($options)){
+        $html_content .= " " . $attrs;
       }
       $html_content .= "/>";
     } else {
       $html_content = "<" . $name;
-      if(!is_null($options)){
-        $html_content .= " " . $this->tag_options($options);
+      if(!is_null($options) && $attrs = $this->tag_options($options)){
+        $html_content .= " " . $attrs;
       }
       $html_content .= ">";
       $html_content .= ((bool) $escape) ? htmlentities($content) : $content;

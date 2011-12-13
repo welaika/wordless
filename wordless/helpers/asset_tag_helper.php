@@ -128,19 +128,19 @@ class AssetTagHelper {
     if ($model == "posts")  {
       switch ($type) {
         case "rdf":
-          return bloginfo('rdf_url');
+          return get_bloginfo('rdf_url');
         case "rss1":
         case "rss092":
-          return bloginfo('rss_url');
+          return get_bloginfo('rss_url');
         case "atom":
-          return bloginfo('atom_url');
+          return get_bloginfo('atom_url');
         case "rss":
         case "rss2":
         default:
-          return bloginfo('rss2_url');
+          return get_bloginfo('rss2_url');
       }
     } elseif ($model=="comments") {
-      return bloginfo('comments_rss2_url');
+      return get_bloginfo('comments_rss2_url');
     }
 
     return NULL;
