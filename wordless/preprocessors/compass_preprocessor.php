@@ -60,7 +60,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
    */
   protected function die_with_error($description) {
     $description = preg_replace('/\n/', '\n', addslashes($description));
-    echo sprintf("body::before { content: '%s'; font-family: monospace; };", $description);
+    echo sprintf('body::before { content: "%s"; font-family: monospace; }', $description);
     die();
   }
 
@@ -83,7 +83,10 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     $config = array(
       "http_path" => Wordless::theme_url(),
-      "images_dir" => "assets/images",
+      "http_images_dir" => "assets/images",
+      "images_dir" => "../assets/images",
+      "http_fonts_dir" => "assets/fonts",
+      "fonts_dir" => "../assets/fonts",
       "css_path" => $temp_path,
       "relative_assets" => false,
       "output_style" => ":" . $this->preference("compass.output_style"),
