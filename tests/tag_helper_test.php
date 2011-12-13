@@ -83,5 +83,38 @@ class TagHelperTest extends UnitTestCase {
 
   }
 
+  function test_content_type_meta_tag() {
+    $this->assertEqual(
+      '<meta http-equiv="Content-type" content="mocked_html_type; charset=mocked_charset"/>',
+      content_type_meta_tag()
+    );
+
+    $this->assertEqual(
+      '<meta http-equiv="Content-type" content="test"/>',
+      content_type_meta_tag("test")
+    );
+  }
+
+  function test_title_tag() {
+    /* We need to test it with no params! */
+
+    $this->assertEqual(
+      '<title>Wordless</title>',
+      title_tag("Wordless")
+    );
+  }
+
+  function test_pingback_link_tag() {
+    $this->assertEqual(
+      '<link href="mocked_pingback_url"/>',
+      pingback_link_tag()
+    );
+
+    $this->assertEqual(
+      '<link href="url"/>',
+      pingback_link_tag("url")
+    );
+
+  }
 
 }

@@ -87,6 +87,30 @@ class TagHelper {
     return $this->content_tag("a", $text, $options);
   }
 
+
+  function content_type_meta_tag($content = NULL) {
+
+    $content = $content ? $content : get_bloginfo('html_type') . '; ' . 'charset=' . get_bloginfo('charset');
+
+    $attrs = array(
+      "http-equiv" => "Content-type",
+      "content"    => $content
+    );
+
+    return content_tag("meta", NULL, $attrs);
+  }
+
+  function title_tag($title = NULL, $attributes = array()) {
+    $title = $title ? $title : get_page_title();
+    return content_tag("title", $title, $attributes);
+  }
+
+  function pingback_link_tag($url = NULL) {
+    $url = $url ? $url : get_bloginfo('pingback_url');
+    $attributes = array("href" => $url);
+    return content_tag("link", NULL, $attributes);
+  }
+
 }
 
 Wordless::register_helper("TagHelper");
