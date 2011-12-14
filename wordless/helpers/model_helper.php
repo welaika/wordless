@@ -21,7 +21,7 @@ class ModelHelper {
       'edit_item' => sprintf(__("Edit %s", "we"), $uc_singular),
       'new_item' => sprintf(__("New %s", "we"), $uc_singular),
       'view_item' => sprintf(__("View %s", "we"), $uc_singular),
-      'search_items' => sprintf(__("Add new %s", "we"), $uc_plural),
+      'search_items' => sprintf(__("Search %s", "we"), $uc_plural),
       'not_found' => sprintf(__("No %s found.", "we"), $uc_plural),
       'not_found_in_trash' => sprintf(__("No %s found in Trash", "we"), $uc_plural),
       'parent_item_colon' => ',',
