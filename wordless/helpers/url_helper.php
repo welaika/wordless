@@ -2,7 +2,7 @@
 
 class UrlHelper {
   function asset_url($path) {
-    return parse_url(get_bloginfo('stylesheet_directory'), PHP_URL_PATH) . "/assets/$path";
+    return get_bloginfo('stylesheet_directory') . "/assets/$path";
   }
 
   function image_url($path) {
