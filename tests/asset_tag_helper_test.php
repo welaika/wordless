@@ -21,18 +21,13 @@ class AssetTagHelperTest extends UnitTestCase {
 
   function test_favicon_link_tag() {
     $this->assertEqual(
-      '<link rel="shortcut icon" href="/favicon.ico" type="image/vnd.microsoft.icon"/>',
+      '<link rel="icon" href="mocked_stylesheet_directory/assets/images/favicon.ico" type="image/vnd.microsoft.icon"/><link rel="shortcut icon" href="mocked_stylesheet_directory/assets/images/favicon.ico" type="image/vnd.microsoft.icon"/>',
       favicon_link_tag()
     );
 
     $this->assertEqual(
-      '<link rel="shortcut icon" href="source" type="image/vnd.microsoft.icon"/>',
-      favicon_link_tag("source")
-    );
-
-    $this->assertEqual(
-      '<link rel="shortcut icon" href="source" type="image/icon"/>',
-      favicon_link_tag("source", array("type" => "image/icon"))
+      '<link rel="icon" href="mocked_stylesheet_directory/assets/images/source.png" type="image/png"/><link rel="shortcut icon" href="mocked_stylesheet_directory/assets/images/source.png" type="image/png"/>',
+      favicon_link_tag("source.png")
     );
   }
 

@@ -209,7 +209,7 @@ class Wordless {
   }
 
   public static function theme_url() {
-    return get_bloginfo('template_url');
+    return parse_url(get_bloginfo('template_url'), PHP_URL_PATH);
   }
 
   public static function join_paths() {

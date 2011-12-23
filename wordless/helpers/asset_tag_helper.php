@@ -100,14 +100,34 @@ class AssetTagHelper {
    *
    * @ingroup helperfunc
    */
-  public function favicon_link_tag($source= "/favicon.ico", $attributes = array()) {
-    $options = array( "rel"  => 'shortcut icon',
-                      "href" => $source,
-                      "type" => 'image/vnd.microsoft.icon');
+  function favicon_link_tag($source = "favicon.ico", $attributes = NULL) {
+    if (!preg_match("/^(https?|\/)/", $source)) {
+      $source = image_url($source);
+    }
 
-    $options = array_merge($options, $attributes);
+    $info = pathinfo($source);
 
-    return content_tag("link", NULL, $options);
+    $mime_types = array(
+      "ico" => "image/vnd.microsoft.icon",
+      "png" => "image/png",
+      "jpeg" => "image/jpeg",
+      "jpg" => "image/jpg"
+    );
+
+    $options = array(
+      "rel"  => "icon",
+      "href" => $source,
+      "type" => $mime_types[strtolower($info['extension'])]
+    );
+
+    if(is_array($attributes)){
+      $options = array_merge($options, $attributes);
+    }
+
+    $output = content_tag("link", NULL, $options);
+    $output .= content_tag("link", NULL, array_merge($options, array("rel" => "shortcut icon")));
+
+    return $output;
   }
 
   /**
