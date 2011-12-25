@@ -57,7 +57,7 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
    */
   protected function die_with_error($description) {
     $description = preg_replace('/\n/', '\n', addslashes($description));
-    echo sprintf("alert('%s');", $description);
+	echo sprintf("console.error('%s');", $description);
     die();
   }
 
