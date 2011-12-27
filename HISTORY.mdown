@@ -1,0 +1,11 @@
+## HEAD
+
+* Added YUI compressor support;
+* Changed caching tecnique: Wordless no longer reads file content, but
+  uses file modification timestamps;
+* Deprecated old preferences style (see [the vanilla theme
+  `wordless_preferences.php`](https://github.com/welaika/wordless/blob/master/wordless/theme_builder/vanilla_theme/config/initializers/wordless_preferences.php) for the new style);
+
+## [v0.1.0](https://github.com/welaika/wordless/commits/v0.1.0)
+
+First plugin release!
