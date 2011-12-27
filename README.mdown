@@ -150,8 +150,7 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
     = render_partial("common/header")
     = yield()
     = render_partial("common/footer")
-    = javascript_include_tag("jquery")
-	= javascript_include_tag("application")
+    = javascript_include_tag("jquery", "application")
 ```
 
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
@@ -159,7 +158,7 @@ Please note that for content that is shared among all pages in your application,
 <a name="helpers"></a>
 ### Helpers (`theme/helpers/*.php` files)
 
-Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ helpers Wordless gives you for free:
+Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
 
 * `lorem()` - A "lorem ipsum" text and HTML generator;
 * `pluralize()` - Attempts to pluralize words;
