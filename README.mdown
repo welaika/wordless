@@ -7,6 +7,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * The ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
 * The ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
 * The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
+* The ability to merge and compress Javascript assets using [Yahoo YUI Compressor](http://developer.yahoo.com/yui/compressor/);
 * A growing set of handy and documented helper functions ready to be used within your views;
 
 [![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
@@ -41,7 +42,7 @@ Whew, now you have a fully functional Ruby environment! The following oneliner w
 wordless needs and create some handy symbolic links:
 
 ```
-rvm use 1.8.7@wordless --create --default && gem install therubyracer sprockets compass coffee-script && rvm wrapper 1.8.7@wordless wordless compass ruby
+rvm use 1.8.7@wordless --create --default && gem install therubyracer sprockets compass coffee-script thor yui-compressor && rvm wrapper 1.8.7@wordless wordless compass ruby
 ```
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
@@ -54,7 +55,7 @@ Okay, now we can get everything up and running :)
 2. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`);
 3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
 4. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
-5. Specify the path of the `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
+5. Configure the path of your `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
 
 <a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
