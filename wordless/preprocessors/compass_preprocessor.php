@@ -19,8 +19,12 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
   public function __construct() {
     parent::__construct();
-    $this->set_preference_default_value("compass.compass_path", "/usr/bin/compass");
-    $this->set_preference_default_value("compass.output_style", "compressed");
+
+    $this->mark_preference_as_deprecated("compass.compass_path", "css.compass_path");
+    $this->mark_preference_as_deprecated("compass.output_style", "css.output_style");
+
+    $this->set_preference_default_value("css.compass_path", "/usr/bin/compass");
+    $this->set_preference_default_value("css.output_style", "compressed");
   }
 
   /**
@@ -32,13 +36,13 @@ class CompassPreprocessor extends WordlessPreprocessor {
   protected function asset_hash($file_path) {
     $hash = array(parent::asset_hash($file_path));
     $base_path = dirname($file_path);
-    $files = $this->folder_tree(dirname($base_path), "*.{sass,scss}", GLOB_BRACE);
+    $files = $this->folder_tree(dirname($base_path), "*.coffee");
     sort($files);
-    $contents = array();
+    $hash_seed = array();
     foreach ($files as $file) {
-      $hash[] = file_get_contents($file);
+      $hash_seed[] = $file . date("%U", filemtime($file));
     }
-    return md5(join($hash));
+    return md5(join($hash_seed));
   }
 
   /**
@@ -72,11 +76,11 @@ class CompassPreprocessor extends WordlessPreprocessor {
    */
   protected function process_file($file_path, $result_path, $temp_path) {
 
-    $this->validate_executable_or_die($this->preference("compass.compass_path"));
+    $this->validate_executable_or_die($this->preference("css.compass_path"));
 
     // On cache miss, we build the file from scratch
     $pb = new ProcessBuilder(array(
-      $this->preference("compass.compass_path"),
+      $this->preference("css.compass_path"),
       'compile',
       $temp_path
     ));
@@ -89,7 +93,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
       "fonts_dir" => "../assets/fonts",
       "css_path" => $temp_path,
       "relative_assets" => false,
-      "output_style" => ":" . $this->preference("compass.output_style"),
+      "output_style" => ":" . $this->preference("css.output_style"),
       "environment" => ":production",
       "sass_path" => dirname($file_path)
     );

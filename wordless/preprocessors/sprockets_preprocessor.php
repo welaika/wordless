@@ -17,7 +17,12 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
 
   public function __construct() {
     parent::__construct();
-    $this->set_preference_default_value("sprockets.ruby_path", '/usr/bin/ruby');
+
+    $this->mark_preference_as_deprecated("sprockets.ruby_path", "js.ruby_path");
+
+    $this->set_preference_default_value("js.ruby_path", '/usr/bin/ruby');
+    $this->set_preference_default_value("js.yui_compress", false);
+    $this->set_preference_default_value("js.yui_munge", false);
   }
 
   /**
@@ -31,11 +36,11 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
     $base_path = dirname($file_path);
     $files = $this->folder_tree(dirname($base_path), "*.coffee");
     sort($files);
-    $contents = array();
+    $hash_seed = array();
     foreach ($files as $file) {
-      $hash[] = file_get_contents($file);
+      $hash_seed[] = $file . date("%U", filemtime($file));
     }
-    return md5(join($hash));
+    return md5(join($hash_seed));
   }
 
   /**
@@ -66,21 +71,31 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
    */
   protected function process_file($file_path, $result_path, $temp_path) {
 
-    $this->validate_executable_or_die($this->preference("sprockets.ruby_path"));
+    $this->validate_executable_or_die($this->preference("js.ruby_path"));
 
     // On cache miss, we build the JS file from scratch
     $pb = new ProcessBuilder(array(
-      $this->preference("sprockets.ruby_path"),
-      Wordless::join_paths(dirname(__FILE__), "sprockets_preprocessor.rb")
+      $this->preference("js.ruby_path"),
+      Wordless::join_paths(dirname(__FILE__), "sprockets_preprocessor.rb"),
+      "compile"
     ));
 
     // Fix for MAMP environments, see http://goo.gl/S5KFe for details
     $pb->setEnv("DYLD_LIBRARY_PATH", "");
 
+    $pb->add($file_path);
+
+    $pb->add("--paths");
     $pb->add(Wordless::theme_static_javascripts_path());
     $pb->add(Wordless::theme_javascripts_path());
 
-    $pb->add($file_path);
+    if ($this->preference("js.yui_compress")) {
+      $pb->add("--compress");
+    }
+
+    if ($this->preference("js.yui_munge")) {
+      $pb->add("--munge");
+    }
 
     $proc = $pb->getProcess();
     $code = $proc->run();

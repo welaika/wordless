@@ -12,6 +12,7 @@ class WordlessPreprocessor {
    * A dictionary of default values for preferences needed by the preprocessor.
    */
   private $preferences_defaults = array();
+  private $deprecated_preferences = array();
 
   public function __construct() {
     $this->set_preference_default_value("assets.cache_enabled", true);
@@ -92,14 +93,14 @@ class WordlessPreprocessor {
    */
   protected function asset_hash($file_path) {
     // First we get the file content
-    $file_content = file_get_contents($file_path);
+    $hash_seed = date("%U", filemtime($file_path));
 
     // Then we attach the preferences
     foreach ($this->preferences_defaults as $pref => $value) {
-      $file_content .= $pref . '=' . $this->preference($pref) . ';';
+      $hash_seed .= $pref . '=' . $this->preference($pref) . ';';
     }
 
-    return md5($file_content);
+    return md5($hash_seed);
   }
 
   /**
@@ -143,7 +144,20 @@ class WordlessPreprocessor {
    * @see Wordless:set_preference_default()
    */
   protected function preference($name) {
-    return Wordless::preference($name, $this->preferences_defaults[$name]);
+    $possible_names = array($name);
+    if (is_array($this->deprecated_preferences[$name])) {
+      $possible_names = $this->deprecated_preferences[$name];
+      array_unshift($possible_names, $name);
+    }
+
+    foreach ($possible_names as $name) {
+      $value = Wordless::preference($name, NULL);
+      if (isset($value)) {
+        return $value;
+      }
+    }
+
+    return $this->preferences_defaults[$name];
   }
 
   /**
@@ -155,6 +169,20 @@ class WordlessPreprocessor {
    */
   protected function set_preference_default_value($name, $value) {
     $this->preferences_defaults[$name] = $value;
+  }
+
+  /**
+   * Marks a preference name as deprecated.
+   * @param string $old_preference_name
+   *   The old preference name
+   * @param string $new_preference_name
+   *   The new preference name
+   */
+  protected function mark_preference_as_deprecated($old_preference_name, $new_preference_name) {
+    if (!isset($this->deprecated_preferences[$new_preference_name])) {
+      $this->deprecated_preferences[$new_preference_name] = array();
+    }
+    array_push($this->deprecated_preferences[$new_preference_name], $old_preference_name);
   }
 
   /**
