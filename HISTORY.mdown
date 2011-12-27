@@ -1,5 +1,6 @@
 ## HEAD
 
+* Changed Sprockets error message to use console.error() instead of alert() (thanks @johanbrook);
 * Added YUI compressor support;
 * Changed caching tecnique: Wordless no longer reads file content, but
   uses file modification timestamps;
