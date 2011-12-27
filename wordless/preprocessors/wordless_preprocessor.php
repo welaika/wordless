@@ -150,8 +150,8 @@ class WordlessPreprocessor {
       array_unshift($possible_names, $name);
     }
 
-    foreach ($possible_names as $name) {
-      $value = Wordless::preference($name, NULL);
+    foreach ($possible_names as $possible_name) {
+      $value = Wordless::preference($possible_name, NULL);
       if (isset($value)) {
         return $value;
       }
