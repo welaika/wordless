@@ -2,8 +2,8 @@
 
 class QueryHelper {
 
-  function latest_posts_of_type($type, $limit = -1, $order = 'date') {
-    return query_posts("posts_per_page=$limit&post_type=$type&orderby=$order");
+  function latest_posts_of_type($type, $limit = -1, $order = 'date', $ord = 'ASC') {
+    return query_posts("posts_per_page=$limit&post_type=$type&orderby=$order&order=$ord");
   }
 
   function latest_post_of_type($type, $order = 'date') {
@@ -11,7 +11,7 @@ class QueryHelper {
     return $posts[0];
   }
 
-  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date') {
+  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'ASC') {
     return query_posts(array(
       'posts_per_page' => $limit,
       'tax_query' => array(
@@ -21,7 +21,8 @@ class QueryHelper {
       ),
       'offset' => $offset,
       'post_type' => $post_type,
-      'orderby' => $order
+      'orderby' => $order,
+      'order' => $ord
     ));
   }
 
