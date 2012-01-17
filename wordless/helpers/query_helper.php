@@ -11,14 +11,12 @@ class QueryHelper {
     return $posts[0];
   }
 
-  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'ASC') {
+
+  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category',$order = 'date', $ord = 'ASC') {
     return query_posts(array(
       'posts_per_page' => $limit,
-      'tax_query' => array(
-        'taxonomy' => $taxonomy,
-        'field' => 'slug',
-        'terms' => array($category)
-      ),
+      'taxonomy' => $taxonomy,
+      'term' => $category,
       'offset' => $offset,
       'post_type' => $post_type,
       'orderby' => $order,
