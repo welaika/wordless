@@ -30,13 +30,13 @@ class CompassPreprocessor extends WordlessPreprocessor {
   /**
    * Overrides WordlessPreprocessor::asset_hash()
    * @attention This is raw code. Right now all we do is find all the *.{sass,scss} files, concat
-   * them togheter and generate an hash. We should find exacty the coffee files required by
+   * them togheter and generate an hash. We should find exacty the sass files required by
    * $file_path asset file.
    */
   protected function asset_hash($file_path) {
     $hash = array(parent::asset_hash($file_path));
     $base_path = dirname($file_path);
-    $files = $this->folder_tree(dirname($base_path), "*.coffee");
+    $files = $this->folder_tree(dirname($base_path), "*.{sass,scss}");
     sort($files);
     $hash_seed = array();
     foreach ($files as $file) {
