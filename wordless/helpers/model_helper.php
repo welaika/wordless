@@ -1,7 +1,33 @@
 <?php
-
+/**
+ * This module provides methods for handling of WordPress "models" ( Posts and
+ * Taxonomies ), making easy to create new post types or new taxonomies.
+ * 
+ * @ingroup helperclass
+ */
 class ModelHelper {
 
+  /**
+   * Creates a new post type.
+   * 
+   * This function use the WP APIs and functions to register a new post type.
+   * 
+   * @param string|array $name The name of the new post type (will appear in the 
+   *    backend). If the name is a sting, the plural will be evaluated by the 
+   *    system; if is an array, must contains the singular and the plural 
+   *    versions of the name.
+   *    Ex:
+   *    @code
+   * $name = array(
+   *   "singular" => 'My custom post type',
+   *   "plural" => 'My custom post types'
+   * );
+   *    @endcode
+   * @param array $supports (optional) Extra fields added to this post type. 
+   *    Default fields (the fields you can find in page/post type) are added by default.
+   * 
+   * @ingroup helperfunc
+   */
   function new_post_type($name, $supports = array("title", "editor")) {
 
     if (!is_array($name)) {
@@ -46,6 +72,15 @@ class ModelHelper {
     );
   }
 
+  /**
+   * Create a new taxonomy.
+   * 
+   * @param string $name The name of the taxonomy.
+   * @param $post_types
+   * @param boolean $hierarchical (optional)
+   * 
+   * @ingroup helperfunc
+   */
   function new_taxonomy($name, $post_types, $hierarchical = true) {
 
     if (!is_array($name)) {
