@@ -86,10 +86,10 @@ class CompassPreprocessor extends WordlessPreprocessor {
     ));
 
     $config = array(
-      "http_path" => Wordless::theme_url(),
-      "http_images_dir" => "assets/images",
+      "http_path" => "./",
+      "http_images_dir" => "../images",
       "images_dir" => "../assets/images",
-      "http_fonts_dir" => "assets/fonts",
+      "http_fonts_dir" => "../fonts",
       "fonts_dir" => "../assets/fonts",
       "css_path" => $temp_path,
       "relative_assets" => false,
