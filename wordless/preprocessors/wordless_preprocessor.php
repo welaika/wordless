@@ -145,7 +145,7 @@ class WordlessPreprocessor {
    */
   protected function preference($name) {
     $possible_names = array($name);
-    if (is_array($this->deprecated_preferences[$name])) {
+    if (isset($this->deprecated_preferences[$name])) {
       $possible_names = $this->deprecated_preferences[$name];
       array_unshift($possible_names, $name);
     }
