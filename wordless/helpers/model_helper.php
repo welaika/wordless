@@ -12,19 +12,20 @@ class ModelHelper {
    * 
    * This function use the WP APIs and functions to register a new post type.
    * 
-   * @param string|array $name The name of the new post type (will appear in the 
-   *    backend). If the name is a sting, the plural will be evaluated by the 
-   *    system; if is an array, must contains the singular and the plural 
-   *    versions of the name.
-   *    Ex:
-   *    @code
+   * @param string|array $name
+   *   The name of the new post type (will appear in the backend). If the name 
+   *   is a sting, the plural will be evaluated by the system; if is an array,
+   *   must contains the singular and the plural versions of the name.
+   *   Ex:
+   *   @code
    * $name = array(
    *   "singular" => 'My custom post type',
    *   "plural" => 'My custom post types'
    * );
    *    @endcode
-   * @param array $supports (optional) Extra fields added to this post type. 
-   *    Default fields (the fields you can find in page/post type) are added by default.
+   * @param array $supports (optional)
+   *   Extra fields added to this post type. Default fields (the fields you can
+   *   find in page/post type) are added by default.
    * 
    * @ingroup helperfunc
    */
@@ -75,7 +76,8 @@ class ModelHelper {
   /**
    * Create a new taxonomy.
    * 
-   * @param string $name The name of the taxonomy.
+   * @param string $name
+   *   The name of the taxonomy.
    * @param $post_types
    * @param boolean $hierarchical (optional)
    * 
