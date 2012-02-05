@@ -100,9 +100,9 @@ if (is_front_page()) {
 ```
 As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
-### Theme Views (`theme/views/*.haml`)
+### Theme Views (`theme/views/*.haml` or `theme/views/*.php`)
 
-That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax.
+That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax or plain PHP.
 Feel free to create subdirectories to group toghether the files. Here's what could be an example for the typical [WordPress loop](http://codex.wordpress.org/The_Loop) in an archive page:
 
 ```haml
@@ -118,7 +118,7 @@ Feel free to create subdirectories to group toghether the files. Here's what cou
 .content= get_the_filtered_content()
 ```
 
-Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your views, a great PHP port of the Haml ruby gem. In this little snippet, please note the following:
+Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your Haml views, a great PHP port of the Haml ruby gem. In this little snippet, please note the following:
 
 * The view is delegating some rendering work to a partial called `_single.haml`. Partial templates – usually just called “partials” – are another device for breaking the rendering process into more manageable chunks. Partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore.
 * There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
@@ -197,7 +197,7 @@ WordPress has to different places where you want to put your assets:
 <a name="stylesheets"></a>
 #### Stylesheets
 
-Include the assets in your Haml views using `stylesheet_link_tag()` helper.
+Include the assets in your views using `stylesheet_link_tag()` helper.
 
 ```haml
 = stylesheet_link_tag("screen")
@@ -216,7 +216,7 @@ To make things faster, Wordless handles nicely precompilation caching, so a new 
 <a name="javascripts"></a>
 #### Javacripts
 
-Include the assets in your Haml views using `javascript_include_tag()` helper.
+Include the assets in your views using `javascript_include_tag()` helper.
 
 ```haml
 = javascript_include_tag("application")
