@@ -37,4 +37,4 @@ class ThemeHelper {
   }
 }
 
-Wordless::register_helper("UrlHelper");
+Wordless::register_helper("ThemeHelper");
