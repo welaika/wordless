@@ -63,21 +63,21 @@ Okay, now we can get everything up and running :)
 That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
 
 	your_theme_dir
+	├── assets
+	│   ├── fonts
+	│   ├── images
+	│   ├── javascripts
+	│   └── stylesheets
 	├── config
 	│   ├── initializers
 	│   └── locales
-	├── public
-	│   ├── assets
-	│   │   ├── javascripts
-	│   │   └── stylesheets
-	│   └── images
 	├── theme
 	│   ├── assets
 	│   │   ├── javascripts
 	│   │   └── stylesheets
 	│   ├── helpers
 	│   └── views
-    │       └── layouts
+	│       └── layouts
 	└── index.php
 
 Let's see in detail what is the purpose of all those directories:
