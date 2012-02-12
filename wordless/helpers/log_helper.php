@@ -9,7 +9,8 @@ class DebugHelper {
   /**
    * Prints the specified variable inside <pre> tags.
    * 
-   * @param string $var The variable to be printed
+   * @param string $var
+   *   The variable to be printed
    * 
    * @ingroup helperfunc
    */
