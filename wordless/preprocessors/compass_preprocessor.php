@@ -25,6 +25,8 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     $this->set_preference_default_value("css.compass_path", "/usr/bin/compass");
     $this->set_preference_default_value("css.output_style", "compressed");
+
+    $this->set_preference_default_value("css.require_libs", array());
   }
 
   /**
@@ -84,6 +86,10 @@ class CompassPreprocessor extends WordlessPreprocessor {
       'compile',
       $temp_path
     ));
+
+    foreach ($this->preference("css.require_libs") as $lib) {
+      $pb->add("--require")->add($lib);
+    }
 
     $config = array(
       "http_path" => "./",
