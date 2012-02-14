@@ -87,10 +87,6 @@ class CompassPreprocessor extends WordlessPreprocessor {
       $temp_path
     ));
 
-    foreach ($this->preference("css.require_libs") as $lib) {
-      $pb->add("--require")->add($lib);
-    }
-
     $config = array(
       "http_path" => "./",
       "http_images_dir" => "../images",
@@ -105,6 +101,10 @@ class CompassPreprocessor extends WordlessPreprocessor {
     );
 
     $ruby_config = array();
+
+    foreach ($this->preference("css.require_libs") as $lib) {
+      $ruby_config[] = sprintf('require "%s"', $lib);
+    }
 
     foreach ($config as $name => $value) {
       if (strpos($value, ":") === 0) {
