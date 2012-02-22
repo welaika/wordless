@@ -65,8 +65,13 @@ class CompassPreprocessor extends WordlessPreprocessor {
    * Overrides WordlessPreprocessor::die_with_error()
    */
   protected function die_with_error($description) {
-    $description = preg_replace('/\n/', '\n', addslashes($description));
-    echo sprintf('body::before { content: "%s"; font-family: monospace; }', $description);
+    echo "/************************\n";
+    echo $description;
+    echo "************************/\n\n";
+    echo sprintf(
+      'body::before { content: "%s"; font-family: monospace; white-space: pre; display: block; background: #eee; padding: 20px; }',
+      'Damn, we\'re having problems compiling the Sass. Check the CSS source code for more infos!'
+    );
     die();
   }
 
@@ -77,7 +82,6 @@ class CompassPreprocessor extends WordlessPreprocessor {
    * WordlessPreprocessor.
    */
   protected function process_file($file_path, $result_path, $temp_path) {
-
     $this->validate_executable_or_die($this->preference("css.compass_path"));
 
     // On cache miss, we build the file from scratch
@@ -128,7 +132,13 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     if (0 < $code) {
       unlink($config_path);
-      $this->die_with_error($proc->getErrorOutput());
+      $this->die_with_error(
+        "Failed to run the following command: " . $proc->getCommandLine() . "\n\n" .
+        "Generated config:\n\n" .
+        implode("\n", $ruby_config) .
+        "\n\nError output:\n\n" .
+        $proc->getErrorOutput()
+      );
     }
 
     unlink($config_path);
