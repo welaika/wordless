@@ -101,7 +101,11 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
     $code = $proc->run();
 
     if ($code != 0) {
-      $this->die_with_error($proc->getErrorOutput());
+      $this->die_with_error(
+        "Failed to run the following command: " . $proc->getCommandLine() . "\n\n" .
+        "Error output:\n\n" .
+        $proc->getErrorOutput()
+      );
     }
 
     return $proc->getOutput();
