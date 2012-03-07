@@ -1,5 +1,4 @@
 <?php
-
 /**
  * This module provides functions to get information from the curren theme.
  * 
