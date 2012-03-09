@@ -76,6 +76,9 @@ class LessPreprocessor extends WordlessPreprocessor {
    *
    * Execute the lessc executable, overriding the no-op function inside
    * WordlessPreprocessor.
+   *
+   * If using php-fpm, remember to pass the PATH environment variable
+   * in php-fpm.ini (e.g. env[PATH]=/usr/local/bin:/usr/bin:/bin)
    */
   protected function process_file($file_path, $result_path, $temp_path) {
 
@@ -86,6 +89,10 @@ class LessPreprocessor extends WordlessPreprocessor {
       $this->preference("css.lessc_path"),
       $file_path
     ));
+
+    // Since the official lessc executable relies on node.js, we need to
+    // inherit env to get access to $PATH so we can find the node executable
+    $pb->inheritEnvironmentVariables();
 
     $proc = $pb->getProcess();
     $code = $proc->run();
