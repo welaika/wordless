@@ -21,7 +21,7 @@ class LessPreprocessor extends WordlessPreprocessor {
     parent::__construct();
 
     $this->set_preference_default_value("css.lessc_path", "/usr/bin/lessc");
-    $this->set_preference_default_value("css.output_style", "compress");
+    $this->set_preference_default_value("css.compress", false);
   }
 
   /**
@@ -93,6 +93,10 @@ class LessPreprocessor extends WordlessPreprocessor {
     // Since the official lessc executable relies on node.js, we need to
     // inherit env to get access to $PATH so we can find the node executable
     $pb->inheritEnvironmentVariables();
+
+    if ($this->preference("css.compress")) {
+      $pb->add("-compress");
+    }
 
     $proc = $pb->getProcess();
     $code = $proc->run();
