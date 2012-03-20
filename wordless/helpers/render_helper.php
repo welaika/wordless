@@ -8,8 +8,8 @@ class RenderHelper {
   }
 
   function render_template($name) {
-  	$valid_filenames = array("$name.html.haml", "$name.haml", "$name.html.php", "$name.php");
-  	foreach ($valid_filenames as $filename) {
+    $valid_filenames = array("$name.html.haml", "$name.haml", "$name.html.php", "$name.php");
+    foreach ($valid_filenames as $filename) {
       $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
       if (is_file($path)) {
         $template_path = $path;
@@ -21,11 +21,11 @@ class RenderHelper {
     if (!isset($template_path)) {
       render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
     }
-    
+
     switch ($format) {
       case 'haml':
         $tmp_dir = Wordless::theme_temp_path();
-        
+
         if (!file_exists($tmp_dir)) {
           mkdir($tmp_dir, 0760);
         }
@@ -45,7 +45,7 @@ class RenderHelper {
         include $template_path;
         break;
     }
-    
+
   }
 
   function get_partial_content($name) {
