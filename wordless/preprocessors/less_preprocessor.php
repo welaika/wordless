@@ -33,7 +33,7 @@ class LessPreprocessor extends WordlessPreprocessor {
   protected function asset_hash($file_path) {
     $hash = array(parent::asset_hash($file_path));
     $base_path = dirname($file_path);
-    $files = $this->folder_tree(dirname($base_path), "*.less");
+    $files = Wordless::recursive_glob(dirname($base_path), "*.less");
     sort($files);
     $hash_seed = array();
     foreach ($files as $file) {
@@ -57,19 +57,19 @@ class LessPreprocessor extends WordlessPreprocessor {
   }
 
   /**
-   * Overrides WordlessPreprocessor::die_with_error()
+   * Overrides WordlessPreprocessor::error()
    */
-  protected function die_with_error($description) {
-    echo "/************************\n";
-    echo $description;
-    echo "************************/\n\n";
-    echo sprintf(
+  protected function error($description) {
+    $error = "";
+    $error = $error . "/************************\n";
+    $error = $error . $description;
+    $error = $error . "************************/\n\n";
+    $error = $error . sprintf(
       'body::before { content: "%s"; font-family: monospace; white-space: pre; display: block; background: #eee; padding: 20px; }',
-      'Damn, we\'re having problems compiling the Less. Check the CSS source code for more infos!'
+      'Damn, we\'re having problems compiling the Sass. Check the CSS source code for more infos!'
     );
-    die();
+    return $error;
   }
-
 
   /**
    * Process a file, executing lessc executable.
@@ -102,7 +102,10 @@ class LessPreprocessor extends WordlessPreprocessor {
     $code = $proc->run();
 
     if (0 < $code) {
-      $this->die_with_error($proc->getErrorOutput());
+      throw new WordlessCompileException(
+        "Failed to run the following command: " . $proc->getCommandLine(),
+        $proc->getErrorOutput()
+      );
     }
 
     return $proc->getOutput();
