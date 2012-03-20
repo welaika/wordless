@@ -34,7 +34,7 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
   protected function asset_hash($file_path) {
     $hash = array(parent::asset_hash($file_path));
     $base_path = dirname($file_path);
-    $files = $this->folder_tree(dirname($base_path), "*.coffee");
+    $files = Wordless::recursive_glob(dirname($base_path), "*.coffee");
     sort($files);
     $hash_seed = array();
     foreach ($files as $file) {
@@ -58,20 +58,19 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
   }
 
   /**
-   * Overrides WordlessPreprocessor::die_with_error()
+   * Overrides WordlessPreprocessor::error()
    */
-  protected function die_with_error($description) {
+  protected function error($description) {
     $description = preg_replace('/\n/', '\n', addslashes($description));
-	echo sprintf("console.error('%s');", $description);
-    die();
+    return sprintf("console.error('%s');", $description);
   }
 
   /**
    * Overrides WordlessPreprocessor::process_file()
    */
-  protected function process_file($file_path, $result_path, $temp_path) {
+  protected function process_file($file_path, $temp_path) {
 
-    $this->validate_executable_or_die($this->preference("js.ruby_path"));
+    $this->validate_executable_or_throw($this->preference("js.ruby_path"));
 
     // On cache miss, we build the JS file from scratch
     $pb = new ProcessBuilder(array(
@@ -101,9 +100,8 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
     $code = $proc->run();
 
     if ($code != 0) {
-      $this->die_with_error(
-        "Failed to run the following command: " . $proc->getCommandLine() . "\n\n" .
-        "Error output:\n\n" .
+      throw new WordlessCompileException(
+        "Failed to run the following command: " . $proc->getCommandLine(),
         $proc->getErrorOutput()
       );
     }

@@ -104,36 +104,6 @@ class WordlessPreprocessor {
   }
 
   /**
-   * Recursively searches inside a directory for specific files.
-   *
-   * * @param string $directory_path
-   *   The path of the directory to search recursively
-   * * @param string $pattern
-   *   The glob pattern of the files (see http://php.net/manual/en/function.glob.php)
-   * * @param int $flags
-   *   The glob search flags (see http://php.net/manual/en/function.glob.php)
-   *
-   */
-  protected function folder_tree($path, $pattern = '*', $flags = 0) {
-    $files = glob($path . $pattern, $flags);
-    if (!is_array($files)) {
-      $files = array();
-    }
-    $paths = glob($path . '*', GLOB_ONLYDIR | GLOB_NOSORT);
-
-    if (!empty($paths)) {
-      foreach ($paths as $sub_path) {
-        $subfiles = $this->folder_tree($sub_path . DIRECTORY_SEPARATOR, $pattern, $flags);
-        if (is_array($subfiles)) {
-          $files = array_merge($files, $subfiles);
-        }
-      }
-    }
-
-    return $files;
-  }
-
-  /**
    * Handy wrapper to retrieve a preference from the Wordless::preference()
    * method.
    *
@@ -192,8 +162,6 @@ class WordlessPreprocessor {
    *
    * @param string $file_path
    *   The path to the file to process.
-   * @param string $result_path
-   *   The path in which save the processed file.
    * @param string $cache_path
    *   The directory path to use to store cached results.
    *
@@ -201,8 +169,27 @@ class WordlessPreprocessor {
    *   Returns the content of the processed file.
    *
    */
-  protected function process_file($file_path, $result_path, $cache_path) {
+  protected function process_file($file_path, $cache_path) {
     return NULL;
+  }
+
+  /**
+   * Serves the compiled file.
+   *
+   * @param string $file_path_without_extension
+   *   The path to the file to process, with no extensions.
+   * @param string $cache_path
+   *   The directory path to use to store cached results.
+   *
+   */
+  public function serve_compiled_file($file_path_without_extension, $cache_path) {
+    header("Content-Type: " . $this->content_type());
+    try {
+      echo $this->process_file_with_caching($file_path_without_extension, $cache_path);
+    } catch(WordlessCompileException $e) {
+      echo $this->error($e->__toString());
+    }
+    die();
   }
 
   /**
@@ -213,19 +200,20 @@ class WordlessPreprocessor {
    * multiple processing of unchanged files.
    *
    * @param string $file_path_without_extension
-   * @param string $result_path
    * @param string $cache_path
+   *
+   * @return string
+   *   Returns the content of the processed file.
    *
    * @see Wordless::preference()
    * @see WordlessPreprocessor::cached_file_path()
    * @see WordlessPreprocessor::comment_line()
    * @see WordlessPreprocessor::content_type()
-   * @see WordlessPreprocessor::die_with_error()
+   * @see WordlessPreprocessor::error()
    * @see WordlessPreprocessor::process_file()
    * @see WordlessPreprocessor::supported_extensions()
    */
-  public function process_file_with_caching($file_path_without_extension, $result_path, $cache_path) {
-    header("Content-Type: " . $this->content_type());
+  public function process_file_with_caching($file_path_without_extension, $cache_path) {
     foreach ($this->supported_extensions() as $extension) {
       $file_path = $file_path_without_extension . ".$extension";
       if (is_file($file_path)) {
@@ -234,18 +222,20 @@ class WordlessPreprocessor {
         // On cache hit
         if ($this->preference('assets.cache_enabled') && file_exists($cached_file_path)) {
           // Just return the cache result
-          echo $this->comment_line("This is a cached version!") . file_get_contents($cached_file_path);
+          return $this->comment_line("This is a cached version!") . file_get_contents($cached_file_path);
         } else {
           $start = time();
-          $result = $this->process_file($file_path, $result_path, $cache_path);
+          $result = $this->process_file($file_path, $cache_path);
           $end = time();
           file_put_contents($cached_file_path, $result);
-          echo $this->comment_line(sprintf("Compile time: < %d secs", $end - $start)) . $result;
+          return $this->comment_line(sprintf("Compile time: < %d secs", $end - $start)) . $result;
         }
-        die();
+        return;
       }
     }
-    $this->die_with_error("File '$file_path_without_extension.(".join("|", $this->supported_extensions()).")' does not exists!");
+    throw new WordlessCompileException(
+      "File '$file_path_without_extension.(".join("|", $this->supported_extensions()).")' does not exists!"
+    );
   }
 
   /**
@@ -278,17 +268,17 @@ class WordlessPreprocessor {
   /**
    * Check consistency of the executable file used to process files.
    *
-   * If the executable has not correct permissions thrown die_with_errors().
+   * If the executable has not correct permissions thrown errors().
    *
    * @param string $path
    *   The path to the preprocessor executable file
    *
    * @doubt maybe is better if returns TRUE on success?
-   * @warning die_with_error() is not defined in this class!
+   * @warning error() is not defined in this class!
    */
-  protected function validate_executable_or_die($path) {
+  protected function validate_executable_or_throw($path) {
     if (!is_executable($path)) {
-      $this->die_with_error(sprintf(
+      throw new WordlessCompileException(sprintf(
         __("The path %s doesn't seem to be an executable!"),
         $path
       ));
@@ -296,17 +286,13 @@ class WordlessPreprocessor {
   }
 
    /**
-   * Thrown in case of errors to die "nicely" displaying errors.
-   *
-   * If error occurred this function is thrown to display errors and stop
-   * processing.
+   * Nicely render errors.
    *
    * @param string $description
    *   The description of the occurred error
    */
-  protected function die_with_error($description) {
-    echo sprintf("body::before { content: '%s'; font-family: monospace; };", addslashes($description));
-    die();
+  protected function error($description) {
+    return $description;
   }
 
   /**

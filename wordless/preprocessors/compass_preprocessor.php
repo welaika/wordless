@@ -38,7 +38,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
   protected function asset_hash($file_path) {
     $hash = array(parent::asset_hash($file_path));
     $base_path = dirname($file_path);
-    $files = $this->folder_tree(dirname($base_path), "*.{sass,scss}");
+    $files = Wordless::recursive_glob(dirname($base_path), '*.{sass,scss}', GLOB_BRACE);
     sort($files);
     $hash_seed = array();
     foreach ($files as $file) {
@@ -62,17 +62,18 @@ class CompassPreprocessor extends WordlessPreprocessor {
   }
 
   /**
-   * Overrides WordlessPreprocessor::die_with_error()
+   * Overrides WordlessPreprocessor::error()
    */
-  protected function die_with_error($description) {
-    echo "/************************\n";
-    echo $description;
-    echo "************************/\n\n";
-    echo sprintf(
+  protected function error($description) {
+    $error = "";
+    $error = $error . "/************************\n";
+    $error = $error . $description;
+    $error = $error . "************************/\n\n";
+    $error = $error . sprintf(
       'body::before { content: "%s"; font-family: monospace; white-space: pre; display: block; background: #eee; padding: 20px; }',
       'Damn, we\'re having problems compiling the Sass. Check the CSS source code for more infos!'
     );
-    die();
+    return $error;
   }
 
   /**
@@ -81,8 +82,8 @@ class CompassPreprocessor extends WordlessPreprocessor {
    * Execute the Compass executable, overriding the no-op function inside
    * WordlessPreprocessor.
    */
-  protected function process_file($file_path, $result_path, $temp_path) {
-    $this->validate_executable_or_die($this->preference("css.compass_path"));
+  protected function process_file($file_path, $temp_path) {
+    $this->validate_executable_or_throw($this->preference("css.compass_path"));
 
     // On cache miss, we build the file from scratch
     $pb = new ProcessBuilder(array(
@@ -132,11 +133,9 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     if (0 < $code) {
       unlink($config_path);
-      $this->die_with_error(
-        "Failed to run the following command: " . $proc->getCommandLine() . "\n\n" .
-        "Generated config:\n\n" .
-        implode("\n", $ruby_config) .
-        "\n\nError output:\n\n" .
+      throw new WordlessCompileException(
+        "Failed to run the following command: " . $proc->getCommandLine() . "\n" .
+        "Generated config:\n" . implode("\n", $ruby_config),
         $proc->getErrorOutput()
       );
     }
