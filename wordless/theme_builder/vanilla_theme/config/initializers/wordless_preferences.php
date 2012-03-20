@@ -8,6 +8,9 @@
 // Wordless::set_preference("css.output_style",     "compressed");
 // Wordless::set_preference("css.require_libs",     array());
 
+// Wordless::set_preference("css.lessc_path",       "/usr/bin/lessc");
+// Wordless::set_preference("css.compress",         false);
+
 // Wordless::set_preference("js.ruby_path",         "/usr/bin/ruby");
 // Wordless::set_preference("js.yui_compress",      false);
 // Wordless::set_preference("js.yui_munge",         false);
