@@ -84,7 +84,7 @@ class ProcessBuilder
     public function getProcess()
     {
         if (!count($this->arguments)) {
-            throw new \LogicException('You must add() command arguments before calling getProcess().');
+            throw new LogicException('You must add() command arguments before calling getProcess().');
         }
 
         $options = $this->options;

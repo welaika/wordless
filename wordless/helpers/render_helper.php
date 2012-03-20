@@ -7,7 +7,7 @@ class RenderHelper {
     die();
   }
 
-  function render_template($name) {
+  function render_template($name, $locals = array()) {
     $valid_filenames = array("$name.html.haml", "$name.haml", "$name.html.php", "$name.php");
     foreach ($valid_filenames as $filename) {
       $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
@@ -21,6 +21,8 @@ class RenderHelper {
     if (!isset($template_path)) {
       render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
     }
+
+    extract($locals);
 
     switch ($format) {
       case 'haml':
@@ -48,20 +50,20 @@ class RenderHelper {
 
   }
 
-  function get_partial_content($name) {
+  function get_partial_content($name, $locals = array()) {
     ob_start();
-    render_partial($name);
+    render_partial($name, $locals);
     $partial_content = ob_get_contents();
     ob_end_clean();
     return $partial_content;
   }
 
-  function render_partial($name) {
+  function render_partial($name, $locals = array()) {
     $parts = preg_split("/\//", $name);
     if (!preg_match("/^_/", $parts[sizeof($parts)-1])) {
       $parts[sizeof($parts)-1] = "_" . $parts[sizeof($parts)-1];
     }
-    render_template(implode($parts, "/"));
+    render_template(implode($parts, "/"), $locals);
   }
 
   function yield() {

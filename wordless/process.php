@@ -23,14 +23,14 @@ class Process
      * @param integer $timeout     The timeout in seconds
      * @param array   $options     An array of options for proc_open
      *
-     * @throws \RuntimeException When proc_open is not installed
+     * @throws RuntimeException When proc_open is not installed
      *
      * @api
      */
     public function __construct($commandline, $cwd = null, array $env = null, $stdin = null, $timeout = 60, array $options = array())
     {
         if (!function_exists('proc_open')) {
-            throw new \RuntimeException('The Process class relies on proc_open, which is not available on your PHP installation.');
+            throw new RuntimeException('The Process class relies on proc_open, which is not available on your PHP installation.');
         }
 
         $this->commandline = $commandline;
