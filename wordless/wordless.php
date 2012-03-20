@@ -18,7 +18,7 @@ class Wordless {
         self::require_helpers();
         self::require_theme_initializers();
         self::register_activation();
-        self::register_preprocessors("SprocketsPreprocessor", "CompassPreprocessor");
+        self::register_preprocessors();
         self::register_preprocessor_actions();
     }
     self::load_admin_page();
@@ -45,7 +45,8 @@ class Wordless {
   }
 
   public static function register_preprocessors() {
-    foreach (func_get_args() as $preprocessor_class) {
+    $preprocessors = self::preference("assets.preprocessors", array());
+    foreach ($preprocessors as $preprocessor_class) {
       self::$preprocessors[] = new $preprocessor_class();
     }
   }
