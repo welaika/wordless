@@ -45,7 +45,7 @@ class Wordless {
   }
 
   public static function register_preprocessors() {
-    $preprocessors = self::preference("assets.preprocessors", array());
+    $preprocessors = self::preference("assets.preprocessors", array("SprocketsPreprocessor", "CompassPreprocessor"));
     foreach ($preprocessors as $preprocessor_class) {
       self::$preprocessors[] = new $preprocessor_class();
     }
@@ -103,6 +103,7 @@ class Wordless {
         $to_process_file_path = Wordless::join_paths(self::theme_assets_path(), $relative_path);
         $to_process_file_path = preg_replace("/\." . $preprocessor->to_extension() . "$/", "", $to_process_file_path);
         $preprocessor->serve_compiled_file($to_process_file_path, Wordless::theme_temp_path());
+        return;
       }
     }
   }
