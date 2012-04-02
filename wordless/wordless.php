@@ -120,11 +120,8 @@ class Wordless {
             $compiled_file_path = preg_replace("/\." . $extension . "$/", ".".$preprocessor->to_extension(), $compiled_file_path);
 
             try {
-              ob_start();
-                $to_process_file_path = preg_replace("/\." . $extension . "$/", "", $file_path);
-                $preprocessor->process_file_with_caching($to_process_file_path, Wordless::theme_temp_path());
-                $compiled_content = ob_get_contents();
-              ob_end_clean();
+              $to_process_file_path = preg_replace("/\." . $extension . "$/", "", $file_path);
+              $compiled_content = $preprocessor->process_file_with_caching($to_process_file_path, Wordless::theme_temp_path());
             } catch(WordlessCompileException $e) {
               echo "Problems compiling $file_path to $compiled_file_path\n\n";
               echo $e;
