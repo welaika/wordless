@@ -191,12 +191,12 @@ class Wordless {
   public static function require_helpers() {
     require_once Wordless::join_paths(dirname(__FILE__), "helpers.php");
     $helpers_path = self::theme_helpers_path();
-    self::require_once_dir("$helpers_path");
+    self::require_once_dir($helpers_path);
   }
 
   public static function require_theme_initializers() {
     $initializers_path = self::theme_initializers_path();
-    self::require_once_dir("$initializers_path");
+    self::require_once_dir($initializers_path);
   }
 
   /**
@@ -268,7 +268,7 @@ class Wordless {
   }
 
   public static function theme_temp_path() {
-    return self::join_paths(get_template_directory(), 'tmp');
+    return self::preference("theme.temp_dir", self::join_paths(get_template_directory(), 'tmp'));
   }
 
   public static function theme_url() {
