@@ -82,7 +82,7 @@ class LessPreprocessor extends WordlessPreprocessor {
    */
   protected function process_file($file_path, $result_path, $temp_path) {
 
-    $this->validate_executable_or_die($this->preference("css.lessc_path"));
+    $this->validate_executable_or_throw($this->preference("css.lessc_path"));
 
     // On cache miss, we build the file from scratch
     $pb = new ProcessBuilder(array(

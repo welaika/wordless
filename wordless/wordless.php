@@ -120,11 +120,8 @@ class Wordless {
             $compiled_file_path = preg_replace("/\." . $extension . "$/", ".".$preprocessor->to_extension(), $compiled_file_path);
 
             try {
-              ob_start();
-                $to_process_file_path = preg_replace("/\." . $extension . "$/", "", $file_path);
-                $preprocessor->process_file_with_caching($to_process_file_path, Wordless::theme_temp_path());
-                $compiled_content = ob_get_contents();
-              ob_end_clean();
+              $to_process_file_path = preg_replace("/\." . $extension . "$/", "", $file_path);
+              $compiled_content = $preprocessor->process_file_with_caching($to_process_file_path, Wordless::theme_temp_path());
             } catch(WordlessCompileException $e) {
               echo "Problems compiling $file_path to $compiled_file_path\n\n";
               echo $e;
@@ -194,12 +191,12 @@ class Wordless {
   public static function require_helpers() {
     require_once Wordless::join_paths(dirname(__FILE__), "helpers.php");
     $helpers_path = self::theme_helpers_path();
-    self::require_once_dir("$helpers_path");
+    self::require_once_dir($helpers_path);
   }
 
   public static function require_theme_initializers() {
     $initializers_path = self::theme_initializers_path();
-    self::require_once_dir("$initializers_path");
+    self::require_once_dir($initializers_path);
   }
 
   /**
@@ -271,7 +268,7 @@ class Wordless {
   }
 
   public static function theme_temp_path() {
-    return self::join_paths(get_template_directory(), 'tmp');
+    return self::preference("theme.temp_dir", self::join_paths(get_template_directory(), 'tmp'));
   }
 
   public static function theme_url() {
