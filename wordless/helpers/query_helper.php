@@ -76,9 +76,11 @@ class QueryHelper {
     return query_posts(array(
       'posts_per_page' => $limit,
       'tax_query' => array(
-        'taxonomy' => $taxonomy,
-        'field' => 'slug',
-        'terms' => $category,
+         array(
+          'taxonomy' => $taxonomy,
+          'field' => 'slug',
+          'terms' => $category,
+        ),
       ),
       'offset' => $offset,
       'post_type' => $post_type,
