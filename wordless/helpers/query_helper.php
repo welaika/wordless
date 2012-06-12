@@ -49,8 +49,7 @@ class QueryHelper {
    * @ingroup helperfunc
    */
   function latest_post_of_type($type, $order = 'date') {
-    $posts = latest_posts_of_type($type, 1, $order);
-    return $posts[0];
+    return latest_posts_of_type($type, 1, $order);
   }
 
   /**
@@ -79,7 +78,7 @@ class QueryHelper {
    * @ingroup helperfunc
    */
   function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'ASC') {
-    return new WP_Query(array(
+    $wp_query = new WP_Query(array(
       'posts_per_page' => $limit,
       'tax_query' => array(
          array(
@@ -93,6 +92,7 @@ class QueryHelper {
       'orderby' => $order,
       'order' => $ord
     ));
+    return $wp_query;
   }
 
   /**
@@ -111,8 +111,7 @@ class QueryHelper {
    * @ingroup helperfunc
    */
   function latest_post_of_category($category, $post_type = 'post', $taxonomy = 'category') {
-    $posts = latest_posts_of_category($category, 1, 0, $post_type, $taxonomy);
-    return $posts[0];
+    return latest_posts_of_category($category, 1, 0, $post_type, $taxonomy);
   }
 
   /**
