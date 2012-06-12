@@ -163,7 +163,7 @@ class DateHelperTest extends UnitTestCase {
   function test_time_ago_in_words() {
     $this->assertEqual(
       'over 25 years',
-      time_ago_in_words(mktime(0, 0, 0, 0, 0, date("Y") - 25))
+      time_ago_in_words(mktime(0, 0, 0, date("n"), date("j"), date("Y") - 25))
     );
   }
 
