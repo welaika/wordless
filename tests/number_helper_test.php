@@ -85,10 +85,10 @@ class NumberHelperTest extends UnitTestCase {
     );
   }
 
-  /* function test_number_to_phone_exception() { */
-  /*   $this->expectException(new InvalidArgumentException('number_to_phone function only accepts numbers. Input was: 123a456')); */
-  /*   number_to_phone("123a456", array('raise' => true)); */
-  /* } */
+  function test_number_to_phone_exception() {
+    $this->expectException(new InvalidArgumentException('number_to_phone function only accepts numbers. Input was: 123a456'));
+    number_to_phone("123a456", array('raise' => true));
+  }
 
   function test_number_to_phone() {
     $this->assertEqual(

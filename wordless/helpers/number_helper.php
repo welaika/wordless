@@ -75,7 +75,7 @@ class NumberHelper {
     if (is_numeric($number))
       $number = (float) $number;
     elseif (array_key_exists('raise', $options) && $options['raise'] == true)
-      throw new InvalidArgumentException('number_to_phone only accepts numbers. Input was: '.$number);
+      throw new InvalidArgumentException('number_to_phone function only accepts numbers. Input was: '.$number);
 
     $area_code    = $this->array_delete($options, 'area_code');
     $delimiter    = $this->array_delete($options, 'delimiter');
