@@ -272,12 +272,26 @@ class QueryHelper {
       $title = get_the_title();
     }
     if (is_search()) {
-      $title = "Ricerca";
+      $title = sprintf(__("Search: %s", "we"), get_search_query());
     }
-    if (is_front_page()) {
+    if (is_date()) {
+      if (is_month()) {
+        $date = get_the_date("F Y");
+      } else if (is_year()) {
+        $date = get_the_date("Y");
+      } else {
+        $date = get_the_date();
+      }
+      $title = sprintf(__("Archives: %s", "we"), $date);
+    }
+    if (is_front_page() || is_home()) {
+      $title = get_bloginfo("description", "display");
+    }
+    if ($title != "") {
+      return "$prefix$separator$title";
+    } else {
       return $prefix;
     }
-    return "$prefix$separator$title";
   }
 
 }
