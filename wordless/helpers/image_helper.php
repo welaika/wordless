@@ -86,11 +86,11 @@ class ImageHelper {
           $ratio = $height / $height_orig;
       }
       // one equal one bigger
-      else if (($width == $width_orig && $height_orig > $height) || ($height == $height_orig && width_orig > $width))
+      else if (($width == $width_orig && $height_orig > $height) || ($height == $height_orig && $width_orig > $width))
         $to_crop = TRUE;
       // some problem...
       else
-        echo "ALARM";
+        trigger_error("Cannot resize image " . $src, E_USER_ERROR);
 
       // we need to zoom to get the right size
       if ($to_scale) {
