@@ -9,6 +9,34 @@
 class AssetTagHelper {
 
   /**
+   * Return the theme version, based on prederence set in Wordless config file.
+   * 
+   * @return string
+   *   The assets version string
+   */
+  private function get_asset_version_string() {
+    return Wordless::preference('assets.version', NULL);
+  }
+
+  /**
+   * Appends version information to asset source.
+   *
+   * @param string $source
+   *   The path to the asset source.
+   * @return @e string
+   *   The path to the asset source with version information appended to the query string.
+   *
+   * @ingroup helperfunc
+   */
+  function asset_version($source) {
+    $version = get_asset_version_string();
+
+    if (isset($version))
+      $source .= sprintf("?ver=%s", $version);
+    return $source;
+  }
+
+  /**
    * Builds a valid \<audio /\> HTML tag.
    *
    * @param string $source
@@ -193,7 +221,7 @@ class AssetTagHelper {
     $info = pathinfo($source);
 
     $options = array(
-      "src"  => $source,
+      "src"  => asset_version($source),
       "alt"  => capitalize(basename($source,'.' . $info['extension']))
     );
 
@@ -270,6 +298,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = stylesheet_url($source);
         if (!preg_match("/\.css$/", $source)) $source .= ".css";
+        $source = asset_version($source);
       }
       $options = array(
         "href"  => $source,
@@ -315,6 +344,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = javascript_url($source);
         if (!preg_match("/\.js$/", $source)) $source .= ".js";
+        $source = asset_version($source);
       }
       $options = array(
         "src"  => $source,
