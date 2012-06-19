@@ -9,6 +9,23 @@
 class AssetTagHelper {
 
   /**
+   * Appends version information to asset source.
+   *
+   * @param string $source
+   *   The path to the asset source.
+   * @return @e string
+   *   The path to the asset source with version information appended to the query string.
+   *
+   * @ingroup helperfunc
+   */
+  function asset_version($source) {
+    $version = Wordless::preference('assets.version', NULL);
+    if (isset($version))
+      $source .= sprintf("?ver=%s", $version);
+    return $source;
+  }
+
+  /**
    * Builds a valid \<audio /\> HTML tag.
    *
    * @param string $source
@@ -187,7 +204,7 @@ class AssetTagHelper {
    */
   public function image_tag($source, $attributes = NULL) {
     if (!preg_match("/^(https?|\/)/", $source)) {
-      $source = image_url($source);
+      $source = asset_version(image_url($source));
     }
 
     $info = pathinfo($source);
@@ -270,6 +287,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = stylesheet_url($source);
         if (!preg_match("/\.css$/", $source)) $source .= ".css";
+        $source = asset_version($source);
       }
       $options = array(
         "href"  => $source,
@@ -315,6 +333,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = javascript_url($source);
         if (!preg_match("/\.js$/", $source)) $source .= ".js";
+        $source = asset_version($source);
       }
       $options = array(
         "src"  => $source,
