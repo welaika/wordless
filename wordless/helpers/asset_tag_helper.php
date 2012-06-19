@@ -9,6 +9,16 @@
 class AssetTagHelper {
 
   /**
+   * Return the theme version, based on prederence set in Wordless config file.
+   * 
+   * @return string
+   *   The assets version string
+   */
+  private function get_asset_version_string() {
+    return Wordless::preference('assets.version', NULL);
+  }
+
+  /**
    * Appends version information to asset source.
    *
    * @param string $source
@@ -19,7 +29,8 @@ class AssetTagHelper {
    * @ingroup helperfunc
    */
   function asset_version($source) {
-    $version = Wordless::preference('assets.version', NULL);
+    $version = get_asset_version_string();
+
     if (isset($version))
       $source .= sprintf("?ver=%s", $version);
     return $source;
