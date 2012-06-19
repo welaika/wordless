@@ -17,8 +17,7 @@ class ThemeHelper {
    * @ingroup helperfunc
    */
   function get_theme_name() {
-    $temp = explode("wp-content/themes/", get_bloginfo("template_url"));
-    return $temp[1];  // The second value will be the theme name
+    return get_template();
   }
 
   /**
@@ -32,7 +31,26 @@ class ThemeHelper {
    * @ingroup helperfunc
    */
   function get_theme_path() {
-    return get_theme_root() . '/' . get_theme_name();
+    return get_template_directory();
+  }
+
+  /**
+   * Returns the version of the the current theme.
+   * 
+   * @return string
+   *   The version of the current theme.
+   * 
+   * @ingroup helperfunc
+   */
+  function get_theme_version() {
+    if (class_exists('WP_Theme')) {
+      $theme = new WP_Theme(get_theme_name(), get_theme_root());
+      return $theme->get('Version');
+    }
+    else {
+      $theme_data = get_theme_data(get_template_directory() . '/style.css');
+      return $theme_data['Version'];
+    }
   }
 }
 
