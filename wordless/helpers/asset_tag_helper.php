@@ -215,13 +215,13 @@ class AssetTagHelper {
    */
   public function image_tag($source, $attributes = NULL) {
     if (!preg_match("/^(https?|\/)/", $source)) {
-      $source = asset_version(image_url($source));
+      $source = image_url($source);
     }
 
     $info = pathinfo($source);
 
     $options = array(
-      "src"  => $source,
+      "src"  => asset_version($source),
       "alt"  => capitalize(basename($source,'.' . $info['extension']))
     );
 
