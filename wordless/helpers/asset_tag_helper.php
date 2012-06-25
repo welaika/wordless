@@ -29,7 +29,7 @@ class AssetTagHelper {
    * @ingroup helperfunc
    */
   function asset_version($source) {
-    $version = get_asset_version_string();
+    $version = $this->get_asset_version_string();
 
     if (isset($version))
       $source .= sprintf("?ver=%s", $version);
