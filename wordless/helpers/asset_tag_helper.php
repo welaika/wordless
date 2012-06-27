@@ -8,13 +8,15 @@
  */
 class AssetTagHelper {
 
+  function AssetTagHelper() {}
+
   /**
    * Return the theme version, based on prederence set in Wordless config file.
    * 
    * @return string
    *   The assets version string
    */
-  private function get_asset_version_string() {
+  protected function get_asset_version_string() {
     return Wordless::preference('assets.version', NULL);
   }
 
@@ -221,7 +223,7 @@ class AssetTagHelper {
     $info = pathinfo($source);
 
     $options = array(
-      "src"  => asset_version($source),
+      "src"  => $this->asset_version($source),
       "alt"  => capitalize(basename($source,'.' . $info['extension']))
     );
 
@@ -298,7 +300,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = stylesheet_url($source);
         if (!preg_match("/\.css$/", $source)) $source .= ".css";
-        $source = asset_version($source);
+        $source = $this->asset_version($source);
       }
       $options = array(
         "href"  => $source,
@@ -344,7 +346,7 @@ class AssetTagHelper {
       if (!preg_match("/^https?:\/\//", $source)) {
         $source = javascript_url($source);
         if (!preg_match("/\.js$/", $source)) $source .= ".js";
-        $source = asset_version($source);
+        $source = $this->asset_version($source);
       }
       $options = array(
         "src"  => $source,
