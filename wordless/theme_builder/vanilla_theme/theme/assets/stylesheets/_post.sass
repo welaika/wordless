@@ -11,3 +11,29 @@
       a
         color: #355593
         text-decoration: none
+
+  // Default Style for TinyMCE available tags
+  em, i
+    font-style: italic
+
+  img
+    &.alignleft
+      +float(left)
+    &.alignright
+      +float(right)
+    &.aligncenter
+      clear: both
+      display: block
+      margin-left: auto
+      margin-right: auto
+
+  strong, b
+    font-weight: bold
+
+  sub
+    font-size: xx-small
+    vertical-align: sub
+
+  sup
+    font-size: xx-small
+    vertical-align: super
