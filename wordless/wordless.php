@@ -20,6 +20,7 @@ class Wordless {
         self::register_activation();
         self::register_preprocessors();
         self::register_preprocessor_actions();
+        self::register_htaccess();
     }
     self::load_admin_page();
   }
@@ -67,6 +68,53 @@ class Wordless {
     add_action('init', array(__CLASS__, 'assets_rewrite_rules'));
     add_action('query_vars', array(__CLASS__, 'query_vars'));
     add_action('parse_request', array(__CLASS__, 'parse_request'));
+  }
+
+  /**
+   * Register a custom function to render a Wordless customized htaccess.
+   */
+  public static function register_htaccess() {
+    add_filter('mod_rewrite_rules', array(__CLASS__, 'wordless_htaccess_contents'));
+  }
+
+  /**
+   * This function , called by self::register_h5bp_htaccess add to WP default
+   * htaccess some Wordless defined rules.
+   */
+  public static function wordless_htaccess_contents($rules) {
+    $wordless = "
+# Wordless
+# Hide some important files
+  Redirect 404 /wp-config.php
+  Redirect 404 /wp-content/themes/" . get_theme_name() . "/assets/htaccess
+  <Files .htaccess>
+    Order Allow,Deny
+    Deny from all
+   </Files>
+
+# Protect from spam comments
+# http://zemalf.com/1076/blog-htaccess-rules/
+  <IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+    RewriteCond %{REQUEST_METHOD} POST
+    RewriteCond %{REQUEST_URI} .wp-comments-post\.php*
+    RewriteCond %{HTTP_REFERER} !.*YOURDOMAIN.com.* [OR]
+    RewriteCond %{HTTP_USER_AGENT} ^$
+    RewriteRule (.*) ^http://%{REMOTE_ADDR}/$ [R=301,L]
+  </IfModule>
+# end Wordless
+";
+    $h5bp = "
+# HTML5 Boilerplate 
+" . file_get_contents(get_theme_path() . "/assets/htaccess") . "
+# end HTML5 Boilerplate
+";
+
+    $rules = $wordless . $h5bp . $rules;
+    // echo '<pre>'. htmlspecialchars($rules) .'</pre>';
+    // exit();
+    return $rules . "# My little addition!\n";
   }
 
   /**
