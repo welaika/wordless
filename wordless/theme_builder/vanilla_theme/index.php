@@ -23,7 +23,10 @@ if (!class_exists("Wordless")) {
 
 if (is_single()) {
   render_view("posts/single");
-} else {
+}
+elseif (is_404()) {
+  include 'theme/views/404.html';
+}
+else {
   render_view("posts/archive");
 }
-
