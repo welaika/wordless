@@ -38,7 +38,7 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
     sort($files);
     $hash_seed = array();
     foreach ($files as $file) {
-      $hash_seed[] = $file . date("%U", filemtime($file));
+      $hash_seed[] = file_get_contents($file);
     }
     return md5(join($hash_seed));
   }
