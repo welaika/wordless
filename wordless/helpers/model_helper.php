@@ -26,10 +26,13 @@ class ModelHelper {
    * @param array $supports (optional)
    *   Extra fields added to this post type. Default fields (the fields you can
    *   find in page/post type) are added by default.
+   * @param array $options (optional)
+   *   An optional array to override default options passed to 
+   *   register_post_type().
    *
    * @ingroup helperfunc
    */
-  function new_post_type($name, $supports = array("title", "editor")) {
+  function new_post_type($name, $supports = array("title", "editor"), $options = array()) {
 
     if (!is_array($name)) {
       $name = array(
@@ -55,9 +58,7 @@ class ModelHelper {
       'menu_name' => $uc_plural
     );
 
-    register_post_type(
-      $name["singular"],
-      array(
+    $options = array_merge(array(
         'labels' => $labels,
         'public' => true,
         'publicly_queryable' => true,
@@ -69,7 +70,11 @@ class ModelHelper {
         'hierarchical' => false,
         'menu_position' => null,
         'supports' => $supports
-      )
+      ), $options);
+
+    register_post_type(
+      $name["singular"],
+      $options
     );
   }
 
@@ -78,12 +83,17 @@ class ModelHelper {
    *
    * @param string $name
    *   The name of the taxonomy.
-   * @param $post_types
-   * @param boolean $hierarchical (optional)
+   * @param array|string $post_types
+   *   Name of the object type for the taxonomy object. Object-types can be 
+   *   built-in objects (see below) or any custom post type that may be 
+   *   registered.
+   * @param array $options (optional)
+   *   An optional array to override default options passed to 
+   *   register_taxonomy().
    *
    * @ingroup helperfunc
    */
-  function new_taxonomy($name, $post_types, $hierarchical = true) {
+  function new_taxonomy($name, $post_types, $options = array()) {
 
     if (!is_array($name)) {
       $name = array(
@@ -109,16 +119,18 @@ class ModelHelper {
       "menu_name" => $uc_plural
     );
 
-    register_taxonomy(
-      $name["singular"],
-      $post_types,
-      array(
-        'hierarchical' => $hierarchical,
+    $options = array_merge(array(
+        'hierarchical' => true,
         'labels' => $labels,
         'show_ui' => true,
         'query_var' => true,
         'rewrite' => array('slug' => $name["plural"])
-      )
+      ), $options);
+
+    register_taxonomy(
+      $name["singular"],
+      $post_types,
+      $options
     );
 
   }
