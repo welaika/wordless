@@ -44,6 +44,8 @@ class CompassPreprocessor extends WordlessPreprocessor {
     foreach ($files as $file) {
       $hash_seed[] = $file . date("%U", filemtime($file));
     }
+    // Concat original file onto hash seed for uniqueness so each file is unique
+    $hash_seed[] = $file_path;
     return md5(join($hash_seed));
   }
 
