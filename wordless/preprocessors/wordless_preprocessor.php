@@ -93,11 +93,11 @@ class WordlessPreprocessor {
    */
   protected function asset_hash($file_path) {
     // First we get the file content
-    $hash_seed = date("%U", filemtime($file_path));
+    $hash_seed = file_get_contents($file_path);
 
     // Then we attach the preferences
     foreach ($this->preferences_defaults as $pref => $value) {
-      $hash_seed .= $pref . '=' . $this->preference($pref) . ';';
+      $hash_seed .= $pref . '=' . (is_array($this->preference($pref)) ? implode(" ", $this->preference($pref)) : $this->preference($pref)) . ';';
     }
 
     return md5($hash_seed);
