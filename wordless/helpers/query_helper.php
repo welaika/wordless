@@ -25,7 +25,7 @@ class QueryHelper {
    * 
    * @ingroup helperfunc
    */
-  function latest_posts_of_type($type, $limit = -1, $order = 'date', $ord = 'ASC') {
+  function latest_posts_of_type($type, $limit = -1, $order = 'date', $ord = 'DESC') {
     $wp_query = new WP_Query(array(
       "posts_per_page" => $limit,
       "post_type" => $type,
@@ -77,7 +77,7 @@ class QueryHelper {
    * 
    * @ingroup helperfunc
    */
-  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'ASC') {
+  function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'DESC') {
     $wp_query = new WP_Query(array(
       'posts_per_page' => $limit,
       'tax_query' => array(
