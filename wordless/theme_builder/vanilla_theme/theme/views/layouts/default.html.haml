@@ -1,10 +1,31 @@
-!!! 5
-%html(html_attrs())
+!!!
+/[if lt IE 7] <html class="no-js lt-ie9 lt-ie8 lt-ie7">
+/[if IE 7] <html class="no-js lt-ie9 lt-ie8">
+/[if IE 8] <html class="no-js lt-ie9">
+/ [if gt IE 8]><!
+%html.no-js
+  / <![endif]
   %head= render_partial("layouts/head")
   %body
+    /[if lt IE 7]
+      <p class="chromeframe">You are using an outdated browser. <a href="http://browsehappy.com/">Upgrade your browser today</a> or <a href="http://www.google.com/chromeframe/?redirect=true">install Google Chrome Frame</a> to better experience this site.</p>
+    
+    -# Add your site or application content here
     .page-wrapper
       %header.site-header= render_partial("layouts/header")
       %section.site-content= yield()
       %footer.site-footer= render_partial("layouts/footer")
-      = javascript_include_tag("http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js")
-      = javascript_include_tag("application")
+    
+    -# JavaScript at the bottom for fast page loading
+    = javascript_include_tag("jquery-1.7.1.min.js")
+    -# Plugin scripts concatenated and minified
+    = javascript_include_tag("plugins")
+    -# Application script
+    = javascript_include_tag("application")
+    
+    :javascript
+      window.jQuery || document.write('<\/script>')
+      var _gaq=[['_setAccount','UA-XXXXX-X'],['_trackPageview']];
+      (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+      g.src=('https:'==location.protocol?'//ssl':'//www')+'.google-analytics.com/ga.js';
+      s.parentNode.insertBefore(g,s)}(document,'script'));

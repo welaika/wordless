@@ -14,6 +14,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 
 <a name="installation"></a>
+
 ## Requirements, installation and configuration
 
 Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere.
@@ -24,6 +25,7 @@ If you are not familiar with Ruby you may follow the following tutorial for gett
 Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
 
 <a name="rvm-way"></a>
+
 ### The RVM Way
 
 Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this requires `git` installed):
@@ -47,6 +49,7 @@ rvm use 1.8.7@wordless --create --default && gem install therubyracer sprockets 
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
 <a name="the-cool-stuff"></a>
+
 ### The Cool Stuff
 
 Okay, now we can get everything up and running :)
@@ -58,6 +61,7 @@ Okay, now we can get everything up and running :)
 5. Configure the path of your `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
 
 <a name="theme-anatomy"></a>
+
 ## Wordless Theme anatomy
 
 That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
@@ -83,6 +87,7 @@ That's a typical [Wordless theme directory structure](https://github.com/welaika
 Let's see in detail what is the purpose of all those directories:
 
 <a name="routing"></a>
+
 ### Routing
 
 The `index.php` serves as a router to all the theme views.
@@ -97,7 +102,10 @@ if (is_front_page()) {
 } else if (is_post_type("portfolio_work")) {
   render_view("portfolio/show");
 }
+
+?>
 ```
+
 As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
 ### Theme Views (`theme/views/*.haml` or `theme/views/*.php`)
@@ -127,6 +135,7 @@ Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your Haml views, a 
 Don't you already feel so much better?
 
 <a name="layouts"></a>
+
 ### Layouts (`theme/views/layouts` directory)
 
 Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `yield()` helper to combine it with the main content:
@@ -156,6 +165,7 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
 
 <a name="helpers"></a>
+
 ### Helpers (`theme/helpers/*.php` files)
 
 Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
@@ -167,6 +177,7 @@ Helpers are basically small functions that can be called in your views to help k
 * `distance_of_time_in_words()` - Reports the approximate distance in time between two dates;
 
 <a name="initializers"></a>
+
 ### Initializers (`config/initializers/*.php` files)
 
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
@@ -182,17 +193,19 @@ Wordless let you split you code into many modular initializer files, each one wi
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
 <a name="locales"></a>
+
 ### Locale files (`config/locales` directory)
 
 Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you. Note that due to WordPress localization framework, you need to append our domain when using internationalization. For example, using `__()` without the domain specified will not work:
 
 `__("News")`
 
-But using the domain we will make it work:
+But using the domain `we` will make it work:
 
 `__("News", "we")`
 
 <a name="assets"></a>
+
 ### Assets
 
 WordPress has to different places where you want to put your assets:
@@ -201,6 +214,7 @@ WordPress has to different places where you want to put your assets:
 * Place all your custom, project related assets into the `theme/assets/*`.
 
 <a name="stylesheets"></a>
+
 #### Stylesheets
 
 Include the assets in your views using `stylesheet_link_tag()` helper.
@@ -220,6 +234,7 @@ If Wordless can't find this static file, it will search for a file named `screen
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
 <a name="javascripts"></a>
+
 #### Javacripts
 
 Include the assets in your views using `javascript_include_tag()` helper.
@@ -238,7 +253,33 @@ If Wordless can't find this static file, it will search for a file named `applic
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
+<a name="h5bp"></a>
+
+## HTML 5 Boilerplate
+
+Wordless integrates [HTML 5 Boilerplate](http://html5boilerplate.com/) as default HTML template ( currently version [4.0.0](https://github.com/h5bp/html5-boilerplate/blob/v4.0.0/CHANGELOG.md) ).
+
+### .htaccess
+
+Apart from integrating HTML templates, we have integrated also the greate `htaccess` which comes with **H5BP**.
+
+The `htaccess` is still generated by WordPress ( so futher changes may occur/are possible from other plugins ), but is easily editable: in `assets/htaccess` you will find the content that WordPress will put inside final `htaccess` file, so you can edit it as you prefer ( remember to **save htaccess** from **WordPress administration** for changes to take effect! ).
+
+### Crossdomain.xml
+
+> A cross-domain policy file is an XML document that grants a web client ( such as Adobe Flash Player, etc. ) permission to handle data across multiple domains. 
+
+**H5BP** includes a `crossdomain.xml` file by default, so do Wordless. But, to make it work you need to **manually copy** it in the root of your WordPress installation.
+
+### [Humans.txt](http://humanstxt.org/)
+
+Why we have to limit at `robots.txt`? The theme has been crafted by clever humans, let's give some credits!
+
+Copy it in the root of your WordPress installation!
+
+
 <a name="additional-plugins"></a>
+
 ## Additional recommended plugins
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
@@ -256,6 +297,7 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 * This is alpha software, everything is still subject to change :)
 
 <a name="license"></a>
+
 ## License
 
 (The MIT License)
