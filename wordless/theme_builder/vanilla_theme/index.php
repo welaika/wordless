@@ -23,7 +23,9 @@ if (!class_exists("Wordless")) {
 
 if (is_single()) {
   render_view("posts/single");
-} else {
+} else if (is_archive()) {
   render_view("posts/archive");
+} else {
+  render_view("posts/404");
 }
 
