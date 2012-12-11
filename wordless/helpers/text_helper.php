@@ -264,7 +264,7 @@ class TextHelper {
 
   // check if the string $url is a valid URL
 
-  function isValidURL($url) {
+  function is_valid_url($url) {
     return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
   }
 

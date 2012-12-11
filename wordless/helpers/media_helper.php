@@ -14,14 +14,14 @@ class MediaHelper {
    * More details here https://github.com/dmolsen/Detector.
    */
 
-  function UserAgent(){
+  function user_agent(){
     global $ua;
     require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/detector/lib/Detector/Detector.php');
   }
 
   // Simple check if the device is mobile.
 
-  function CheckMobileDevice($ua) {
+  function check_mobile_device($ua) {
     if ($ua->isTablet || $ua->isMobile || $ua->isMobileDevice){
       return true;
     } else {
