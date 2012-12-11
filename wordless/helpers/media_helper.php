@@ -28,6 +28,20 @@ class MediaHelper {
       return false;
     }
   }
+
+  // get the attached files in post ($post_id)
+
+  function get_post_attachment($post_id) {
+    $args = array(
+      'post_type' => 'attachment',
+      'numberposts' => -1,
+      'post_status' => null,
+      'post_parent' => $post_id
+    );
+    
+    return get_posts($args);
+  }
+
 }
 
 Wordless::register_helper("MediaHelper");
