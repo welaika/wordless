@@ -1,0 +1,84 @@
+THIS CHANGELOG IS AN ATTEMPT TO DOCUMENT CHANGES TO THIS PROJECT.
+SUPER MINOR REVISION NUMBERS WON'T SHOW UP IN GITHUB BUT IT'LL HELP
+ME ORGANIZE WHEN I MADE A SET OF FIXES
+
+DET-v0.8.5 (Aug. 14, 2012) 
+ - FIX: commmented out call to addToUAList() to increase performance
+ - ADD: now throwing profiles into directories based on the first two characters of the hash. performance tweak because IE 7+8 create profiles an amazing number of profiles
+ - ADD: mustache lib now allows smarter fallback via splitting family names on dashes (e.g. the mobile-advanced-retina family fallback can now be mobile-advanced-retina -> mobile-advanced -> mobile -> base) feature is off by default
+ - ADD: can now use family=clear-family to clear out a family value stored in session
+
+DET-v0.8.2 (Aug. 6, 2012)
+ - FIX: cookie bug where an empty cookie was found causing the building of an empty profile
+ - FIX: updated the families.default.json to reflect the lessons learned on www.wvu.edu regarding device support
+
+DET-v0.8.1 (Jul. 13, 2012)
+ - ADD: somehow i forgot to include the json lib for sub-5.2 compatibility
+
+DET-v0.8.0 (Jun. 4, 2012)
+ - FIX: javascript mediaqueries argument in the demo
+ - ADD: "comment out" feature detection tests by adding an underscore to the beginning of their filename
+ - ADD: per session tests (e.g. tests that produce results unique to a client but only need to be run once per session)
+ - ADD: nojs attribute to the final ua variable so it can be used as a flag
+ - ADD: nocookies attribute to the final ua variable so it can be used as a flag
+ - ADD: the features.js.php link can be dynamically created if necessary
+
+DET-v0.7.1 (May 30, 2012)
+ - FIX: can now skip Detector::build() when loading up the Detector library
+ - FIX: per-request javascript include doesn't need the request var hack
+ - FIX: better docs for some functions
+ - FIX: config variables are now defined via a foreach loop
+ - ADD: all configuration now happens in its own function
+ 
+DET-v0.7.0 (May 29, 2012)
+ - FIX: family attribute creation occurs with every request
+ - FIX: no javascript support
+ - FIX: just a lot of DRYed up code
+ - FIX: modernizr-like helpers are now in their own lib file
+ - FIX: updated the default core json template to reflect all the appropriate variables
+ - FIX: updated the noscript link so that nojs redirects happen auto-magically
+ - FIX: trying to move library calls around to dampen the memory footprint of detector
+ - FIX: updated ua-parser-php to the latest & greatest
+ - ADD: no cookie support
+ - ADD: no javascript, no cookie, and search engine default family values
+ - ADD: switch "themes" based on browser families by overriding with request var
+
+DET-v0.5.2 (May 7, 2012)
+ - FIX: added some sanity checks on user agent strings
+ - FIX: fixed two strict checks on object creation
+ - FIX: updated UAParser to the latest edition
+
+DET-v0.5.1 (Feb. 27, 2012)
+ - ADD: can add tag soup a la modernizr to the <html> tag if you want
+ - ADD: can push detector values to a JavaScript file if you want
+ - FIX: most, if not all, PHP notices should be addressed
+ - FIX: removed ua-parser-php as a submodule & added the files directly. downloads should be fixed
+ - THX: thanks to james jeffery for the notes about the PHP notices
+
+DET-v0.5 (Feb. 18, 2012)
+ - ADD: a configuration file for configuring standard paths and variables for Detector
+ - ADD: a debug flag
+ - ADD: support for versioning of core & extended profiles
+ - ADD: youtube demo that uses Detector
+ - ADD: RESS demo showing how Detector can be used with Mustache for templating
+ - ADD: a browser family classification system that classifies browsers by ua info & features
+ - ADD: a number of extra feature tests
+ - FIX: updated the browser detection library to use ua-parser-php
+ - FIX: reorganized detector's file system layout so it's a little cleaner
+ - FIX: updated modernizr to 2.5.2
+
+DET-v0.2 (Jan. 18, 2012)
+ - ADD: handles browsers or spiders that don't support javascript
+ - ADD: objects created with Modernizr.addTest() can now be used (see per request screen attributes test)
+ - ADD: an experimental check to see if requests from iOS devices are coming from a UIWebview
+ - ADD: google analytics include file
+ - ADD: a user agent list for easy access to user agent strings & user agent hashes
+ - FIX: tweaked the look of the feature profiles so they look better
+ - FIX: per request, core, and extended tests now show on the "your browser" section of the feature profile
+ - FIX: made sure major version & minor version are being populated correctly
+ - FIX: attempted to update the media query tests. probably still flaky. 
+ - FIX: attempted to get android tablets correctly identified. relies on the media query code so not sure it's completely working.
+ - FIX: updated the README to reflect the new changes
+
+DET-v0.1 (Jan. 13, 2012)
+ - Initial release

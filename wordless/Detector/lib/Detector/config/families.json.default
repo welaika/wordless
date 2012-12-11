@@ -1,0 +1,15 @@
+{
+	"tablet": {
+		"isTablet": true
+	},
+	"mobile-advanced": { 
+    "isMobile": true,
+    "features": [ "csstranforms" ]
+	},
+	"mobile-basic": { 
+    "isMobile": true
+	},
+	"desktop": {
+		"isComputer": true
+	}
+}

@@ -1,0 +1,45 @@
+/*
+ * Configuration options for Detector
+ * If config.ini doesn't exist Detector will attempt to read in config.ini.copy
+ * and write out config.ini.
+ */
+
+// if we should run in debug mode. only useful if we want to view the site populated
+// w/ other Detector profiles
+debug                   = false
+
+// version number so that core and extended profiles can be rebuilt if necessary
+coreVersion             = "0.9"
+extendedVersion         = "1.0"
+
+// where to find the modernizr scripts
+uaFeaturesMaxJS         = "lib/modernizr/modernizr.2.5.2.min.custom.js"
+uaFeaturesMinJS         = "lib/modernizr/modernizr.2.5.2.min.no-tests.js"
+
+// where to find the tests that should be run against browsers
+uaFeaturesCore          = "tests/core/"
+uaFeaturesExtended      = "tests/extended/"
+uaFeaturesPerSession    = "tests/persession/"
+uaFeaturesPerRequest    = "tests/perrequest/"
+
+// where to find the user agent profiles
+uaDirCore               = "user-agents/core/"
+uaDirExtended           = "user-agents/extended/"
+
+// where to find the features.js.php file from the web
+featuresScriptWebPath   = "/js/";
+
+// what is the default family name
+defaultFamily           = "mobile-basic"
+
+// allow family switching via request variable
+switchFamily            = false
+
+// allow splits in family names for partial fallback
+splitFamily             = false
+
+// do we show a default family for those browsers that don't support JavaScript, by default NO
+noJSCookieFamilySupport = false
+noJSSearchFamily        = "desktop"
+noJSDefaultFamily       = "mobile-basic"
+noCookieFamily          = "desktop"
