@@ -269,4 +269,85 @@ class TextHelper {
     return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
   }
 
+  /* Get a custom excerpt.
+  *  This function count the words that we want without count the allowed tags and removing the others.
+  *  If you want to hardcode the allowed tags you che uncomment the $allowed_tags definition.
+  */
+
+  function get_my_excerpt($text, $num_words, $allowed_tags = "<b><i><em><strong>") {
+    // set the accepted tags
+    // $allowed_tags = "<b><i><em><strong>";
+
+    // fill two arrays with open and close accepted tags
+    $tags = explode("<", $allowed_tags);
+    foreach($tags as $tag) {
+      if (strlen($tag) > 0) {
+        $allowed_tags_open_arr[] = "<" . $tag;
+        $allowed_tags_closed_arr[] = "</" . $tag;
+      }
+    }
+
+    // init some useful variables
+    $arr_size = count($allowed_tags_open_arr);
+    $open_tags_count = 0;
+    $tags_to_close = array($arr_size);    
+    for ($i = 0; $i < $arr_size; $i++) {
+      $tags_to_close[$i] = 0;
+    }
+    $word_count = 0;
+    $out_text = "";
+
+    // strip all unallowed tags
+    $text = strip_tags($text, $allowed_tags);
+
+    // split the words
+    $words = explode(" ", $text);
+    foreach($words as $word) {
+      // if passed the limit it's time to print, breaking the for!
+      if ($word_count >= $num_words) {
+        break;
+      }
+
+        // appending words to output, restoring blank
+      $out_text = $out_text . " " . $word;
+
+        // increasing the counter of open tag for a specific tag
+      for ($i = 0; $i < $arr_size; $i++) {
+            // only if the opening tag is found
+        if (strpos($word, $allowed_tags_open_arr[$i]) !== FALSE) {
+          $tags_to_close[$i] += 1;
+        }
+      }
+
+        // decreasing the counter of open tag for a specific tag        
+      for ($i = 0; $i < $arr_size; $i++) {
+            // only if the closing tag is found
+        if (strpos($word, $allowed_tags_closed_arr[$i]) !== FALSE) {
+          $tags_to_close[$i] -= 1;
+        }
+      }
+      $word_count++;
+    }
+
+    // printing all the closing tags needed
+    for ($i = 0; $i < $arr_size; $i++) {
+      if ($tags_to_close[$i] > 0) {
+        for ($j = 0;$j < $tags_to_close[$i];$j++) {
+          $out_text .= $allowed_tags_closed_arr[$i];
+        }
+      }
+    }
+    if ($word_count >= $num_words) {
+      $out_text .= "...";
+    }
+
+    return $out_text;
+  }
+
+  // echo get_my_excerpt
+
+  function my_excerpt($text, $num_words) {
+    echo get_my_excerpt($text, $num_words);
+  }
+
 Wordless::register_helper("TextHelper");
