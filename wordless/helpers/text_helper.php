@@ -261,7 +261,6 @@ class TextHelper {
     }
     return join(" ", $capitalized_words);
   }
-}
 
   // check if the string $url is a valid URL
 
@@ -349,5 +348,6 @@ class TextHelper {
   function my_excerpt($text, $num_words) {
     echo get_my_excerpt($text, $num_words);
   }
+}
 
 Wordless::register_helper("TextHelper");
