@@ -16,7 +16,7 @@ class MediaHelper {
 
   function UserAgent(){
     global $ua;
-    include(dirname(__FILE__) ."/../Detector/lib/Detector/Detector.php");
+    require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/detector/lib/Detector/Detector.php');
   }
 
   // Simple check if the device is mobile.
@@ -48,7 +48,7 @@ class MediaHelper {
     return get_post_attachment(get_queried_object_id());
   }
 
-  
+
   /**
    * Resizes the specified image to the specified dimensions.
    * 
