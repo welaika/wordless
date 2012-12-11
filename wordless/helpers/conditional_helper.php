@@ -22,3 +22,5 @@ function is_subpage($id = "") {
         return false;                          // ... the answer to the question is false
     }
 }
+
+Wordless::register_helper("ConditionalHelper");
