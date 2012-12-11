@@ -31,7 +31,7 @@ class MediaHelper {
 
   // get the attached files in post ($post_id)
 
-  function get_post_attachment($post_id) {
+  function get_post_attachments($post_id) {
     $args = array(
       'post_type' => 'attachment',
       'numberposts' => -1,
@@ -41,6 +41,16 @@ class MediaHelper {
     
     return get_posts($args);
   }
+
+  // get the attached files in current post
+
+  function get_current_attachment() {
+    return get_post_attachment(get_queried_object_id());
+  }
+
+  
+  
+
 
 }
 
