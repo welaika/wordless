@@ -187,11 +187,11 @@ class TextHelper {
    *     - length (default 30): the length at which truncate the text
    *     - omission (default '...'): the suffix string to be added to the 
    *       truncate text
-   *     - word_count (default TRUE): if is TRUE the lenght value count words
+   *     - word_count (default FALSE): if is TRUE the lenght value count words
    *       else if is FALSE count chars
    *     - separator (default FALSE): the separator string used to trim the
    *       argument
-   *     - html (default TRUE): set if you want to preserve html in string. 
+   *     - html (default FALSE): set if you want to preserve html in string. 
    *       If is set to false remove ALL HTML tags.
    *     - allowed_tags (default array('b', 'i', 'em', 'strong')): if html is TRUE preserve
    *       the allowed tags. If this param is set to 'all' leave untouched the string.
@@ -205,9 +205,9 @@ class TextHelper {
       array(
         'length' => 30,
         'omission' => '...',
-        'word_count' => TRUE,
+        'word_count' => FALSE,
         'separator' => FALSE,
-        'html' => TRUE,
+        'html' => FALSE,
         'allowed_tags' => array('b', 'i', 'em', 'strong')
       ),
       $options
@@ -246,11 +246,23 @@ class TextHelper {
       if (substr($text, -strlen($options['separator'])) === $options['separator']){
         $text = substr($text, 0, (strlen($text) - strlen($options['separator'])));
       }
-      // check for unclosed tags
-      $text = $text . $options['omission'];
-      $doc = new DOMDocument();
-      $doc->loadHTML($text);
-      $text = $doc->saveHTML();
+      if (count($words) >= $options['length']){
+        $text = $text . $options['omission'];
+      }
+      if ($options['html']){
+        // check for unclosed tags
+          $actual_error_reporting_level = error_reporting();
+          error_reporting(0);
+          $doc = new DOMDocument();
+          $doc->loadHTML($text);
+          error_reporting($actual_error_reporting_level);
+          libxml_clear_errors();
+          $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());
+          $text = str_replace("<html>", "", $text);
+          $text = str_replace("<body>", "", $text);
+          $text = str_replace("</body>", "", $text);
+          $text = str_replace("</html>", "", $text);
+      }
 
       return $text;
     }
@@ -295,7 +307,7 @@ class TextHelper {
    *   The capitalized text.
    */
   function capitalize($text) {
-    return ucwords($text);
+    return ucfirst(strtolower($text));
   }
 
   /**
@@ -308,7 +320,7 @@ class TextHelper {
    *   The text with every word capitalized.
    */
   function titleize($text) {
-    $words = split(" ", $text);
+    $words = explode(" ", $text);
     $capitalized_words = array();
     foreach ($words as $word) {
       $capitalized_words[] = capitalize($word);
