@@ -187,8 +187,15 @@ class TextHelper {
    *     - length (default 30): the length at which truncate the text
    *     - omission (default '...'): the suffix string to be added to the 
    *       truncate text
+   *     - word_count (default TRUE): if is TRUE the lenght value count words
+   *       else if is FALSE count chars
    *     - separator (default FALSE): the separator string used to trim the
    *       argument
+   *     - html (default TRUE): set if you want to preserve html in string. 
+   *       If is set to false remove ALL HTML tags.
+   *     - allowed_tags (default array('b', 'i', 'em', 'strong')): if html is TRUE preserve
+   *       the allowed tags. If this param is set to 'all' leave untouched the string.
+   *    
    * 
    *  @return string
    *    The truncated text.
@@ -198,32 +205,79 @@ class TextHelper {
       array(
         'length' => 30,
         'omission' => '...',
-        'separator' => FALSE
+        'word_count' => TRUE,
+        'separator' => FALSE,
+        'html' => TRUE,
+        'allowed_tags' => array('b', 'i', 'em', 'strong')
       ),
       $options
     );
 
-    $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
-    if ($options['separator']) {
-      $stop = FALSE;
-      for ($i = 0; $i <= min(strlen($text), $length_with_room_for_omission); $i++) {
-        if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
-          $stop = $i;
-        }
+    if (!$options['html']){
+      // if html is false strip all html tags
+      $text = strip_tags($text);
+    } elseif ($options['html']){
+      if ($options['allowed_tags'] != 'all'){
+        // if the allowed_tags are not 'all' remove all tags leaving the allowed 
+        $text = strip_tags($text, "<". implode("><", $options['allowed_tags']) .">");
       }
-      if ($stop === FALSE) {
-        $stop = $length_with_room_for_omission;
-      }
-    } 
-    else {
-      $stop = $length_with_room_for_omission;
     }
 
-    if (strlen($text) > $options['length']) {
-      return substr($text, 0, $stop) . $options['omission'];
-    }
-    else {
+    // start to count words
+    if ($options['word_count']){
+      // split string into words
+      $words = explode(" ", $text);
+      $counter = 0;
+      $text = "";
+      foreach ($words as $word) {
+        if ($counter >= ($options['length'])){
+          // leave foreach if reached the limit
+          break;
+        } else {
+          // add words to result string
+          $text .= $word ." ";
+          // if the word is a HTML tag don't count it
+          if ((substr($word, 0, 1) != "<") || (substr($word, -1) != ">")){
+            $counter++;
+          }
+        }
+      }
+      // if the last substring of $text is separator remove it
+      if (substr($text, -strlen($options['separator'])) === $options['separator']){
+        $text = substr($text, 0, (strlen($text) - strlen($options['separator'])));
+      }
+      // check for unclosed tags
+      $text = $text . $options['omission'];
+      $doc = new DOMDocument();
+      $doc->loadHTML($text);
+      $text = $doc->saveHTML();
+
       return $text;
+    }
+    // or chars
+    else{
+      $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
+      if ($options['separator']) {
+        $stop = FALSE;
+        for ($i = 0; $i <= min(strlen($text), $length_with_room_for_omission); $i++) {
+          if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
+            $stop = $i;
+          }
+        }
+        if ($stop === FALSE) {
+          $stop = $length_with_room_for_omission;
+        }
+      } 
+      else {
+        $stop = $length_with_room_for_omission;
+      }
+
+      if (strlen($text) > $options['length']) {
+        return substr($text, 0, $stop) . $options['omission'];
+      }
+      else {
+        return $text;
+      }
     }
   }
 
@@ -266,87 +320,6 @@ class TextHelper {
 
   function is_valid_url($url) {
     return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
-  }
-
-  /* Get a custom excerpt.
-  *  This function count the words that we want without count the allowed tags and removing the others.
-  *  If you want to hardcode the allowed tags you che uncomment the $allowed_tags definition.
-  */
-
-  function get_my_excerpt($text, $num_words, $allowed_tags = "<b><i><em><strong>") {
-    // set the accepted tags
-    // $allowed_tags = "<b><i><em><strong>";
-
-    // fill two arrays with open and close accepted tags
-    $tags = explode("<", $allowed_tags);
-    foreach($tags as $tag) {
-      if (strlen($tag) > 0) {
-        $allowed_tags_open_arr[] = "<" . $tag;
-        $allowed_tags_closed_arr[] = "</" . $tag;
-      }
-    }
-
-    // init some useful variables
-    $arr_size = count($allowed_tags_open_arr);
-    $open_tags_count = 0;
-    $tags_to_close = array($arr_size);    
-    for ($i = 0; $i < $arr_size; $i++) {
-      $tags_to_close[$i] = 0;
-    }
-    $word_count = 0;
-    $out_text = "";
-
-    // strip all unallowed tags
-    $text = strip_tags($text, $allowed_tags);
-
-    // split the words
-    $words = explode(" ", $text);
-    foreach($words as $word) {
-      // if passed the limit it's time to print, breaking the for!
-      if ($word_count >= $num_words) {
-        break;
-      }
-
-        // appending words to output, restoring blank
-      $out_text = $out_text . " " . $word;
-
-        // increasing the counter of open tag for a specific tag
-      for ($i = 0; $i < $arr_size; $i++) {
-            // only if the opening tag is found
-        if (strpos($word, $allowed_tags_open_arr[$i]) !== FALSE) {
-          $tags_to_close[$i] += 1;
-        }
-      }
-
-        // decreasing the counter of open tag for a specific tag        
-      for ($i = 0; $i < $arr_size; $i++) {
-            // only if the closing tag is found
-        if (strpos($word, $allowed_tags_closed_arr[$i]) !== FALSE) {
-          $tags_to_close[$i] -= 1;
-        }
-      }
-      $word_count++;
-    }
-
-    // printing all the closing tags needed
-    for ($i = 0; $i < $arr_size; $i++) {
-      if ($tags_to_close[$i] > 0) {
-        for ($j = 0;$j < $tags_to_close[$i];$j++) {
-          $out_text .= $allowed_tags_closed_arr[$i];
-        }
-      }
-    }
-    if ($word_count >= $num_words) {
-      $out_text .= "...";
-    }
-
-    return $out_text;
-  }
-
-  // echo get_my_excerpt
-
-  function my_excerpt($text, $num_words) {
-    echo get_my_excerpt($text, $num_words);
   }
 }
 
