@@ -9,24 +9,16 @@
 
 class MediaHelper {
   
-  /** This function include a library (Detector v0.8.5) that return information about browsers & devices (user agents).
-   * To use it simply call the function UserAgent() in your view and the global var $ua or the other vars that you need.
-   * More details here https://github.com/dmolsen/Detector.
+  /** This function include a PHP class (Mobile Detect - Version 2.5.2 - commit b5b8992dbe) to detect mobile devices and user agent details.
+   * To use it simply call the function detect_user_agent() in your view and then call one avaible method.
+   * Example: $detect->isMobile()
+   * More details here https://github.com/serbanghita/Mobile-Detect
    */
 
-  function user_agent(){
-    global $ua;
-    require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/detector/lib/Detector/Detector.php');
-  }
-
-  // Simple check if the device is mobile.
-
-  function check_mobile_device($ua) {
-    if ($ua->isTablet || $ua->isMobile || $ua->isMobileDevice){
-      return true;
-    } else {
-      return false;
-    }
+  function detect_user_agent(){
+    include Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/mobile_detect.php');
+    $detect = new Mobile_Detect();
+    return $detect;
   }
 
   // get the attached files in post ($post_id)
