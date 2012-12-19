@@ -187,8 +187,15 @@ class TextHelper {
    *     - length (default 30): the length at which truncate the text
    *     - omission (default '...'): the suffix string to be added to the 
    *       truncate text
+   *     - word_count (default FALSE): if is TRUE the lenght value count words
+   *       else if is FALSE count chars
    *     - separator (default FALSE): the separator string used to trim the
    *       argument
+   *     - html (default FALSE): set if you want to preserve html in string. 
+   *       If is set to false remove ALL HTML tags.
+   *     - allowed_tags (default array('b', 'i', 'em', 'strong')): if html is TRUE preserve
+   *       the allowed tags. If this param is set to 'all' leave untouched the string.
+   *    
    * 
    *  @return string
    *    The truncated text.
@@ -198,32 +205,91 @@ class TextHelper {
       array(
         'length' => 30,
         'omission' => '...',
-        'separator' => FALSE
+        'word_count' => FALSE,
+        'separator' => FALSE,
+        'html' => FALSE,
+        'allowed_tags' => array('b', 'i', 'em', 'strong')
       ),
       $options
     );
 
-    $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
-    if ($options['separator']) {
-      $stop = FALSE;
-      for ($i = 0; $i <= min(strlen($text), $length_with_room_for_omission); $i++) {
-        if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
-          $stop = $i;
-        }
+    if (!$options['html']){
+      // if html is false strip all html tags
+      $text = strip_tags($text);
+    } elseif ($options['html']){
+      if ($options['allowed_tags'] != 'all'){
+        // if the allowed_tags are not 'all' remove all tags leaving the allowed 
+        $text = strip_tags($text, "<". implode("><", $options['allowed_tags']) .">");
       }
-      if ($stop === FALSE) {
-        $stop = $length_with_room_for_omission;
-      }
-    } 
-    else {
-      $stop = $length_with_room_for_omission;
     }
 
-    if (strlen($text) > $options['length']) {
-      return substr($text, 0, $stop) . $options['omission'];
-    }
-    else {
+    // start to count words
+    if ($options['word_count']){
+      // split string into words
+      $words = explode(" ", $text);
+      $counter = 0;
+      $text = "";
+      foreach ($words as $word) {
+        if ($counter >= ($options['length'])){
+          // leave foreach if reached the limit
+          break;
+        } else {
+          // add words to result string
+          $text .= $word ." ";
+          // if the word is a HTML tag don't count it
+          if ((substr($word, 0, 1) != "<") || (substr($word, -1) != ">")){
+            $counter++;
+          }
+        }
+      }
+      // if the last substring of $text is separator remove it
+      if (substr($text, -strlen($options['separator'])) === $options['separator']){
+        $text = substr($text, 0, (strlen($text) - strlen($options['separator'])));
+      }
+      if (count($words) >= $options['length']){
+        $text = $text . $options['omission'];
+      }
+      if ($options['html']){
+        // check for unclosed tags
+          $actual_error_reporting_level = error_reporting();
+          error_reporting(0);
+          $doc = new DOMDocument();
+          $doc->loadHTML($text);
+          error_reporting($actual_error_reporting_level);
+          libxml_clear_errors();
+          $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());
+          $text = str_replace("<html>", "", $text);
+          $text = str_replace("<body>", "", $text);
+          $text = str_replace("</body>", "", $text);
+          $text = str_replace("</html>", "", $text);
+      }
+
       return $text;
+    }
+    // or chars
+    else{
+      $length_with_room_for_omission = $options['length'] - strlen($options['omission']);
+      if ($options['separator']) {
+        $stop = FALSE;
+        for ($i = 0; $i <= min(strlen($text), $length_with_room_for_omission); $i++) {
+          if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
+            $stop = $i;
+          }
+        }
+        if ($stop === FALSE) {
+          $stop = $length_with_room_for_omission;
+        }
+      } 
+      else {
+        $stop = $length_with_room_for_omission;
+      }
+
+      if (strlen($text) > $options['length']) {
+        return substr($text, 0, $stop) . $options['omission'];
+      }
+      else {
+        return $text;
+      }
     }
   }
 
@@ -241,7 +307,7 @@ class TextHelper {
    *   The capitalized text.
    */
   function capitalize($text) {
-    return ucwords($text);
+    return ucfirst(strtolower($text));
   }
 
   /**
@@ -254,12 +320,18 @@ class TextHelper {
    *   The text with every word capitalized.
    */
   function titleize($text) {
-    $words = split(" ", $text);
+    $words = explode(" ", $text);
     $capitalized_words = array();
     foreach ($words as $word) {
       $capitalized_words[] = capitalize($word);
     }
     return join(" ", $capitalized_words);
+  }
+
+  // check if the string $url is a valid URL
+
+  function is_valid_url($url) {
+    return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
   }
 }
 
