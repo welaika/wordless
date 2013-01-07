@@ -6,23 +6,36 @@
  * @ingroup helperclass
  */
 
-
 class MediaHelper {
   
-  /** This function include a PHP class (Mobile Detect - Version 2.5.2 - commit b5b8992dbe) to detect mobile devices and user agent details.
+  /**
+   * This function include a PHP class (Mobile Detect - Version 2.5.2 - commit b5b8992dbe) to detect mobile devices and user agent details.
    * To use it simply call the function detect_user_agent() in your view and then call one avaible method.
-   * Example: $detect->isMobile()
-   * More details here https://github.com/serbanghita/Mobile-Detect
+   * 
+   * @example
+   *   $detect->isMobile()
+   * 
+   * @see https://github.com/serbanghita/Mobile-Detect
+   * 
+   * @ingroup helperfunc
    */
-
   function detect_user_agent(){
-    include Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/mobile_detect.php');
+    require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/mobile_detect.php');
     $detect = new Mobile_Detect();
     return $detect;
   }
 
-  // get the attached files in post ($post_id)
-
+  /**
+   * Get the attached files in specified post.
+   * 
+   * @param int $post_id
+   *   The ID of the post of which we need to retrieve attachments.
+   * 
+   * @return array
+   *   List of post attachment objects.
+   * 
+   * @ingroup helperfunc
+   */
   function get_post_attachments($post_id) {
     $args = array(
       'post_type' => 'attachment',
@@ -34,12 +47,17 @@ class MediaHelper {
     return get_posts($args);
   }
 
-  // get the attached files in current post
-
-  function get_current_attachment() {
-    return get_post_attachment(get_queried_object_id());
+  /**
+   * Get the attached files in current post.
+   * 
+   * @return array
+   *   List of post attachment objects.
+   * 
+   * @ingroup helperfunc
+   */
+  function get_current_post_attachments() {
+    return get_post_attachments(get_queried_object_id());
   }
-
 
   /**
    * Resizes the specified image to the specified dimensions.
@@ -57,8 +75,9 @@ class MediaHelper {
    *   The valid URL to the image
    * 
    * Cropped images are stored in template tmp folder. 
+   * 
+   * @ingroup helperfunc
    */
-
   function resize_image($src, $width, $height){
     // initializing
     $save_path = get_theme_path() . '/tmp/';
@@ -118,7 +137,7 @@ class MediaHelper {
           $ratio = $height / $height_orig;
       }
       // one equal one bigger
-      else if ( ($width == $width_orig && $height_orig > $height) || ($height == $height_orig && width_orig > $width) )
+      else if ( ($width == $width_orig && $height_orig > $height) || ($height == $height_orig && $width_orig > $width) )
         $to_crop = 1;
       // some problem...
       else
