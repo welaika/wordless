@@ -109,9 +109,17 @@ class TextHelperTest extends UnitTestCase {
   }
 
   function test_is_valid_url() {
-    $this->assertEqual(false, is_valid_url("hello.world"));
-    $this->assertEqual(true, is_valid_url("http://hello.world"));
-
+    $this->assertEqual(false, is_valid_url("http:///example.unknown")); 
+    $this->assertEqual(false, is_valid_url("http://:80")); 
+    $this->assertEqual(false, is_valid_url("http://user@:80")); 
+    $this->assertEqual(false, is_valid_url("example.unknown"));
+    $this->assertEqual(true, is_valid_url("http://example.unknown"));
+    $this->assertEqual(true, is_valid_url("http://example.unknown/2013/01/07/something"));
+    $this->assertEqual(true, is_valid_url("http://example.unknown/2013/01/07/something.html"));
+    $this->assertEqual(true, is_valid_url("http://user:password@example.unknown"));
+    $this->assertEqual(true, is_valid_url("http://user:password@example:80.unknown"));
+    $this->assertEqual(true, is_valid_url("http://example.unknown/$-_.+!*'(),{}|\\^~[]`<>#%\";/?:@&=."));
+    $this->assertEqual(true, is_valid_url("http://example.unknown/\"><script>alert(document.cookie)</script>"));
   }
 
   function test_titleize() {

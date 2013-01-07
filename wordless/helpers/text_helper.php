@@ -328,10 +328,21 @@ class TextHelper {
     return join(" ", $capitalized_words);
   }
 
-  // check if the string $url is a valid URL
-
+  /**
+   * Check if the string passed as parameter is a valid URL.
+   * 
+   * NO SANITAZE IS PERFORMED on the URL! URL like this:
+   *   http://example.com/"><script>alert(document.cookie)</script>
+   * DO PASS validation (syntactically are valid URLs).
+   * 
+   * @param string $url
+   *  A URL to be validated.
+   * 
+   * @return bool
+   *  Return TRUE if the URL is valid, FALSE otherwise
+   */
   function is_valid_url($url) {
-    return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+    return (bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
   }
 }
 
