@@ -15,6 +15,8 @@ class AssetTagHelper {
    * 
    * @return string
    *   The assets version string
+   * 
+   * @ingroup helperfunc
    */
   protected function get_asset_version_string() {
     return Wordless::preference('assets.version', NULL);

@@ -85,6 +85,8 @@ class TextHelper {
    * 
    * @return mixed
    *   The current data in the iteration.
+   * 
+   * @ingroup helperfunc
    */
   function pluralize($string) {
 
@@ -169,6 +171,8 @@ class TextHelper {
    * 
    * @param string $name (optional)
    *   The specified name of the cycle to reset.
+   * 
+   * @ingroup helperfunc
    */ 
   function reset_cycle($name = "default") {
     if (isset(self::$cycles[$name])) {
@@ -196,9 +200,10 @@ class TextHelper {
    *     - allowed_tags (default array('b', 'i', 'em', 'strong')): if html is TRUE preserve
    *       the allowed tags. If this param is set to 'all' leave untouched the string.
    *    
+   * @return string
+   *   The truncated text.
    * 
-   *  @return string
-   *    The truncated text.
+   * @ingroup helperfunc
    */
   function truncate($text, $options = array()) {
     $options = array_merge(
@@ -305,6 +310,8 @@ class TextHelper {
    * 
    * @return string
    *   The capitalized text.
+   * 
+   * @ingroup helperfunc
    */
   function capitalize($text) {
     return ucfirst(strtolower($text));
@@ -318,6 +325,8 @@ class TextHelper {
    * 
    * @return string
    *   The text with every word capitalized.
+   * 
+   * @ingroup helperfunc
    */
   function titleize($text) {
     $words = explode(" ", $text);
@@ -336,10 +345,12 @@ class TextHelper {
    * DO PASS validation (syntactically are valid URLs).
    * 
    * @param string $url
-   *  A URL to be validated.
+   *   A URL to be validated.
    * 
    * @return bool
-   *  Return TRUE if the URL is valid, FALSE otherwise
+   *   Return TRUE if the URL is valid, FALSE otherwise.
+   * 
+   * @ingroup helperfunc
    */
   function is_valid_url($url) {
     return (bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);

@@ -11,11 +11,13 @@ class ConditionalHelper {
    * Check if the page is a subpage and return the parent post ID if true.
    *
    * @param int $id
-   *  (optional) If you pass an ID to the function, will check if the current
-   *  page is subpage of the specified parent page.
+   *   (optional) If you pass an ID to the function, will check if the current
+   *   page is subpage of the specified parent page.
    * 
    * @return int|bool
-   *  Return the parent post if present or FALSE
+   *   Return the parent post if present or FALSE
+   * 
+   * @ingroup helperfunc
    */
   function is_subpage($id = NULL) {
     global $post;                              // load details about this page
