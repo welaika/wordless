@@ -353,7 +353,7 @@ class TextHelper {
    * @ingroup helperfunc
    */
   function is_valid_url($url) {
-    return (bool)preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $url);
+    return (bool)filter_var($url, FILTER_VALIDATE_URL);
   }
 }
 
