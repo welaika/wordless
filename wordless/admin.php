@@ -29,7 +29,7 @@ class WordlessAdmin
 
   public static function add_notice() {
     // Get a list of missing directories
-    $dirsMissing = Wordless::theme_is_wordless_compatible(true);
+    $dirs_missing = Wordless::theme_is_wordless_compatible(true);
 
     echo '<div class="error"><p>';
     echo sprintf(
@@ -41,7 +41,7 @@ class WordlessAdmin
     );
     echo "</p>";
     echo "<ul>";
-    foreach($dirsMissing as $dir){
+    foreach($dirs_missing as $dir){
       echo "<li>Missing Directory: ".$dir."</li>";
     }
     echo "</ul>";
