@@ -220,7 +220,7 @@ If Wordless can't find this static file, it will search for a file named `screen
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
 <a name="javascripts"></a>
-#### Javacripts
+#### Javascripts
 
 Include the assets in your views using `javascript_include_tag()` helper.
 
