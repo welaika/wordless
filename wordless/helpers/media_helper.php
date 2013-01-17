@@ -80,7 +80,7 @@ class MediaHelper {
    */
   function resize_image($src, $width, $height){
     // initializing
-    $save_path = get_theme_path() . '/tmp/';
+    $save_path = Wordless::theme_temp_path();
     $img_filename = $save_path . md5($width . 'x' . $height . '_' . basename($src)) . '.jpg';
 
     // if file doesn't exists, create it
@@ -178,7 +178,7 @@ class MediaHelper {
     }
 
     // Return image URL
-    return get_bloginfo("template_url") . '/tmp/' . basename($img_filename);
+    return Wordless::join_paths(Wordless::theme_temp_path(), basename($img_filename));
   }
 
 
