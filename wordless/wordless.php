@@ -212,7 +212,15 @@ class Wordless {
     }
   }
 
-  public static function theme_is_wordless_compatible() {
+  /**
+   * Checks for required directories when initializing theme. If any are missing, it will return false.
+   * If passed `true`, this function will return an array of missing directories.
+   *
+   * * @param boolean $returnArray
+   *   Set true to get a list of missing directories
+   *
+   */
+  public static function theme_is_wordless_compatible($returnArray = false) {
     $required_directories = array(
       self::theme_helpers_path(),
       self::theme_initializers_path(),
@@ -223,12 +231,17 @@ class Wordless {
       self::theme_javascripts_path(),
       self::theme_temp_path()
     );
+    $missingDirectories = array();
     foreach ($required_directories as $dir) {
       if (!file_exists($dir) || !is_dir($dir)) {
-        return false;
+        $missingDirectories[] = $dir;
+        if(!$returnArray)
+          return false;
       }
     }
-    return true;
+    if(!$returnArray)
+      return true;
+    return $missingDirectories;
   }
 
   public static function theme_helpers_path() {
