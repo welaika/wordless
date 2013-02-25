@@ -28,7 +28,10 @@ class WordlessAdmin
   }
 
   public static function add_notice() {
-	  echo '<div class="error"><p>';
+    // Get a list of missing directories
+    $dirs_missing = Wordless::theme_is_wordless_compatible(true);
+
+    echo '<div class="error"><p>';
     echo sprintf(
       __('Your current theme does seem to be a Wordless-compatible theme! <a href="%2$s" target="_blank">%1$s</a> (or <a href="%4$s" target="_blank">%3$s</a>)'),
       __('Create a new Wordless theme'),
@@ -36,8 +39,14 @@ class WordlessAdmin
       __('learn more about Wordless'),
       'https://github.com/welaika/wordless#readme'
     );
-		echo "</p></div>";
-	}
+    echo "</p>";
+    echo "<ul>";
+    foreach($dirs_missing as $dir){
+      echo "<li>Missing Directory: ".$dir."</li>";
+    }
+    echo "</ul>";
+    echo "</div>";
+  }
 
   public static function add_page() {
     $page = add_theme_page(
