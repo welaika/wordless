@@ -4,7 +4,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, compass, haml, rails
 Requires at least: 3.0
 Tested up to: 3.2
-Stable tag: trunk
+Stable tag: 0.2
 
 Wordless dramatically speeds up and enhances your custom themes
 creation, thanks to Sass, Compass, Haml and Coffeescript.
