@@ -71,11 +71,11 @@ class RenderHelper {
     render_template($current_view);
   }
 
-  function render_view($name, $layout = 'default') {
+  function render_view($name, $layout = 'default', $locals = array()) {
     ob_start();
     global $current_view;
     $current_view = $name;
-    render_template("layouts/$layout");
+    render_template("layouts/$layout", $locals);
     ob_flush();
   }
 }
