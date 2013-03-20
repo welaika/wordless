@@ -246,7 +246,7 @@ class Wordless {
           return false;
       }
     }
-    if(!$returnArray)
+    if(!isset($returnArray))
       return true;
     return $missing_directories;
   }
