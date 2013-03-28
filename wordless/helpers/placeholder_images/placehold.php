@@ -33,7 +33,7 @@ class PlaceholdImage extends PlaceholderImage {
     $url .= "/{$options["background_color"]}";
     $url .= "/{$options["foreground_color"]}";
 
-    if ($options["text"]) {
+    if (isset($options["text"])) {
       $encoded_text = rawurlencode($options["text"]);
       $url .= "&text={$encoded_text}";
     }
