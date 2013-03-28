@@ -40,7 +40,7 @@ class FakerHelper {
       'lorem_pixel' => 'LoremPixelImage'
     );
 
-    $service = $options['service'];
+    $service = isset($options['service']) ? $options['service'] : NULL;
     $service = isset($service) ? $service : 'placehold';
 
     $service_class = $services_class[$service];
