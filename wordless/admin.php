@@ -40,6 +40,7 @@ class WordlessAdmin
       'https://github.com/welaika/wordless#readme'
     );
     echo "</p>";
+    echo "<p><strong>Error found:</strong></p>";
     echo "<ul>";
     foreach($dirs_missing as $dir){
       echo "<li>Missing Directory: ".$dir."</li>";
