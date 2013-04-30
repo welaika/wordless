@@ -227,6 +227,21 @@ class Wordless {
       require_once $wordless_preferences_path;
     }
 
+    $missing = self::get_theme_missing_directories();
+
+    if(!empty($missing)){
+      return ($return_array) ? $missing : false;
+    }
+
+    return true;    
+  }
+
+  /**
+  * Return directories missing. Empty array if nothing is missing.
+  */
+  public static function get_theme_missing_directories(){
+    $missing = array();
+
     // Scan required directories.
     $required_directories = array(
       self::theme_helpers_path(),
@@ -238,17 +253,14 @@ class Wordless {
       self::theme_javascripts_path(),
       self::theme_temp_path()
     );
-    $missing_directories = array();
+
     foreach ($required_directories as $dir) {
       if (!file_exists($dir) || !is_dir($dir)) {
-        $missing_directories[] = $dir;
-        if(!$return_array)
-          return false;
+        $missing[] = $dir;
       }
     }
-    if(!isset($returnArray))
-      return true;
-    return $missing_directories;
+
+    return $missing;
   }
 
   public static function theme_helpers_path() {
