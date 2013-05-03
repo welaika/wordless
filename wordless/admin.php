@@ -168,6 +168,17 @@ class WordlessAdmin
       )
     );
 
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+      foreach ($wordless_preferences as $name => $properties){
+        $value = str_replace(" ", "", $_POST[$name]);
+        if (($name == "assets_preprocessors" || $name == 'css_require_libs') && (strlen($value) > 0)) {
+          $value = explode(',', $value);
+        }
+        update_option($name, $value);
+      }
+      echo '<div class="error"><p>Preferences saved!<p></div>';
+    }
+  
     require 'admin/preferences_form.php';
   }
 }
