@@ -57,6 +57,13 @@ class WordlessAdmin
       'create_wordless_theme',
       array('WordlessAdmin', 'page_content')
     );
+    $page = add_theme_page(
+      'Setting Wordless preferences',
+      'Wordless preferences',
+      'edit_theme_options',
+      'wordless_preferences',
+      array('WordlessAdmin', 'preferences_content')
+    );
   }
 
   public static function page_content() {
