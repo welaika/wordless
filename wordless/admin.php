@@ -57,6 +57,13 @@ class WordlessAdmin
       'create_wordless_theme',
       array('WordlessAdmin', 'page_content')
     );
+    $page = add_theme_page(
+      'Setting Wordless preferences',
+      'Wordless preferences',
+      'edit_theme_options',
+      'wordless_preferences',
+      array('WordlessAdmin', 'preferences_content')
+    );
   }
 
   public static function page_content() {
@@ -99,5 +106,79 @@ class WordlessAdmin
 
     // Just render the page
     require 'admin/admin_form.php';
+  }
+
+    public static function preferences_content() {
+    
+    $wordless_preferences = array(
+      "assets_preprocessors" => array(
+        "label" => "Preprocessors",
+        "description" => "List Preprocessors you need comma separeted (ex: if you use Less replace CompassPreprocessor with LessPreprocessor).",
+        "default_value" => "SprocketsPreprocessor, CompassPreprocessor"
+      ),
+      "assets_cache_enabled" => array(
+        "label" => "Cache",
+        "description" => "This enable the wordpress assets cache.",
+        "default_value" => "true"
+      ),
+      "assets_version" => array(
+        "label" => "Version",
+        "description" => "Using this function automatically generate the version number. You can of course decide to use a hard-coded version number/string if preferred by changing this preference.",
+        "default_value" => "false"
+      ),
+      "css_compass_path" => array(
+        "label" => "Compass Path",
+        "description" => "The compass path on your dev environment (you can found it with: 'which wordless_compass').",
+        "default_value" => "/opt/wordless/compass"
+      ),
+      "css_output_style" => array(
+        "label" => "Css Compass output style",
+        "description" => "The output style for the compiled css. One of: nested, expanded, compact, or compressed.",
+        "default_value" => "compressed"
+      ),
+      "css_require_libs" => array(
+        "label" => "Css require libs",
+        "description" => "Additionale Gem Libraries comma separeted.",
+        "default_value" => ""
+      ),
+      "css_lessc_path" => array(
+        "label" => "Less path",
+        "description" => "The Less path on your dev environment.",
+        "default_value" => ""
+      ),
+      "css_compress" => array(
+        "label" => "Less compression",
+        "description" => "Allow or disallow Less output compression.",
+        "default_value" => "false"
+      ),
+      "js_ruby_path" => array(
+        "label" => "Ruby path",
+        "description" => "The ruby path on your dev environment (you can found it with: 'which wordless_ruby').",
+        "default_value" => "/opt/wordless/ruby"
+      ),
+      "js_yui_compress" => array(
+        "label" => "JS compression",
+        "description" => "Allow or disallow JS output compression.",
+        "default_value" => "false"
+      ),
+      "js_yui_munge" => array(
+        "label" => "JS vars compression",
+        "description" => "Allow or disallow JS vars compression.",
+        "default_value" => "false"
+      )
+    );
+
+    if ($_SERVER['REQUEST_METHOD'] == "POST") {
+      foreach ($wordless_preferences as $name => $properties){
+        $value = str_replace(" ", "", $_POST[$name]);
+        if (($name == "assets_preprocessors" || $name == 'css_require_libs') && (strlen($value) > 0)) {
+          $value = explode(',', $value);
+        }
+        update_option($name, $value);
+      }
+      echo '<div class="error"><p>Preferences saved!<p></div>';
+    }
+  
+    require 'admin/preferences_form.php';
   }
 }
