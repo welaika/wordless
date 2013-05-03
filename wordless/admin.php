@@ -168,5 +168,6 @@ class WordlessAdmin
       )
     );
 
+    require 'admin/preferences_form.php';
   }
 }
