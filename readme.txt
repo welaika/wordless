@@ -4,7 +4,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, compass, haml, rails
 Requires at least: 3.0
 Tested up to: 3.2
-Stable tag: 0.2
+Stable tag: 0.3
 
 Wordless dramatically speeds up and enhances your custom themes
 creation, thanks to Sass, Compass, Haml and Coffeescript.
@@ -30,7 +30,8 @@ detailed README, on [Github](https://github.com/welaika/wordless).
 3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory and enable it from the WP "Plugins" section;
 4. Enable the use of nice permalinks from the WP "Settings > Permalink" section. That is, we need the .htaccess file;
 5. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
-6. Specify the path of your ruby executables, you can do it within your theme's `config/initializers/wordless_preferences.php` config file.
+6. Specify the path of your ruby executables, you can do it within the WP "Appearance > Wordless preferences" menu voice.
+
 
 **RVM (recommended setup)**
 

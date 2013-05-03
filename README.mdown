@@ -55,7 +55,7 @@ Okay, now we can get everything up and running :)
 2. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`);
 3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section;
 4. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
-5. Configure the path of your `compass` and `ruby` executables within the `config/initializers/wordless_preferences.php` config file.
+5. Configure the path of your `compass` and `ruby` executables within the WP "Appearance > Wordless preferences".
 
 <a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
