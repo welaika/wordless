@@ -107,4 +107,6 @@ class WordlessAdmin
     // Just render the page
     require 'admin/admin_form.php';
   }
+    public static function preferences_content() {
+  }
 }
