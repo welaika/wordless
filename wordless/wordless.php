@@ -14,12 +14,13 @@ class Wordless {
 
   public static function initialize() {
     if (Wordless::theme_is_wordless_compatible()){
-        self::load_i18n();
         self::require_helpers();
         self::require_theme_initializers();
         self::register_activation();
         self::register_preprocessors();
         self::register_preprocessor_actions();
+
+        add_action ('init', array('Wordless', 'load_i18n'));
     }
     self::load_admin_page();
   }
