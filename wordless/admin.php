@@ -170,15 +170,38 @@ class WordlessAdmin
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
       foreach ($wordless_preferences as $name => $properties){
-        $value = str_replace(" ", "", $_POST[$name]);
+        $value = trim($_POST[$name]);
         if (($name == "assets_preprocessors" || $name == 'css_require_libs') && (strlen($value) > 0)) {
-          $value = explode(',', $value);
+          $value = array_map('trim', explode(',', $value));
         }
         update_option($name, $value);
+        $values[$name] = $value;
       }
+      // create new file scheme
+      $wl_pref_new = "<?php\n/*\n* This is an auto-generated preferences file. If you want to configure Wordless preferences go to WordPress backend.\n*/\n\n";
+      $wl_pref_new .= "Wordless::set_preference(\"assets.preprocessors\", ". var_export($values['assets_preprocessors'], true) .");\n";
+      if ($values['assets_cache_enabled'] == "true") $wl_pref_new .= "Wordless::set_preference(\"assets.cache_enabled\", true);\n";
+      elseif ($values['assets_cache_enabled'] == "false") $wl_pref_new .= "Wordless::set_preference(\"assets.cache_enabled\", false);\n";
+      if ($values['assets_version'] == "true") $wl_pref_new .= "Wordless::set_preference(\"assets.version\", get_theme_version());\n";
+      $wl_pref_new .= "Wordless::set_preference(\"css.compass_path\", \"". $values['css_compass_path'] ."\");\n";
+      $wl_pref_new .= "Wordless::set_preference(\"css.output_style\", \"". $values['css_output_style'] ."\");\n";
+      $wl_pref_new .= "Wordless::set_preference(\"css.require_libs\", ". var_export($values['css_require_libs'], true) .");\n";
+      $wl_pref_new .= "Wordless::set_preference(\"css.lessc_path\", \"". $values['css_lessc_path'] ."\");\n";
+      if ($values['css_compress'] == "true") $wl_pref_new .= "Wordless::set_preference(\"css.compress\", true);\n";
+      elseif ($values['css_compress'] == "false") $wl_pref_new .= "Wordless::set_preference(\"css.compress\", false);\n";
+      $wl_pref_new .= "Wordless::set_preference(\"js.ruby_path\", \"". $values['js_ruby_path'] ."\");\n";
+      if ($values['js_yui_compress'] == "true") $wl_pref_new .= "Wordless::set_preference(\"js.yui_compress\", true);\n";
+      elseif ($values['js_yui_compress'] == "false") $wl_pref_new .= "Wordless::set_preference(\"js.yui_compress\", false);\n";
+      if ($values['js_yui_munge'] == "true") $wl_pref_new .= "Wordless::set_preference(\"js.yui_munge\", true);\n";
+      elseif ($values['js_yui_munge'] == "false") $wl_pref_new .= "Wordless::set_preference(\"js.yui_munge\", false);\n";
+      
+      $wl_pref_file = get_template_directory() .'/config/initializers/wordless_preferences.php';
+      
+      if (file_put_contents($wl_pref_file, $wl_pref_new) === false) echo '<div class="error"><p>Something wrong!<p></div>';
+
       echo '<div class="error"><p>Preferences saved!<p></div>';
     }
-  
+
     require 'admin/preferences_form.php';
   }
 }
