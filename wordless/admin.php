@@ -175,6 +175,7 @@ class WordlessAdmin
           $value = array_map('trim', explode(',', $value));
         }
         update_option($name, $value);
+        $values[$name] = $value;
       }
       echo '<div class="error"><p>Preferences saved!<p></div>';
     }
