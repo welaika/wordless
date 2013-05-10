@@ -170,9 +170,9 @@ class WordlessAdmin
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
       foreach ($wordless_preferences as $name => $properties){
-        $value = str_replace(" ", "", $_POST[$name]);
+        $value = trim($_POST[$name]);
         if (($name == "assets_preprocessors" || $name == 'css_require_libs') && (strlen($value) > 0)) {
-          $value = explode(',', $value);
+          $value = array_map('trim', explode(',', $value));
         }
         update_option($name, $value);
       }
