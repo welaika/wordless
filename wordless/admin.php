@@ -196,9 +196,12 @@ class WordlessAdmin
       elseif ($values['js_yui_munge'] == "false") $wl_pref_new .= "Wordless::set_preference(\"js.yui_munge\", false);\n";
       
       $wl_pref_file = get_template_directory() .'/config/initializers/wordless_preferences.php';
+      
+      if (file_put_contents($wl_pref_file, $wl_pref_new) === false) echo '<div class="error"><p>Something wrong!<p></div>';
+
       echo '<div class="error"><p>Preferences saved!<p></div>';
     }
-  
+
     require 'admin/preferences_form.php';
   }
 }
