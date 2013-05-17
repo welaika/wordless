@@ -133,7 +133,7 @@ class AssetTagHelper {
    * @ingroup helperfunc
    */
   function favicon_link_tag($source = "favicon.ico", $attributes = NULL) {
-    if (!is_absolute_url($source)) {
+    if (!preg_match("/^(https?|\/)/", $source)) {
       $source = image_url($source);
     }
 
@@ -218,7 +218,7 @@ class AssetTagHelper {
    *
    */
   public function image_tag($source, $attributes = NULL) {
-    if (!is_absolute_url($source)) {
+    if (!(is_absolute_url($source) || is_relative_url($source))) {
       $source = image_url($source);
     }
     
