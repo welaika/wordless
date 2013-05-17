@@ -218,7 +218,7 @@ class AssetTagHelper {
    *
    */
   public function image_tag($source, $attributes = NULL) {
-    if (!preg_match("/^(https?|\/)/", $source)) {
+    if (!(is_absolute_url($source) || is_root_relative_url($source))) {
       $source = image_url($source);
     }
     
