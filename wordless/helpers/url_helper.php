@@ -82,6 +82,25 @@ class UrlHelper {
   function javascript_url($path) {
     return asset_url("javascripts/$path");
   }
+
+
+  /**
+   * Check if an URL is absolute or not
+   * URL are considered absolute if they begin with a protocol specification
+   * (https|https in this case) or with the double slash (//) to take advantage
+   * of the protocol relative URL (http://paulirish.com/2010/the-protocol-relative-url/) 
+   * 
+   * @param string $url
+   *   The url to check.
+   * @return boolean
+   *   Either true if the URL is absolute or false if it is not.
+   * 
+   * @ingroup helperfunc
+   */
+
+  function is_absolute_url($url) {
+    return((preg_match("/^(https?:)?\/\//", $url) === 1 ? true : false));
+  }
 }
 
 Wordless::register_helper("UrlHelper");

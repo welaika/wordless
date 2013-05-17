@@ -34,4 +34,13 @@ class UrlHelperTest extends UnitTestCase {
       javascript_url("jquery.js")
     );
   }
+
+  function test_is_absolute_url() {
+    $this->assertTrue(is_absolute_url('http://www.google.com'));
+    $this->assertTrue(is_absolute_url('//ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.js'));
+    $this->assertFalse(is_absolute_url('/ajax/libs/jquery/1.4.2/jquery.js'));
+    // ftp is not supported
+    $this->assertFalse(is_absolute_url('ftp://ajax/libs/jquery/1.4.2/jquery.js'));
+  }
+
 }
