@@ -2,3 +2,4 @@
 .sass-cache
 *.sublime-*
 docs/build
+.phptidy*
