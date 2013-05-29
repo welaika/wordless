@@ -71,6 +71,9 @@ class WordlessAdmin
       array('WordlessAdmin', 'preferences_content')
     );
 
+    //Make the New Theme the first submenu item and the item to appear when clicking the parent.
+    global $submenu;
+    $submenu['wordless'][0][0] = 'New Theme';
   }
 
   public static function page_content() {
