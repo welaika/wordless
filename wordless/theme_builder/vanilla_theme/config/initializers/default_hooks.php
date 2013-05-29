@@ -8,3 +8,12 @@ function enqueue_stylesheets() {
 }
 
 add_action('wp_enqueue_scripts', 'enqueue_stylesheets');
+
+// This function include application.js in wp_footer() function
+
+function enqueue_javascripts() {
+  wp_register_script("application", javascript_url("application"), '', false, true);
+  wp_enqueue_script("application");
+}
+
+add_action('wp_enqueue_scripts', 'enqueue_javascripts');
