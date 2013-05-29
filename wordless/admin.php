@@ -50,14 +50,17 @@ class WordlessAdmin
   }
 
   public static function add_page() {
-    $page = add_theme_page(
-      'Create a new Wordless theme',
-      'New Wordless theme',
+    // add Wordless menu 
+    add_action('admin_menu', add_menu_page(
+      'Wordless',
+      'Wordless',
       'edit_theme_options',
-      'create_wordless_theme',
-      array('WordlessAdmin', 'page_content')
-    );
-    $page = add_theme_page(
+      'wordless',
+      array('WordlessAdmin', 'page_content'),
+      plugins_url() . '/wordless/welaika.16x16.png',
+      59
+    ));
+
       'Setting Wordless preferences',
       'Wordless preferences',
       'edit_theme_options',
