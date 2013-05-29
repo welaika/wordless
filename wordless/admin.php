@@ -61,12 +61,16 @@ class WordlessAdmin
       59
     ));
 
+    // add Wordless perferences submenu
+    $page = add_submenu_page(
+      'wordless',
       'Setting Wordless preferences',
-      'Wordless preferences',
+      'Preferences',
       'edit_theme_options',
       'wordless_preferences',
       array('WordlessAdmin', 'preferences_content')
     );
+
   }
 
   public static function page_content() {
