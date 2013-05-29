@@ -23,7 +23,7 @@ class WordlessAdmin
         add_action('admin_notices', array('WordlessAdmin', 'add_notice'));
       }
       // If the user can edit theme options, let the fun begin!
-      add_action('admin_menu', array('WordlessAdmin', 'add_page'));
+      add_action('admin_menu', array('WordlessAdmin', 'add_page'), 1);
     }
   }
 
@@ -51,7 +51,7 @@ class WordlessAdmin
 
   public static function add_page() {
     // add Wordless menu 
-    add_action('admin_menu', add_menu_page(
+    add_menu_page(
       'Wordless',
       'Wordless',
       'edit_theme_options',
@@ -59,7 +59,7 @@ class WordlessAdmin
       array('WordlessAdmin', 'page_content'),
       plugins_url() . '/wordless/welaika.16x16.png',
       59
-    ));
+    );
 
     // add Wordless perferences submenu
     $page = add_submenu_page(
