@@ -66,6 +66,7 @@ class UrlHelper {
    * @ingroup helperfunc
    */
   function stylesheet_url($path) {
+    if (!preg_match("/\.css$/", $path)) $path .= ".css";
     return asset_url("stylesheets/$path");
   }
 
@@ -80,6 +81,7 @@ class UrlHelper {
    * @ingroup helperfunc
    */
   function javascript_url($path) {
+    if (!preg_match("/\.js$/", $path)) $path .= ".js";
     return asset_url("javascripts/$path");
   }
 
