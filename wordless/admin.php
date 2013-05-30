@@ -23,7 +23,7 @@ class WordlessAdmin
         add_action('admin_notices', array('WordlessAdmin', 'add_notice'));
       }
       // If the user can edit theme options, let the fun begin!
-      add_action('admin_menu', array('WordlessAdmin', 'add_page'));
+      add_action('admin_menu', array('WordlessAdmin', 'add_page'), 1);
     }
   }
 
@@ -50,20 +50,30 @@ class WordlessAdmin
   }
 
   public static function add_page() {
-    $page = add_theme_page(
-      'Create a new Wordless theme',
-      'New Wordless theme',
+    // add Wordless menu 
+    add_menu_page(
+      'Wordless',
+      'Wordless',
       'edit_theme_options',
-      'create_wordless_theme',
-      array('WordlessAdmin', 'page_content')
+      'wordless',
+      array('WordlessAdmin', 'page_content'),
+      plugins_url() . '/wordless/welaika.16x16.png',
+      59
     );
-    $page = add_theme_page(
+
+    // add Wordless perferences submenu
+    $page = add_submenu_page(
+      'wordless',
       'Setting Wordless preferences',
-      'Wordless preferences',
+      'Preferences',
       'edit_theme_options',
       'wordless_preferences',
       array('WordlessAdmin', 'preferences_content')
     );
+
+    //Make the New Theme the first submenu item and the item to appear when clicking the parent.
+    global $submenu;
+    $submenu['wordless'][0][0] = 'New Theme';
   }
 
   public static function page_content() {
