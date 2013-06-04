@@ -263,44 +263,52 @@ class Wordless {
     return $missing;
   }
 
+  public static function plugin_path() {
+    return self::join_paths(WP_CONTENT, 'plugins', 'wordless');
+  }  
+
+  public static function theme_path() {
+    return get_template_directory();
+  }  
+
   public static function theme_helpers_path() {
-    return self::join_paths(get_template_directory(), 'theme/helpers');
+    return self::join_paths(self::theme_path(), 'theme/helpers');
   }
 
   public static function theme_initializers_path() {
-    return self::join_paths(get_template_directory(), 'config/initializers');
+    return self::join_paths(self::theme_path(), 'config/initializers');
   }
 
   public static function theme_locales_path() {
-    return self::join_paths(get_template_directory(), 'config/locales');
+    return self::join_paths(self::theme_path(), 'config/locales');
   }
 
   public static function theme_views_path() {
-    return self::join_paths(get_template_directory(), 'theme/views');
+    return self::join_paths(self::theme_path(), 'theme/views');
   }
 
   public static function theme_assets_path() {
-    return self::join_paths(get_template_directory(), 'theme/assets');
+    return self::join_paths(self::theme_path(), 'theme/assets');
   }
 
   public static function theme_stylesheets_path() {
-    return self::join_paths(get_template_directory(), 'theme/assets/stylesheets');
+    return self::join_paths(self::theme_path(), 'theme/assets/stylesheets');
   }
 
   public static function theme_javascripts_path() {
-    return self::join_paths(get_template_directory(), 'theme/assets/javascripts');
+    return self::join_paths(self::theme_path(), 'theme/assets/javascripts');
   }
 
   public static function theme_static_assets_path() {
-    return self::join_paths(get_template_directory(), 'assets');
+    return self::join_paths(self::theme_path(), 'assets');
   }
 
   public static function theme_static_javascripts_path() {
-    return self::join_paths(get_template_directory(), 'assets/javascripts');
+    return self::join_paths(self::theme_path(), 'assets/javascripts');
   }
 
   public static function theme_temp_path() {
-    return self::preference("theme.temp_dir", self::join_paths(get_template_directory(), 'tmp'));
+    return self::preference("theme.temp_dir", self::join_paths(self::theme_path(), 'tmp'));
   }
 
   public static function theme_url() {
