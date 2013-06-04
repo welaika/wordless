@@ -1,6 +1,6 @@
 <?php
 /**
- * This module provides methods for handling dates and times in a user-friendly
+ * Provides methods for handling dates and times in a user-friendly
  * way.
  * 
  * @ingroup helperclass

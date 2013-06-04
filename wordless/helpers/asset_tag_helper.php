@@ -1,6 +1,6 @@
 <?php
 /**
- * This module provides methods for generating HTML that links views to assets
+ * Provides methods for generating HTML that links views to assets
  * such as images, javascripts, stylesheets, and feeds. These methods do not
  * verify the assets exist before linking to them.
  *

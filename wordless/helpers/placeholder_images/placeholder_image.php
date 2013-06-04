@@ -3,8 +3,6 @@
  * Abstract class, not meant to be used directly but to be extended to bind some
  * online image placeholder service to Wordless.
  *
- * @copyright welaika &copy; 2011 - MIT License
- * 
  * @ingroup placeholders
  */
 class PlaceholderImage {

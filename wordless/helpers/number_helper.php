@@ -1,4 +1,12 @@
-<?php
+<?ph
+
+/**
+* This modules provides methods to translate numbers in specific formats,
+* such as percentage, phone numbers, rounding, etc.
+*
+* @ingroup helperclass
+* @todo all the class is not documented yet
+*/
 
 class NumberHelper {
 
@@ -23,6 +31,14 @@ class NumberHelper {
     }
   }
 
+  /**
+  * Translates number to currency 
+  *
+  * @todo
+  *   Loss of doc
+  *
+  * @ingroup helperfunc
+  */
   public function number_to_currency($number, $options = array()) {
 
     if (isset($options['format']))
@@ -50,6 +66,12 @@ class NumberHelper {
     }
   }
 
+  /**
+  * Translates numbers to percantage
+  *
+  * @todo
+  *   Loss of doc
+  */
   public function number_to_percentage($number, $options = array()) {
     if (empty($number))
       return;
@@ -68,6 +90,12 @@ class NumberHelper {
     }
   }
 
+  /**
+  * Translates numbers to phone numbers
+  *
+  * @todo
+  *   Loss of doc
+  */
   public function number_to_phone($number, $options = array()) {
     if (empty($number))
       return;
@@ -102,6 +130,12 @@ class NumberHelper {
     return implode($result);
   }
 
+  /**
+  * Formats numbers with given delimiter
+  *
+  * @todo
+  *   Loss of doc
+  */
   public function number_with_delimiter($number, $options = array()) {
     if (!is_numeric($number) && array_key_exists('raise', $options) && $options['raise'] == true)
       throw new InvalidArgumentException('number_with_delimiter function only accepts numbers. Input was: '.$number);
@@ -113,6 +147,12 @@ class NumberHelper {
     return implode($options['separator'], $parts);
   }
 
+  /**
+  * Rounds number to the given decimal precision
+  *
+  * @todo
+  *   Loss of doc
+  */
   public function number_with_precision($number, $options = array()) {
     if (is_numeric($number))
       $number = (float) $number;

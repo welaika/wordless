@@ -1,6 +1,6 @@
 <?php
 /**
- * This module implement Wordpress Conditional Tags (http://codex.wordpress.org/Conditional_Tags)
+ * Implements Wordpress Conditional Tags (http://codex.wordpress.org/Conditional_Tags)
  * 
  * @ingroup helperclass
  */

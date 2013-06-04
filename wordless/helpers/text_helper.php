@@ -3,7 +3,7 @@
  * This module provides methods for cycling iteration inside views.
  * 
  * @todo Needs examples.
- *
+ * @doubt Personally never seen this class used. I'd need help (\@pioneerskies)
  * @ingroup helperclass
  */
 class Cycle {
@@ -150,7 +150,11 @@ class TextHelper {
   }
 
   /**
-   */
+  * Translates numbers to percantage
+  *
+  * @todo
+  *   Loss of doc
+  */
   function cycle() {
     $values = func_get_args();
     if (is_array($values[count($values)-1])) {
@@ -298,6 +302,12 @@ class TextHelper {
     }
   }
 
+  /**
+  * Translates numbers to percantage
+  *
+  * @todo
+  *   Loss of doc
+  */
   function active_if($check, $active = "active", $inactive = "inactive") {
     return $check ? $active : $inactive;
   }

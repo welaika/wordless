@@ -1,13 +1,13 @@
 <?php
 /**
- * This module provides methods for handling log and debug output.
+ * Provides methods for handling log and debug output.
  * 
  * @ingroup helperclass
  */
 class DebugHelper {
 
   /**
-   * Prints the specified variable inside <pre> tags.
+   * Prints the specified variable already formatted in \<pre\>\</pre\> tags.
    * 
    * @param string $var
    *   The variable to be printed
