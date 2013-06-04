@@ -1,5 +1,7 @@
 <?php
 /**
+ * \copyright
+ * 
  * MIT License
  * ===========
  *
@@ -24,12 +26,15 @@
  *
  *
  * @author      Serban Ghita <serbanghita@gmail.com>
- *              Victor Stanciu <vic.stanciu@gmail.com> (until v.1.0)
+ * @author             Victor Stanciu <vic.stanciu@gmail.com> (until v.1.0)
  * @license     http://www.opensource.org/licenses/mit-license.php  MIT License
- * @link        Official page: http://mobiledetect.net
- *              GitHub Repository: https://github.com/serbanghita/Mobile-Detect
- *              Google Code Old Page: http://code.google.com/p/php-mobile-detect/
+ * @see         http://mobiledetect.net
+ * @see         GitHub Repository: https://github.com/serbanghita/Mobile-Detect
+ * @see         Google Code Old Page: http://code.google.com/p/php-mobile-detect/
+ *
  * @version     2.5.2 (GitHub Release)
+ *
+ * @ingroup vendorclass
  */
 
 class Mobile_Detect {
