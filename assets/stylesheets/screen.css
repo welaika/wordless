@@ -1,4 +1,4 @@
-/* line 17, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 17, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 html, body, div, span, applet, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 a, abbr, acronym, address, big, cite, code,
@@ -20,52 +20,52 @@ time, mark, audio, video {
   vertical-align: baseline;
 }
 
-/* line 20, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 20, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 body {
   line-height: 1;
 }
 
-/* line 22, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 22, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 ol, ul {
   list-style: none;
 }
 
-/* line 24, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 24, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
 
-/* line 26, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 26, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 caption, th, td {
   text-align: left;
   font-weight: normal;
   vertical-align: middle;
 }
 
-/* line 28, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 28, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q, blockquote {
   quotes: none;
 }
-/* line 101, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 101, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 q:before, q:after, blockquote:before, blockquote:after {
   content: "";
   content: none;
 }
 
-/* line 30, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 30, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 a img {
   border: none;
 }
 
-/* line 114, ../../../../../../../../../.rvm/gems/ruby-1.9.3-p0@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
+/* line 114, ../../../../.rvm/gems/ruby-1.9.3-p429@wordless-gh-pages/gems/compass-0.11.5/frameworks/compass/stylesheets/compass/reset/_utilities.scss */
 article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, summary {
   display: block;
 }
 
 /* line 14, ../../src/sass/screen.sass */
 body {
-  background: url('../images/fancy_deboss.png?1322827287');
+  background: url('../images/fancy_deboss.png?1370359757');
   font-family: Actor, Helvetica, Arial, sans-serif;
   color: #5d5d5d;
   font-size: 20px;
@@ -132,7 +132,7 @@ body .page-wrapper section.header p a, body .page-wrapper section.footer p a {
   text-indent: -1000em;
   letter-spacing: -1000em;
   overflow: hidden;
-  background: url('../images/welaika.png?1322827287') no-repeat;
+  background: url('../images/welaika.png?1370359757') no-repeat;
 }
 /* line 67, ../../src/sass/screen.sass */
 body .page-wrapper section.footer {
@@ -155,7 +155,7 @@ body .page-wrapper section.sidebar {
 body .page-wrapper section.sidebar h1 {
   width: 100%;
   text-indent: -1000em;
-  background: url('../images/wordless.png?1322827287') no-repeat;
+  background: url('../images/wordless.png?1370359757') no-repeat;
   margin-bottom: 40px;
   height: 145px;
 }
@@ -164,17 +164,31 @@ body .page-wrapper section.sidebar nav {
   text-align: center;
 }
 /* line 92, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li h4 {
+  font-size: 30px;
+  line-height: 30px;
+  margin-bottom: 15px;
+  font-family: Coustard;
+  color: #4dbce9;
+}
+/* line 99, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar nav ul li a {
   display: block;
   margin-bottom: 15px;
   color: #367bbb;
   text-decoration: none;
 }
-/* line 98, ../../src/sass/screen.sass */
+/* line 105, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar nav ul li a:hover {
   text-decoration: underline;
 }
-/* line 101, ../../src/sass/screen.sass */
+/* line 109, ../../src/sass/screen.sass */
+body .page-wrapper section.sidebar nav ul li a.small span {
+  font-style: italic;
+  font-size: 14px;
+  color: #5d5d5d;
+}
+/* line 114, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar nav ul li a.important {
   background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d2ec7f), color-stop(100%, #b2de27));
   background: -webkit-linear-gradient(#d2ec7f, #b2de27);
@@ -200,7 +214,7 @@ body .page-wrapper section.sidebar nav ul li a.important {
   -khtml-border-radius: 3px;
   border-radius: 3px;
 }
-/* line 113, ../../src/sass/screen.sass */
+/* line 126, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar nav ul li a.important span {
   font-size: 14px;
   display: block;
@@ -208,7 +222,7 @@ body .page-wrapper section.sidebar nav ul li a.important span {
   color: #6e8a15;
   font-style: italic;
 }
-/* line 120, ../../src/sass/screen.sass */
+/* line 133, ../../src/sass/screen.sass */
 body .page-wrapper section.sidebar nav ul li a.important:hover {
   text-decoration: none;
   color: #39480b;
@@ -223,20 +237,20 @@ body .page-wrapper section.sidebar nav ul li a.important:hover {
   -o-box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
   box-shadow: #daef95 0 1px 0 0 inset, #aeb3b5 0px 1px 1px;
 }
-/* line 126, ../../src/sass/screen.sass */
+/* line 139, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content {
   float: left;
   width: 455.63px;
 }
-/* line 130, ../../src/sass/screen.sass */
+/* line 143, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content a {
   color: #373737;
 }
-/* line 133, ../../src/sass/screen.sass */
+/* line 146, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content a:hover {
   color: #5d5d5d;
 }
-/* line 136, ../../src/sass/screen.sass */
+/* line 149, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content h2 {
   font-size: 30px;
   line-height: 37px;
@@ -245,7 +259,7 @@ body .page-wrapper section.page-content h2 {
   height: 145px;
   color: #367bbb;
 }
-/* line 144, ../../src/sass/screen.sass */
+/* line 157, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content h4 {
   font-size: 30px;
   line-height: 30px;
@@ -253,11 +267,11 @@ body .page-wrapper section.page-content h4 {
   font-family: Coustard;
   color: #4dbce9;
 }
-/* line 151, ../../src/sass/screen.sass */
+/* line 164, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content ul, body .page-wrapper section.page-content p {
   margin-bottom: 20px;
 }
-/* line 154, ../../src/sass/screen.sass */
+/* line 167, ../../src/sass/screen.sass */
 body .page-wrapper section.page-content li {
   margin-left: 25px;
   list-style-type: square;
