@@ -89,6 +89,13 @@ body
         text-align: center
 
         ul li
+          h4
+            font-size: 30px
+            line-height: 30px
+            margin-bottom: 15px
+            font-family: Coustard
+            color: $light-blue
+
           a
             display: block
             margin-bottom: 15px
@@ -97,6 +104,12 @@ body
 
             &:hover
               text-decoration: underline
+
+          a.small 
+            span
+              font-style: italic
+              font-size: 14px
+              color: $grayish
 
           a.important
             +background(linear-gradient(lighten($lime, 10%), darken($lime, 10%)))
