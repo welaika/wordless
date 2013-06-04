@@ -1,7 +1,7 @@
 <?php
 
 /**
-* Translates numbers to percantage
+* Awaiting for documentation
 *
 * @todo
 *   Loss of doc
@@ -11,7 +11,7 @@
 class SimpleFieldsHelper {
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -35,7 +35,7 @@ class SimpleFieldsHelper {
     }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc

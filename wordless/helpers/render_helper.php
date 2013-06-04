@@ -8,7 +8,7 @@
 class RenderHelper {
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -20,7 +20,7 @@ class RenderHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -69,7 +69,7 @@ class RenderHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -83,7 +83,7 @@ class RenderHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -97,7 +97,7 @@ class RenderHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -108,7 +108,7 @@ class RenderHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * This is awaiting for documentation
   *
   * @todo
   *   Loss of doc

@@ -42,7 +42,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -69,7 +69,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -88,7 +88,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -107,7 +107,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -125,7 +125,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
@@ -136,7 +136,7 @@ class TagHelper {
   }
 
   /**
-  * Translates numbers to percantage
+  * Awaiting for documentation
   *
   * @todo
   *   Loss of doc
