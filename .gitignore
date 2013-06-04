@@ -3,3 +3,5 @@
 *.sublime-*
 docs/build
 .phptidy*
+.ruby-gemset
+.ruby-version
