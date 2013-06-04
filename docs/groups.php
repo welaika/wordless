@@ -14,7 +14,3 @@
  * 
  */
 
-/**
- * @defgroup placeholders Placeholders
- *   All the define placeholders (image or text) define in Wordless.
- */

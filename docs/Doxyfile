@@ -614,12 +614,12 @@ WARN_LOGFILE           =
 
 INPUT                  = .
 INPUT                 += docs
-INPUT                 += wordless
+#INPUT                 += wordless
 #INPUT                 += wordless/admin
 INPUT                 += wordless/helpers
 INPUT                 += wordless/helpers/placeholder_images
 INPUT                 += wordless/helpers/templates
-INPUT                 += wordless/preprocessors
+#INPUT                 += wordless/preprocessors
 #INPUT                 += wordless/test
 #INPUT                 += wordless/test/support
 
@@ -639,7 +639,7 @@ INPUT_ENCODING         = UTF-8
 # *.hxx *.hpp *.h++ *.idl *.odl *.cs *.php *.php3 *.inc *.m *.mm *.dox *.py
 # *.f90 *.f *.for *.vhd *.vhdl
 
-FILE_PATTERNS          =
+FILE_PATTERNS          = *.php
 
 # The RECURSIVE tag can be used to turn specify whether or not subdirectories
 # should be searched for input files as well. Possible values are YES and NO.
