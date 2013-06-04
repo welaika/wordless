@@ -1,4 +1,4 @@
-<?ph
+<?php
 
 /**
 * This modules provides methods to translate numbers in specific formats,
