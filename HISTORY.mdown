@@ -6,7 +6,7 @@
 * `assets_tag_helper`'s helpers recognizes absolute urls with leading double slashes (//). Tnx @wstucco
 * documentation updated for tag 0.3
 * we have a comprehensive [todo list](http://welaika.github.io/wordless/docs/0.3/dd/da0/todo.html) for documentation
-* README updated
+* README updated...a big update
 
 
 ## [v.0.3](https://github.com/welaika/wordless/tree/0.3)
