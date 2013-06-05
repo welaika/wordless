@@ -175,18 +175,27 @@ Helpers are basically small functions that can be called in your views to help k
 ### Initializers (`config/initializers/*.php` files)
 
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
-Wordless let you split you code into many modular initializer files, each one with a specific target:
+Wordless let you split your code into many modular initializer files, each one with a specific target:
 
-      config/initializers
-      │   ├── backend.php
-      │   │   ├── custom_post_types.php
-      │   │   ├── default_hooks.php
-      │   │   ├── hooks.php
-      │   │   ├── login_template.php
-      │   │   ├── menus.php
-      │   │   ├── shortcodes.php
-      │   │   ├── thumbnail_sizes.php
-      │   │   └── wordless_preferences.php
+    config/initializers
+          ├── backend.php
+          ├── custom_post_types.php
+          ├── default_hooks.php
+          ├── hooks.php
+          ├── login_template.php
+          ├── menus.php
+          ├── shortcodes.php
+          ├── thumbnail_sizes.php
+          └── wordless_preferences.php
+
+* **backend**: remove backend componentes such as widgets, update messages, ecc
+* **custom_post_types**: well...if you need to manage taxonomies, this is the place to be
+* **default_hooks**: this are used by default wordless' behaviours; tweak them only if you know what are you doing
+* **hooks**: this is intended to be your custom hooks collector
+* **menus**: register new WP nav_menus from here
+* **shotcodes**: as it says
+* **thumbnail_sizes**: if you need custom thumbnailing sizes
+* **wordless_preferences**: no more to be edited. Go to the Wordless menu in the WP backend
 
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
@@ -355,10 +364,12 @@ You can find it [here](http://welaika.github.io/wordless/docs.html). If you are 
 
 * we are documenting the following at the moment (path recursive)
 
-   wordless/helpers
-   wordless/helpers/placeholder_images
-   wordless/helpers/templates
-   vendor/mobile_detect.php
+```
+wordless/helpers/*
+wordless/helpers/placeholder_images/*
+wordless/helpers/templates/*
+vendor/mobile_detect.php
+```
 
 * here is a [list](http://welaika.github.io/wordless/docs/0.3/dd/da0/todo.html) of documentation holes :9
 * go and add doc following the [doxygen](http://www.stack.nl/~dimitri/doxygen/) guides
