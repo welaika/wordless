@@ -62,23 +62,26 @@ Okay, now we can get everything up and running :)
 
 That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
 
-	your_theme_dir
-	├── assets
-	│   ├── fonts
-	│   ├── images
-	│   ├── javascripts
-	│   └── stylesheets
-	├── config
-	│   ├── initializers
-	│   └── locales
-	├── theme
-	│   ├── assets
-	│   │   ├── javascripts
-	│   │   └── stylesheets
-	│   ├── helpers
-	│   └── views
-	│       └── layouts
-	└── index.php
+	 your_theme_dir
+    ├── index.php
+    ├── assets
+    │   ├── fonts
+    │   ├── images
+    │   ├── javascripts
+    │   └── stylesheets
+    ├── config
+    │   ├── initializers
+    │   └── locales
+    ├── theme
+    │   ├── assets
+    │   │   ├── javascripts
+    │   │   └── stylesheets
+    │   ├── helpers
+    │   │   └── README.mdown
+    │   └── views
+    │       ├── layouts
+    │       └── posts
+    └── tmp
 
 Let's see in detail what is the purpose of all those directories:
 
@@ -88,15 +91,17 @@ Let's see in detail what is the purpose of all those directories:
 The `index.php` serves as a router to all the theme views.
 
 ```php
-<?php
 
-if (is_front_page()) {
-  render_view("static/homepage)");
-} else if (is_post_type_archive("portfolio_work")) {
-  render_view("portfolio/index");
-} else if (is_post_type("portfolio_work")) {
-  render_view("portfolio/show");
-}
+    <?php
+
+    if (is_front_page()) {
+      render_view("static/homepage)");
+    } else if (is_post_type_archive("portfolio_work")) {
+      render_view("portfolio/index");
+    } else if (is_post_type("portfolio_work")) {
+      render_view("portfolio/show");
+    }
+
 ```
 As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
@@ -172,12 +177,16 @@ Helpers are basically small functions that can be called in your views to help k
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
 Wordless let you split you code into many modular initializer files, each one with a specific target:
 
-	config/initializers
-	├── custom_post_types.php
-	├── hooks.php
-	├── menus.php
-	├── wordless_preferences.php
-	└── thumbnail_sizes.php
+      config/initializers
+      │   ├── backend.php
+      │   │   ├── custom_post_types.php
+      │   │   ├── default_hooks.php
+      │   │   ├── hooks.php
+      │   │   ├── login_template.php
+      │   │   ├── menus.php
+      │   │   ├── shortcodes.php
+      │   │   ├── thumbnail_sizes.php
+      │   │   └── wordless_preferences.php
 
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
@@ -197,49 +206,125 @@ But using the domain we will make it work:
 
 WordPress has to different places where you want to put your assets:
 
-* Place all the static images and vendor assets (i.e. jQuery and vendor JS plugins) into the `assets/*` directory;
 * Place all your custom, project related assets into the `theme/assets/*`.
+* Place all the static images and vendor assets (i.e. jQuery and vendor JS plugins) into the `assets/*` directory;
 
 <a name="stylesheets"></a>
 #### Stylesheets
 
+##### Custom stylesheets
+
+The Wordless approach is to use screen.sass, present by default, as the aggregator of smaller sass _partials_. By default you have:
+
+    theme/assets/stylesheets/
+    ├── screen.sass
+    ├── _post.sass
+    ├── _site_header.sass
+    └── _tinymce.sass
+
+where screen contains:
+
+```sass
+.page-wrapper
+  [...]
+  @import "site_header"
+  section.site-content
+    [...]
+    @import "tinymce"
+    @import "post"
+```
+
+Every `@import` will insert in that exact line the content of the called partial, where partials are named `_post.sass` and just called as `post`.
+
+This will result in a single compiled `screen.css`. This file, starting from _tag 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
+
+At your will, you can add `mobile.css` or `print.css` support, going in `config/initializers/default_hooks.php` and extending the default function such as
+
+```php
+function enqueue_stylesheets() {
+  wp_register_style("screen", stylesheet_url("screen"), false, false);
+  wp_enqueue_style("screen");
+  wp_register_style("print", stylesheet_url("print"), false, false);
+  wp_enqueue_style("print");
+}
+```
+then write you code into `theme/assets/stylesheets/print.sass`
+
+##### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
+
 Include the assets in your views using `stylesheet_link_tag()` helper.
 
 ```haml
-= stylesheet_link_tag("screen")
+= stylesheet_link_tag("vendorcss")
 ```
 
 This will produce the following HTML, pointing to the `assets/stylesheets` directory:
 
 ```html
-<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/screen.css" media="all" rel="stylesheet" type="text/css" />
+
+<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/vendorcss.css" media="all" rel="stylesheet" type="text/css" />
+
 ```
 
-If Wordless can't find this static file, it will search for a file named `screen.sass` or `screen.scss` inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover.
+##### Smart serving stylesheets
+
+If Wordless can't find the static files in `assets/stylesheets/*.css`, it will search for  _*.sass_ or _*.scss_ inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
+
+##### Production environement
+
+Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely intrested in [wordless-gem](https://github.com/welaika/wordless_gem) and simplify the task (and probably deploy commands too?! ;) ) to a one-shot command!
 
 <a name="javascripts"></a>
 #### Javascripts
 
+##### Custom javascripts
+
+The Wordless approach is to use `theme/assets/javascripts/application.js.coffee, present by default.
+
+This file, starting from _tag 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
+
+At your will, you can add support to other files, going in `config/initializers/default_hooks.php` and extending the default function such as
+
+```php
+function enqueue_javascripts() {
+  wp_register_script("jquery", 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js', '', false, true);
+  wp_enqueue_script("jquery");
+  wp_register_script("application", javascript_url("application"), '', false, true);
+  wp_enqueue_script("application");
+  wp_register_script("myjs", javascript_url("myjs"), '', false, true);
+  wp_enqueue_script("myjs");
+}
+```
+
+then write you code into `theme/assets/javascripts/myjs.coffee`
+
+##### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
+
 Include the assets in your views using `javascript_include_tag()` helper.
 
 ```haml
-= javascript_include_tag("application")
+= javascript_include_tag("vendorjs")
 ```
 
 This will produce the following HTML, pointing to the `assets/javascripts` directory:
 
 ```html
-<script src="/wp-content/themes/YOUR_THEME/assets/javascripts/application.js" type="text/javascript"></script>
+  <script src="/wp-content/themes/YOUR_THEME/assets/javascripts/vendorjs.js" type="text/javascript"></script>
 ```
+##### Smart serving javascripts
 
-If Wordless can't find this static file, it will search for a file named `application.js.coffee` or `application.js` inside the `theme/assets/javascripts` directory, and will automatically compile (if needed) and serve it on the fly using the Sprockets preprocessor under the cover. Coffescript is optional, you can just write normal javascript as well.
+If Wordless can't find the static files in `assets/javascripts/*.js`, it will search for  _*.coffee_ inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using Sprockets preprocessor under the cover.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
+##### Production environement
+
+Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely intrested in [wordless-gem](https://github.com/welaika/wordless_gem) and simplify the task (and probably deploy commands too?! ;) ) to a one-shot command!
+
 <a name="additional-plugins"></a>
-## Additional recommended plugins
+## Additional recommended plugins and tools
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life:
 
@@ -251,9 +336,8 @@ Wordless is not meant to be a bloated, all-included tool. This is why we recomme
 * Wordless has not been tested on Windows machines;
 * From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless;
 * Documentation still to be written;
-* The assets static baking for production is still pre-alpha and needs some rewrite (it's rough, but it works);
 * The routing part can be drammaticaly improved to make it more readable and DRY;
-* This is alpha software, everything is still subject to change :)
+* This is go-ahead software, everything is subject to change :) but you can pull code from *tagged commits* (stable)
 
 <a name="license"></a>
 ## License
