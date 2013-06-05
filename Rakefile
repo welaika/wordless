@@ -38,6 +38,3 @@ task :tests do
   end
 end
 
-task :all_tests do
-  sh "php all_tests.php"
-end
