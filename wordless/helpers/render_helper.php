@@ -31,7 +31,8 @@ class RenderHelper {
       $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
       if (is_file($path)) {
         $template_path = $path;
-        $format = array_pop(explode('.', $path));
+        $arr = explode('.', $path);
+        $format = array_pop($arr);
         break;
       }
     }
