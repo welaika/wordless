@@ -65,7 +65,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, 
 
 /* line 14, ../../src/sass/screen.sass */
 body {
-  background: url('../images/fancy_deboss.png?1370359757');
+  background: url('../images/fancy_deboss.png?1370963007');
   font-family: Actor, Helvetica, Arial, sans-serif;
   color: #5d5d5d;
   font-size: 20px;
@@ -132,7 +132,7 @@ body .page-wrapper section.header p a, body .page-wrapper section.footer p a {
   text-indent: -1000em;
   letter-spacing: -1000em;
   overflow: hidden;
-  background: url('../images/welaika.png?1370359757') no-repeat;
+  background: url('../images/welaika.png?1370963007') no-repeat;
 }
 /* line 67, ../../src/sass/screen.sass */
 body .page-wrapper section.footer {
@@ -155,7 +155,7 @@ body .page-wrapper section.sidebar {
 body .page-wrapper section.sidebar h1 {
   width: 100%;
   text-indent: -1000em;
-  background: url('../images/wordless.png?1370359757') no-repeat;
+  background: url('../images/wordless.png?1370963007') no-repeat;
   margin-bottom: 40px;
   height: 145px;
 }
