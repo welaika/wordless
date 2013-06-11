@@ -345,9 +345,14 @@ Before going production (or staging), you have to compile your assets in order t
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life.
 
+<img src="http://welaika.github.com/wordless/assets/images/wordless-extender.png" align="right" />
+
 * We are developing [Wordless-extender](https://github.com/welaika/wordless-extender). A little plugin, that brings our collection of favorite plugins and let you set up some constants in _wp-config.php_ useful in hardening the WP installation. At the moment is not yet well documented and absent from wordpress.org repository, but we are moving fast, so keep follow!
+_______________
 
 * [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local WordPress installations and DB data back and forth from your local development machine to the remote staging server;
+_______________
+
 * [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! Compile and clean assets, create new WP installation, a new wordless theme and let you set up a deploy command in order to easily deploy your site, collaborating with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy -r`
 
 ## Known problems and limitations
