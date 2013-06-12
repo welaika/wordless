@@ -181,7 +181,7 @@ class WordlessAdmin
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
       foreach ($wordless_preferences as $name => $properties){
         $value = trim($_POST[$name]);
-        if (($name == "assets_preprocessors" || $name == 'css_require_libs')) {
+        if ($name == "assets_preprocessors" || $name == 'css_require_libs') {
           $value = array_map('trim', explode(',', $value));
         }
         update_option($name, $value);
@@ -215,3 +215,4 @@ class WordlessAdmin
     require 'admin/preferences_form.php';
   }
 }
+

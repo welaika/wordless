@@ -45,7 +45,7 @@ class Wordless {
   }
 
   public static function register_preprocessors() {
-    $preprocessors = self::preference("assets.preprocessors", array("SprocketsPreprocessor", "CompassPreprocessor"));
+    $preprocessors = array_filter(self::preference("assets.preprocessors", array("SprocketsPreprocessor", "CompassPreprocessor")));
     foreach ($preprocessors as $preprocessor_class) {
       self::$preprocessors[] = new $preprocessor_class();
     }

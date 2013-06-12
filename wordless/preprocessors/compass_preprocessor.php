@@ -91,6 +91,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
     $pb = new ProcessBuilder(array(
       $this->preference("css.compass_path"),
       'compile',
+      '--trace',
       $temp_path
     ));
 
@@ -109,7 +110,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
 
     $ruby_config = array();
 
-    foreach ($this->preference("css.require_libs") as $lib) {
+    foreach (array_filter($this->preference("css.require_libs")) as $lib) {
       $ruby_config[] = sprintf('require "%s"', $lib);
     }
 
