@@ -29,20 +29,20 @@ Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](http
 Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this requires `git` installed):
 
 ```
-bash < <(curl -s https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer )
+\curl -L https://get.rvm.io | bash -s stable
 ```
 
 Now reload your shell and install your preferred Ruby version by running (this will take some time, go have a coffee or something):
 
 ```
-rvm install 1.8.7
+rvm install 2.0
 ```
 
 Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gemset called `wordless`, install the gems
 wordless needs and create some handy symbolic links:
 
 ```
-rvm use 1.8.7@wordless --create --default && gem install therubyracer sprockets compass coffee-script thor yui-compressor && rvm wrapper 1.8.7@wordless wordless compass ruby
+rvm use 2.0@wordless --create --default && gem install therubyracer sprockets compass coffee-script thor yui-compressor && rvm wrapper 2.0@wordless wordless compass ruby
 ```
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
