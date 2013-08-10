@@ -82,7 +82,7 @@ class LessPreprocessor extends WordlessPreprocessor {
    * If using php-fpm, remember to pass the PATH environment variable
    * in php-fpm.ini (e.g. env[PATH]=/usr/local/bin:/usr/bin:/bin)
    */
-  protected function process_file($file_path, $result_path, $temp_path) {
+  protected function process_file($file_path, $temp_path) {
 
     $this->validate_executable_or_throw($this->preference("css.lessc_path"));
 
