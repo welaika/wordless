@@ -2,13 +2,13 @@
 
 Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
-* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails);
-* The ability to create a new theme skeleton directly within the WordPress backend interface;
-* The ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
-* The ability to write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com) and the [Compass framework](http://compass-style.org/);
-* The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/);
-* The ability to merge and compress Javascript assets using [Yahoo YUI Compressor](http://developer.yahoo.com/yui/compressor/);
-* A growing set of handy and documented helper functions ready to be used within your views;
+* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails)
+* The ability to create a new theme skeleton directly within the WordPress backend interface
+* The ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/)
+* The ability to write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com) and the [Compass framework](http://compass-style.org/)
+* The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
+* The ability to merge and compress Javascript assets using [Yahoo YUI Compressor](http://developer.yahoo.com/yui/compressor/)
+* A growing set of handy and documented helper functions ready to be used within your views
 
 [![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
 
@@ -16,12 +16,14 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 <a name="installation"></a>
 ## Requirements, installation and configuration
 
-Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere.
+Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere. :sparkling_heart:
 
 But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs [Ruby](http://www.ruby-lang.org/en).
 
-If you are not familiar with Ruby you may follow the following tutorial for getting up a fully functional Ruby environment in less than 5 minutes.
+If you are not familiar with Ruby you may read the following tutorial for getting up a fully functional Ruby environment in less than 5 minutes.
 Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
+
+> Note that the production server doesn't need Ruby at all, since all the assets are precompiled by Wordless on the development machine, then deployed to production and statically served; **so your production server will work with plain PHP, HTML, CSS and Javascript files and won't need anything fancier**.
 
 <a name="rvm-way"></a>
 ### The RVM Way
@@ -29,20 +31,22 @@ Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](http
 Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this requires `git` installed):
 
 ```
-\curl -L https://get.rvm.io | bash -s stable
+\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled
 ```
 
-Now reload your shell and install your preferred Ruby version by running (this will take some time, go have a coffee or something):
+Now reload your shell and install the latest Ruby version by running (this will take some time, go have a coffee or something):
 
 ```
-rvm install 2.0
+rvm install 2.0.0
 ```
 
 Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gemset called `wordless`, install the gems
 wordless needs and create some handy symbolic links:
 
 ```
-rvm use 2.0@wordless --create --default && gem install therubyracer sprockets compass coffee-script thor yui-compressor && rvm wrapper 2.0@wordless wordless compass ruby
+rvm use 2.0.0@wordless --create --default && \
+gem install therubyracer sprockets compass coffee-script thor yui-compressor && \
+rvm wrapper 2.0.0@wordless wordless compass ruby
 ```
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
@@ -51,64 +55,62 @@ Now you should be able to know the location of your RVM-wrapped ruby executables
 
 Okay, now we can get everything up and running :)
 
-1. The production server doesn't need any extra-dependencies, as all the assets get pre-compiled by Wordless on the development machine and then statically served;
-2. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`);
-3. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section;
-4. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section;
-5. Configure the path of your `compass` and `ruby` executables within the WP "Appearance > Wordless preferences".
+1. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`)
+2. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section
+3. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section
+4. Configure the path of your `compass` and `ruby` executables within the WP "Appearance > Wordless preferences"
 
 <a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
 
 That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
 
-	 your_theme_dir
-    ├── index.php
-    ├── assets
-    │   ├── fonts
-    │   ├── images
-    │   ├── javascripts
-    │   └── stylesheets
-    ├── config
-    │   ├── initializers
-    │   └── locales
-    ├── theme
-    │   ├── assets
-    │   │   ├── javascripts
-    │   │   └── stylesheets
-    │   ├── helpers
-    │   │   └── README.mdown
-    │   └── views
-    │       ├── layouts
-    │       └── posts
-    └── tmp
+```
+your_theme_dir
+├──── index.php
+├──── assets
+│     ├──── fonts
+│     ├──── images
+│     ├──── javascripts
+│     └──── stylesheets
+├──── config
+│     ├──── initializers
+│     └──── locales
+├──── theme
+│     ├──── assets
+│     │     ├──── javascripts
+│     │     └──── stylesheets
+│     ├──── helpers
+│     │     └──── README.mdown
+│     └──── views
+│           ├──── layouts
+│           └──── posts
+└──── tmp
+```
 
-Let's see in detail what is the purpose of all those directories:
+Now let's see in detail what is the purpose of all those directories.
 
 <a name="routing"></a>
 ### Routing
 
 The `index.php` serves as a router to all the theme views.
-
 ```php
+<?php
 
-    <?php
-
-    if (is_front_page()) {
-      render_view("static/homepage)");
-    } else if (is_post_type_archive("portfolio_work")) {
-      render_view("portfolio/index");
-    } else if (is_post_type("portfolio_work")) {
-      render_view("portfolio/show");
-    }
-
+if (is_front_page()) {
+  render_view("static/homepage)");
+} else if (is_post_type_archive("portfolio_work")) {
+  render_view("portfolio/index");
+} else if (is_post_type("portfolio_work")) {
+  render_view("portfolio/show");
+}
 ```
 As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
 
 ### Theme Views (`theme/views/*.haml` or `theme/views/*.php`)
 
 That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Haml syntax or plain PHP.
-Feel free to create subdirectories to group toghether the files. Here's what could be an example for the typical [WordPress loop](http://codex.wordpress.org/The_Loop) in an archive page:
+Feel free to create subdirectories to group together the files. Here's what could be an example for the typical [WordPress loop](http://codex.wordpress.org/The_Loop) in an archive page:
 
 ```haml
 / theme/views/posts/archive.haml
@@ -129,7 +131,7 @@ Wordless uses [Phamlp](http://code.google.com/p/phamlp/) for your Haml views, a 
 * There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
 * We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view.
 
-Don't you already feel so much better?
+It looks awesome, right?
 
 <a name="layouts"></a>
 ### Layouts (`theme/views/layouts` directory)
@@ -140,7 +142,6 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
 !!! 5
 %html(html_attrs())
   %head
-
     / Charset
     %meta(http-equiv="Content-type" content="text/html;charset=UTF-8")
     / Title
@@ -163,7 +164,7 @@ Please note that for content that is shared among all pages in your application,
 <a name="helpers"></a>
 ### Helpers (`theme/helpers/*.php` files)
 
-Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](https://github.com/welaika/wordless/tree/master/wordless/helpers). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
+Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](http://welaika.github.io/wordless/docs/0.3/d3/de0/group__helperclass.html). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
 
 * `lorem()` - A "lorem ipsum" text and HTML generator;
 * `pluralize()` - Attempts to pluralize words;
@@ -175,25 +176,27 @@ Helpers are basically small functions that can be called in your views to help k
 ### Initializers (`config/initializers/*.php` files)
 
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
-Wordless let you split your code into many modular initializer files, each one with a specific target:
+Wordless lets you split your code into many modular initializer files, each one with a specific target:
 
-    config/initializers
-          ├── backend.php
-          ├── custom_post_types.php
-          ├── default_hooks.php
-          ├── hooks.php
-          ├── login_template.php
-          ├── menus.php
-          ├── shortcodes.php
-          ├── thumbnail_sizes.php
-          └── wordless_preferences.php
+```
+config/initializers
+├──── backend.php
+├──── custom_post_types.php
+├──── default_hooks.php
+├──── hooks.php
+├──── login_template.php
+├──── menus.php
+├──── shortcodes.php
+├──── thumbnail_sizes.php
+└──── wordless_preferences.php
+```
 
 * **backend**: remove backend componentes such as widgets, update messages, ecc
 * **custom_post_types**: well...if you need to manage taxonomies, this is the place to be
 * **default_hooks**: this are used by default wordless' behaviours; tweak them only if you know what are you doing
 * **hooks**: this is intended to be your custom hooks collector
 * **menus**: register new WP nav_menus from here
-* **shotcodes**: as it says
+* **shortcodes**: as it says
 * **thumbnail_sizes**: if you need custom thumbnailing sizes
 * **wordless_preferences**: no more to be edited. Go to the Wordless menu in the WP backend
 
@@ -202,44 +205,45 @@ These are just some file name examples: you can organize them the way you prefer
 <a name="locales"></a>
 ### Locale files (`config/locales` directory)
 
-Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you. Note that due to WordPress localization framework, you need to append our domain when using internationalization. For example, using `__()` without the domain specified will not work:
+Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you.
 
-`__("News")`
-
-But using the domain we will make it work:
-
-`__("News", "we")`
+> Note that due to WordPress localization framework, you need to append our `"we"` domain when using internationalization. For example, calling `__("News")` without specifying the domain *will not work*.
+>
+> You'll **have** to add the domain `"we"` to make it work: `__("News", "we")`
 
 <a name="assets"></a>
-### Assets
+## Assets
 
-Wordlress has to different places where you want to put your assets:
+Wordless has two different places where you want to put your assets:
 
-* Place all your custom, project related assets into the `theme/assets/*`.
-* Place all the static images and vendor assets (i.e. vendor JS plugins) into the `assets/*` directory;
+* Place all your custom, project related assets into `theme/assets/*`
+* Place all the static images and vendor assets (i.e. vendor JS plugins) into `assets/*`
 
-*The fast way:*
+<a name="fast_way"></a>
+### The Fast Way
 
-* jquery is included by default for you
-* write your style in sass inside `theme/assets/stylesheets/screen.sass`
-* write your js in `theme/assets/javascripts/application.js.coffee`
+* jQuery is included by default for you
+* write your sass in `theme/assets/stylesheets/screen.sass`
+* write your coffeescript in `theme/assets/javascripts/application.js.coffee`
 
 and all will automagically works! :) The *long way* follows
 
 <a name="stylesheets"></a>
-#### Stylesheets
+### Stylesheets
 
-##### Custom stylesheets
+#### Custom stylesheets
 
-The Wordless approach is to use screen.sass, present by default, as the aggregator of smaller sass _partials_. By default you have:
+The Wordless approach is to use `screen.sass`, present by default, as the aggregator of smaller sass _partials_. By default you have:
 
-    theme/assets/stylesheets/
-    ├── screen.sass
-    ├── _post.sass
-    ├── _site_header.sass
-    └── _tinymce.sass
+```
+theme/assets/stylesheets/
+├──── screen.sass
+├──── _post.sass
+├──── _site_header.sass
+└──── _tinymce.sass
+```
 
-where screen contains:
+where `screen.sass` contains:
 
 ```sass
 .page-wrapper
@@ -250,10 +254,9 @@ where screen contains:
     @import "tinymce"
     @import "post"
 ```
+Every `@import` will insert in that exact line the content of the called partial, where partials are named `_post.sass` and just called `post`.
 
-Every `@import` will insert in that exact line the content of the called partial, where partials are named `_post.sass` and just called as `post`.
-
-This will result in a single compiled `screen.css`. This file, starting from _tag 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
+This will result in a single compiled `screen.css`. This file, starting from _version 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
 
 At your will, you can add e.g. `mobile.css` or `print.css` support, going in `config/initializers/default_hooks.php` and extending the default function such as
 
@@ -267,42 +270,29 @@ function enqueue_stylesheets() {
 ```
 then write your code into `theme/assets/stylesheets/print.sass`
 
-##### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
+#### Vendor stylesheets <small>(or how to include assets only in a specific view)</small>
 
-Say that you have a jQuery plugin shipped with custom css, ok? Take the _vendorcss.css_ and drop it inside `assets/stylesheets` folder; then include the assets in your views using `stylesheet_link_tag()` helper.
+Say that you have a jQuery plugin shipped with custom css, ok? Take the `vendor-plugin.css` and drop it inside `assets/stylesheets` folder; then include the assets in your views using `stylesheet_link_tag()` helper.
 
 ```haml
-= stylesheet_link_tag("vendorcss")
+= stylesheet_link_tag("vendor-plugin")
 ```
 
 Usually you want css to load in the `_head.html.haml` partial, but you can get it inside any _view_ or _partial_. This will produce the following HTML, pointing to the `assets/stylesheets` directory:
 
 ```html
-
-<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/vendorcss.css" media="all" rel="stylesheet" type="text/css" />
-
+<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/vendor-plugin.css"
+      media="all" rel="stylesheet" type="text/css" />
 ```
 
-##### Smart serving stylesheets
-
-If Wordless can't find the static files in `assets/stylesheets/*.css`, it will search for  _*.sass_ or _*.scss_ inside the `theme/assets/stylesheets` directory, and will automatically compile and serve it on the fly using Compass under the cover.
-
-To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
-
-##### Production environement
-
-Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely intrested in [wordless-gem](https://github.com/welaika/wordless_gem) and simplify the task (and probably deploy commands too?! ;) ) to a one-shot command!
-
 <a name="javascripts"></a>
-#### Javascripts
+### Javascripts
 
-##### Custom javascripts
+#### Custom javascripts
 
-The Wordless approach is to use `theme/assets/javascripts/application.js.coffee, present by default.
+The Wordless approach is to use `theme/assets/javascripts/application.js.coffee`, present by default. This file, starting from _version 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
 
-This file, starting from _tag 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
-
-At your will, you can add support to other files, going in `config/initializers/default_hooks.php` and extending the default function such as
+At your will, you can add support to other files, going in `config/initializers/default_hooks.php` and extending the default function such as:
 
 ```php
 function enqueue_javascripts() {
@@ -317,28 +307,30 @@ function enqueue_javascripts() {
 
 then write you code into `theme/assets/javascripts/myjs.coffee`
 
-##### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
+#### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
 
-Say that you have a jQuery plugin to load, ok? Take the _vendorjs.js_ and drop it inside `assets/javascripts` folder; then include the assets in your views using `javascript_include_tag()` helper.
+Say that you have a jQuery plugin to load, ok? Take the `vendor-plugin.js` and drop it inside `assets/javascripts` folder; then include the assets in your views using `javascript_include_tag()` helper.
 
 ```haml
-= javascript_include_tag("vendorjs")
+= javascript_include_tag("vendor-plugin")
 ```
 
 You can get it inside any _view_ or _partial_. This will produce the following HTML, pointing to the `assets/javascripts` directory:
 
 ```html
-  <script src="/wp-content/themes/YOUR_THEME/assets/javascripts/vendorjs.js" type="text/javascript"></script>
+<script src="/wp-content/themes/YOUR_THEME/assets/javascripts/vendor-plugin.js"
+        type="text/javascript"></script>
 ```
-##### Smart serving javascripts
 
-If Wordless can't find the static files in `assets/javascripts/*.js`, it will search for  _*.coffee_ inside the `theme/assets/javascripts` directory, and will automatically compile and serve it on the fly using Sprockets preprocessor under the cover.
+### Smart serving assets
+
+If Wordless can't find the static files in `assets/stylesheets/*.css`, it will search for  _*.sass_ or _*.scss_ files inside `theme/assets/stylesheets` and automatically compile them. In a similar fashion, if Wordless can't find the static files in `assets/javascripts/*.js`, it will search for _*.coffee_ files inside `theme/assets/javascripts` and compile them.
 
 To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
 
-##### Production environement
+### Production environement
 
-Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely intrested in [wordless-gem](https://github.com/welaika/wordless_gem) and simplify the task (and probably deploy commands too?! ;) ) to a one-shot command!
+Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely interested in [wordless-gem](https://github.com/welaika/wordless_gem), which can reduce this boring task to a one liner ;)
 
 <a name="additional-plugins"></a>
 ## Additional recommended plugins and tools
@@ -356,10 +348,10 @@ _______________
 * [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! Compile and clean assets, create new WP installation, a new wordless theme and let you set up a deploy command in order to easily deploy your site, collaborating with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy -r`
 
 ## Known problems and limitations
-* Wordless has not been tested on Windows machines;
-* From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless;
-* Documentation still to be written;
-* The routing part can be drammaticaly improved to make it more readable and DRY;
+* Wordless has not been tested on Windows machines
+* From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless
+* Documentation still to be written
+* The routing part can be drammaticaly improved to make it more readable and DRY
 * This is go-ahead software, everything is subject to change :) but you can pull code from *tagged commits* (stable)
 
 <a name="documentation"></a>
@@ -387,7 +379,7 @@ vendor/mobile_detect.php
 
 (The MIT License)
 
-Copyright © 2011 weLaika
+Copyright © 2013 weLaika
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the ‘Software’), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
