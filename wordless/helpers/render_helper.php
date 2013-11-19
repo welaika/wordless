@@ -8,11 +8,19 @@
 class RenderHelper {
 
   /**
+<<<<<<< HEAD
    * Renders a preformatted error display view than dies
    *
    * @param  string $title       A title for the error
    * @param  string $description An explanation about the error
    */
+=======
+  * This is awaiting for documentation
+  *
+  * @todo
+  *   Loss of doc
+  */
+>>>>>>> d4386d5... renamed yield() to wl_yield(). fix #155
   function render_error($title, $description) {
     ob_end_clean();
     require "templates/error_template.php";
@@ -119,8 +127,8 @@ class RenderHelper {
   * @see render_view()
   * @see render_template()
   */
-  function yield() {
-    global $current_view, $current_locals;
+  function wl_yield() {
+    global $current_view;
     render_template($current_view, $current_locals);
   }
 
