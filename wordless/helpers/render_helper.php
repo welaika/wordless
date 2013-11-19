@@ -12,7 +12,7 @@ class RenderHelper {
   *
   * @todo
   *   Loss of doc
-  */  
+  */
   function render_error($title, $description) {
     ob_end_clean();
     require "templates/error_template.php";
@@ -103,7 +103,7 @@ class RenderHelper {
   * @todo
   *   Loss of doc
   */
-  function yield() {
+  function wl_yield() {
     global $current_view;
     render_template($current_view);
   }

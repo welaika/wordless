@@ -4,7 +4,7 @@
   %body
     .page-wrapper
       %header.site-header= render_partial("layouts/header")
-      %section.site-content= yield()
+      %section.site-content= wl_yield()
       %footer.site-footer= render_partial("layouts/footer")
     // jQuery and application.js is loaded by default with wp_footer() function. See config/initializers/default_hooks.php for details
     - wp_footer()
