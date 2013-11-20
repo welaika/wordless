@@ -136,7 +136,7 @@ It looks awesome, right?
 <a name="layouts"></a>
 ### Layouts (`theme/views/layouts` directory)
 
-Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `yield()` helper to combine it with the main content:
+Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `wl_yield()` helper to combine it with the main content:
 
 ```haml
 !!! 5
@@ -154,7 +154,7 @@ Just like Rails, when Wordless renders a view as a response, it does so by combi
 
   %body.home-layout
     = render_partial("common/header")
-    = yield()
+    = wl_yield()
     = render_partial("common/footer")
     = javascript_include_tag("jquery", "application")
 ```
