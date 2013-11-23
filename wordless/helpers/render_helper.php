@@ -120,8 +120,8 @@ class RenderHelper {
   * @see render_template()
   */
   function yield() {
-    global $current_view;
-    render_template($current_view);
+    global $current_view, $current_locals;
+    render_template($current_view, $current_locals);
   }
 
   /**
@@ -137,8 +137,11 @@ class RenderHelper {
    */
   function render_view($name, $layout = 'default', $locals = array()) {
     ob_start();
-    global $current_view;
+    global $current_view, $current_locals;
+
     $current_view = $name;
+    $current_locals = $locals;
+
     render_template("layouts/$layout", $locals);
     ob_flush();
   }
