@@ -119,8 +119,8 @@ class RenderHelper {
   * @see render_view()
   * @see render_template()
   */
-  function yield() {
-    global $current_view, $current_locals;
+  function wl_yield() {
+    global $current_view;
     render_template($current_view, $current_locals);
   }
 
