@@ -65,11 +65,11 @@ class ConditionalHelper {
       $icl_object_id = array();
       $icl_object_id = icl_object_id( $pageObj->ID, 'page', true );
 
-      if ( !is_page( array( $icl_object_id, $page->ID ) ) )
-        return false;
+      if ( is_page( array( $icl_object_id, $page->ID ) ) )
+        return true;
     }
 
-    return true;
+    return false;
 
   }
 
