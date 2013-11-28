@@ -8,19 +8,11 @@
 class RenderHelper {
 
   /**
-<<<<<<< HEAD
    * Renders a preformatted error display view than dies
    *
    * @param  string $title       A title for the error
    * @param  string $description An explanation about the error
    */
-=======
-  * This is awaiting for documentation
-  *
-  * @todo
-  *   Loss of doc
-  */
->>>>>>> d4386d5... renamed yield() to wl_yield(). fix #155
   function render_error($title, $description) {
     ob_end_clean();
     require "templates/error_template.php";
