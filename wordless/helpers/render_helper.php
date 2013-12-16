@@ -120,7 +120,7 @@ class RenderHelper {
   * @see render_template()
   */
   function wl_yield() {
-    global $current_view;
+    global $current_view, $current_locals;
     render_template($current_view, $current_locals);
   }
 
