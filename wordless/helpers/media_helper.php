@@ -86,7 +86,7 @@ class MediaHelper {
   function resize_image($src, $width, $height){
     // initializing
     $save_path = Wordless::theme_temp_path();
-    $img_filename = $save_path . '/' . md5($width . 'x' . $height . '_' . basename($src)) . '.jpg';
+    $img_filename = Wordless::join_paths($save_path, md5($width . 'x' . $height . '_' . basename($src)) . '.jpg');
 
     // if file doesn't exists, create it
     if (!file_exists($img_filename)) {
