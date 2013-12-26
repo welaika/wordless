@@ -65,7 +65,7 @@ class WordlessAdmin
     $page = add_submenu_page(
       'wordless',
       'Setting Wordless preferences',
-      'Preferences',
+      __('Preferences', "we"),
       'edit_theme_options',
       'wordless_preferences',
       array('WordlessAdmin', 'preferences_content')
