@@ -37,59 +37,59 @@ class DateHelper {
       case $dm >= 0 && $dm < 2:
         if ($include_seconds == false) {
           if ($dm >= 0 && $dm < 1) {
-            return 'less than a minute';
+            return __('less than a minute', "we");
           } else if ($dm >= 1 && $dm < 2) {
-            return '1 minute';
+            return __('1 minute', "we");
           }
         } else {
           switch (true) {
             case $ds >= 0 && $ds <= 4:
-              return 'less than 5 seconds';
+              return __('less than 5 seconds', "we");
               break;
             case $ds >= 5 && $ds <= 9:
-              return 'less than 10 seconds';
+              return __('less than 10 seconds', "we");
               break;
             case $ds >= 10 && $ds <= 19:
-              return 'less than 20 seconds';
+              return __('less than 20 seconds', "we");
               break;
             case $ds >= 20 && $ds <= 39:
-              return 'half a minute';
+              return __('half a minute', "we");
               break;
             case $ds >= 40 && $ds <= 59:
-              return 'less than a minute';
+              return __('less than a minute', "we");
               break;
             default:
-              return 'less than a minute';
+              return __('less than a minute', "we");
             break;
           }
         }
         break;
       case $dm >= 2 && $dm <= 44:
-        return round($dm) . ' minutes';
+        return sprintf(__("%d minutes", "we"), round($dm));
         break;
       case $dm >= 45 && $dm <= 89:
-        return 'about 1 hour';
+        return __('about 1 hour', "we");
         break;
       case $dm >= 90 && $dm <= 1439:
-        return 'about ' . round($dm / 60.0) . ' hours';
+        return sprintf(__("about %d hours", "we"), round($dm / 60.0));
         break;
       case $dm >= 1440 && $dm <= 2879:
-        return '1 day';
+        return __('1 day', "we");
         break;
       case $dm >= 2880 && $dm <= 43199:
-        return round($dm / 1440) . ' days';
+        return sprintf(__("%d days", "we"), round($dm / 1440));
         break;
       case $dm >= 43200 && $dm <= 86399:
-        return 'about 1 month';
+        return __('about 1 month', "we");
         break;
       case $dm >= 86400 && $dm <= 525599:
-        return round($dm / 43200) . ' months';
+        return sprintf(__("%d months", "we"), round($dm / 43200));
         break;
       case $dm >= 525600 && $dm <= 1051199:
-        return 'about 1 year';
+        return __('about 1 year', "we");
         break;
       default:
-        return 'over ' . round($dm / 525600) . ' years';
+        return sprintf(__("over %d years", "we"), round($dm / 525600));
       break;
     }
   }
@@ -113,17 +113,17 @@ class DateHelper {
    * @doubt I didn't get the use of $granularity!
    */
   public function get_the_time_ago($granularity = 1) {
-    $date = intval(get_the_date('U'));
+    $date = current_time('timestamp');
     $difference = time() - $date;
     $periods = array(
-      315360000 => array('decade', 'decades'),
-      31536000 => array('year', 'years'),
-      2628000 => array('month', 'months'),
-      604800 => array('week', 'weeks'),
-      86400 => array('day', 'days'),
-      3600 => array('hour', 'hours'),
-      60 => array('minute', 'minutes'),
-      1 => array('second', 'seconds')
+      315360000 => array(__('decade', "we"), __('decades', "we")),
+      31536000 => array(__('year', "we"), __('years', "we")),
+      2628000 => array(__('month', "we"), __('months', "we")),
+      604800 => array(__('week', "we"), __('weeks', "we")),
+      86400 => array(__('day', "we"), __('days', "we")),
+      3600 => array(__('hour', "we"), __('hours', "we")),
+      60 => array(__('minute', "we"), __('minutes', "we")),
+      1 => array(__('second', "we"), __('seconds', "we"))
     );
 
     foreach ($periods as $value => $key) {
@@ -136,7 +136,7 @@ class DateHelper {
       }
       if ($granularity == '0') { break; }
     }
-    return $retval . ' ago';
+    return sprintf(__("%s ago", "we"), $retval);
   }
 
   /**

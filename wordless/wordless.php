@@ -22,6 +22,7 @@ class Wordless {
         self::register_preprocessor_actions();
     }
     self::load_admin_page();
+    self::register_plugin_i18n();
   }
 
   public static function load_admin_page() {
@@ -58,6 +59,10 @@ class Wordless {
   public static function install() {
     self::assets_rewrite_rules();
     flush_rewrite_rules();
+  }
+
+  public static function register_plugin_i18n() {
+    add_action('init', array(__CLASS__, 'plugin_i18n'));
   }
 
   /**
@@ -182,10 +187,15 @@ class Wordless {
   }
 
   public static function load_i18n() {
-    $locales_path = self::theme_locales_path();
-    if (file_exists($locales_path) && is_dir($locales_path)) {
-      load_theme_textdomain('we', $locales_path);
+    $theme_locales_path = self::theme_locales_path();
+    if (file_exists($theme_locales_path) && is_dir($theme_locales_path)) {
+      load_theme_textdomain('we', $theme_locales_path);
     }
+  }
+
+  public static function plugin_i18n() {
+    $plugin_locales_rel_path = self::join_paths('wordless', 'locales');
+    load_plugin_textdomain('we', false, $plugin_locales_rel_path);
   }
 
   public static function require_helpers() {
@@ -264,8 +274,8 @@ class Wordless {
   }
 
   public static function plugin_path() {
-    return self::join_paths(WP_CONTENT, 'plugins', 'wordless');
-  }  
+    return self::join_paths(WP_CONTENT_DIR, 'plugins', 'wordless');
+  }
 
   public static function theme_path() {
     return get_template_directory();
