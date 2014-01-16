@@ -15,7 +15,20 @@ class WordlessPreprocessor {
   private $deprecated_preferences = array();
 
   public function __construct() {
+    $this->verify_timezone();
     $this->set_preference_default_value("assets.cache_enabled", true);
+  }
+
+  /* Verify setting on date.timezone in your php.ini
+   */
+
+  protected function verify_timezone(){
+    if(ini_get('date.timezone')){
+      date_default_timezone_set(ini_get('date.timezone'));
+    }
+    else{
+      date_default_timezone_set('UTC');
+    }
   }
 
   /**

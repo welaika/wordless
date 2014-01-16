@@ -2,11 +2,6 @@
 
 require_once "wordless_preprocessor.php";
 
-if( ! ini_get('date.timezone') )
-{
-   date_default_timezone_set('GMT');
-}
-
 /**
  * Compile Sass files using the `compass` executable.
  *
