@@ -207,9 +207,9 @@ These are just some file name examples: you can organize them the way you prefer
 
 Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you.
 
-> Note that due to WordPress localization framework, you need to append our `"we"` domain when using internationalization. For example, calling `__("News")` without specifying the domain *will not work*.
+> Note that due to WordPress localization framework, you need to append our `"wl"` domain when using internationalization. For example, calling `__("News")` without specifying the domain *will not work*.
 >
-> You'll **have** to add the domain `"we"` to make it work: `__("News", "we")`
+> You'll **have** to add the domain `"wl"` to make it work: `__("News", "wl")`
 
 <a name="assets"></a>
 ## Assets

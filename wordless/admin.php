@@ -33,10 +33,10 @@ class WordlessAdmin
 
     echo '<div class="error"><p>';
     echo sprintf(
-      __('Your current theme does seem to be a Wordless-compatible theme! <a href="%2$s" target="_blank">%1$s</a> (or <a href="%4$s" target="_blank">%3$s</a>)', "we"),
-      __('Create a new Wordless theme', "we"),
+      __('Your current theme does seem to be a Wordless-compatible theme! <a href="%2$s" target="_blank">%1$s</a> (or <a href="%4$s" target="_blank">%3$s</a>)', "wl"),
+      __('Create a new Wordless theme', "wl"),
       admin_url('themes.php?page=create_wordless_theme'),
-      __('learn more about Wordless', "we"),
+      __('learn more about Wordless', "wl"),
       'https://github.com/welaika/wordless#readme'
     );
     echo "</p>";
@@ -50,7 +50,7 @@ class WordlessAdmin
   }
 
   public static function add_page() {
-    // add Wordless menu 
+    // add Wordless menu
     add_menu_page(
       'Wordless',
       'Wordless',
@@ -65,7 +65,7 @@ class WordlessAdmin
     $page = add_submenu_page(
       'wordless',
       'Setting Wordless preferences',
-      __('Preferences', "we"),
+      __('Preferences', "wl"),
       'edit_theme_options',
       'wordless_preferences',
       array('WordlessAdmin', 'preferences_content')
@@ -73,24 +73,24 @@ class WordlessAdmin
 
     //Make the New Theme the first submenu item and the item to appear when clicking the parent.
     global $submenu;
-    $submenu['wordless'][0][0] = __('New Theme', "we");
+    $submenu['wordless'][0][0] = __('New Theme', "wl");
   }
 
   public static function page_content() {
     $theme_options = array(
       "theme_name" => array(
-        "label" => __("Theme Name", "we"),
-        "description" => __("This will be the name displayed inside WordPress.", "we"),
+        "label" => __("Theme Name", "wl"),
+        "description" => __("This will be the name displayed inside WordPress.", "wl"),
         "default_value" => "Wordless"
       ),
       "theme_path" => array(
-        "label" => __("Theme Directory", "we"),
-        "description" => __("Specify the <code>wp-content/themes</code> subdirectory name for this theme.", "we"),
+        "label" => __("Theme Directory", "wl"),
+        "description" => __("Specify the <code>wp-content/themes</code> subdirectory name for this theme.", "wl"),
         "default_value" => "wordless"
       ),
       "chmod_set" => array(
-        "label" => __("Permissions", "we"),
-        "description" => __("Specify three octal number components specifying access restrictions", "we"),
+        "label" => __("Permissions", "wl"),
+        "description" => __("Specify three octal number components specifying access restrictions", "wl"),
         "default_value" => "0664"
       )
     );
@@ -100,7 +100,7 @@ class WordlessAdmin
       foreach ($theme_options as $name => $properties) {
         $value = $_POST[$name];
         if (empty($value)) {
-          $theme_options[$name]['error'] = __("This field is required!", "we");
+          $theme_options[$name]['error'] = __("This field is required!", "wl");
           $valid = false;
         }
       }
@@ -119,61 +119,61 @@ class WordlessAdmin
   }
 
     public static function preferences_content() {
-    
+
     $wordless_preferences = array(
       "assets_preprocessors" => array(
-        "label" => __("Preprocessors", "we"),
-        "description" => __("List Preprocessors you need comma separeted (ex: if you use Less replace CompassPreprocessor with LessPreprocessor).", "we"),
+        "label" => __("Preprocessors", "wl"),
+        "description" => __("List Preprocessors you need comma separeted (ex: if you use Less replace CompassPreprocessor with LessPreprocessor).", "wl"),
         "default_value" => "SprocketsPreprocessor, CompassPreprocessor"
       ),
       "assets_cache_enabled" => array(
-        "label" => __("Cache", "we"),
-        "description" => __("This enable the wordpress assets cache.", "we"),
+        "label" => __("Cache", "wl"),
+        "description" => __("This enable the wordpress assets cache.", "wl"),
         "default_value" => "true"
       ),
       "assets_version" => array(
-        "label" => __("Version", "we"),
-        "description" => __("Using this function automatically generate the version number. You can of course decide to use a hard-coded version number/string if preferred by changing this preference.", "we"),
+        "label" => __("Version", "wl"),
+        "description" => __("Using this function automatically generate the version number. You can of course decide to use a hard-coded version number/string if preferred by changing this preference.", "wl"),
         "default_value" => "false"
       ),
       "css_compass_path" => array(
-        "label" => __("Compass Path", "we"),
-        "description" => __("The compass path on your dev environment (you can found it with: 'which wordless_compass').", "we"),
+        "label" => __("Compass Path", "wl"),
+        "description" => __("The compass path on your dev environment (you can found it with: 'which wordless_compass').", "wl"),
         "default_value" => "/opt/wordless/compass"
       ),
       "css_output_style" => array(
-        "label" => __("Css Compass output style", "we"),
-        "description" => __("The output style for the compiled css. One of: nested, expanded, compact, or compressed.", "we"),
+        "label" => __("Css Compass output style", "wl"),
+        "description" => __("The output style for the compiled css. One of: nested, expanded, compact, or compressed.", "wl"),
         "default_value" => "compressed"
       ),
       "css_require_libs" => array(
-        "label" => __("Css require libs", "we"),
-        "description" => __("Additionale Gem Libraries comma separeted.", "we"),
+        "label" => __("Css require libs", "wl"),
+        "description" => __("Additionale Gem Libraries comma separeted.", "wl"),
         "default_value" => ""
       ),
       "css_lessc_path" => array(
-        "label" => __("Less path", "we"),
-        "description" => __("The Less path on your dev environment.", "we"),
+        "label" => __("Less path", "wl"),
+        "description" => __("The Less path on your dev environment.", "wl"),
         "default_value" => ""
       ),
       "css_compress" => array(
-        "label" => __("Less compression", "we"),
-        "description" => __("Allow or disallow Less output compression.", "we"),
+        "label" => __("Less compression", "wl"),
+        "description" => __("Allow or disallow Less output compression.", "wl"),
         "default_value" => "false"
       ),
       "js_ruby_path" => array(
-        "label" => __("Ruby path", "we"),
-        "description" => __("The ruby path on your dev environment (you can found it with: 'which wordless_ruby').", "we"),
+        "label" => __("Ruby path", "wl"),
+        "description" => __("The ruby path on your dev environment (you can found it with: 'which wordless_ruby').", "wl"),
         "default_value" => "/opt/wordless/ruby"
       ),
       "js_yui_compress" => array(
-        "label" => __("JS compression", "we"),
-        "description" => __("Allow or disallow JS output compression.", "we"),
+        "label" => __("JS compression", "wl"),
+        "description" => __("Allow or disallow JS output compression.", "wl"),
         "default_value" => "false"
       ),
       "js_yui_munge" => array(
-        "label" => __("JS vars compression", "we"),
-        "description" => __("Allow or disallow JS vars compression.", "we"),
+        "label" => __("JS vars compression", "wl"),
+        "description" => __("Allow or disallow JS vars compression.", "wl"),
         "default_value" => "false"
       )
     );
@@ -204,12 +204,12 @@ class WordlessAdmin
       elseif ($values['js_yui_compress'] == "false") $wl_pref_new .= "Wordless::set_preference(\"js.yui_compress\", false);\n";
       if ($values['js_yui_munge'] == "true") $wl_pref_new .= "Wordless::set_preference(\"js.yui_munge\", true);\n";
       elseif ($values['js_yui_munge'] == "false") $wl_pref_new .= "Wordless::set_preference(\"js.yui_munge\", false);\n";
-      
-      $wl_pref_file = get_template_directory() .'/config/initializers/wordless_preferences.php';
-      
-      if (file_put_contents($wl_pref_file, $wl_pref_new) === false) echo sprintf('<div class="error"><p>%s<p></div>', __("Something wrong!", "we"));
 
-      echo sprintf('<div class="error"><p>%s<p></div>', __("Preferences saved!", "we"));
+      $wl_pref_file = get_template_directory() .'/config/initializers/wordless_preferences.php';
+
+      if (file_put_contents($wl_pref_file, $wl_pref_new) === false) echo sprintf('<div class="error"><p>%s<p></div>', __("Something wrong!", "wl"));
+
+      echo sprintf('<div class="error"><p>%s<p></div>', __("Preferences saved!", "wl"));
     }
 
     require 'admin/preferences_form.php';
