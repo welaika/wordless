@@ -1,6 +1,6 @@
 <div class="wrap">
   <div id="icon-themes" class="icon32"><br></div>
-  <h2>Create a new Wordless theme</h2>
+  <h2><?php echo __('Create a new Wordless theme', 'wl'); ?></h2>
   <form method="POST">
     <table class="form-table">
       <tbody>
@@ -23,7 +23,7 @@
       </tbody>
     </table>
     <p class="submit">
-      <input type="submit" name="submit" id="submit" class="button-primary" value="Create theme and set it as the current one!">
+      <input type="submit" name="submit" id="submit" class="button-primary" value="<?php echo __('Create theme and set it as the current one!', 'wl'); ?>">
     </p>
   </form>
 </div>
