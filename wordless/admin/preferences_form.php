@@ -1,6 +1,6 @@
 <div class="wrap">
   <div id="icon-themes" class="icon32"><br></div>
-  <h2>Setting Wordless preferences</h2>
+  <h2><?php echo __("Setting Wordless preferences", "we") ?></h2>
   <form method="POST">
     <table class="form-table">
       <tbody>
@@ -33,7 +33,7 @@
       </tbody>
     </table>
     <p class="submit">
-      <input type="submit" name="submit" id="submit" class="button-primary" value="Save preferences">
+      <input type="submit" name="submit" id="submit" class="button-primary" value="<?php echo __("Save preferences", "we") ?>">
     </p>
   </form>
 </div>

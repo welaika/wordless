@@ -1,0 +1,412 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Wordless\n"
+"POT-Creation-Date: 2013-12-25 18:05-0600\n"
+"PO-Revision-Date: 2013-12-25 18:54-0600\n"
+"Last-Translator: Chuck <david.mejorado@gmail.com>\n"
+"Language-Team: \n"
+"Language: es_ES\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.3\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __\n"
+
+#: ../wordless/admin.php:36
+#, php-format
+msgid ""
+"Your current theme does seem to be a Wordless-compatible theme! <a href="
+"\"%2$s\" target=\"_blank\">%1$s</a> (or <a href=\"%4$s\" target=\"_blank\">"
+"%3$s</a>)"
+msgstr ""
+"¡Tu tema actual parece no ser compatible con Wordless! <a href=\"%2$s\" "
+"target=\"_blank\">%1$s</a> (o <a href=\"%4$s\" target=\"_blank\">%3$s</a>)"
+
+#: ../wordless/admin.php:37
+msgid "Create a new Wordless theme"
+msgstr "Crear un nuevo tema con Wordless"
+
+#: ../wordless/admin.php:39
+msgid "learn more about Wordless"
+msgstr "aprende más sobre Wordless"
+
+#: ../wordless/admin.php:68
+msgid "Preferences"
+msgstr "Preferencias"
+
+#: ../wordless/admin.php:76
+msgid "New Theme"
+msgstr "Nuevo Tema"
+
+#: ../wordless/admin.php:82
+msgid "Theme Name"
+msgstr "Nombre del Tema"
+
+#: ../wordless/admin.php:83
+msgid "This will be the name displayed inside WordPress."
+msgstr "Este va a ser el nombre mostrado dentro de WordPress"
+
+#: ../wordless/admin.php:87
+msgid "Theme Directory"
+msgstr "Directorio del Tema"
+
+#: ../wordless/admin.php:88
+msgid ""
+"Specify the <code>wp-content/themes</code> subdirectory name for this theme."
+msgstr ""
+"Especifica el nombre del subdirectorio para este tema dentro en <code>wp-"
+"content/themes</code>."
+
+#: ../wordless/admin.php:92
+msgid "Permissions"
+msgstr "Permisos"
+
+#: ../wordless/admin.php:93
+msgid "Specify three octal number components specifying access restrictions"
+msgstr ""
+"Especifica tres números octales para especificar las restricciones de acceso"
+
+#: ../wordless/admin.php:103
+msgid "This field is required!"
+msgstr "¡Este campo es obligatorio!"
+
+#: ../wordless/admin.php:125
+msgid "Preprocessors"
+msgstr "Preprocesadores"
+
+#: ../wordless/admin.php:126
+msgid ""
+"List Preprocessors you need comma separeted (ex: if you use Less replace "
+"CompassPreprocessor with LessPreprocessor)."
+msgstr ""
+"Lista los preprocesadores que necesitas, separados por comas (ej: si usas "
+"Less, reemplaza CompassPreprocessor con LessPreprocessor)."
+
+#: ../wordless/admin.php:130
+msgid "Cache"
+msgstr "Caché"
+
+#: ../wordless/admin.php:131
+msgid "This enable the wordpress assets cache."
+msgstr "Esto habilita el caché de los recursos (js, css) de wordpress"
+
+#: ../wordless/admin.php:135
+msgid "Version"
+msgstr "Versión"
+
+#: ../wordless/admin.php:136
+msgid ""
+"Using this function automatically generate the version number. You can of "
+"course decide to use a hard-coded version number/string if preferred by "
+"changing this preference."
+msgstr ""
+"Con esta función se genera el número de versión automáticamente. Por "
+"supuesto, también puedes utilizar un número de versión/cadena fija, si así "
+"lo prefieres, cambiando esta preferencia."
+
+#: ../wordless/admin.php:140
+msgid "Compass Path"
+msgstr "Ruta de Compass"
+
+#: ../wordless/admin.php:141
+msgid ""
+"The compass path on your dev environment (you can found it with: 'which "
+"wordless_compass')."
+msgstr ""
+"La ruta física de Compass en tu ambiente de desarrollo (la puedes encontrar "
+"con: 'which wordless_compass')."
+
+#: ../wordless/admin.php:145
+msgid "Css Compass output style"
+msgstr "Estilo de impresión de CSS de Compass"
+
+#: ../wordless/admin.php:146
+msgid ""
+"The output style for the compiled css. One of: nested, expanded, compact, or "
+"compressed."
+msgstr ""
+"El estilo de impresión del css compilado. Puede ser alguno de los "
+"siguientes: nested, expanded, compact, o compressed."
+
+#: ../wordless/admin.php:150
+msgid "Css require libs"
+msgstr "Librerías necesarias de CSS"
+
+#: ../wordless/admin.php:151
+msgid "Additionale Gem Libraries comma separeted."
+msgstr "Gems adicionales, separados por comas."
+
+#: ../wordless/admin.php:155
+msgid "Less path"
+msgstr "Ruta de Less"
+
+#: ../wordless/admin.php:156
+msgid "The Less path on your dev environment."
+msgstr "La ruta física de Less en tu ambiente de desarrollo."
+
+#: ../wordless/admin.php:160
+msgid "Less compression"
+msgstr "Compresión de Less"
+
+#: ../wordless/admin.php:161
+msgid "Allow or disallow Less output compression."
+msgstr "Habilita o inhabilita la compresión de Less"
+
+#: ../wordless/admin.php:165
+msgid "Ruby path"
+msgstr "Ruta de Ruby"
+
+#: ../wordless/admin.php:166
+msgid ""
+"The ruby path on your dev environment (you can found it with: 'which "
+"wordless_ruby')."
+msgstr ""
+"La ruta física de Ruby en tu ambiente de desarrollo (la puedes encontrar "
+"con: 'which wordless_ruby')."
+
+#: ../wordless/admin.php:170
+msgid "JS compression"
+msgstr "Compresión de JS"
+
+#: ../wordless/admin.php:171
+msgid "Allow or disallow JS output compression."
+msgstr "Habilita o deshabilita la compresión de JavaScript."
+
+#: ../wordless/admin.php:175
+msgid "JS vars compression"
+msgstr "Compresión de variables de JS"
+
+#: ../wordless/admin.php:176
+msgid "Allow or disallow JS vars compression."
+msgstr "Habilita o deshabilita la compresión de variables de JavaScript"
+
+#: ../wordless/admin.php:210
+msgid "Something wrong!"
+msgstr "¡Algo salió mal!"
+
+#: ../wordless/admin.php:212
+msgid "Preferences saved!"
+msgstr "¡Preferencias guardadas!"
+
+#: ../wordless/admin/preferences_form.php:3
+msgid "Setting Wordless preferences"
+msgstr "Configuración de las preferencias de Wordless"
+
+#: ../wordless/admin/preferences_form.php:36
+msgid "Save preferences"
+msgstr "Guardar preferencias"
+
+#: ../wordless/helpers/date_helper.php:40
+#: ../wordless/helpers/date_helper.php:59
+#: ../wordless/helpers/date_helper.php:62
+msgid "less than a minute"
+msgstr "menos de un minuto"
+
+#: ../wordless/helpers/date_helper.php:42
+msgid "1 minute"
+msgstr "1 minuto"
+
+#: ../wordless/helpers/date_helper.php:47
+msgid "less than 5 seconds"
+msgstr "menos de 5 segundos"
+
+#: ../wordless/helpers/date_helper.php:50
+msgid "less than 10 seconds"
+msgstr "menos de 10 segundos"
+
+#: ../wordless/helpers/date_helper.php:53
+msgid "less than 20 seconds"
+msgstr "menos de 20 segundos"
+
+#: ../wordless/helpers/date_helper.php:56
+msgid "half a minute"
+msgstr "medio minuto"
+
+#: ../wordless/helpers/date_helper.php:68
+#, php-format
+msgid "%d minutes"
+msgstr "%d minutos"
+
+#: ../wordless/helpers/date_helper.php:71
+msgid "about 1 hour"
+msgstr "aproximadamente 1 hora"
+
+#: ../wordless/helpers/date_helper.php:74
+#, php-format
+msgid "about %d hours"
+msgstr "aproximadamente %d horas"
+
+#: ../wordless/helpers/date_helper.php:77
+msgid "1 day"
+msgstr "1 día"
+
+#: ../wordless/helpers/date_helper.php:80
+#, php-format
+msgid "%d days"
+msgstr "%d días"
+
+#: ../wordless/helpers/date_helper.php:83
+msgid "about 1 month"
+msgstr "aproximadamente 1 mes"
+
+#: ../wordless/helpers/date_helper.php:86
+#, php-format
+msgid "%d months"
+msgstr "%d meses"
+
+#: ../wordless/helpers/date_helper.php:89
+msgid "about 1 year"
+msgstr "aproximadamente 1 año"
+
+#: ../wordless/helpers/date_helper.php:92
+#, php-format
+msgid "over %d years"
+msgstr "más de %d años"
+
+#: ../wordless/helpers/date_helper.php:119
+msgid "decade"
+msgstr "decada"
+
+#: ../wordless/helpers/date_helper.php:119
+msgid "decades"
+msgstr "decadas"
+
+#: ../wordless/helpers/date_helper.php:120
+msgid "year"
+msgstr "año"
+
+#: ../wordless/helpers/date_helper.php:120
+msgid "years"
+msgstr "años"
+
+#: ../wordless/helpers/date_helper.php:121
+msgid "month"
+msgstr "mes"
+
+#: ../wordless/helpers/date_helper.php:121
+msgid "months"
+msgstr "meses"
+
+#: ../wordless/helpers/date_helper.php:122
+msgid "week"
+msgstr "semana"
+
+#: ../wordless/helpers/date_helper.php:122
+msgid "weeks"
+msgstr "semanas"
+
+#: ../wordless/helpers/date_helper.php:123
+msgid "day"
+msgstr "día"
+
+#: ../wordless/helpers/date_helper.php:123
+msgid "days"
+msgstr "días"
+
+#: ../wordless/helpers/date_helper.php:124
+msgid "hour"
+msgstr "hora"
+
+#: ../wordless/helpers/date_helper.php:124
+msgid "hours"
+msgstr "horas"
+
+#: ../wordless/helpers/date_helper.php:125
+msgid "minute"
+msgstr "minuto"
+
+#: ../wordless/helpers/date_helper.php:125
+msgid "minutes"
+msgstr "minutos"
+
+#: ../wordless/helpers/date_helper.php:126
+msgid "second"
+msgstr "segundo"
+
+#: ../wordless/helpers/date_helper.php:126
+msgid "seconds"
+msgstr "segundos"
+
+#: ../wordless/helpers/date_helper.php:139
+#, php-format
+msgid "%s ago"
+msgstr "hace %s"
+
+#: ../wordless/helpers/model_helper.php:50
+#: ../wordless/helpers/model_helper.php:117
+#, php-format
+msgid "Add new %s"
+msgstr "Agregar nuevo %s"
+
+#: ../wordless/helpers/model_helper.php:51
+#: ../wordless/helpers/model_helper.php:115
+#, php-format
+msgid "Edit %s"
+msgstr "Editar %s"
+
+#: ../wordless/helpers/model_helper.php:52
+#, php-format
+msgid "New %s"
+msgstr "Nuevo %s"
+
+#: ../wordless/helpers/model_helper.php:53
+#, php-format
+msgid "View %s"
+msgstr "Ver %s"
+
+#: ../wordless/helpers/model_helper.php:54
+#: ../wordless/helpers/model_helper.php:111
+#, php-format
+msgid "Search %s"
+msgstr "Buscar %s"
+
+#: ../wordless/helpers/model_helper.php:55
+#, php-format
+msgid "No %s found."
+msgstr "No se encontraron %s"
+
+#: ../wordless/helpers/model_helper.php:56
+#, php-format
+msgid "No %s found in Trash"
+msgstr "No se encontraron %s en la Papelera"
+
+#: ../wordless/helpers/model_helper.php:112
+#, php-format
+msgid "All %s"
+msgstr "Todos los %s"
+
+#: ../wordless/helpers/model_helper.php:113
+#, php-format
+msgid "Parent %s"
+msgstr "%s padre"
+
+#: ../wordless/helpers/model_helper.php:114
+#, php-format
+msgid "Parent %s:"
+msgstr "%s padre:"
+
+#: ../wordless/helpers/model_helper.php:116
+#, php-format
+msgid "Update %s"
+msgstr "Actualizar %s"
+
+#: ../wordless/helpers/model_helper.php:118
+msgid "New %n Name"
+msgstr "Nuevo nombre de %n"
+
+#: ../wordless/helpers/query_helper.php:275
+#, php-format
+msgid "Search: %s"
+msgstr "Buscar: %s"
+
+#: ../wordless/helpers/query_helper.php:285
+#, php-format
+msgid "Archives: %s"
+msgstr "Archivo: %s"
+
+#: ../wordless/preprocessors/wordless_preprocessor.php:282
+#, php-format
+msgid "The path %s doesn't seem to be an executable!"
+msgstr "¡La ruta %s parece no ser ejecutable!"
