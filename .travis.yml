@@ -5,7 +5,8 @@ php:
 script: "sh -c 'cd tests && php all_tests.php'"
 notifications:
   recipients:
-    - stefano.verna@welaika.com
-    - edoardo.tenani@welaika.com
-    - ju.liu@welaika.com
+    - alessandro.fazzi@welaika.com
+    - fabrizio.monti@welaika.com
+    - federico.parodi@welaika.com
+    - filippo.gangidino@welaika.com
     - matteo.piotto@welaika.com
