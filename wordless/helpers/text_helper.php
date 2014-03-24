@@ -264,14 +264,20 @@ class TextHelper {
           error_reporting(0);
           $doc = new DOMDocument();
           libxml_use_internal_errors(true);
-          $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />' . $text);
+          $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $text);
           error_reporting($actual_error_reporting_level);
           libxml_clear_errors();
           $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());
-          $text = str_replace("<html>", "", $text);
-          $text = str_replace("<body>", "", $text);
-          $text = str_replace("</body>", "", $text);
-          $text = str_replace("</html>", "", $text);
+          $html_elements_to_remove = array(
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+            '<html>',
+            '</html>',
+            '<head>',
+            '</head>',
+            '<body>',
+            '</body>'
+          );
+          $text = str_replace($html_elements_to_remove, "", $text);
       }
 
       return $text;
