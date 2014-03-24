@@ -12,4 +12,3 @@ License: The MIT License
 require_once "wordless/wordless.php";
 
 Wordless::initialize();
-

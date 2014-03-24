@@ -1,6 +1,6 @@
 <div class="wrap">
   <div id="icon-themes" class="icon32"><br></div>
-  <h2><?php echo __("Setting Wordless preferences", "we") ?></h2>
+  <h2><?php echo __("Setting Wordless preferences", "wl") ?></h2>
   <form method="POST">
     <table class="form-table">
       <tbody>
@@ -10,7 +10,7 @@
               <label for="<?php echo $name ?>"><?php echo $properties['label'] ?></label>
             </th>
             <td>
-              <input name="<?php echo $name ?>" type="text" id="<?php echo $name ?>" value="<?php 
+              <input name="<?php echo $name ?>" type="text" id="<?php echo $name ?>" value="<?php
               if (!get_option($name)){
                 echo $properties['default_value'];
               } else {
@@ -33,7 +33,7 @@
       </tbody>
     </table>
     <p class="submit">
-      <input type="submit" name="submit" id="submit" class="button-primary" value="<?php echo __("Save preferences", "we") ?>">
+      <input type="submit" name="submit" id="submit" class="button-primary" value="<?php echo __("Save preferences", "wl") ?>">
     </p>
   </form>
 </div>

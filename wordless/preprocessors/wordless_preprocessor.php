@@ -292,7 +292,7 @@ class WordlessPreprocessor {
   protected function validate_executable_or_throw($path) {
     if (!is_executable($path)) {
       throw new WordlessCompileException(sprintf(
-        __("The path %s doesn't seem to be an executable!", "we"),
+        __("The path %s doesn't seem to be an executable!", "wl"),
         $path
       ));
     }

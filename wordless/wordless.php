@@ -189,13 +189,13 @@ class Wordless {
   public static function load_i18n() {
     $theme_locales_path = self::theme_locales_path();
     if (file_exists($theme_locales_path) && is_dir($theme_locales_path)) {
-      load_theme_textdomain('we', $theme_locales_path);
+      load_theme_textdomain('wl', $theme_locales_path);
     }
   }
 
   public static function plugin_i18n() {
     $plugin_locales_rel_path = self::join_paths('wordless', 'locales');
-    load_plugin_textdomain('we', false, $plugin_locales_rel_path);
+    load_plugin_textdomain('wl', false, $plugin_locales_rel_path);
   }
 
   public static function require_helpers() {
@@ -243,7 +243,7 @@ class Wordless {
       return ($return_array) ? $missing : false;
     }
 
-    return true;    
+    return true;
   }
 
   /**
@@ -279,7 +279,7 @@ class Wordless {
 
   public static function theme_path() {
     return get_template_directory();
-  }  
+  }
 
   public static function theme_helpers_path() {
     return self::join_paths(self::theme_path(), 'theme/helpers');

@@ -8,7 +8,7 @@ class QueryHelper {
 
   /**
    * Get last posts of specified type.
-   * 
+   *
    * @param string $type
    *   Post type used to filter result posts.
    * @param int $limit (optional)
@@ -17,12 +17,12 @@ class QueryHelper {
    *   The order in which sort the post retrieved. @l{http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters, See WP docs for list of available values}.
    * @param string $ord (optional)
    *   Can be ASC for ascending or DESC for descending.
-   * 
+   *
    * @return array
    *   Last posts of the selected type ordered.
-   * 
+   *
    * @see http://codex.wordpress.org/Class_Reference/WP_Query#Parameters
-   * 
+   *
    * @ingroup helperfunc
    */
   function latest_posts_of_type($type, $limit = -1, $order = 'date', $ord = 'DESC') {
@@ -37,15 +37,15 @@ class QueryHelper {
 
   /**
    * Get the last post of the specified type.
-   * 
+   *
    * @param string $type
    *   See QueryHelper::latest_posts_of_type().
    * @param string $order (optional)
    *   See QueryHelper::latest_posts_of_type().
-   * 
-   * @return ?? 
+   *
+   * @return ??
    *   Last post of the selected type ordered.
-   * 
+   *
    * @ingroup helperfunc
    */
   function latest_post_of_type($type, $order = 'date') {
@@ -54,7 +54,7 @@ class QueryHelper {
 
   /**
    * Get last posts of specified category.
-   * 
+   *
    * @param string $category
    *   Name of the category used to filter posts.
    * @param int $limit
@@ -69,12 +69,12 @@ class QueryHelper {
    *   The order in which sort the post retrieved. @l{http://codex.wordpress.org/Class_Reference/WP_Query#Order_.26_Orderby_Parameters, See WP docs for list of available values}.
    * @param string $ord (optional)
    *   Can be ASC for ascending or DESC for descending.
-   * 
+   *
    * @return array
    *   Last posts of the selected category ordered.
-   * 
+   *
    * @see http://codex.wordpress.org/Class_Reference/WP_Query#Parameters
-   * 
+   *
    * @ingroup helperfunc
    */
   function latest_posts_of_category($category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'DESC') {
@@ -97,17 +97,17 @@ class QueryHelper {
 
   /**
    * Get the last post of the specified category.
-   * 
+   *
    * @param string $category
    *   See QueryHelper::latest_posts_of_category().
    * @param string $post_type
    *   See QueryHelper::latest_posts_of_category().
    * @param string $taxonomy (optional)
    *   See QueryHelper::latest_posts_of_category().
-   * 
+   *
    * @return ??
    *   Last post of the selected category ordered.
-   * 
+   *
    * @ingroup helperfunc
    */
   function latest_post_of_category($category, $post_type = 'post', $taxonomy = 'category') {
@@ -116,14 +116,14 @@ class QueryHelper {
 
   /**
    * Check if post type is the one specified.
-   * 
+   *
    * @param string $type
    *   Type of the post to be compared.
-   * 
+   *
    * @return boolean
    *   TRUE if the post type of the global $post var is equal to the one passed
    *   as argument, FALSE otherwise.
-   * 
+   *
    * @ingroup helperfunc
    */
   function is_post_type($type) {
@@ -133,16 +133,16 @@ class QueryHelper {
 
   /**
    * Get the first categories, except one.
-   * 
+   *
    * @param int $limit
    *   The max number of categories to be retrieved.
    * @param string $except
    *   The name of the category to exclude.
-   * 
+   *
    * @return string
    *   A comma separated list of categories or an empty link if
    *         no category can be found.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_the_first_categories_except($limit, $except) {
@@ -169,12 +169,12 @@ class QueryHelper {
 
   /**
    * Returns the page ID from page title.
-   * 
+   *
    * @param string $title
-   * 
+   *
    * @return int
    *   The ID of the page
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_page_id_by_title($title) {
@@ -184,17 +184,17 @@ class QueryHelper {
 
   /**
    * Returns the category ID from the category name.
-   * 
+   *
    * @param string $cat_name
    *   The name of the category
    * @param string $taxonomy (optional)
    *   The taxonomy at which the category belongs to.
-   * 
+   *
    * @return int
    *   The ID of the category
-   * 
+   *
    * @ingroup helperfunc
-   */ 
+   */
   function get_category_id_by_name($cat_name, $taxonomy = 'category'){
     $term = get_term_by('name', $cat_name, $taxonomy);
     return $term->term_id;
@@ -202,16 +202,16 @@ class QueryHelper {
 
   /**
    * Returns a link to the specified category.
-   * 
+   *
    * @param string $cat_name
    *   The name of the category.
    * @param string $taxonomy (optional)
-   *   The taxonomy at which the category 
+   *   The taxonomy at which the category
    *        belongs to
-   * 
+   *
    * @return int
    *   A link to the category.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_category_link_by_name($cat_name, $taxonomy = 'category') {
@@ -221,10 +221,10 @@ class QueryHelper {
 
   /**
    * Returns the content of the current post. Must be called within The Loop.
-   * 
+   *
    * @return string
    *   The content of the current post.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_the_filtered_content() {
@@ -235,10 +235,10 @@ class QueryHelper {
 
   /**
    * Returns the post type (always singular).
-   * 
+   *
    * @return string
    *   The post name.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_post_type_singular_name() {
@@ -248,15 +248,15 @@ class QueryHelper {
 
   /**
    * Returns the page title.
-   * 
+   *
    * @param string $prefix (optional)
    *   A string to be prefixed to the current page title.
    * @param string $separator (optional)
    *   A string to separate prefix and current page title.
-   * 
+   *
    * @return string
    *   The page title
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_page_title($prefix = "", $separator = "") {
@@ -272,7 +272,7 @@ class QueryHelper {
       $title = get_the_title();
     }
     if (is_search()) {
-      $title = sprintf(__("Search: %s", "we"), get_search_query());
+      $title = sprintf(__("Search: %s", "wl"), get_search_query());
     }
     if (is_date()) {
       if (is_month()) {
@@ -282,7 +282,7 @@ class QueryHelper {
       } else {
         $date = get_the_date();
       }
-      $title = sprintf(__("Archives: %s", "we"), $date);
+      $title = sprintf(__("Archives: %s", "wl"), $date);
     }
     if (is_front_page() || is_home()) {
       $title = get_bloginfo("description", "display");
