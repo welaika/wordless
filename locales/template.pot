@@ -17,7 +17,7 @@ msgstr ""
 #: ../wordless/admin.php:36
 #, php-format
 msgid ""
-"Your current theme does seem to be a Wordless-compatible theme! <a href="
+"Your current theme does not seem to be a Wordless-compatible theme! <a href="
 "\"%2$s\" target=\"_blank\">%1$s</a> (or <a href=\"%4$s\" target=\"_blank\">"
 "%3$s</a>)"
 msgstr ""
