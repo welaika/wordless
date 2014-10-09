@@ -374,6 +374,11 @@ vendor/mobile_detect.php
 * we'll recompile the doxygen doc
 * the community will be grateful!
 
+<a name="localization"></a>
+## Localization
+
+Wordless is available in English, Italian and Spanish, at the moment. Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
+
 <a name="license"></a>
 ## License
 
