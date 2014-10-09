@@ -263,10 +263,10 @@ class TextHelper {
         error_reporting(0);
         $doc = new DOMDocument();
         libxml_use_internal_errors(true);
-        $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $text);
+        $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">'. "<wrapper>{$text}</wrapper>");
         error_reporting($actual_error_reporting_level);
         libxml_clear_errors();
-        $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body|head|meta))[^>]*>\s*~i', '', $doc->saveHTML());
+        $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body|head|meta|wrapper))[^>]*>\s*~i', '', $doc->saveHTML());
       }
 
       return $text;
