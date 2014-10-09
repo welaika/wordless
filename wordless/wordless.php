@@ -274,10 +274,6 @@ class Wordless {
     return $missing;
   }
 
-  public static function plugin_path() {
-    return self::join_paths(WP_CONTENT_DIR, 'plugins', 'wordless');
-  }
-
   public static function theme_path() {
     return get_template_directory();
   }
