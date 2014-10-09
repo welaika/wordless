@@ -134,7 +134,7 @@ class Wordless {
             }
 
             if (file_put_contents($compiled_file_path, $compiled_content) === false)
-              error_log("Cannot write to {$compiled_file_path}.");
+              error_log("WARNING: Cannot write to {$compiled_file_path}.");
           }
         }
       }
