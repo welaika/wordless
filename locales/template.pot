@@ -174,38 +174,6 @@ msgstr ""
 msgid "Preferences saved!"
 msgstr ""
 
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Comments"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Links"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Posts"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Appearance"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Plugins"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Tools"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Settings"
-msgstr ""
-
-#: ../wordless/theme_builder/vanilla_theme/config/initializers/backend.php:13
-msgid "Media"
-msgstr ""
-
 #: ../wordless/helpers/query_helper.php:275
 #, php-format
 msgid "Search: %s"
