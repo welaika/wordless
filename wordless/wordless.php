@@ -133,7 +133,8 @@ class Wordless {
               echo "\n\n";
             }
 
-            file_put_contents($compiled_file_path, $compiled_content);
+            if (file_put_contents($compiled_file_path, $compiled_content) === false)
+              error_log("Cannot write to {$compiled_file_path}.");
           }
         }
       }
