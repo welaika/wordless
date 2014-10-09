@@ -1,7 +1,7 @@
 <?php
 /**
  * This module provides methods for cycling iteration inside views.
- * 
+ *
  * @todo Needs examples.
  * @doubt Personally never seen this class used. I'd need help (\@pioneerskies)
  * @ingroup helperclass
@@ -10,7 +10,7 @@ class Cycle {
 
   /**
    * Build the class with the specified values.
-   * 
+   *
    * @param mixed $values
    *   Data through which class will cycle.
    */
@@ -21,7 +21,7 @@ class Cycle {
 
   /**
    * Returns values.
-   * 
+   *
    * @return mixed
    *   The values stored in the $this->values class variable.
    */
@@ -38,7 +38,7 @@ class Cycle {
 
   /**
    * Returns the current value in iteration.
-   * 
+   *
    * @return mixed
    *   The current data in the iteration.
    */
@@ -48,7 +48,7 @@ class Cycle {
 
   /**
    * Returns the current value and iterate to the next value.
-   * 
+   *
    * @return mixed
    *   The current data in the iteration.
    */
@@ -68,7 +68,7 @@ class Cycle {
 
 /**
  * This module provides methods for text handling.
- * 
+ *
  * @todo Needs examples.
  *
  * @ingroup helperclass
@@ -79,13 +79,13 @@ class TextHelper {
 
   /**
    * Attempts to pluralize the specified text.
-   * 
+   *
    * @param string $string
    *   The string to be pluralized.
-   * 
+   *
    * @return mixed
    *   The current data in the iteration.
-   * 
+   *
    * @ingroup helperfunc
    */
   function pluralize($string) {
@@ -172,12 +172,12 @@ class TextHelper {
 
   /**
    * Reset the cycle pointer.
-   * 
+   *
    * @param string $name (optional)
    *   The specified name of the cycle to reset.
-   * 
+   *
    * @ingroup helperfunc
-   */ 
+   */
   function reset_cycle($name = "default") {
     if (isset(self::$cycles[$name])) {
       self::$cycles[$name]->reset();
@@ -186,27 +186,27 @@ class TextHelper {
 
   /**
    * Truncate the text to the specified length.
-   * 
+   *
    * @param string $text
    *   The text to be truncated.
    * @param array $options (optional)
    *   An array with options to be passed to the function.
    *   Available options:
    *     - length (default 30): the length at which truncate the text
-   *     - omission (default '...'): the suffix string to be added to the 
+   *     - omission (default '...'): the suffix string to be added to the
    *       truncate text
    *     - word_count (default FALSE): if is TRUE the lenght value count words
    *       else if is FALSE count chars
    *     - separator (default FALSE): the separator string used to trim the
    *       argument
-   *     - html (default FALSE): set if you want to preserve html in string. 
+   *     - html (default FALSE): set if you want to preserve html in string.
    *       If is set to false remove ALL HTML tags.
    *     - allowed_tags (default array('b', 'i', 'em', 'strong')): if html is TRUE preserve
    *       the allowed tags. If this param is set to 'all' leave untouched the string.
-   *    
+   *
    * @return string
    *   The truncated text.
-   * 
+   *
    * @ingroup helperfunc
    */
   function truncate($text, $options = array()) {
@@ -227,7 +227,7 @@ class TextHelper {
       $text = strip_tags($text);
     } elseif ($options['html']){
       if ($options['allowed_tags'] != 'all'){
-        // if the allowed_tags are not 'all' remove all tags leaving the allowed 
+        // if the allowed_tags are not 'all' remove all tags leaving the allowed
         $text = strip_tags($text, "<". implode("><", $options['allowed_tags']) .">");
       }
     }
@@ -263,14 +263,21 @@ class TextHelper {
           $actual_error_reporting_level = error_reporting();
           error_reporting(0);
           $doc = new DOMDocument();
-          $doc->loadHTML($text);
+          libxml_use_internal_errors(true);
+          $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $text);
           error_reporting($actual_error_reporting_level);
           libxml_clear_errors();
           $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());
-          $text = str_replace("<html>", "", $text);
-          $text = str_replace("<body>", "", $text);
-          $text = str_replace("</body>", "", $text);
-          $text = str_replace("</html>", "", $text);
+          $html_elements_to_remove = array(
+            '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">',
+            '<html>',
+            '</html>',
+            '<head>',
+            '</head>',
+            '<body>',
+            '</body>'
+          );
+          $text = str_replace($html_elements_to_remove, "", $text);
       }
 
       return $text;
@@ -288,7 +295,7 @@ class TextHelper {
         if ($stop === FALSE) {
           $stop = $length_with_room_for_omission;
         }
-      } 
+      }
       else {
         $stop = $length_with_room_for_omission;
       }
@@ -314,13 +321,13 @@ class TextHelper {
 
   /**
    * Returns a string with the first character of each word capitalized.
-   * 
+   *
    * @param string $text
    *   The text to be capitalized.
-   * 
+   *
    * @return string
    *   The capitalized text.
-   * 
+   *
    * @ingroup helperfunc
    */
   function capitalize($text) {
@@ -329,13 +336,13 @@ class TextHelper {
 
   /**
    * Capitalizes the first letter of every word.
-   * 
+   *
    * @param string $text
    *   The text to be capitalized.
-   * 
+   *
    * @return string
    *   The text with every word capitalized.
-   * 
+   *
    * @ingroup helperfunc
    */
   function titleize($text) {
@@ -349,17 +356,17 @@ class TextHelper {
 
   /**
    * Check if the string passed as parameter is a valid URL.
-   * 
+   *
    * NO SANITAZE IS PERFORMED on the URL! URL like this:
    *   http://example.com/"><script>alert(document.cookie)</script>
    * DO PASS validation (syntactically are valid URLs).
-   * 
+   *
    * @param string $url
    *   A URL to be validated.
-   * 
+   *
    * @return bool
    *   Return TRUE if the URL is valid, FALSE otherwise.
-   * 
+   *
    * @ingroup helperfunc
    */
   function is_valid_url($url) {
