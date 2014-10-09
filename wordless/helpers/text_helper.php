@@ -259,18 +259,14 @@ class TextHelper {
         $text = $text . $options['omission'];
       }
       if ($options['html']){
-        // check for unclosed tags
-          $actual_error_reporting_level = error_reporting();
-          error_reporting(0);
-          $doc = new DOMDocument();
-          $doc->loadHTML($text);
-          error_reporting($actual_error_reporting_level);
-          libxml_clear_errors();
-          $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body))[^>]*>\s*~i', '', $doc->saveHTML());
-          $text = str_replace("<html>", "", $text);
-          $text = str_replace("<body>", "", $text);
-          $text = str_replace("</body>", "", $text);
-          $text = str_replace("</html>", "", $text);
+        $actual_error_reporting_level = error_reporting();
+        error_reporting(0);
+        $doc = new DOMDocument();
+        libxml_use_internal_errors(true);
+        $doc->loadHTML('<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' . $text);
+        error_reporting($actual_error_reporting_level);
+        libxml_clear_errors();
+        $text = preg_replace('~<(?:!DOCTYPE|/?(?:html|body|head|meta))[^>]*>\s*~i', '', $doc->saveHTML());
       }
 
       return $text;

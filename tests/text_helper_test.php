@@ -92,6 +92,7 @@ class TextHelperTest extends UnitTestCase {
   function test_truncate_allowed_tags() {
     $this->assertEqual("<a><strong>Hello Big World!</strong></a> I'm[...]", truncate("<a><strong>Hello Big World!</a> I'm very</strong> happy to be here.", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => 'all')));
     $this->assertEqual("<a>Hello Big World!</a> I'm[...]", truncate("<a><strong>Hello Big World!</a> I'm very</strong> happy to be here.", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => array('a','img'))));
+    $this->assertEqual("<strong><a>Ciao a tutti!</a> è[...]</strong>", truncate("<strong><a>Ciao a tutti!</a> è bello essere qui.</strong>", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => array('a','img', 'strong'))));
   }
 
   function test_active_if() {
