@@ -1,6 +1,6 @@
 <?php
 
-require_once 'placeholder_image.php';
+require_once dirname(dirname(__FILE__)).'/PlaceholderImage.php';
 
 /**
  * Implements the Placehold service.
