@@ -379,6 +379,11 @@ vendor/mobile_detect.php
 
 Wordless is available in English, Italian and Spanish, at the moment. Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
 
+<a name="third-party-libraries"></a>
+## Third Part Libraries
+
+* [Mobile Detect](http://mobiledetect.net)
+
 <a name="license"></a>
 ## License
 
