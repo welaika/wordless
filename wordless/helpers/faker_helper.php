@@ -1,6 +1,7 @@
 <?php
 
 Wordless::require_once_dir(Wordless::join_paths(dirname(dirname(dirname(__FILE__))), "vendor/lorem"));
+Wordless::require_once_dir(Wordless::join_paths(dirname(dirname(dirname(__FILE__))), "vendor/lorem/PlaceholderImage"));
 
 /**
  * Provides methods for use of placeholders (images or text).
