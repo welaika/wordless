@@ -29,7 +29,7 @@ class LoremPixelImage extends PlaceholderImage {
 
     $url =  "http://lorempixel.com";
 
-    if ($options["gray"]) {
+    if (isset($options["gray"]) && $options["gray"]) {
       $url .= "/g";
     }
 
@@ -39,7 +39,7 @@ class LoremPixelImage extends PlaceholderImage {
     $offset = self::$offset;
     $url .= "/{$offset}";
 
-    if ($options["text"]) {
+    if (isset($options["text"])) {
       $encoded_text = rawurlencode($options["text"]);
       $url .= "/{$encoded_text}";
     }
