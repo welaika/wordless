@@ -36,8 +36,12 @@ class FakerHelper {
    */
   public function placeholder_image($width, $height, $options = array()) {
     $services_class = array(
-      'placehold' => 'PlaceholdImage',
-      'lorem_pixel' => 'LoremPixelImage'
+      'placehold'   => 'PlaceholdImage',
+      'lorem_pixel' => 'LoremPixelImage',
+      'placecage'   => 'PlaceCageImage',
+      'fillmurray'  => 'FillMurrayImage',
+      'placepuppy'  => 'PlacePuppyImage',
+      'phold'       => 'PHoldImage'
     );
 
     $service = isset($options['service']) ? $options['service'] : NULL;
