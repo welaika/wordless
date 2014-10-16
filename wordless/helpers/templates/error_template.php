@@ -17,8 +17,8 @@
 </head>
 <body>
   <div class="dialog">
-    <h1><?php echo $title ?></h1>
-    <p><?php echo $description ?></p>
+    <h1><?php echo isset($title) ? $title : '' ?></h1>
+    <p><?php echo isset($description) ? $description : '' ?></p>
   </div>
 </body>
 </html>
