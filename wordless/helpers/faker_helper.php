@@ -1,12 +1,12 @@
 <?php
 
 require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/lorem/LoremIpsum.class.php');
-Wordless::require_once_dir(Wordless::join_paths(dirname(__FILE__), "placeholder_images"));
+Wordless::require_once_dir(Wordless::join_paths(dirname(dirname(dirname(__FILE__))), "vendor/lorem/placeholder_images"));
 
 /**
  * Provides methods for use of placeholders (images or text).
  * 
- * @copyright welaika &copy; 2011 - MIT License
+ * @copyright welaika (c) 2011-2014 - MIT License
  * 
  * @ingroup helperclass
  */
