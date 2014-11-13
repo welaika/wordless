@@ -37,16 +37,16 @@ Our recommended way to get Ruby installed on your system is [RVM](https://github
 Now reload your shell and install the latest Ruby version by running (this will take some time, go have a coffee or something):
 
 ```
-rvm install 2.0.0
+rvm install 2.1.2
 ```
 
 Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gemset called `wordless`, install the gems
 wordless needs and create some handy symbolic links:
 
 ```
-rvm use 2.0.0@wordless --create --default && \
+rvm use 2.1.2@wordless --create --default && \
 gem install therubyracer sprockets compass coffee-script thor yui-compressor && \
-rvm wrapper 2.0.0@wordless wordless compass ruby
+rvm wrapper 2.1.2@wordless wordless compass ruby
 ```
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
