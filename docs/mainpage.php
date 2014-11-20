@@ -6,18 +6,16 @@
  *
  * @section intro_sec Introduction
  *
- * Welcome to the developer documentation for Wordless. Actually you are looking
- * at a complex WordPress plugin which make you create themes using the power of
+ * Welcome to the developer documentation for Wordless. It is a WordPress
+ * plugin which makes you create themes using the power of
  * HAML, SASS/SCSS, COMPASS, and CoffeScript, drastically speeding up your
  * development time!
  *
- * Automation is for robots, we are humans, after all! ;)
- *
- * Please refer to the @l{https://github.com/welaika/wordless#readme,online 
+ * Please refer to the @l{https://github.com/welaika/wordless#readme,online
  * documentation} for more details and instructions.
  *
- * @section groups Define groups used in Wordless documentation
- * 
+ * @section groups Defined groups in Wordless documentation
+ *
  * Some groups are defined to collect informations about specific use classes
  * or functions:
  * - @ref helpers "Helpers Group": the group of all existent Wordless helpers.
@@ -42,7 +40,7 @@
  * @l{http://www.stack.nl/~dimitri/doxygen/commands.html,Doxygen Command List}.
  *
  * @section see_more More about Wordless
- * 
+ *
  * @see GitHub project page https://github.com/welaika/wordless
  * @see Bugs at https://github.com/welaika/wordless/issues
  */
