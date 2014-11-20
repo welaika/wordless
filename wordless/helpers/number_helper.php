@@ -5,7 +5,6 @@
 * such as percentage, phone numbers, rounding, etc.
 *
 * @ingroup helperclass
-* @todo all the class is not documented yet
 */
 
 class NumberHelper {
@@ -32,11 +31,9 @@ class NumberHelper {
   }
 
   /**
-  * Translates number to currency 
-  *
-  * @todo
-  *   Loss of doc
-  *
+  * Translates number to currency
+  * @param integer $number The number to translate
+  * @param array $options (optional) Associative array. Accepts keys: 'format' (defaults to %u%n), 'unit'.
   * @ingroup helperfunc
   */
   public function number_to_currency($number, $options = array()) {
@@ -68,9 +65,8 @@ class NumberHelper {
 
   /**
   * Translates numbers to percantage
-  *
-  * @todo
-  *   Loss of doc
+  * @param integer $number The number to be converted in percentage
+  * @param array $options (optional) Accepts the options expressed in the $DEFAULT_CURRENCY_VALUES property of NumberHelper, whom will be overwritten.
   */
   public function number_to_percentage($number, $options = array()) {
     if (empty($number))
@@ -92,9 +88,8 @@ class NumberHelper {
 
   /**
   * Translates numbers to phone numbers
-  *
-  * @todo
-  *   Loss of doc
+  * @param integer $number Returns a telephone number formatted number
+  * @param array $options (optional) Associative array. Accepts keys: 'area_code', 'delimiter', 'extension', 'country_code'
   */
   public function number_to_phone($number, $options = array()) {
     if (empty($number))
@@ -132,9 +127,8 @@ class NumberHelper {
 
   /**
   * Formats numbers with given delimiter
-  *
-  * @todo
-  *   Loss of doc
+  * @param integer $number The number to be formatted
+  * @param array $options (optional) Associative array. Accepts keys: 'delimiter', 'separator'
   */
   public function number_with_delimiter($number, $options = array()) {
     if (!is_numeric($number) && array_key_exists('raise', $options) && $options['raise'] == true)
@@ -150,8 +144,8 @@ class NumberHelper {
   /**
   * Rounds number to the given decimal precision
   *
-  * @todo
-  *   Loss of doc
+  * @param integer $number The number to be rounded
+  * @param array $options (optional) Associative array. Accepts keys: 'precision', 'significant', 'strip_significant_zeros', 'separator'
   */
   public function number_with_precision($number, $options = array()) {
     if (is_numeric($number))
