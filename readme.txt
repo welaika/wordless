@@ -3,8 +3,8 @@ Contributors: welaika, stefano.verna
 Donate link: https://github.com/welaika/wordless
 Tags: sass, compass, haml, rails, scss
 Requires at least: 3.0
-Tested up to: 4.0
-Stable tag: 0.5.1
+Tested up to: 4.0.1
+Stable tag: 0.5.2
 
 Wordless dramatically speeds up and enhances your custom themes
 creation, thanks to Sass, Compass, Haml and Coffeescript.
@@ -58,6 +58,10 @@ rvm wrapper 2.1.2@wordless wordless compass ruby
 Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
 
 == Changelog ==
+
+= 0.5.2 =
+
+* 2044477 bugfix in is_page_wpml() helper
 
 = 0.5.1 =
 
