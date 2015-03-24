@@ -81,6 +81,7 @@ class Process
         }
 
         fwrite($pipes[0], $this->stdin);
+        fclose($pipes[0]);
         $status = proc_get_status($process);
 
         while($status['running']) {
@@ -90,7 +91,6 @@ class Process
         }
 
 
-        fclose($pipes[0]);
         fclose($pipes[1]);
         fclose($pipes[2]);
 
