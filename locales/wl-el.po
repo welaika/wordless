@@ -1,16 +1,17 @@
 # 
 # Translators:
+# Wasilis Mandratzis-Walz, 2015
 msgid ""
 msgstr ""
 "Project-Id-Version: wordless\n"
 "POT-Creation-Date: 2014-03-05 12:43+0100\n"
-"PO-Revision-Date: 2014-10-09 15:06+0000\n"
-"Last-Translator: Matteo Piotto <matteo.piotto@welaika.com>\n"
-"Language-Team: Spanish (Spain) (http://www.transifex.com/projects/p/wordless/language/es_ES/)\n"
+"PO-Revision-Date: 2015-05-01 23:51+0000\n"
+"Last-Translator: Wasilis Mandratzis-Walz\n"
+"Language-Team: Greek (http://www.transifex.com/projects/p/wordless/language/el/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_ES\n"
+"Language: el\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Generator: Poedit 1.5.4\n"
 "X-Poedit-Basepath: .\n"
@@ -23,381 +24,381 @@ msgid ""
 "Your current theme does not seem to be a Wordless-compatible theme! <a "
 "href=\"%2$s\" target=\"_blank\">%1$s</a> (or <a href=\"%4$s\" "
 "target=\"_blank\">%3$s</a>)"
-msgstr "¡Tu tema actual parece no ser compatible con Wordless! <a href=\"%2$s\" target=\"_blank\">%1$s</a> (o <a href=\"%4$s\" target=\"_blank\">%3$s</a>)"
+msgstr "Το τρέχον θέμα σας δεν φαίνεται να είναι ενα Wordless-συμβατό θέμα!<a href=\"%2$s\" target=\"_blank\">%1$s</a> (or <a href=\"%4$s\" target=\"_blank\">%3$s</a>)"
 
 #: ../wordless/admin.php:37 ../wordless/admin/admin_form.php:3
 msgid "Create a new Wordless theme"
-msgstr "Crear un nuevo tema con Wordless"
+msgstr "Δημιουργια ενος νεου Wordless θέματος"
 
 #: ../wordless/admin.php:39
 msgid "learn more about Wordless"
-msgstr "aprende más sobre Wordless"
+msgstr "μάθετε περισσότερα σχετικά με το Wordless"
 
 #: ../wordless/admin.php:68
 msgid "Preferences"
-msgstr "Preferencias"
+msgstr "προτιμήσεις"
 
 #: ../wordless/admin.php:76
 msgid "New Theme"
-msgstr "Nuevo Tema"
+msgstr "Νέο Θέμα"
 
 #: ../wordless/admin.php:82
 msgid "Theme Name"
-msgstr "Nombre del Tema"
+msgstr "Όνομα Θέματος"
 
 #: ../wordless/admin.php:83
 msgid "This will be the name displayed inside WordPress."
-msgstr "Este va a ser el nombre mostrado dentro de WordPress"
+msgstr "Αυτό θα είναι το όνομα που θα εμφανίζεται στο εσωτερικό του WordPress."
 
 #: ../wordless/admin.php:87
 msgid "Theme Directory"
-msgstr "Directorio del Tema"
+msgstr "Κατάλογος θέματος "
 
 #: ../wordless/admin.php:88
 msgid ""
 "Specify the <code>wp-content/themes</code> subdirectory name for this theme."
-msgstr "Especifica el nombre del subdirectorio para este tema dentro en <code>wp-content/themes</code>."
+msgstr "Καθορίστε τον <code> wp-content / themes </ code> υποκατάλογο όνοματος για αυτό το θέμα."
 
 #: ../wordless/admin.php:92
 msgid "Permissions"
-msgstr "Permisos"
+msgstr "Δικαιώματα"
 
 #: ../wordless/admin.php:93
 msgid "Specify three octal number components specifying access restrictions"
-msgstr "Especifica tres números octales para especificar las restricciones de acceso"
+msgstr "Καθορίστε τρεις οκταδικούς συστατικών αριθμους που καθορίζουν τους περιορισμούς στην πρόσβαση"
 
 #: ../wordless/admin.php:103
 msgid "This field is required!"
-msgstr "¡Este campo es obligatorio!"
+msgstr "Αυτό το πεδίο είναι υποχρεωτικό!"
 
 #: ../wordless/admin.php:125
 msgid "Preprocessors"
-msgstr "Preprocesadores"
+msgstr "Προεπεξεργαστές"
 
 #: ../wordless/admin.php:126
 msgid ""
 "List Preprocessors you need comma separeted (ex: if you use Less replace "
 "CompassPreprocessor with LessPreprocessor)."
-msgstr "Lista los preprocesadores que necesitas, separados por comas (ej: si usas Less, reemplaza CompassPreprocessor con LessPreprocessor)."
+msgstr "Οι προεπεξεργαστες στην λιστα ξεχωριζονται με κόμμα (ex: Αν χρησιμοποιήσετε μικρότερους αντικαταστήστε τον CompassPreprocessor με LessPreprocessor)."
 
 #: ../wordless/admin.php:130
 msgid "Cache"
-msgstr "Caché"
+msgstr "Cache"
 
 #: ../wordless/admin.php:131
 msgid "This enable the wordpress assets cache."
-msgstr "Esto habilita el caché de los recursos (js, css) de wordpress"
+msgstr "Αυτό ενεργοποιει την μνήμη cache του ενεργητικού wordpress."
 
 #: ../wordless/admin.php:135
 msgid "Version"
-msgstr "Versión"
+msgstr "Εκδοση"
 
 #: ../wordless/admin.php:136
 msgid ""
 "Using this function automatically generate the version number. You can of "
 "course decide to use a hard-coded version number/string if preferred by "
 "changing this preference."
-msgstr "Con esta función se genera el número de versión automáticamente. Por supuesto, también puedes utilizar un número de versión/cadena fija, si así lo prefieres, cambiando esta preferencia."
+msgstr "Χρησιμοποιώντας αυτή τη λειτουργία δημιουργεί αυτόματα τον αριθμό έκδοσης. Μπορείτε βέβαια να αποφασίσετε να χρησιμοποιήσετε ένα σκληρό κωδικοποιημένο αριθμό έκδοσης / συμβολοσειράς αν προτιμάται από την αλλαγή αυτής της προτίμησης."
 
 #: ../wordless/admin.php:140
 msgid "Compass Path"
-msgstr "Ruta de Compass"
+msgstr "Compass Διαδρομή"
 
 #: ../wordless/admin.php:141
 msgid ""
 "The compass path on your dev environment (you can found it with: 'which "
 "wordless_compass')."
-msgstr "La ruta física de Compass en tu ambiente de desarrollo (la puedes encontrar con: 'which wordless_compass')."
+msgstr "Η διαδρομή Compass στο περιβάλλον dev (μπορεί να βρεθεί με: «ποια wordless_compass»)."
 
 #: ../wordless/admin.php:145
 msgid "Css Compass output style"
-msgstr "Estilo de impresión de CSS de Compass"
+msgstr "Στυλ εξόδου Css Compass"
 
 #: ../wordless/admin.php:146
 msgid ""
 "The output style for the compiled css. One of: nested, expanded, compact, or"
 " compressed."
-msgstr "El estilo de impresión del css compilado. Puede ser alguno de los siguientes: nested, expanded, compact, o compressed."
+msgstr "Το στυλ εξόδου για το CSS. Ένα από: ένθετη, επεκτάθηκε, συμπαγές, ή συμπιεσμένο."
 
 #: ../wordless/admin.php:150
 msgid "Css require libs"
-msgstr "Librerías necesarias de CSS"
+msgstr "Το Css απαιτεί libs"
 
 #: ../wordless/admin.php:151
 msgid "Additionale Gem Libraries comma separeted."
-msgstr "Gems adicionales, separados por comas."
+msgstr "Πρόσθετες Gem Βιβλιοθήκες διαχωρισμένες με κόμμα."
 
 #: ../wordless/admin.php:155
 msgid "Less path"
-msgstr "Ruta de Less"
+msgstr "Μικροτερο μονοπάτι"
 
 #: ../wordless/admin.php:156
 msgid "The Less path on your dev environment."
-msgstr "La ruta física de Less en tu ambiente de desarrollo."
+msgstr "Το μικροτερο μονοπάτι στο περιβάλλον dev."
 
 #: ../wordless/admin.php:160
 msgid "Less compression"
-msgstr "Compresión de Less"
+msgstr "Μικροτερη συμπίεση"
 
 #: ../wordless/admin.php:161
 msgid "Allow or disallow Less output compression."
-msgstr "Habilita o inhabilita la compresión de Less"
+msgstr "Αποδοχη η αποριψη της μικροτερης εξοδου συμπιεσης."
 
 #: ../wordless/admin.php:165
 msgid "Ruby path"
-msgstr "Ruta de Ruby"
+msgstr "Ruby διαδρομή"
 
 #: ../wordless/admin.php:166
 msgid ""
 "The ruby path on your dev environment (you can found it with: 'which "
 "wordless_ruby')."
-msgstr "La ruta física de Ruby en tu ambiente de desarrollo (la puedes encontrar con: 'which wordless_ruby')."
+msgstr "Η διαδρομή Ruby στο περιβάλλον dev (μπορεί να βρεθεί με: 'which wordless_ruby')."
 
 #: ../wordless/admin.php:170
 msgid "JS compression"
-msgstr "Compresión de JS"
+msgstr "Συμπίεση JS"
 
 #: ../wordless/admin.php:171
 msgid "Allow or disallow JS output compression."
-msgstr "Habilita o deshabilita la compresión de JavaScript."
+msgstr "Αποδοχη η απαγορευση της JS συμπίεσης εξόδου."
 
 #: ../wordless/admin.php:175
 msgid "JS vars compression"
-msgstr "Compresión de variables de JS"
+msgstr "JS Vars συμπίεση"
 
 #: ../wordless/admin.php:176
 msgid "Allow or disallow JS vars compression."
-msgstr "Habilita o deshabilita la compresión de variables de JavaScript"
+msgstr "Αποδοχη η απαγορευση της JS vars συμπίεσης εξόδου."
 
 #: ../wordless/admin.php:210
 msgid "Something wrong!"
-msgstr "¡Algo salió mal!"
+msgstr "Κάτι εγινε λάθος!"
 
 #: ../wordless/admin.php:212
 msgid "Preferences saved!"
-msgstr "¡Preferencias guardadas!"
+msgstr "Οι προτιμήσεις αποθηκευθηκαν!"
 
 #: ../wordless/helpers/query_helper.php:275
 #, php-format
 msgid "Search: %s"
-msgstr "Buscar: %s"
+msgstr "Αναζήτηση: %s"
 
 #: ../wordless/helpers/query_helper.php:285
 #, php-format
 msgid "Archives: %s"
-msgstr "Archivo: %s"
+msgstr "Αρχεία: %s"
 
 #: ../wordless/helpers/model_helper.php:50
 #: ../wordless/helpers/model_helper.php:117
 #, php-format
 msgid "Add new %s"
-msgstr "Agregar nuevo %s"
+msgstr "Προσθήκη νέου %s"
 
 #: ../wordless/helpers/model_helper.php:51
 #: ../wordless/helpers/model_helper.php:115
 #, php-format
 msgid "Edit %s"
-msgstr "Editar %s"
+msgstr "Επεξεργασία %s"
 
 #: ../wordless/helpers/model_helper.php:52
 #, php-format
 msgid "New %s"
-msgstr "Nuevo %s"
+msgstr "Νέο %s"
 
 #: ../wordless/helpers/model_helper.php:53
 #, php-format
 msgid "View %s"
-msgstr "Ver %s"
+msgstr "Εμφανιση %s"
 
 #: ../wordless/helpers/model_helper.php:54
 #: ../wordless/helpers/model_helper.php:111
 #, php-format
 msgid "Search %s"
-msgstr "Buscar %s"
+msgstr "Αναζήτηση:  %s"
 
 #: ../wordless/helpers/model_helper.php:55
 #, php-format
 msgid "No %s found."
-msgstr "No se encontraron %s"
+msgstr "%s δεν βρεθηκε."
 
 #: ../wordless/helpers/model_helper.php:56
 #, php-format
 msgid "No %s found in Trash"
-msgstr "No se encontraron %s en la Papelera"
+msgstr "%s δεν βρεθηκε στα σκουπιδια"
 
 #: ../wordless/helpers/model_helper.php:112
 #, php-format
 msgid "All %s"
-msgstr "Todos los %s"
+msgstr "Ολα %s"
 
 #: ../wordless/helpers/model_helper.php:113
 #, php-format
 msgid "Parent %s"
-msgstr "%s padre"
+msgstr "Γονεικο %s"
 
 #: ../wordless/helpers/model_helper.php:114
 #, php-format
 msgid "Parent %s:"
-msgstr "%s padre:"
+msgstr "Γονεικο %s"
 
 #: ../wordless/helpers/model_helper.php:116
 #, php-format
 msgid "Update %s"
-msgstr "Actualizar %s"
+msgstr "Ενημερωμένη έκδοση %s"
 
 #: ../wordless/helpers/model_helper.php:118
 msgid "New %n Name"
-msgstr "Nuevo nombre de %n"
+msgstr "Νεο %n Ονομα"
 
 #: ../wordless/helpers/date_helper.php:40
 #: ../wordless/helpers/date_helper.php:59
 #: ../wordless/helpers/date_helper.php:62
 msgid "less than a minute"
-msgstr "menos de un minuto"
+msgstr "λιγότερο από ένα λεπτό"
 
 #: ../wordless/helpers/date_helper.php:42
 msgid "1 minute"
-msgstr "1 minuto"
+msgstr "1 λεπτο"
 
 #: ../wordless/helpers/date_helper.php:47
 msgid "less than 5 seconds"
-msgstr "menos de 5 segundos"
+msgstr "λιγότερο από 5 δευτερόλεπτα"
 
 #: ../wordless/helpers/date_helper.php:50
 msgid "less than 10 seconds"
-msgstr "menos de 10 segundos"
+msgstr "λιγότερο από 10 δευτερόλεπτα"
 
 #: ../wordless/helpers/date_helper.php:53
 msgid "less than 20 seconds"
-msgstr "menos de 20 segundos"
+msgstr "λιγότερο από 20 δευτερόλεπτα"
 
 #: ../wordless/helpers/date_helper.php:56
 msgid "half a minute"
-msgstr "medio minuto"
+msgstr "μισό λεπτό"
 
 #: ../wordless/helpers/date_helper.php:68
 #, php-format
 msgid "%d minutes"
-msgstr "%d minutos"
+msgstr "%d λεπτά"
 
 #: ../wordless/helpers/date_helper.php:71
 msgid "about 1 hour"
-msgstr "aproximadamente 1 hora"
+msgstr "περίπου 1 ώρα"
 
 #: ../wordless/helpers/date_helper.php:74
 #, php-format
 msgid "about %d hours"
-msgstr "aproximadamente %d horas"
+msgstr "περίπου %d ώρες"
 
 #: ../wordless/helpers/date_helper.php:77
 msgid "1 day"
-msgstr "1 día"
+msgstr "1 ημέρα"
 
 #: ../wordless/helpers/date_helper.php:80
 #, php-format
 msgid "%d days"
-msgstr "%d días"
+msgstr "%d ημέρες"
 
 #: ../wordless/helpers/date_helper.php:83
 msgid "about 1 month"
-msgstr "aproximadamente 1 mes"
+msgstr "περίπου 1 μήνα"
 
 #: ../wordless/helpers/date_helper.php:86
 #, php-format
 msgid "%d months"
-msgstr "%d meses"
+msgstr "%d μήνες"
 
 #: ../wordless/helpers/date_helper.php:89
 msgid "about 1 year"
-msgstr "aproximadamente 1 año"
+msgstr "περίπου 1 χρόνος"
 
 #: ../wordless/helpers/date_helper.php:92
 #, php-format
 msgid "over %d years"
-msgstr "más de %d años"
+msgstr "πάνω από %d χρόνια"
 
 #: ../wordless/helpers/date_helper.php:119
 msgid "decade"
-msgstr "decada"
+msgstr "δεκαετία"
 
 #: ../wordless/helpers/date_helper.php:119
 msgid "decades"
-msgstr "decadas"
+msgstr "δεκαετίες"
 
 #: ../wordless/helpers/date_helper.php:120
 msgid "year"
-msgstr "año"
+msgstr "έτος"
 
 #: ../wordless/helpers/date_helper.php:120
 msgid "years"
-msgstr "años"
+msgstr "έτη"
 
 #: ../wordless/helpers/date_helper.php:121
 msgid "month"
-msgstr "mes"
+msgstr "μήνας"
 
 #: ../wordless/helpers/date_helper.php:121
 msgid "months"
-msgstr "meses"
+msgstr "μήνες"
 
 #: ../wordless/helpers/date_helper.php:122
 msgid "week"
-msgstr "semana"
+msgstr "εβδομάδα"
 
 #: ../wordless/helpers/date_helper.php:122
 msgid "weeks"
-msgstr "semanas"
+msgstr "εβδομάδες"
 
 #: ../wordless/helpers/date_helper.php:123
 msgid "day"
-msgstr "día"
+msgstr "ημέρα"
 
 #: ../wordless/helpers/date_helper.php:123
 msgid "days"
-msgstr "días"
+msgstr "ημέρες"
 
 #: ../wordless/helpers/date_helper.php:124
 msgid "hour"
-msgstr "hora"
+msgstr "ώρα"
 
 #: ../wordless/helpers/date_helper.php:124
 msgid "hours"
-msgstr "horas"
+msgstr "ώρες"
 
 #: ../wordless/helpers/date_helper.php:125
 msgid "minute"
-msgstr "minuto"
+msgstr "λεπτό"
 
 #: ../wordless/helpers/date_helper.php:125
 msgid "minutes"
-msgstr "minutos"
+msgstr "λεπτά"
 
 #: ../wordless/helpers/date_helper.php:126
 msgid "second"
-msgstr "segundo"
+msgstr "δευτερόλεπτο"
 
 #: ../wordless/helpers/date_helper.php:126
 msgid "seconds"
-msgstr "segundos"
+msgstr "δευτερόλεπτα"
 
 #: ../wordless/helpers/date_helper.php:139
 #, php-format
 msgid "%s ago"
-msgstr "hace %s"
+msgstr "%s πριν"
 
 #: ../wordless/admin/preferences_form.php:3
 msgid "Setting Wordless preferences"
-msgstr "Configuración de las preferencias de Wordless"
+msgstr "Ρύθμιση των Wordless προτιμήσεων"
 
 #: ../wordless/admin/preferences_form.php:36
 msgid "Save preferences"
-msgstr "Guardar preferencias"
+msgstr "Αποθήκευση προτιμήσεων"
 
 #: ../wordless/admin/admin_form.php:26
 msgid "Create theme and set it as the current one!"
-msgstr ""
+msgstr "Δημιουργία θέματος και ρυθμιση ως τρέχον!"
 
 #: ../wordless/preprocessors/wordless_preprocessor.php:295
 #, php-format
 msgid "The path %s doesn't seem to be an executable!"
-msgstr "¡La ruta %s parece no ser ejecutable!"
+msgstr "Η διαδρομή %s δεν φαίνεται να είναι εκτελέσιμη!"
