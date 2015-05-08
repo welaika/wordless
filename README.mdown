@@ -377,7 +377,11 @@ vendor/mobile_detect.php
 <a name="localization"></a>
 ## Localization
 
-Wordless is available in English, Italian and Spanish, at the moment. Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
+Wordless is available in English, German, Greek, Italian and Spanish, at the moment.
+
+The user interface was translated by Wasilis Mandratzis-Walz (German and Greek), David Mejorado (Spanish).
+
+Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
 
 <a name="third-party-libraries"></a>
 ## Third Part Libraries
