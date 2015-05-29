@@ -77,9 +77,11 @@
 
 
     :javascript
-      window.update_cookieconsent_options({
-        learnMore: 'Cookie policy (IT)',
-        link: 'https://s3-eu-west-1.amazonaws.com/welaika-website/welaika_cookie_policy.pdf'
-      });
+      $(document).ready(function(){
+        window.update_cookieconsent_options({
+          learnMore: 'Cookie policy (IT)',
+          link: 'https://s3-eu-west-1.amazonaws.com/welaika-website/welaika_cookie_policy.pdf'
+        });
+      })
 
 
