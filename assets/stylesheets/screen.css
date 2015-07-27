@@ -157,7 +157,7 @@ h1.main-title {
   text-indent: -1000em;
   background: url('../images/wordless_new.png?1370963129') no-repeat;
   background-size: contain;
-  background-position: center center;
+  background-position: left center;
   margin-bottom: 40px;
   height: 145px;
 }
