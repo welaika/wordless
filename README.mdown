@@ -337,7 +337,7 @@ Before going production (or staging), you have to compile your assets in order t
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life.
 
-<img src="http://welaika.github.com/wordless/assets/images/wordless-extender.png" align="right" />
+<img src="http://welaika.github.com/wordless/assets/images/wordless-extender.png" align="right" style="max-width: 100%" />
 
 * We are developing [Wordless-extender](https://github.com/welaika/wordless-extender). A little plugin, that brings our collection of favorite plugins and let you set up some constants in _wp-config.php_ useful in hardening the WP installation. At the moment is not yet well documented and absent from wordpress.org repository, but we are moving fast, so keep follow!
 _______________
@@ -382,6 +382,10 @@ Wordless is available in English, German, Greek, Italian and Spanish, at the mom
 The user interface was translated by Wasilis Mandratzis-Walz (German and Greek), David Mejorado (Spanish).
 
 Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
+
+<a name="need-more-tools"></a>
+## Need more tools?
+Visit [Wordpress Tools](http://wptools.it).
 
 <a name="third-party-libraries"></a>
 ## Third Part Libraries
