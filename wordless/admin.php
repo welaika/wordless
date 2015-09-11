@@ -35,7 +35,7 @@ class WordlessAdmin
     echo sprintf(
       __('Your current theme does not seem to be a Wordless-compatible theme! <a href="%2$s" target="_blank">%1$s</a> (or <a href="%4$s" target="_blank">%3$s</a>)', "wl"),
       __('Create a new Wordless theme', "wl"),
-      admin_url('themes.php?page=create_wordless_theme'),
+      admin_url('admin.php?page=wordless'),
       __('learn more about Wordless', "wl"),
       'https://github.com/welaika/wordless#readme'
     );
