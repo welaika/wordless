@@ -4,8 +4,8 @@ Contributors: welaika, stefano.verna
 Donate link: https://github.com/welaika/wordless
 Tags: sass, compass, haml, rails, scss
 Requires at least: 3.0
-Tested up to: 4.1.1
-Stable tag: 0.5.4
+Tested up to: 4.3
+Stable tag: 0.5.5
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -39,6 +39,11 @@ detailed README, on [Github](https://github.com/welaika/wordless).
 [Wordless gem](https://github.com/welaika/wordless_gem) is command line tool to help manage your Wordless based WordPress sites.
 
 == Changelog ==
+
+= 0.5.5 =
+
+* `59e7331` Updated mobile detect library to 2.8.16
+* `62f8222` Fix create new wordless theme link
 
 = 0.5.4 =
 
