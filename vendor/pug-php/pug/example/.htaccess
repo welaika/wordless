@@ -1,0 +1,18 @@
+# Here is a example of possible Apache configuration to use to make this example
+# application work on an Apache server.
+
+# mode_rewrite should be enabled
+<IfModule mod_rewrite.c>
+
+    # Activate the rewrite engine.
+    RewriteEngine On
+
+    # If the path matches a file.
+    RewriteCond %{REQUEST_FILENAME} -f
+    # Then, return this file.
+    RewriteRule ^ - [L]
+
+    # Redirect any other request on index.php with the request URI as path info.
+    RewriteRule ^(.*)$ /index.php/$1 [L]
+
+</IfModule>

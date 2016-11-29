@@ -1,0 +1,23 @@
+tag#test-id ID
+tag(
+    foo="bar",
+    baz="toto"
+) Attributes
+tag.test-class Class
+tag#test-id.test-class ID + class
+tag#test-id(
+    foo="bar",
+    baz="toto"
+) ID + attributes
+tag.test-class(
+    foo="bar",
+    baz="toto"
+) Attributes + class
+tag#test-id.test-class(
+    foo="bar",
+    baz="toto"
+) ID + attributes + class
+tag.test-class#test-id(
+    foo="bar",
+    baz="toto"
+) Class + ID + attributes

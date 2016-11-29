@@ -1,0 +1,5 @@
+- var isMobile = 1
+h1 #{isMobile}
+- $feature = array('foo' => 'bar')
+.featured(style='background-image: url(/img/#{feature.foo}.jpg);')
+a(href="?id=#{feature.foo}")

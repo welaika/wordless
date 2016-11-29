@@ -1,0 +1,12 @@
+.DS_Store
+.idea
+.cache
+
+# Coverage
+/build
+coverage.xml
+
+# Composer
+/vendor
+composer.lock
+composer.phar

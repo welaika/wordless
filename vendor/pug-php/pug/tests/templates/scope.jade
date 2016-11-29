@@ -1,0 +1,18 @@
+:php
+  namespace Test;
+  class Req {
+    public $text;
+    public function __construct($n = '') {
+      $this->text = "test$n\n";
+    }
+    public function suffix($n) {
+      return new Req($n);
+    }
+  }
+  class Test {
+    static public function app() {
+      return new Req();
+    }
+  }
+= \Test\Test::app()->text
+= \Test\Test::app()->suffix(2)->text
