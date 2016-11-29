@@ -9,7 +9,6 @@ Author URI: http://welaika.com/
 License: The MIT License
 */
 
-require __DIR__ . '/vendor/autoload.php';
 require_once "wordless/wordless.php";
 
 Wordless::initialize();

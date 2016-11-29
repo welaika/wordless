@@ -1,5 +1,7 @@
 <?php
 
+require_once '../vendor/autoload.php';
+
 require_once Wordless::join_paths(dirname(__FILE__), "admin.php");
 require_once Wordless::join_paths(dirname(__FILE__), "preprocessors.php");
 
