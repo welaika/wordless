@@ -1,0 +1,177 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Raggruppamento di test" here="Raggruppamento di test">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>SimpleTest for PHP test suites</long_title>
+    <content>
+        <section name="group" title="Raggruppare i test in suite">
+            <p>
+				Eistono molti sistemi per raggruppare i test in test suite.
+				Uno di questi è quello di mettere semplicemente più test case in un singolo file:
+<php><![CDATA[
+<strong><?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/../classes/io.php');
+
+class FileTester extends UnitTestCase {
+    ...
+}
+
+class SocketTester extends UnitTestCase {
+    ...
+}
+?></strong>
+]]></php>
+				E' possibile mettere quanti test case si vuole in ogni file.
+				Ogni file necessario all'esecuzione, come ad esempio la libreria da
+				collaudare, dovrebbe essere incluso ma non è necessario includere
+				alcuna libreria di SimpleTest.
+            </p>
+            <p>
+				Nel caso si sia estesa qualche test case da una classe base, anche questa
+				deve essere inclusa.
+                Qualsiasi classe di test non debba essere invocata deve essere marcata come abstract:
+<php><![CDATA[
+<strong>abstract</strong> class MyFileTestCase extends UnitTestCase {
+    ...
+}
+
+class FileTester extends MyFileTestCase { ... }
+
+class SocketTester extends UnitTestCase { ... }
+]]></php>
+				Qui, ad esempio, la classe <code>FileTester</code> non contiene
+				alcun test ma viene utilizzata come classe base per altri case test.
+            </p>
+            <p>
+				Chiameremo questo file di esempio <em>file_test.php</em>.
+				Il passo successivo è quello di creare il file della test suite
+				che potremmo chiamare <em>my_test_suite.php</em>.
+                Sono certo che saprai trovare nomi migliori di questo.
+            </p>
+            <p>
+				Adesso aggiungeremo il test file alla suite con un metodo sicuro:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+require_once('file_test.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_test.php');
+    }
+}
+?>
+]]></php>
+				Quello che accadrà è che la classe <code>TestSuite</code>
+				penserà autonomamente ad eseguire i <code>require_once()</code>
+				necessari, controllerà se nuove classi di test case sono presenti nel
+				file e all'occorrenza li aggiungerà alla test suite.
+				
+                Questo metodo ci fornisce il massimo del controllo.
+            </p>
+            <p>
+				Nel caso questo metodo sembrasse troppo prolisso e si desiderasse
+				di raggruppare tra loro più test suite di una stessa directory oppure in
+				base al loro nome del file, esiste un metodo ancora più automatico:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->collect(dirname(__FILE__) . '/unit',
+                       new SimplePatternCollector('/_test.php/'));
+    }
+}
+?>
+]]></php>
+				Questo sistema ricerca nella directory &quot;unit&quot; i file
+				il cui nome termina per &quot;_test.php&quot; e li carica.
+				L'uso di <code>SimplePatternCollector</code> per filtrare in
+				base ad un pattern non è obbligatorio ma è il sistema più comune.
+            </p>
+            <p>
+				Tutto quel che resta da fare adesso è creare un file nella directory 
+				dei test case che lancerà lo script della test suite.
+            </p>
+            <p>
+				I test case caricati con il metodo <code>addFile</code> posseggono
+				alcune utili proprietà.
+				Si ha la certezza che il costruttore sia invocato prima del lancio del
+				primo test e il distruttore dopo l'esecuzione dell'ultimo.
+				Questo consente di ospitare nel costruttore e nel distruttore
+				il codice di set up e di tear down che deve valere per tutto il test case.
+            </p>
+        </section>
+        <section name="higher" title="Suite composite">
+            <p>
+				Il metodo appena presentato prevede di ospitare tutti i test case in
+				un'unica grande test suite.
+				Per progetti di grandi dimensione, tuttavia, questo metodo non risulta
+				abbastanza flessibile perché si potrebbe desiderare di raggrupare 
+				test nelle più varie modalità.
+            </p>
+            <p>
+				Per poter disporre di un group test più flessibile
+				è possibile istanziare una classe che erediti da <code>TestSuite</code>:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+<strong>
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+    }
+}</strong>
+?>
+]]></php>
+				In questo modo si è aggiunta una test suite dentro un'altra.
+				In questo caso non risulta molto utile ma è possibile aggiungere
+				altre suite a piacimento.
+				E' perfino possibile mescolare gruppi e singoli test case a patto
+				di prestare attenzione alle inclusioni multiple.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+        <strong>$this->addFile('some_other_test.php');</strong>
+    }
+}
+?>
+]]></php>
+                Nel caso si includa un file più di una volta, verrebbe eseguita
+				solo la prima istanza del test.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            Different ways to <a href="#group">group tests</a> together.
+        </link>
+        <link>
+            Combining group tests into <a href="#higher">larger groups</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            SimpleTest project page on <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            SimpleTest download page on <a href="http://www.lastcraft.com/simple_test.php">LastCraft</a>.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            php unit testing, test integration, documentation, marcus baker, simpletest,
+            simpletest documentation, phpunit, pear
+        </keywords>
+    </meta>
+</page>

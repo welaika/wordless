@@ -1,15 +1,41 @@
 <?php
-    // $Id: spl_examples.php 1262 2006-02-05 19:35:31Z lastcraft $
 
-    class IteratorImplementation implements Iterator {
-        function current() { }
-        function next() { }
-        function key() { }
-        function valid() { }
-        function rewind() { }
+class IteratorImplementation implements Iterator
+{
+
+    public function current()
+    {
+        
     }
 
-    class IteratorAggregateImplementation implements IteratorAggregate {
-        function getIterator() { }
+    public function next()
+    {
+        
     }
-?>
+
+    public function key()
+    {
+        
+    }
+
+    public function valid()
+    {
+        
+    }
+
+    public function rewind()
+    {
+        
+    }
+
+}
+
+class IteratorAggregateImplementation implements IteratorAggregate
+{
+
+    public function getIterator()
+    {
+        
+    }
+
+}

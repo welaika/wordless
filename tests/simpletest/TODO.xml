@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<page title="TODO tasks for the current iteration" here="TODO">
+    <long_title>TODO tasks for the current iteration</long_title>
+    <content>
+        <section name="release-process" title="Release process">
+            <p>
+                SimpleTest is now in "maintenace mode" only.
+            </p>
+            <p>
+                It means we consider SimpleTest to be really stable.
+				And that each new release will add bug-fixes only.
+            </p>
+            <p>
+                Of course we'll follow closely all new versions of PHP,
+				and hopefully release a new version each time a newer version
+				breaks something ! 
+            </p>
+        </section>
+        <section name="plan" title="Release plan" version="1.1">
+            <milestone version="1.1">
+                <concern name="build">
+                    <task>PHP 5.3.x compatible under E_STRICT</task>
+                    <task>Move acceptance tests sample pages to new server</task>
+                </concern>
+                <concern name="documentation">
+                    <task>Synchronize french documentations</task>
+                </concern>
+            </milestone>
+            <milestone version="1.2">
+                <concern name="build">
+                    <task>PHP 5.4.0 compatible under E_STRICT</task>
+                </concern>
+            </milestone>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#plan">Current iteration</a> is 1.1beta.
+        </link>
+        <link>
+            Upcoming tasks for
+            <a href="#unit-tester">Unit tester</a>,
+            <a href="#reporter">Reporter</a>,
+            <a href="#mock-objects">Mock objects</a>,
+            <a href="#parser">Parser</a>,
+            <a href="#browser">Browser</a>,
+            <a href="#web-tester">Web tester</a>,
+            <a href="#documentation">Documentation</a>,
+            <a href="#extensions">Extensions</a> and
+            <a href="#build">Build</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            Trackers for :
+            <a href="https://sourceforge.net/tracker/?group_id=76550&amp;atid=547458">feature requests</a>,
+            <a href="https://sourceforge.net/tracker/?group_id=76550&amp;atid=547455">bugs</a> and
+            <a href="https://sourceforge.net/tracker/?group_id=76550&amp;atid=547457">patches</a>.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            computer programmer,
+            php programming,
+            programming php,
+            software development company,
+            software development uk,
+            php tutorial,
+            bespoke software development uk,
+            corporate web development,
+            architecture,
+            freelancer,
+            php resources,
+            wordtracker,
+            web marketing,
+            serach engines,
+            web positioning,
+            internet marketing
+        </keywords>
+    </meta>
+</page>

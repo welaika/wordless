@@ -1,0 +1,196 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Test suite documentation" here="Group tests">
+    <long_title>SimpleTest for PHP test suites</long_title>
+    <content>
+        <section name="group" title="Grouping tests into suites">
+            <p>
+                There are many ways to group tests together into test suites.
+                One way is to simply place multiple test cases into a single file...
+<php><![CDATA[
+<strong><?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/../classes/io.php');
+
+class FileTester extends UnitTestCase {
+    ...
+}
+
+class SocketTester extends UnitTestCase {
+    ...
+}
+?></strong>
+]]></php>
+                As many cases as needed can appear in a single file.
+                They should include any code they need, such as the library
+                being tested, but need none of the SimpleTest libraries.
+            </p>
+            <p>
+                Occasionally special subclasses are created that methods useful
+                for testing part of the application.
+                These new base classes are then used in place of <code>UnitTestCase</code>
+                or <code>WebTestCase</code>.
+                You don't normally want to run these as test cases.
+                Simply mark any base test cases that should not be run as abstract...
+<php><![CDATA[
+<strong>abstract</strong> class MyFileTestCase extends UnitTestCase {
+    ...
+}
+
+class FileTester extends MyFileTestCase { ... }
+
+class SocketTester extends UnitTestCase { ... }
+]]></php>
+                Here the <code>FileTester</code> class does
+                not contain any actual tests, but is the base class for other
+                test cases.
+            </p>
+            <p>
+                We will call this sample <em>file_test.php</em>.
+                Currently the test cases are grouped simply by being in the same file.
+                We can build larger constructs just by including other test files in.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+require_once('file_test.php');
+?>
+]]></php>
+                This will work, but create a purely flat hierarchy.
+                INstead we create a test suite file.
+                Our top level test suite can look like this...
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        <strong>$this->addFile('file_test.php');</strong>
+    }
+}
+?>
+]]></php>
+                What happens here is that the <code>TestSuite</code>
+                class will do the <code>require_once()</code>
+                for us.
+                It then checks to see if any new test case classes
+                have been created by the new file and automatically composes
+                them to the test suite.
+                This method gives us the most control as we just manually add
+                more test files as our test suite grows.
+            </p>
+            <p>
+                If this is too much typing, and you are willing to group
+                test suites together in their own directories or otherwise
+                tag the file names, then there is a more automatic way...
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->collect(dirname(__FILE__) . '/unit',
+                       new SimplePatternCollector('/_test.php/'));
+    }
+}
+?>
+]]></php>
+                This will scan a directory called &quot;unit&quot; for any files
+                ending with &quot;_test.php&quot; and load them.
+                You don&apos;t have to use <code>SimplePatternCollector</code> to
+                filter by a pattern in the filename, but this is the most common
+                usage.
+            </p>
+            <p>
+                That snippet above is very common in practice.
+                Now all you have to do is drop a file of test cases into the
+                directory and it will run just by running the test suite script.
+            </p>
+            <p>
+                The catch is that you cannot control the order in which the test
+                cases are run.
+                If you want to see lower level components fail first in the test suite,
+                and this will make diagnosis a lot easier, then you should manually
+                call <code>addFile()</code> for these.
+                Tests cases are only loaded once, so it's fine to have these included
+                again by a directory scan.
+            </p>
+            <p>
+                Test cases loaded with the <code>addFile</code> method have some
+                useful properties.
+                You can guarantee that the constructor is run
+                just before the first test method and the destructor
+                is run just after the last test method.
+                This allows you to place test case wide set up and tear down
+                code in the constructor and destructor, just like a normal
+                class.
+            </p>
+        </section>
+        <section name="higher" title="Composite suites">
+            <p>
+                The above method places all of the test cases into one large suite.
+                For larger projects though this may not be flexible enough; you
+                may want to group the tests together in all sorts of ways.
+            </p>
+            <p>
+                Everything we have described so far with test scripts applies to
+                <code>TestSuite</code>s as well...
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+<strong>
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+    }
+}</strong>
+?>
+]]></php>
+                This effectively adds our test cases and a single suite below
+                the first.
+                When a test fails, we see the breadcrumb trail of the nesting.
+                We can even mix groups and test cases freely as long as
+                we are careful about loops in our includes.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+        <strong>$this->addFile('some_other_test.php');</strong>
+    }
+}
+?>
+]]></php>
+                Note that in the event of a double include, ony the first instance
+                of the test case will be run.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            Different ways to <a href="#group">group tests</a> together.
+        </link>
+        <link>
+            Combining group tests into <a href="#higher">larger groups</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            SimpleTest project page on <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            SimpleTest download page on <a href="http://www.lastcraft.com/simple_test.php">LastCraft</a>.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            php unit testing, test integration, documentation, marcus baker, simpletest,
+            simpletest documentation, phpunit, pear
+        </keywords>
+    </meta>
+</page>

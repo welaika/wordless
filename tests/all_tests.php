@@ -6,8 +6,8 @@ require_once('../wordless/wordless.php');
 require_once('../wordless/helpers.php');
 
 class AllTests extends TestSuite {
-  function AllTests() {
-    $this->TestSuite('All tests');
+  function __construct() {
+    parent::__construct('All tests');
     $this->addFile('tag_helper_test.php');
     $this->addFile('asset_tag_helper_test.php');
     $this->addFile('date_helper_test.php');

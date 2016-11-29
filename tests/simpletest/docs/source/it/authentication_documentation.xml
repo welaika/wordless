@@ -1,0 +1,344 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="L'autenticazione" here="L'autenticazione">
+	<synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>SimpleTest documentation for testing log-in and authentication</long_title>
+    <content>
+        <introduction>
+            <p>
+				Uno delle aree più delicate e più importanti del collaudo
+				di siti web è la sicurezza.
+				Collaudare quest'area è uno degli obiettivi centrali del
+				web tester di SimpleTest.
+            </p>
+        </introduction>
+        <section name="basic" title="Autenticazione HTTP di base">
+            <p>
+				Se si prova a prelevare una pagina protetta con un sistema
+				di autenticazioen di base, invece di riceverne il contenuto si
+				ottiene un header 401.
+				Si può illustrare questo caso con il test seguente:
+<php><![CDATA[
+class AuthenticationTest extends WebTestCase {<strong>
+    function test401Header() {
+        $this->get('http://www.lastcraft.com/protected/');
+        $this->showHeaders();
+    }</strong>
+}
+]]></php>
+                Questo ci permette di analizzare l'header della richiesta di autenticazione:
+                <div class="demo">
+                    <h1>File test</h1>
+<pre style="background-color: lightgray; color: black"><![CDATA[
+HTTP/1.1 401 Authorization Required
+Date: Sat, 18 Sep 2004 19:25:18 GMT
+Server: Apache/1.3.29 (Unix) PHP/4.3.4
+WWW-Authenticate: Basic realm="SimpleTest basic authentication"
+Connection: close
+Content-Type: text/html; charset=iso-8859-1
+]]></pre>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">1/1 test cases complete.
+                    <strong>0</strong> passes, <strong>0</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				Tuttavia, siccome si sta cercando di evitare l'ispezione visuale, SimpleTest
+				permette di programmare degli assert automatzzati sul tentativo.
+				Qui viene mostrato un test scrupoloso dell'header:
+<php><![CDATA[
+class AuthenticationTest extends WebTestCase {
+    function test401Header() {
+        $this->get('http://www.lastcraft.com/protected/');<strong>
+        $this->assertAuthentication('Basic');
+        $this->assertResponse(401);
+        $this->assertRealm('SimpleTest basic authentication');</strong>
+    }
+}
+]]></php>
+				Non importa quale degli assert da solo sia sufficiente,
+				tutto dipende dalla quantità di dettagli si vogliono analizzare.
+            </p>
+            <p>
+				Una caratteristica di SimpleTest è di permettere l'utilizzo
+				di oggetti <code>SimpleExpectation</code>laddove un semplice confronto
+				di pattern non sia sufficiente.
+				
+				Se si desidera solo un confronto approssimativo delle credenziali 
+				per esempio, si può fare così:
+<php><![CDATA[
+class AuthenticationTest extends WebTestCase {
+    function test401Header() {
+        $this->get('http://www.lastcraft.com/protected/');
+        $this->assertRealm(<strong>new PatternExpectation('/simpletest/i')</strong>);
+    }
+}
+]]></php>
+				Il collaudo della risposta HTTP non molto rappresentativa.
+            </p>
+            <p>
+				La maggior parte delle volte non si è interessati al collaudo
+				dell'autenticazione in se', ma la si vuole eseguire per accedere
+				al collaudo delle pagine sottostanti.
+				Non appena la richiesta di autenticazione è stato emesso si potrà
+				restituire una risposta di autenticazione:
+<php><![CDATA[
+class AuthenticationTest extends WebTestCase {
+    function testCanAuthenticate() {
+        $this->get('http://www.lastcraft.com/protected/');<strong>
+        $this->authenticate('Me', 'Secret');</strong>
+        $this->assertTitle(...);
+    }
+}
+]]></php>
+				Username e password saranno inviati ad ogni successiva richiesta
+				a quella directory e alle sue sotto-directory.
+				Sarà necessario autenticarsi nuovamente se si esce dalla
+				directory in cui ci si è autenticati, ma SimpleTest è abbastanza
+				intelligente da unire le sotto-directory sotto lo stesso database
+				di autenticazione.
+            </p>
+            <p>
+				Se si vuole, si può accorciare ancor più questo passo codicificando
+				le credenziali direttamente nell'URL:
+                If you want, you can shortcut this step further by encoding
+                the log in details straight into the URL...
+<php><![CDATA[
+class AuthenticationTest extends WebTestCase {
+    function testCanReadAuthenticatedPages() {
+        $this->get('http://<strong>Me:Secret@</strong>www.lastcraft.com/protected/');
+        $this->assertTitle(...);
+    }
+}
+]]></php>
+				Se username o password contengono qualche carattere speciale
+				sarà necessario codificarli altrimenti la richiesta non 
+				verrà interpretata correttamente.
+				Temo che questo compito resterà responsabilità dello sviluppatore.
+            </p>
+            <p>
+				Un problema nella codifica delle credenziali di autenticazione
+				direttamente nell'URL è che l'header di autenticazione non viene
+				inviata automaticamente ad ogni successiva richiesta.
+				Se si naviga il sito mediante URL relative, tuttavia, le informazioni
+				di autenticazioni verranno conservate insieme al nome di dominio.
+            </p>
+            <p>
+				Di solito, però, si utilizza la chiamata a <code>authenticate()</code>.
+                SimpleTest ricorderà allora le credenziali ad ogni richiesta.
+            </p>
+            <p>
+				Attualmente è supportato solo il collaudo dell'autenticazione di base
+				e questo è da considerarsi sicuro solo se usato insieme ad una
+				connessione HTTPS.
+				Comunque, di solito questo è sufficiente per proteggere il server da occhi indiscreti.
+                La Digest authentication e l'autenticazione NTLM potrebbero venire aggiunte
+				nel futuro se abbastanza persone dovessero richiedere queste feature.
+            </p>
+        </section>
+        <section name="cookies" title="Collaudare i sistemi di autenticazione basati su cookie">
+            <p>
+				Per gli sviluppatori web l'autenticazione di base non fornisce sufficiente controllo
+				sull'interfaccia utente.
+				Molto più probabilmente questa funzionalità sarà codificata
+				direttamente dentro l'architettura dell'applicazione per mezzo
+				di cookie e di complessi timeout.
+                E' necessario essere in grado di collaudare anche questo.
+            </p>
+            <p>
+                Iniziamo con un semplice form di login:
+<php><![CDATA[
+<form>
+    Username:
+    <input type="text" name="u" value="" /><br />
+    Password:
+    <input type="password" name="p" value="" /><br />
+    <input type="submit" value="Log in" />
+</form>
+]]></php>
+                che ha questo aspetto:
+            </p>
+            <p>
+                <form class="demo">
+                    Username:
+                    <input type="text" name="u" value="" /><br />
+                    Password:
+                    <input type="password" name="p" value="" /><br />
+                    <input type="submit" value="Log in" />
+                </form>
+            </p>
+            <p>
+				Supponiamo che recuperando questa pagina venga impostato un
+				cookie con l'ID di sessione.
+				Non abbiamo intnzione di riempire il form, ancora: vogliamo solo
+				verificare che l'utente venga tracciato.
+				Ecco il test:
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    function testSessionCookieSetBeforeForm() {
+        $this->get('http://www.my-site.com/login.php');<strong>
+        $this->assertCookie('SID');</strong>
+    }
+}
+]]></php>
+				Tutto quel che si sta facendo è confermare che il cookie sia
+				impostato. Dal momento che il suo valore sarà abbastanza criptico,
+				non importa così tanto collaudarlo:
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    function testSessionCookieIsCorrectPattern() {
+        $this->get('http://www.my-site.com/login.php');
+        $this->assertCookie('SID', <strong>new PatternExpectation('/[a-f0-9]{32}/i')</strong>);
+    }
+}
+]]></php>
+				Se si sta utilizzando PHP per gestire le sessioni allora questo
+				test è perfino ancora più inutile dal momento che si starebbe
+				collaudando PHOP stesso.
+            </p>
+            <p>
+				Il miglior modo per verificare l'avvenuta autenticazione è
+				analizzare la pagina successiva per vedere se si è davvero loggati.
+				E' sufficiente verificare la successiva pagina con <code>WebTestCase::assertText()</code>.
+            </p>
+            <p>
+				Questo testo è simile a qualsiasi altro test di form
+				ma si vorrà verificare che dopo l'autenticazione si starà
+				ottenendo lo stesso cookie di quello ottenuto al momento di entrare.
+				Non si vuole perdere traccia di questo, dopo tutto.
+				Ecco un possibile test per questo caso:
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    ...
+    function testSessionCookieSameAfterLogIn() {
+        $this->get('http://www.my-site.com/login.php');<strong>
+        $session = $this->getCookie('SID');
+        $this->setField('u', 'Me');
+        $this->setField('p', 'Secret');
+        $this->click('Log in');
+        $this->assertText('Welcome Me');
+        $this->assertCookie('SID', $session);</strong>
+    }
+}
+]]></php>
+				Ciò conferma che l'identificatore di sessione è stato
+				mantenuto dopo il login e non lo si è incidentalmente cancellato.
+            </p>
+            <p>
+				Potremmo provare perfino a compromettere il nostro stesso
+				sistema impostanto un cookie arbitrario per tentare di
+				ottenere l'accesso senza autenticazione:
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    ...
+    function testSessionCookieSameAfterLogIn() {
+        $this->get('http://www.my-site.com/login.php');<strong>
+        $this->setCookie('SID', 'Some other session');
+        $this->get('http://www.my-site.com/restricted.php');</strong>
+        $this->assertText('Access denied');
+    }
+}
+]]></php>
+                Il tuo sito è protetto da questo tipo di attacchi?
+            </p>
+        </section>
+        <section name="session" title="Gestire le sessioni del browser ed i timeout">
+            <p>
+                If you are testing an authentication system a critical piece
+                of behaviour is what happens when a user logs back in.
+                We would like to simulate closing and reopening a browser...
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    ...
+    function testLoseAuthenticationAfterBrowserClose() {
+        $this->get('http://www.my-site.com/login.php');
+        $this->setField('u', 'Me');
+        $this->setField('p', 'Secret');
+        $this->click('Log in');
+        $this->assertText('Welcome Me');<strong>
+        
+        $this->restart();
+        $this->get('http://www.my-site.com/restricted.php');
+        $this->assertText('Access denied');</strong>
+    }
+}
+]]></php>
+				Il metodo <code>WebTestCase::restart()</code> conserva i cookie
+				non ancora scaduti ma elimina quelli temporanea e quelli scaduti.
+				Opzionalmente si può indicare la data e l'ora nelle quali far
+				avvenire il riavvio.
+            </p>
+            <p>	
+				I cookie scaduti possono essrer un problema.
+				Dopo tutto, se si dispone di un cookie che scade dopo un'ora
+				non si potrà sospendere il test per un'ora intera nell'attesa che
+				il cookie scada.
+            </p>
+            <p>
+				Per portare i cookie oltre il limite dell'ora è possibile
+				invecchiarli prima di riavviare la sessione:
+<php><![CDATA[
+class LogInTest extends WebTestCase {
+    ...
+    function testLoseAuthenticationAfterOneHour() {
+        $this->get('http://www.my-site.com/login.php');
+        $this->setField('u', 'Me');
+        $this->setField('p', 'Secret');
+        $this->click('Log in');
+        $this->assertText('Welcome Me');
+        <strong>
+        $this->ageCookies(3600);</strong>
+        $this->restart();
+        $this->get('http://www.my-site.com/restricted.php');
+        $this->assertText('Access denied');
+    }
+}
+]]></php>
+				Dopo il riavvio i cookie risulteranno di un'ora più vecchi
+				e tutti quelli che saranno scaduto verranno eliminati.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#basic">Autenticazione HTTP di base</a>
+        </link>
+        <link>
+            <a href="#cookies">Collaudare i sistemi di autenticazione basati su cookie</a>
+        </link>
+        <link>
+            <a href="#session">Gestire le sessioni del browser ed i timeout</a>
+        </link>
+    </internal>
+    <external>
+        <link>
+            SimpleTest project page on <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            SimpleTest download page on <a href="http://www.lastcraft.com/simple_test.php">LastCraft</a>.
+        </link>
+        <link>
+            The <a href="http://simpletest.org/api/">developer&apos;s API for SimpleTest</a>
+            gives full detail on the classes and assertions available.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming for clients,
+            customer focused php,
+            software development tools,
+            acceptance testing framework,
+            free php scripts,
+            log in boxes,
+            unit testing authentication systems,
+            php resources,
+            HTMLUnit,
+            JWebUnit,
+            php testing,
+            unit test resource,
+            web testing,
+            HTTP authentication,
+            testing log in,
+            authentication testing,
+            security tests
+        </keywords>
+    </meta>
+</page>

@@ -3,8 +3,8 @@
  *  base include file for eclipse plugin
  *  @package    SimpleTest
  *  @subpackage Eclipse
- *  @version    $Id: eclipse.php 2011 2011-04-29 08:22:48Z pp11 $
  */
+
 /**#@+
  * simpletest include files
  */
@@ -20,7 +20,8 @@ include_once 'mock_objects.php';
  *  @package    SimpleTest
  *  @subpackage Eclipse
  */
-class EclipseReporter extends SimpleScorer {
+class EclipseReporter extends SimpleScorer
+{
 
     /**
      *    Reporter to be run inside of Eclipse interface.
@@ -73,7 +74,7 @@ class EclipseReporter extends SimpleScorer {
      *    @param string $raw    String with backslashes, quotes and whitespace.
      *    @return string        Replaced with C backslashed tokens.
      */
-    function escapeVal($raw){
+    static function escapeVal($raw){
         $needle = array("\\","\"","/","\b","\f","\n","\r","\t");
         $replace = array('\\\\','\"','\/','\b','\f','\n','\r','\t');
         return str_replace($needle, $replace, $raw);
@@ -87,7 +88,7 @@ class EclipseReporter extends SimpleScorer {
      */
     function paintPass($message){
         if (! $this->pass){
-            $this->message = $this->escapeVal($message);
+            $this->message = self::escapeVal($message);
         }
         $this->pass = true;
     }
@@ -102,7 +103,7 @@ class EclipseReporter extends SimpleScorer {
         //only get the first failure or error
         if (! $this->fail && ! $this->error){
             $this->fail = true;
-            $this->message = $this->escapeVal($message);
+            $this->message = self::escapeVal($message);
             $this->listener->write('{status:"fail",message:"'.$this->message.'",group:"'.$this->group.'",case:"'.$this->case.'",method:"'.$this->method.'"}');
         }
     }
@@ -116,7 +117,7 @@ class EclipseReporter extends SimpleScorer {
     function paintError($message){
         if (! $this->fail && ! $this->error){
             $this->error = true;
-            $this->message = $this->escapeVal($message);
+            $this->message = self::escapeVal($message);
             $this->listener->write('{status:"error",message:"'.$this->message.'",group:"'.$this->group.'",case:"'.$this->case.'",method:"'.$this->method.'"}');
         }
     }
@@ -134,7 +135,7 @@ class EclipseReporter extends SimpleScorer {
             $message = 'Unexpected exception of type[' . get_class($exception) .
                     '] with message [' . $exception->getMessage() . '] in [' .
                     $exception->getFile() .' line '. $exception->getLine() . ']';
-            $this->message = $this->escapeVal($message);
+            $this->message = self::escapeVal($message);
             $this->listener->write(
                     '{status:"error",message:"' . $this->message . '",group:"' .
                     $this->group . '",case:"' . $this->case . '",method:"' . $this->method
@@ -170,7 +171,7 @@ class EclipseReporter extends SimpleScorer {
         $this->pass = false;
         $this->fail = false;
         $this->error = false;
-        $this->method = $this->escapeVal($method);
+        $this->method = self::escapeVal($method);
     }
 
     /**
@@ -195,7 +196,7 @@ class EclipseReporter extends SimpleScorer {
      *    @access public
      */
     function paintCaseStart($case){
-        $this->case = $this->escapeVal($case);
+        $this->case = self::escapeVal($case);
     }
 
     /**
@@ -215,7 +216,7 @@ class EclipseReporter extends SimpleScorer {
      *    @access public
      */
     function paintGroupStart($group, $size){
-        $this->group = $this->escapeVal($group);
+        $this->group = self::escapeVal($group);
         if ($this->cc){
             if (extension_loaded('xdebug')){
                 xdebug_start_code_coverage(XDEBUG_CC_UNUSED | XDEBUG_CC_DEAD_CODE);
@@ -272,7 +273,8 @@ class EclipseReporter extends SimpleScorer {
  *  @package    SimpleTest
  *  @subpackage Eclipse
  */
-class EclipseInvoker extends SimpleInvokerDecorator{
+class EclipseInvoker extends SimpleInvokerDecorator
+{
     function __construct(&$invoker, &$listener) {
         $this->listener = &$listener;
         $this->SimpleInvokerDecorator($invoker);
@@ -304,4 +306,3 @@ class EclipseInvoker extends SimpleInvokerDecorator{
         }
     }
 }
-?>

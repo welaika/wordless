@@ -1,5 +1,5 @@
 <?php
-// $Id: exceptions_test.php 1882 2009-07-01 14:30:05Z lastcraft $
+// $Id$
 require_once(dirname(__FILE__) . '/../autorun.php');
 require_once(dirname(__FILE__) . '/../exceptions.php');
 require_once(dirname(__FILE__) . '/../expectation.php');
@@ -7,20 +7,28 @@ require_once(dirname(__FILE__) . '/../test_case.php');
 Mock::generate('SimpleTestCase');
 Mock::generate('SimpleExpectation');
 
-class MyTestException extends Exception {}
-class HigherTestException extends MyTestException {}
-class OtherTestException extends Exception {}
+class MyTestException extends Exception
+{
+}
+class HigherTestException extends MyTestException
+{
+}
+class OtherTestException extends Exception
+{
+}
 
-class TestOfExceptionExpectation extends UnitTestCase {
-
-    function testExceptionClassAsStringWillMatchExceptionsRootedOnThatClass() {
+class TestOfExceptionExpectation extends UnitTestCase
+{
+    public function testExceptionClassAsStringWillMatchExceptionsRootedOnThatClass()
+    {
         $expectation = new ExceptionExpectation('MyTestException');
         $this->assertTrue($expectation->test(new MyTestException()));
         $this->assertTrue($expectation->test(new HigherTestException()));
         $this->assertFalse($expectation->test(new OtherTestException()));
     }
 
-    function testMatchesClassAndMessageWhenExceptionExpected() {
+    public function testMatchesClassAndMessageWhenExceptionExpected()
+    {
         $expectation = new ExceptionExpectation(new MyTestException('Hello'));
         $this->assertTrue($expectation->test(new MyTestException('Hello')));
         $this->assertFalse($expectation->test(new HigherTestException('Hello')));
@@ -29,23 +37,26 @@ class TestOfExceptionExpectation extends UnitTestCase {
         $this->assertFalse($expectation->test(new MyTestException()));
     }
 
-    function testMessagelessExceptionMatchesOnlyOnClass() {
+    public function testMessagelessExceptionMatchesOnlyOnClass()
+    {
         $expectation = new ExceptionExpectation(new MyTestException());
         $this->assertTrue($expectation->test(new MyTestException()));
         $this->assertFalse($expectation->test(new HigherTestException()));
     }
 }
 
-class TestOfExceptionTrap extends UnitTestCase {
-
-    function testNoExceptionsInQueueMeansNoTestMessages() {
+class TestOfExceptionTrap extends UnitTestCase
+{
+    public function testNoExceptionsInQueueMeansNoTestMessages()
+    {
         $test = new MockSimpleTestCase();
         $test->expectNever('assert');
         $queue = new SimpleExceptionTrap();
         $this->assertFalse($queue->isExpected($test, new Exception()));
     }
 
-    function testMatchingExceptionGivesTrue() {
+    public function testMatchingExceptionGivesTrue()
+    {
         $expectation = new MockSimpleExpectation();
         $expectation->setReturnValue('test', true);
         $test = new MockSimpleTestCase();
@@ -55,7 +66,8 @@ class TestOfExceptionTrap extends UnitTestCase {
         $this->assertTrue($queue->isExpected($test, new Exception()));
     }
 
-    function testMatchingExceptionTriggersAssertion() {
+    public function testMatchingExceptionTriggersAssertion()
+    {
         $test = new MockSimpleTestCase();
         $test->expectOnce('assert', array(
                 '*',
@@ -67,117 +79,137 @@ class TestOfExceptionTrap extends UnitTestCase {
     }
 }
 
-class TestOfCatchingExceptions extends UnitTestCase {
-
-    function testCanCatchAnyExpectedException() {
+class TestOfCatchingExceptions extends UnitTestCase
+{
+    public function testCanCatchAnyExpectedException()
+    {
         $this->expectException();
         throw new Exception();
     }
 
-    function testCanMatchExceptionByClass() {
+    public function testCanMatchExceptionByClass()
+    {
         $this->expectException('MyTestException');
         throw new HigherTestException();
     }
 
-    function testCanMatchExceptionExactly() {
+    public function testCanMatchExceptionExactly()
+    {
         $this->expectException(new Exception('Ouch'));
         throw new Exception('Ouch');
     }
 
-    function testLastListedExceptionIsTheOneThatCounts() {
+    public function testLastListedExceptionIsTheOneThatCounts()
+    {
         $this->expectException('OtherTestException');
         $this->expectException('MyTestException');
         throw new HigherTestException();
     }
 }
 
-class TestOfIgnoringExceptions extends UnitTestCase {
-
-    function testCanIgnoreAnyException() {
+class TestOfIgnoringExceptions extends UnitTestCase
+{
+    public function testCanIgnoreAnyException()
+    {
         $this->ignoreException();
         throw new Exception();
     }
 
-    function testCanIgnoreSpecificException() {
+    public function testCanIgnoreSpecificException()
+    {
         $this->ignoreException('MyTestException');
         throw new MyTestException();
     }
 
-    function testCanIgnoreExceptionExactly() {
+    public function testCanIgnoreExceptionExactly()
+    {
         $this->ignoreException(new Exception('Ouch'));
         throw new Exception('Ouch');
     }
 
-    function testIgnoredExceptionsDoNotMaskExpectedExceptions() {
+    public function testIgnoredExceptionsDoNotMaskExpectedExceptions()
+    {
         $this->ignoreException('Exception');
         $this->expectException('MyTestException');
         throw new MyTestException();
     }
 
-    function testCanIgnoreMultipleExceptions() {
+    public function testCanIgnoreMultipleExceptions()
+    {
         $this->ignoreException('MyTestException');
         $this->ignoreException('OtherTestException');
         throw new OtherTestException();
     }
 }
 
-class TestOfCallingTearDownAfterExceptions extends UnitTestCase {
+class TestOfCallingTearDownAfterExceptions extends UnitTestCase
+{
     private $debri = 0;
 
-    function tearDown() {
+    public function tearDown()
+    {
         $this->debri--;
     }
 
-    function testLeaveSomeDebri() {
+    public function testLeaveSomeDebri()
+    {
         $this->debri++;
         $this->expectException();
         throw new Exception(__FUNCTION__);
     }
 
-	function testDebriWasRemovedOnce() {
+    public function testDebriWasRemovedOnce()
+    {
         $this->assertEqual($this->debri, 0);
-	}
+    }
 }
 
-class TestOfExceptionThrownInSetUpDoesNotRunTestBody extends UnitTestCase {
-
-	function setUp() {
+class TestOfExceptionThrownInSetUpDoesNotRunTestBody extends UnitTestCase
+{
+    public function setUp()
+    {
         $this->expectException();
         throw new Exception();
-	}
+    }
 
-	function testShouldNotBeRun() {
+    public function testShouldNotBeRun()
+    {
         $this->fail('This test body should not be run');
-	}
+    }
 
-	function testShouldNotBeRunEither() {
+    public function testShouldNotBeRunEither()
+    {
         $this->fail('This test body should not be run either');
-	}
+    }
 }
 
-class TestOfExpectExceptionWithSetUp extends UnitTestCase {
-
-	function setUp() {
+class TestOfExpectExceptionWithSetUp extends UnitTestCase
+{
+    public function setUp()
+    {
         $this->expectException();
-	}
+    }
 
-	function testThisExceptionShouldBeCaught() {
+    public function testThisExceptionShouldBeCaught()
+    {
         throw new Exception();
-	}
+    }
 
-	function testJustThrowingMyTestException() {
+    public function testJustThrowingMyTestException()
+    {
         throw new MyTestException();
-	}
+    }
 }
 
-class TestOfThrowingExceptionsInTearDown extends UnitTestCase {
-
-    function tearDown() {
+class TestOfThrowingExceptionsInTearDown extends UnitTestCase
+{
+    public function tearDown()
+    {
         throw new Exception();
     }
 
-    function testDoesntFatal() {
+    public function testDoesntFatal()
+    {
         $this->expectException();
     }
 }
-?>

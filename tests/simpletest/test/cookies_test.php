@@ -1,11 +1,12 @@
 <?php
-// $Id: cookies_test.php 1506 2007-05-07 00:58:03Z lastcraft $
+// $Id$
 require_once(dirname(__FILE__) . '/../autorun.php');
 require_once(dirname(__FILE__) . '/../cookies.php');
 
-class TestOfCookie extends UnitTestCase {
-    
-    function testCookieDefaults() {
+class TestOfCookie extends UnitTestCase
+{
+    public function testCookieDefaults()
+    {
         $cookie = new SimpleCookie("name");
         $this->assertFalse($cookie->getValue());
         $this->assertEqual($cookie->getPath(), "/");
@@ -14,7 +15,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertFalse($cookie->isSecure());
     }
     
-    function testCookieAccessors() {
+    public function testCookieAccessors()
+    {
         $cookie = new SimpleCookie(
                 "name",
                 "value",
@@ -28,7 +30,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertTrue($cookie->isSecure());
     }
     
-    function testFullHostname() {
+    public function testFullHostname()
+    {
         $cookie = new SimpleCookie("name");
         $this->assertTrue($cookie->setHost("host.name.here"));
         $this->assertEqual($cookie->getHost(), "host.name.here");
@@ -36,7 +39,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertEqual($cookie->getHost(), "host.com");
     }
     
-    function testHostTruncation() {
+    public function testHostTruncation()
+    {
         $cookie = new SimpleCookie("name");
         $cookie->setHost("this.host.name.here");
         $this->assertEqual($cookie->getHost(), "host.name.here");
@@ -46,7 +50,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertEqual($cookie->getHost(), "in-host.com");
     }
     
-    function testBadHosts() {
+    public function testBadHosts()
+    {
         $cookie = new SimpleCookie("name");
         $this->assertFalse($cookie->setHost("gibberish"));
         $this->assertFalse($cookie->setHost("host.here"));
@@ -55,7 +60,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertFalse($cookie->setHost("host.com."));
     }
     
-    function testHostValidity() {
+    public function testHostValidity()
+    {
         $cookie = new SimpleCookie("name");
         $cookie->setHost("this.host.name.here");
         $this->assertTrue($cookie->isValidHost("host.name.here"));
@@ -64,26 +70,30 @@ class TestOfCookie extends UnitTestCase {
         $this->assertFalse($cookie->isValidHost("nearly.name.here"));
     }
     
-    function testPathValidity() {
+    public function testPathValidity()
+    {
         $cookie = new SimpleCookie("name", "value", "/path");
         $this->assertFalse($cookie->isValidPath("/"));
         $this->assertTrue($cookie->isValidPath("/path/"));
         $this->assertTrue($cookie->isValidPath("/path/more"));
     }
     
-    function testSessionExpiring() {
+    public function testSessionExpiring()
+    {
         $cookie = new SimpleCookie("name", "value", "/path");
         $this->assertTrue($cookie->isExpired(0));
     }
     
-    function testTimestampExpiry() {
+    public function testTimestampExpiry()
+    {
         $cookie = new SimpleCookie("name", "value", "/path", 456);
         $this->assertFalse($cookie->isExpired(0));
         $this->assertTrue($cookie->isExpired(457));
         $this->assertFalse($cookie->isExpired(455));
     }
     
-    function testDateExpiry() {
+    public function testDateExpiry()
+    {
         $cookie = new SimpleCookie(
                 "name",
                 "value",
@@ -93,7 +103,8 @@ class TestOfCookie extends UnitTestCase {
         $this->assertFalse($cookie->isExpired("Mon, 18 Nov 2002 15:50:28 GMT"));
     }
     
-    function testAging() {
+    public function testAging()
+    {
         $cookie = new SimpleCookie("name", "value", "/path", 200);
         $cookie->agePrematurely(199);
         $this->assertFalse($cookie->isExpired(0));
@@ -102,15 +113,17 @@ class TestOfCookie extends UnitTestCase {
     }
 }
 
-class TestOfCookieJar extends UnitTestCase {
-    
-    function testAddCookie() {
+class TestOfCookieJar extends UnitTestCase
+{
+    public function testAddCookie()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie("a", "A");
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array('a=A'));
     }
     
-    function testHostFilter() {
+    public function testHostFilter()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', 'my-host.com');
         $jar->setCookie('b', 'B', 'another-host.com');
@@ -132,7 +145,8 @@ class TestOfCookieJar extends UnitTestCase {
                 array('a=A', 'b=B', 'c=C'));
     }
     
-    function testPathFilter() {
+    public function testPathFilter()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', false, '/path/');
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array());
@@ -143,7 +157,8 @@ class TestOfCookieJar extends UnitTestCase {
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/path/here')), array('a=A'));
     }
     
-    function testPathFilterDeeply() {
+    public function testPathFilterDeeply()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', false, '/path/more_path/');
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/path/')), array());
@@ -154,7 +169,8 @@ class TestOfCookieJar extends UnitTestCase {
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/path/not_here/')), array());
     }
     
-    function testMultipleCookieWithDifferentPathsButSameName() {
+    public function testMultipleCookieWithDifferentPathsButSameName()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'abc', false, '/');
         $jar->setCookie('a', '123', false, '/path/here/');
@@ -175,21 +191,24 @@ class TestOfCookieJar extends UnitTestCase {
                 array('a=abc', 'a=123'));
     }
     
-    function testOverwrite() {
+    public function testOverwrite()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'abc', false, '/');
         $jar->setCookie('a', 'cde', false, '/');
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array('a=cde'));
     }
     
-    function testClearSessionCookies() {
+    public function testClearSessionCookies()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', false, '/');
         $jar->restartSession();
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array());
     }
     
-    function testExpiryFilterByDate() {
+    public function testExpiryFilterByDate()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', false, '/', 'Wed, 25-Dec-02 04:24:20 GMT');
         $jar->restartSession("Wed, 25-Dec-02 04:24:19 GMT");
@@ -198,7 +217,8 @@ class TestOfCookieJar extends UnitTestCase {
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array());
     }
     
-    function testExpiryFilterByAgeing() {
+    public function testExpiryFilterByAgeing()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'A', false, '/', 'Wed, 25-Dec-02 04:24:20 GMT');
         $jar->restartSession("Wed, 25-Dec-02 04:24:19 GMT");
@@ -208,14 +228,16 @@ class TestOfCookieJar extends UnitTestCase {
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array());
     }
     
-    function testCookieClearing() {
+    public function testCookieClearing()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'abc', false, '/');
         $jar->setCookie('a', '', false, '/');
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array('a='));
     }
     
-    function testCookieClearByLoweringDate() {
+    public function testCookieClearByLoweringDate()
+    {
         $jar = new SimpleCookieJar();
         $jar->setCookie('a', 'abc', false, '/', 'Wed, 25-Dec-02 04:24:21 GMT');
         $jar->setCookie('a', 'def', false, '/', 'Wed, 25-Dec-02 04:24:19 GMT');
@@ -224,4 +246,3 @@ class TestOfCookieJar extends UnitTestCase {
         $this->assertEqual($jar->selectAsPairs(new SimpleUrl('/')), array());
     }
 }
-?>

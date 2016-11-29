@@ -3,14 +3,14 @@
  *  base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage UnitTester
- *  @version    $Id: detached.php 1784 2008-04-26 13:07:14Z pp11 $
+
  */
 
 /**#@+
  *  include other SimpleTest class files
  */
-require_once(dirname(__FILE__) . '/xml.php');
-require_once(dirname(__FILE__) . '/shell_tester.php');
+require_once dirname(__FILE__) . '/xml.php';
+require_once dirname(__FILE__) . '/shell_tester.php';
 /**#@-*/
 
 /**
@@ -18,7 +18,8 @@ require_once(dirname(__FILE__) . '/shell_tester.php');
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class DetachedTestCase {
+class DetachedTestCase
+{
     private $command;
     private $dry_command;
     private $size;
@@ -93,4 +94,3 @@ class DetachedTestCase {
         return new SimpleTestXmlParser($reporter);
     }
 }
-?>

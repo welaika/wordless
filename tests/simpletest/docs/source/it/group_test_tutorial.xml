@@ -1,0 +1,225 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Raggruppamento di test" here="Tutorial: Raggruppamento di test">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>
+        PHP unit testing tutorial - Grouping together unit
+        tests and examples of writing test cases
+    </long_title>
+    <content>
+        <introduction>
+            <p>
+				Il prossimo passo sarà quello di riempire dei vuoti e create una test suite.
+            </p>
+        </introduction>
+        <section name="another" title="Aggiungere un test">
+            <p>
+				Aggiungere un nuovo test è facile esattamente come aggiungere un
+				metodo al test case:
+<php><![CDATA[
+class TestOfLogging extends UnitTestCase {
+
+    function testCreatingNewFile() {
+        @unlink('../temp/test.log');
+        $log = new Log('../temp/test.log');
+        $this->assertFalse(file_exists('../temp/test.log'), 'Created before message');
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists('../temp/test.log'), 'File created');<strong>
+        @unlink('../temp/test.log');</strong>
+    }
+    <strong>
+    function testSecondMessageIsAppended() {
+        @unlink('../temp/test.log');
+        $log = new Log('../temp/test.log');
+        $log->message('Test line 1');
+        $messages = file('../temp/test.log');
+        $this->assertPattern('/Test line 1/', $messages[0]);
+        $log->message('Test line 2');
+        $messages = file('../temp/test.log');
+        $this->assertPattern('/Test line 2/', $messages[1]);
+        @unlink('../temp/test.log');
+    }</strong>
+}
+]]></php>
+				Il metodo <code>assertPattern()</code> del test case utilizza
+				un'espressione regolare in stile Perl per verificare la corrispondenza
+				di stringhe.
+            </p>
+            <p>
+				Tutto quel che si sta facendo in questo metodo è scrivere una riga in un
+				file per poi rileggerla, per due volte.
+				Vogliamo semplicemente verificare che il logger accodi il
+				testo piuttosto che sovrascrivere il vecchio file.
+            </p>
+            <p>
+				In effetti lo unit test passa senza problemi:
+                <div class="demo">
+                    <h1>Log class test</h1>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">1/1 test cases complete.
+                    <strong>4</strong> passes, <strong>0</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				Il problema è che abbiamo molta ridondanza: dobbiamo cancellare il file
+				di test prima e dopo ogni collaudo.
+            </p>
+            <p>
+				Plagiando spudoratamente <a href="http://www.junit.org/">JUnit</a>, 
+				Simpletest provvede i metodi <code>setUp()</code> e <code>tearDown()</code>,
+				che vengono eseguiti rispettivamente prima e dopo ogni test.
+				La cancellazione di file è un'operazione comune a tutti i
+				test e pertanto dovremmo spostarla in questi metodi.
+				
+            </p>
+            <p>
+				I nostri test sono verdi, quindi possiamo procedere al refactoring:
+<php><![CDATA[
+class TestOfLogging extends UnitTestCase {
+<strong>
+    function setUp() {
+        @unlink('../temp/test.log');
+    }
+
+    function tearDown() {
+        @unlink('../temp/test.log');
+    }
+</strong>
+    function testCreatingNewFile() {
+        $log = new Log('../temp/test.log');
+        $this->assertFalse(file_exists('../temp/test.log'), 'Created before message');
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists('../temp/test.log'), 'File created');
+    }
+<strong>
+    function testSecondMessageIsAppended() {
+        $log = new Log('../temp/test.log');
+        $log->message('Test line 1');
+        $messages = file('../temp/test.log');
+        $this->assertPattern('/Test line 1/', $messages[0]);
+        $log->message('Test line 2');
+        $messages = file('../temp/test.log');
+        $this->assertPattern('/Test line 2/', $messages[1]);
+    }
+	</strong>
+}
+]]></php>
+				I test restano verdi.
+				Possiamo aggiungere metodi non-test al test case fintanto che i
+				loro nomi non cominciano con la stringa &quot;test&quot;.
+				Solo i metodi i cui nomi iniziano per &quot;test&quot; vengono eseguiti.
+				Ciò permette un ulteriore refactoring:
+<php><![CDATA[
+class TestOfLogging extends UnitTestCase {
+
+    function setUp() {
+        @unlink('../temp/test.log');
+    }
+
+    function tearDown() {
+        @unlink('../temp/test.log');
+    }
+    <strong>
+    function getFileLine($filename, $index) {
+        $messages = file($filename);
+        return $messages[$index];
+    }
+    </strong>
+    function testCreatingNewFile() {
+        $log = new Log('../temp/test.log');
+        $this->assertFalse(file_exists('../temp/test.log'), 'Created before message');
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists('../temp/test.log'), 'File created');
+    }
+    
+    function testSecondMessageIsAppended() {
+        $log = new Log('../temp/test.log');
+        $log->message('Test line 1');<strong>
+        $this->assertPattern('/Test line 1/', $this->getFileLine('../temp/test.log', 0));</strong>
+        $log->message('Test line 2');<strong>
+        $this->assertPattern('/Test line 2/', $this->getFileLine('../temp/test.log', 1));</strong>
+    }
+}
+]]></php>
+				La scelta tra la prima versione e la seconda è una pura
+				questione di gusti. C'è un po' di codice in più, ma la logica
+				del test è più chiara.
+            </p>
+        </section>
+        <section name="suite" title="A test suite">
+            <p>
+				Un test case non funzionerà da solo per molto tempo.
+				Quando si sviluppa del codice reale normalmente si vorranno
+				eseguire molti test più rapidamente e più spesso possibile.
+				Questo comporta la necessità di raggruppare insieme più test in
+				test suite che possano facilmente includere tutti i test dell'applicazione.
+            </p>
+            <p>
+				Per prima cosa, creiamo una test suite chiamata <em>all_tests.php</em>
+				nella directory <em>tests</em>:
+<php><![CDATA[
+<?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+<strong>require_once('log_test.php');
+
+class AllTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addTest(new TestOfLogging());
+    }
+}
+?></strong>
+]]></php>
+				Difficilmente si noteranno differenze, finché le cose funzionano:
+                <div class="demo">
+                    <h1>All tests</h1>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">1/1 test cases complete.
+                    <strong>4</strong> passes and <strong>0</strong> fails.</div>
+                </div>
+				L'aggiunta di ulteriori test è veramente semplice.
+            </p>
+            <p>
+				Nella <a href="gain_control_tutorial.php">prossima pagina</a> li
+				aggiungeremo ancora più rapidamente.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#another">Aggiungere un test</a> al test case ed eseguire il refactoring
+        </link>
+        <link>
+			Il modo più rozzo per <a href="#suite">raggruppare unit test</a> in test suite.
+        </link>
+    </internal>
+    <external>
+        <link>
+            <a href="gain_control_tutorial.php">Next</a> is controlling
+            how the class under test interacts with the rest
+            of the system.
+        </link>
+        <link>
+            <a href="first_test_tutorial.php">Previous</a> is the creation
+            of a first test.
+        </link>
+        <link>
+            You need <a href="simple_test.php">SimpleTest</a> to run these examples.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming,
+            programming in php,
+            test first,
+            software development tools,
+            php tutorial,
+            free php scripts,
+            architecture,
+            php resources,
+            mock objects,
+            junit,
+            php testing,
+            unit test,
+            phpunit,
+            PHP unit testing
+        </keywords>
+    </meta>
+</page>

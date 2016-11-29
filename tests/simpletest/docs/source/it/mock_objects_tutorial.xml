@@ -1,0 +1,352 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Gli oggetti mock" here="Tutorial: gli oggetti mock">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>PHP unit testing tutorial - Using mock objects in PHP</long_title>
+    <content>
+        <section name="refactor" title="Refactoring the tests again">
+            <p>
+				Prima di aggiungere nuove funzioanlità c'è del refactoring da fare.
+				Abbiamo da eseguire dei test riguardanti il tempo e 
+				la classe <code>TimeTestCase</code> ha definitivamente
+				bisogno di un suo proprio file.
+				Chiamiamolo <em>tests/time_test_case.php</em>:
+<php><![CDATA[
+<strong><?php
+require_once('simpletest/unit_tester.php');
+
+abstract class TimeTestCase extends UnitTestCase {
+    function assertSameTime($time1, $time2, $message = '') {
+        if (! $message) {
+            $message = "Time [$time1] should match time [$time2]";
+        }
+        $this->assertTrue(
+                ($time1 == $time2) || ($time1 + 1 == $time2),
+                $message);
+    }
+}
+?></strong>
+]]></php>
+				Potremmo includerlo con <code>require()</code> nello script
+                <em>all_tests.php</em>.
+            </p>
+        </section>
+        <section name="timestamp" title="Aggiungere un timestamp al log">
+            <p>
+				Siccome non sappiamo con esattezza quale sia il formato del messaggio
+				di log durante il test, verificheremo il più semplice caso, quello di una
+				sequenza di numeri.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');<strong>
+require_once('time_test_case.php');</strong>
+require_once('../classes/log.php');<strong>
+require_once('../classes/clock.php');
+
+class TestOfLogging extends TimeTestCase {</strong>
+    function setUp() {
+        @unlink('../temp/test.log');
+    }
+
+    function tearDown() {
+        @unlink('../temp/test.log');
+    }
+
+    function getFileLine($filename, $index) {
+        $messages = file($filename);
+        return $messages[$index];
+    }
+
+    function testCreatingNewFile() { ... }
+
+    function testAppendingToFile() { ... }
+    <strong>
+    function testTimestampIsEmittedInMessage() {
+        $log = new Log('../temp/test.log');
+        $log->message('Test line');
+        $this->assertTrue(
+                preg_match('/(\d+)/', $this->getFileLine('../temp/test.log', 0), $matches),
+                'Found timestamp');
+        $clock = new clock();
+        $this->assertSameTime((integer)$matches[1], $clock->now(), 'Correct time');
+    }</strong>
+}
+?>
+]]></php>
+				Il test case genera un nuovo oggetto <code>Log</code> e scrive un messaggio.
+				Cerchiamo una sequenza di numeri e la confrontiamo con l'ora corrente
+				utilizzando l'oggetto <code>Clock</code>.
+				Naturalmente, niente funzionerà prima che si scriva il codice.
+                <div class="demo">
+                    <h1>All tests</h1>
+                    <span class="pass">Pass</span>: log_test.php->Log class test->testappendingtofile->Expecting [/Test line 1/] in [Test line 1]<br />
+                    <span class="pass">Pass</span>: log_test.php->Log class test->testappendingtofile->Expecting [/Test line 2/] in [Test line 2]<br />
+                    <span class="pass">Pass</span>: log_test.php->Log class test->testcreatingnewfile->Created before message<br />
+                    <span class="pass">Pass</span>: log_test.php->Log class test->testcreatingnewfile->File created<br />
+                    <span class="fail">Fail</span>: log_test.php->Log class test->testtimestamps->Found timestamp<br />
+                    <br />
+                    <b>Notice</b>:  Undefined offset:  1 in <b>/home/marcus/projects/lastcraft/tutorial_tests/tests/log_test.php</b> on line <b>44</b><br />
+                    <span class="fail">Fail</span>: log_test.php->Log class test->testtimestamps->Correct time<br />
+                    <span class="pass">Pass</span>: clock_test.php->Clock class test->testclockadvance->Advancement<br />
+                    <span class="pass">Pass</span>: clock_test.php->Clock class test->testclocktellstime->Now is the right time<br />
+                    <div style="padding: 8px; margin-top: 1em; background-color: red; color: white;">3/3 test cases complete.
+                    <strong>6</strong> passes, <strong>2</strong> fails and <strong>2</strong> exceptions.</div>
+                </div>
+				La test suite continua a mostrare i successi della nostra prima modifica.
+            </p>
+            <p>
+				Possiamo fare in modo che i test passino semplicemente aggiungendo un
+				timestemp al momento della scrittura del file.
+				Sì, naturalmente tutto questo è insignificante e
+				normalmente non collaudo a questi livelli da fanatismo, ma l'esempio
+				è buono per illustrare un problema più generale.
+                Il file <em>log.php</em> diventa:
+<php><![CDATA[
+<?php<strong>
+require_once('../classes/clock.php');</strong>
+
+class Log {
+    private $path;
+
+    function __construct($path) {
+        $this->path = $path;
+    }
+
+    function message($message) {<strong>
+        $clock = new Clock();</strong>
+        $file = fopen($this->path, 'a');<strong>
+        fwrite($file, "[" . $clock->now() . "] $message\n");</strong>
+        fclose($file);
+    }
+}
+?>
+]]></php>
+                Il test dovrebbe passare.
+            </p>
+            <p>
+				Il nostro nuovo test, tuttavia, è pieno di problemi.
+				Cosa accadrebbe se il formato di stampa dell'ora dovesse
+				cambiare?
+                Le cose diventerebbero un bel po' più complicate se questo accadesse.
+				Comportebbe anche modificare il formato delle ore della classe
+				clock, il che porterebbe altri test a fallire.
+				In altre parole, i test di log sono accoppiati con i test di
+				clock e sono estremamente fragili.
+				Mancano di coesione, il che equivale a dire che non sono
+				molto a fuoco su un solo obiettivo, dal momento che collaudano
+				anche aspetti del clock oltre a quelli del log.
+				I nostri problemi sono in parte causati dal fatto che l'output
+				di clock è imprevedibile, anche se quel che si intendeva realmente
+				fare era collaudare che il messaggio del log contenesse l'output di
+				<code>Clock::now()</code>, qualunque esso fosse.
+				Non ci interessa davvero il contenuto di quella invocazione di metodo.
+            </p>
+            <p>
+				Dal punto di vista del il collaudo, tutto quel che è stato fatto
+				fin'ora è errato.
+            </p>
+            <p>
+				Possiamo rendere la chiamata predicibile?
+                Potremmo se solo potessi indurre log ad usare una versione
+				fasulla di clock almeno per la durata del test.
+				La falsa classe clock dovrebbe comportarsi come la classe
+				<code>Clock</code> apparte per l'output fisso del metodo
+                <code>now()</code>.
+				Hey, questo ci libererebbe perfino dall'uso della classe
+                <code>TimeTestCase</code>!
+            </p>
+            <p>
+				Potremmo scriverefacilmente una classe di questo tipo anche
+				se il lavoro risulterebbe noioso.
+				Creeremmo un'altra classe clock con la stessa interfaccia
+				ma con il metodo <code>now()</code> pensato per restituire
+				un valore che potremmo essere in grado di modificare attraverso
+				degli appositi metodi setter.
+				E' un bel lavoro, per un test di minore entità.
+            </p>
+            <p>
+				Tranne il fatto che, nella realtà, non c'è affatto alcuno
+				sforzo da fare.
+            </p>
+        </section>
+        <section name="mock" title="A mock clock">
+            <p>
+				Per raggiungere istantaneamente il nirvana del clock per i test
+				abbiamo bisogno solo di tre righe di codice:
+<php><![CDATA[
+require_once('simpletest/mock_objects.php');
+]]></php>
+				Questa include il codice del generatore di mock.
+				La cosa più semplice è mettere questa riga in <em>all_tests.php</em>
+				dal momento che verrà usata spesso.
+<php><![CDATA[
+Mock::generate('Clock');
+]]></php>
+				Questa è la linea che fa il vero lavoro.
+				Il generatore di codice scansiona tutti i metodi della classe ,
+				crea il codice per generare un'interfaccia identica o una classe
+				ereditata ed aggiunge il prefisso &quot;Mock&quot; al nome.
+                Dopo di che, esegue con <code>eval()</code> il codice per
+				creare la nuova classe.
+<php><![CDATA[
+$clock = new MockClock($this);
+]]></php>
+				Questa linea può essere aggiunta a qualsiasi metodo di test.
+				Genera un oggetto clock fasullo pronto per ricevere istruzioni.
+            </p>
+            <p>
+				Il nostro test è il primo passo per una radicale pulizia:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');<strong>
+require_once('simpletest/mock_objects.php');</strong>
+require_once('../classes/log.php');
+require_once('../classes/clock.php');<strong>
+Mock::generate('Clock');</strong>
+
+class TestOfLogging extends <strong>UnitTestCase</strong> {
+    function setUp() {
+        @unlink('../temp/test.log');
+    }
+
+    function tearDown() {
+        @unlink('../temp/test.log');
+    }
+
+    function getFileLine($filename, $index) {
+        $messages = file($filename);
+        return $messages[$index];
+    }
+
+    function testCreatingNewFile() { ... }
+
+    function testAppendingToFile() { ... }
+
+    function testTimestamps() {<strong>
+        $clock = new MockClock($this);
+        $clock->returns('now', 'Timestamp');
+        $log = new Log('../temp/test.log');
+        $log->message('Test line', &$clock);
+        $this->assertPattern(
+                '/Timestamp/',
+                $this->getFileLine('../temp/test.log', 0),
+                'Found timestamp');</strong>
+    }
+}
+?>
+]]></php>
+				Questo metodo di test genera un oggetto <code>MockClock</code>
+				ed imposta valore di ritorno del metodo <code>now()</code> perché
+				sia la stringa
+                &quot;Timestamp&quot;.
+				Ogni volta che <code>$clock->now()</code> viene invocato
+				restituirà quella stringa.
+				Questo dovrebbe essere facile da comprendere.
+            </p>
+            <p>
+				Successivamente, creiamo log e gli inviamo un messaggio.
+				Passiamo a <code>message()</code> il clock
+				che desideriamo usare.
+				Questo comporta che per rendere possibile il collaudo ci sia
+				la necessità di un parametro aggiuntivo alla classe di log:
+<php><![CDATA[
+class Log {
+    private $path;
+
+    function Log($path) {
+        $this->path = $path;
+    }
+
+    function message($message, <strong>$clock = false</strong>) {<strong>
+        $clock = $clock? $clock : new Clock();</strong>
+        $file = fopen($this->path, 'a');
+        fwrite($file, "[" . $clock->now() . "] $message\n");
+        fclose($file);
+    }
+}
+]]></php>
+				Adesso tutti i test passano e collaudano solo il codice del log.
+				Possiamo tirare nuovamente un sospiro di sollievo.
+            </p>
+            <p>
+				Ti disturba il parametro extra in <code>Log</code>?
+				Dopo tutto, abbiamo modificato l'interfaccia al solo scopo di facilitare il
+				collaudo.
+                Non erano le interfaccie le cose più importanti?
+				Non abbiamo sporcato la nostra classe con il codice di test?
+            </p>
+            <p>
+				Senza dubbio non è il caso ideale ma considera questo:
+				alla prossima occasione che ti si presentam dai un occhio ad un
+				circuito stampato, magari quello della scheda madre del computer dal
+				quale stai leggendo proprio adesso.
+				Nella maggior parte delle schede troverai degli strani fori o dei punti
+				di saldatura inutilizzati o forse dei pin o dei socket che non 
+				sembrano avere una funzione certa.
+				C'è la possibilità che alcune di queste servano per
+				l'espansione e la modifica della scheda ma la maggior parte
+				è lì per i collaudi.
+            </p>
+            <p>
+				Le fabbriche che producono le schede in migliaia di esemplari consumano
+				materiale su parti che non aggiungono alcuna funzione al prodotto finale.
+				Se gli ingegneri elettronici possono fare questo sacrificio di eleganza
+				sono certo che possiamo farlo anche noi.
+				Del resto, il nostro sacrificio non spreca nemmeno materiale.
+                
+            </p>
+            <p>
+                Ti disturba lo stesso?
+                A dire la verità disturba anche me.
+				Se la cosa davvero ti dà fastidio, allora sposta la creazione dell'orologio
+				dentro un apposito metodo di factoring protetto.
+				Dopo di che, estendi la classe clock per i collaudi e
+				fai l'overriding del metodo factory con uno che restituisca il mock.
+				I test risulteranno più scomodi ma l'interfaccia resterà intatta.
+            </p>
+            <p>
+				La decisione è personale ma nota che nella prossima sezione
+				si vedranno alcuni automatismi per facilitare il subclassing.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#refactor">Refactoring dei test</a> per il riutilizzo dei test.
+        </link>
+        <link><a href="#timestamp">Aggiungere un timestamp ai log</a>.</link>
+        <link><a href="#mock">Mock dell'orologio</a> per rendre il test più coeso.</link>
+    </internal>
+    <external>
+        <link>
+            This follows the <a href="first_test_tutorial.php">unit test tutorial</a>.
+        </link>
+        <link>
+            Next is distilling <a href="boundary_classes_tutorial.php">boundary classes</a>.
+        </link>
+        <link>
+            You will need the <a href="simple_test.php">SimpleTest</a>
+            tool to run the examples.
+        </link>
+        <link>
+            <a href="http://www.mockobjects.com/">Mock objects</a> papers.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming,
+            programming php,
+            software development tools,
+            php tutorial,
+            free php scripts,
+            architecture,
+            php resources,
+            mock objects,
+            junit,
+            php testing,
+            unit test,
+            php testing
+        </keywords>
+    </meta>
+</page>

@@ -3,15 +3,14 @@
  *  base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage UnitTester
- *  @version    $Id: remote.php 2011 2011-04-29 08:22:48Z pp11 $
  */
 
 /**#@+
  *  include other SimpleTest class files
  */
-require_once(dirname(__FILE__) . '/browser.php');
-require_once(dirname(__FILE__) . '/xml.php');
-require_once(dirname(__FILE__) . '/test_case.php');
+require_once dirname(__FILE__) . '/browser.php';
+require_once dirname(__FILE__) . '/xml.php';
+require_once dirname(__FILE__) . '/test_case.php';
 /**#@-*/
 
 /**
@@ -19,7 +18,8 @@ require_once(dirname(__FILE__) . '/test_case.php');
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class RemoteTestCase {
+class RemoteTestCase
+{
     private $url;
     private $dry_url;
     private $size;
@@ -30,7 +30,8 @@ class RemoteTestCase {
      *    @param string $dry_url   Location for dry run.
      *    @access public
      */
-    function __construct($url, $dry_url = false) {
+    public function __construct($url, $dry_url = false)
+    {
         $this->url = $url;
         $this->dry_url = $dry_url ? $dry_url : $url;
         $this->size = false;
@@ -41,7 +42,8 @@ class RemoteTestCase {
      *    @return string           Name of the test.
      *    @access public
      */
-    function getLabel() {
+    public function getLabel()
+    {
         return $this->url;
     }
 
@@ -53,7 +55,8 @@ class RemoteTestCase {
      *    @returns boolean                   True if no failures.
      *    @access public
      */
-    function run($reporter) {
+    public function run($reporter)
+    {
         $browser = $this->createBrowser();
         $xml = $browser->get($this->url);
         if (! $xml) {
@@ -74,7 +77,8 @@ class RemoteTestCase {
      *    @return SimpleBrowser           New browser.
      *    @access protected
      */
-    protected function createBrowser() {
+    protected function createBrowser()
+    {
         return new SimpleBrowser();
     }
 
@@ -84,7 +88,8 @@ class RemoteTestCase {
      *    @return SimpleTestXmlListener      XML reader.
      *    @access protected
      */
-    protected function createParser($reporter) {
+    protected function createParser($reporter)
+    {
         return new SimpleTestXmlParser($reporter);
     }
 
@@ -93,7 +98,8 @@ class RemoteTestCase {
      *    @return integer           Number of test cases.
      *    @access public
      */
-    function getSize() {
+    public function getSize()
+    {
         if ($this->size === false) {
             $browser = $this->createBrowser();
             $xml = $browser->get($this->dry_url);
@@ -112,4 +118,3 @@ class RemoteTestCase {
         return $this->size;
     }
 }
-?>

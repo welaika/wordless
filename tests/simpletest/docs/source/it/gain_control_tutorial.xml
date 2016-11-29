@@ -1,0 +1,316 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Prendere il controllo dei test" here="Tutorial: prendere il controllo">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>PHP unit testing tutorial - Isolating variables when testing</long_title>
+    <content>
+        <introduction>
+            <p>
+				Per collaudare il codice di un modulo è necessario uno stretto
+				controllo dell'ambiente in cui questo opera.
+				Qualsiasi elemento dovesse variare dietro le quinte, per
+				esempio un file di configurazione, si potrebbe causare il
+				fallimento inaspettato dei test.
+                Si potrebbe trattare di un test non banale e potrebbe
+				essere necessario spendere molte infruttuose ore ad
+				esaminare del codice che in realtà sta funzionando invece che
+				preoccuparsi del problema di confirazione che, di fatto, sta provocando
+				il fallimento.
+                Molto rapidamente i test case diverranno abbastanza complicati da
+				rendere necessario di preoccuparsi delle possibili variazioni.
+            </p>
+        </introduction>
+        <section name="time" title="Il tempo è spesso un elemento trascurato nei test">
+            <p>
+				Ci sono solitamente molte ovvie variabili che possono influenzare
+				uno unit test case, specialmente negli ambienti di sviluppo web
+				in cui PHP normalmente opera.
+				Queste comprendono soprattutto il setup del database, i permessi sui file,
+				le risorse di rete e i file di configurazione.
+                La non operatività o i problemi di installazioni di questi componenti
+				provocheranno il fallimento della test suite.
+
+            </p>
+            <p>
+				Dobbiamo aggiungere dei test per confermare che questi componenti
+				siano installati?
+				E' una buona idea, ma se si posizionano questi test nel codice di
+				collaudo del modulo si finisce per ingombrare il codice con dettagli
+				che sono irrilevanti per l'obiettivo diretto del test.
+				Dovrebbero essere usare test suite separate.
+            </p>
+            <p>
+				Un altro problema, tuttavia, è che le macchine di sviluppo devono
+				essere provviste di tutti i moduli di sistena installati, per essere
+				in grado di eseguire le suite di test.
+				I test verranno anche eseguiti più lentamente.
+            </p>
+            <p>
+				Quando si incontrano questi problemi durante lo sviluppo di solito
+				si creano delle versioni wrapper delle classi che si occupano
+				di gestire tali risorse.
+				I dettagli più problematici delle risorse vengono allora
+				codificate una volta per tutte.
+				Mi piace riferirmi a queste classi come &quot;classi gateway&quot;
+                dal momento che funzionano ai bordi l'applicazione,
+				cioè nell'interfaccia dell'applicazione con il resto del sistema.
+				Le classi gateway sono simulate durante il test da versioni fake.
+				Queste hanno esecuzioni molto più rapide degli originali
+				e vengono spesso chiamate 
+                &quot;Server Stub&quot;, o, più generalmente, 
+                &quot;oggetti Mock&quot;.
+				E' un gran risparmio di tempo fare il wrapping e la simulazione
+				di queste risorse.
+            </p>
+            <p>
+				Una delle risorse esterne a cui si presta solitamente
+				poca attenzione è il tempo.
+            </p>
+            <p>
+				Per esempio, per collaudare il timeout di una sessione gli
+				sviluppatori solitamente impostano il limite di validità di una
+				sessione a valori molto piccoli, per esempio due secondi, dopo di che
+				utilizzano <code>sleep(3)</code> e verificano che la sessione sia
+				scaduta.
+				Tutto questo allunga di tre secondi la test suite e normalmente
+				molto codice per rendere le classi che gestiscono le sessioni abbastanza
+				flessibili.
+				Molto più semplice sarebbe avere un sistema per spostare in avanti
+				l'orologio. Cioè, il controllo sul tempo.
+            </p>
+        </section>
+        <section name="clock" title="Una classe orologio">
+            <p>
+				Nuovamente, disegneremo il wrapper dell'orologio scrivendo
+				come prima cosa i suoi test.
+				Aggiungeremo un clock test case  alla suite <em>tests/all_tests.php</em>:
+<php><![CDATA[
+<?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/log_test.php');
+require_once(dirname(__FILE__) . '/clock_test.php');
+
+class AllTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addTest(new TestOfLogging());<strong>
+        $this->addTest(new TestOfClock());</strong>
+    }
+}
+?>
+]]></php>
+				Dopo di che si creerà il test case nel nuovo file
+                <em>tests/clock_test.php</em>:
+<php><![CDATA[
+<?php
+require_once(dirname(__FILE__) . '/../classes/clock.php');
+<strong>
+class TestOfClock extends UnitTestCase {
+    function testClockTellsTime() {
+        $clock = new Clock();
+        $this->assertEqual($clock->now(), time());
+    }
+}</strong>
+?>
+]]></php>
+				Il solo test eseguito al momento è che la nuova classe
+                <code>Clock</code> si comporti come un sostituto della funzione
+				PHP  <code>time()</code>.
+				Scriveremo la funzione di traslazione temporale solo una
+				volta che il test sarà verde.
+				Al momento, ovviamente, siamo rossi:
+                <div class="demo">
+                    <br />
+                    <b>Fatal error</b>:  Failed opening required '../classes/clock.php' (include_path='') in
+                    <b>/home/marcus/projects/lastcraft/tutorial_tests/tests/clock_test.php</b> on line <b>2</b>
+                    <br />
+                </div>
+            </p>
+            <p> 
+				Se non vedi questo tipo di errore significa che le tue impostazioni degli errori
+				richiedono aggiustamenti. Può darsi che sia necessario aggiungere
+				queste linee all'inizio del test:
+<php><![CDATA[
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+]]></php>
+				La documentazione di PHP sarà utile, se non ri riuscirà a visualizzare il
+				messaggio di <code>Fatal error</code>.                 
+            </p>
+            <p> 
+				Assumento che l'errore venga visualizzato si proseguirà
+				con la creazione del file <em>classes/clock.php</em>:
+<php><![CDATA[
+<strong><?php
+class Clock {
+    function now() {
+    }
+}
+?></strong>
+]]></php>
+				Dopo di che si è pronti per proseguire a scrivere codice.
+                <div class="demo">
+                    <h1>AllTests</h1>
+                    <span class="fail">Fail</span>: TestOfClock -&gt; testClockTellsTime -&gt; [NULL: ] should be equal to [integer: 1050257362]<br />
+                    <div style="padding: 8px; margin-top: 1em; background-color: red; color: white;">3/3 test cases complete.
+                    <strong>4</strong> passes, <strong>1</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				Questo è facile da risolvere.
+<php><![CDATA[
+class Clock {
+    function now() {<strong>
+        return time();</strong>
+    }
+}
+]]></php>
+                E quando otteniamo il verde:
+                <div class="demo">
+                    <h1>AllTests</h1>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">3/3 test cases complete.
+                    <strong>5</strong> passes, <strong>0</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+                C'è ancora un probelma.
+            </p>
+            <p>
+				L'orologio continua ad andare avanti durante l'esecuzione del test
+				il che può risultare in secondo di disallineamento.
+				Le possibilità sono remote, ma nel caso si facciano molti collaudi
+				sul tempo si finirà con l'avere una suite di test sbagliata che limiterà
+				severamente la sua utilità.
+				Dobbiamo <a href="subclass_tutorial.php">contrastare rapidamente</a> questo fenomeno
+				e per adesso lo annotiamo nella lista &quot;to do&quot;.
+            </p>
+            <p>
+				Il test di avanzamento appare così:
+<php><![CDATA[
+class TestOfClock extends UnitTestCase {
+
+    function testClockTellsTime() {
+        $clock = new Clock();
+        $this->assertEqual($clock->now(), time());
+    }
+    <strong>
+    function testClockAdvance() {
+        $clock = new Clock();
+        $clock->advance(10);
+        $this->assertEqual($clock->now(), time() + 10);
+    }</strong>
+}
+]]></php>
+				Il codice per ottenere il verde non è distante e comporta solo
+				l'aggiunta di un offset sul tempo.
+<php><![CDATA[
+class Clock {<strong>
+    private $offset = 0;</strong>
+    
+    function now() {
+        return time()<strong> + $this->offset</strong>;
+    }
+    <strong>
+    function advance($offset) {
+        $this->offset += $offset;
+    }</strong>
+}
+]]></php>
+            </p>
+        </section>
+        <section name="tidy" title="Ordinare la test suite">
+            <p>
+				Il nostro file <em>all_tests.php</em> ha delle ridondanze che
+				possiamo evitare.
+				Dobbiamo aggiugere manualmente i test case per ogni singolo file
+				da includere.
+				E' possibile evitarlo, ma l'uso di quanto stiamo per presentare
+				richiede dell'attenzione.
+				La classe <code>TestSuite</code> fornisce un comodo metodo
+				chiamato <code>addFile()</code> che accetta un file PHP come
+				parametro.
+				Il meccanismo prende nota di tutte le classi presenti nel file,
+				le include e analizza ogni nuova classe creata.
+				Se queste sono derivate da <code>SimpleTestCase</code>
+				le aggiunge come nuove <code>TestSuite</code>.
+            </p>
+            <p>
+				Ecco una versione modificata della test suite in cui si utilizza
+				questo metodo:
+<php><![CDATA[
+<?php<strong>
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');</strong>
+    
+class AllTests extends TestSuite {
+    function AllTests() {
+        parent::__construct();<strong>
+        $this->addFile('log_test.php');
+        $this->addFile('clock_test.php');</strong>
+    }
+}
+?>
+]]></php>
+                I punti critici sono:
+                <ol>
+                    <li>
+						Se il file fosse già stato incluso, non verrà
+						aggiunta alcuna classe al gruppo.
+                    </li>
+                    <li>
+						Se il file contiene altre classi che discendono
+						da <code>SimpleTestCase</code>, anche queste verranno
+						aggiunte al gruppo.
+                    </li>
+                </ol>
+				Nella pratica, nessuno di questi punti rappresenta un problema.
+				Le suite di test normalmente hanno una struttura ad albelo
+				per cui è raro che un test sia presente in due posizioni.
+            </p>
+            <p>
+				A proposito dell'inclusione di classi extra, queste
+				sono comunque derivate da <code>SimpleTestCase</code>.
+				Si tratta di classi utilizzate come superclassi di aiuto
+				per altri test.
+				E' sufficiente indicarle come <code>abstract</code>
+				per impedire che vengano eseguite.
+            </p>
+            <p>
+				Dovremo veramente correggere l'inconveniente del
+				possibile slittamento dell'orologio e sarà quindi
+				il <a href="subclass_tutorial.php">prossimo passo</a>.
+                
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link><a href="#time">Il tempo</a> è spesso un elemento trascurato nei test.</link>
+        <link>Una <a href="#clock">classe orologio</a> che permette di controllare il tempo</link>
+        <link><a href="#tidy">Ordinare la test suite</a>.</link>
+    </internal>
+    <external>
+        <link>
+            The previous section is
+            <a href="group_test_tutorial.php">grouping into test suites</a>.
+        </link>
+        <link>
+            The next section is
+            <a href="subclass_tutorial.php">subclassing test cases</a>.
+        </link>
+        <link>
+            You will need
+            <a href="simple_test.php">the SimpleTest unit tester</a>
+            for the examples.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming,
+            programming php,
+            software development tools,
+            php tutorial,
+            free php scripts,
+            software architecture,
+            php testing,
+            unit test,
+            php testing,
+            development process
+        </keywords>
+    </meta>
+</page>

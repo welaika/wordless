@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package packagerversion="1.8.0" version="2.0" xmlns="http://pear.php.net/dtd/package-2.0" xmlns:tasks="http://pear.php.net/dtd/tasks-1.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://pear.php.net/dtd/tasks-1.0
+    http://pear.php.net/dtd/tasks-1.0.xsd
+    http://pear.php.net/dtd/package-2.0
+    http://pear.php.net/dtd/package-2.0.xsd">
+ <name>simpletest</name>
+ <channel>simpletest.pearfarm.org</channel>
+  <summary>Unit testing, mock objects and web testing framework for PHP.</summary>
+  <description>Unit testing, mock objects and web testing framework for PHP built around test cases. If you know JUnit/JMock or some of the PHPUnit clones this will need no explanation. Includes a native web browser for testing web sites directly (no JavaScript).</description>
+ <lead>
+  <name>Marcus Baker</name>
+  <user>lastcraft</user>
+  <email>marcus@lastcraft.com</email>
+  <active>no</active>
+ </lead>
+ <developer>
+  <name>Perrick Penet</name>
+  <user>pp11</user>
+  <email>pp11@users.sourceforge.net</email>
+  <active>yes</active>
+ </developer>
+ <date>2011-04-28</date>
+ <time>01:46:26</time>
+ <version>
+  <release>1.1</release>
+  <api>1.1</api>
+ </version>
+ <stability>
+  <release>alpha</release>
+  <api>alpha</api>
+ </stability>
+ <license uri="http://www.gnu.org/copyleft/lesser.html">LGPL</license>
+ <notes>This is a preliminary PEAR package of the latest SimpleTest code before
+	the next release is staged.
+ </notes>
+ <contents>
+   	<dir name="/">
+ 	    <file name="README" role="doc" />
+		<file name="LICENSE" role="doc" />
+		<file name="HELP_MY_TESTS_DONT_WORK_ANYMORE" role="doc" />
+		<file name="arguments.php" role="php" baseinstalldir="simpletest" />
+		<file name="authentication.php" role="php" baseinstalldir="simpletest" />
+		<file name="autorun.php" role="php" baseinstalldir="simpletest" />
+		<file name="browser.php" role="php" baseinstalldir="simpletest" />
+		<file name="collector.php" role="php" baseinstalldir="simpletest" />
+		<file name="compatibility.php" role="php" baseinstalldir="simpletest" />
+		<file name="cookies.php" role="php" baseinstalldir="simpletest" />
+		<file name="default_reporter.php" role="php" baseinstalldir="simpletest" />
+		<file name="detached.php" role="php" baseinstalldir="simpletest" />
+		<file name="dumper.php" role="php" baseinstalldir="simpletest" />
+		<file name="eclipse.php" role="php" baseinstalldir="simpletest" />
+		<file name="encoding.php" role="php" baseinstalldir="simpletest" />
+		<file name="errors.php" role="php" baseinstalldir="simpletest" />
+		<file name="exceptions.php" role="php" baseinstalldir="simpletest" />
+		<file name="expectation.php" role="php" baseinstalldir="simpletest" />
+		<file name="form.php" role="php" baseinstalldir="simpletest" />
+		<file name="frames.php" role="php" baseinstalldir="simpletest" />
+		<file name="http.php" role="php" baseinstalldir="simpletest" />
+		<file name="invoker.php" role="php" baseinstalldir="simpletest" />
+		<file name="mock_objects.php" role="php" baseinstalldir="simpletest" />
+		<file name="page.php" role="php" baseinstalldir="simpletest" />
+		<file name="php_parser.php" role="php" baseinstalldir="simpletest" />
+		<file name="recorder.php" role="php" baseinstalldir="simpletest" />
+		<file name="reflection_php4.php" role="php" baseinstalldir="simpletest" />
+		<file name="reflection_php5.php" role="php" baseinstalldir="simpletest" />
+		<file name="remote.php" role="php" baseinstalldir="simpletest" />
+		<file name="reporter.php" role="php" baseinstalldir="simpletest" />
+		<file name="scorer.php" role="php" baseinstalldir="simpletest" />
+		<file name="selector.php" role="php" baseinstalldir="simpletest" />
+		<file name="shell_tester.php" role="php" baseinstalldir="simpletest" />
+		<file name="simpletest.php" role="php" baseinstalldir="simpletest" />
+		<file name="socket.php" role="php" baseinstalldir="simpletest" />
+		<file name="tag.php" role="php" baseinstalldir="simpletest" />
+		<file name="test_case.php" role="php" baseinstalldir="simpletest" />
+		<file name="tidy_parser.php" role="php" baseinstalldir="simpletest" />
+		<file name="unit_tester.php" role="php" baseinstalldir="simpletest" />
+		<file name="url.php" role="php" baseinstalldir="simpletest" />
+		<file name="user_agent.php" role="php" baseinstalldir="simpletest" />
+		<file name="web_tester.php" role="php" baseinstalldir="simpletest" />
+		<file name="xml.php" role="php" baseinstalldir="simpletest" />
+   	</dir>
+ </contents>
+ <dependencies>
+  <required>
+   <php>
+    <min>5.0.5</min>
+   </php>
+   <pearinstaller>
+    <min>1.4.0</min>
+   </pearinstaller>
+  </required>
+ </dependencies>
+ <phprelease />
+</package>

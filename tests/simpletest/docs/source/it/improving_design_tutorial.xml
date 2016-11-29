@@ -1,0 +1,201 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Test con l'approccio top-down" here="Tutorial: test con l'approccio top-down">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>
+        PHP unit testing tutorial - Top down design
+        test first with mock objects
+    </long_title>
+    <content>
+        <section name="mock" title="Scrivi i mock subito e il codice dopo">
+            <p>
+                Ho mentito.
+            </p>
+            <p>
+				Non ho creato affatto il test del writer, solo l'interfaccia
+				di <code>FileWriter</code> che ho mostrato prima.
+				In effetti, mi allonerò ancora dalla fine dell'articolo e
+				assumerò che ci sia unicamente la classe abstract in <em>classes/writer.php</em>:
+<php><![CDATA[
+<?php
+class <strong>Writer</strong> {
+        
+    function <strong>Writer()</strong> {
+    }
+        
+    function write($message) {
+    }
+}
+?>
+]]></php>
+                I cambiamenti relativi nel test sono:
+<php><![CDATA[
+<?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once('../classes/log.php');
+require_once('../classes/clock.php');
+require_once('../classes/writer.php');
+Mock::generate('Clock');<strong>
+Mock::generate('Writer');</strong>
+
+class TestOfLogging extends UnitTestCase {
+
+    function testWriting() {
+        $clock = new MockClock();
+        $clock->returns('now', 'Timestamp');
+        $writer = new <strong>MockWriter()</strong>;
+        $writer->expectOnce('write', array('[Timestamp] Test line'));
+        $log = new Log($writer);
+        $log->message('Test line', $clock);
+    }
+}
+?>
+]]></php>
+				Al fine di usare la classe di log è necessario del codice nel file del
+				writer o un'altro tipo di writer ma per il momento stiamo solo
+				collaudando e non ne abbiamo bisogno.
+				Così, in altre parole, usando i mock possiamo procrastinare
+				quanto desideriamo la creazione di oggeti di più basso livello.
+				Non solo possiamo fare un design top down, ma possiamo
+				anche collaudare in top down.
+            </p>
+        </section>
+        <section name="bridge" title="Avviciniamoci al design pattern bridge">
+            <p>
+				Immaginiamo per un momento di aver iniziato la classe di logging
+				a partire da un'altra direzione..
+                Supponiamo di avere abbastanza codice della classe <code>Log</code>
+				da renderci conto che abbiamo bisogno in qualche modo di <code>Writer</code>.
+				Come dovremmo includerlo?
+            </p>
+            <p>
+				Be', se avessimo ereditato da writer non avremmo potuto farne il
+				mock, dal punto di vista del collaudo.
+				Dal punto di vista del design avremmo avuto la limitazione di un solo
+				writer, senza l'ereditarietà multipla.
+            </p>
+            <p>
+				La generazione del writer internamente alla classe  scegliendo il nome,
+				in alternativa al passaggio dentro il costruttore, è possibile ma 
+				conduce ad un minore controllo sulla configurazione dell'oggetto mock.
+				
+				Dal punto di vista del design sarebbe stato quasi impossibile passare
+				dei parametri al writer per tutti i differenti fornati possibili.
+				Sarebbe stato necessario limitare il writer ad un hash o a complicate
+				stringhe per descrivere i dettagli del destinatario.
+				Nella migliore ipotesi, inutilmente complicato.
+            </p>
+            <p>
+				Sarebbe possibile usare un factory method per creare internamente
+				il writer ma questo significherebbe fare il subclassing per i
+				collaudi in modo da rimpiazzare il factory method con uno
+				alternativo che restituisse il mock.
+				Più lavoro per il collaudo, anche se sempre possibile.
+				Dal punto di vista del design significherebbe nessuna necessità
+				di fare un subclass per ogni tipo di writer che si volesse
+				usare.
+				Questo si chiama gerarchia parallela delle classi e, ovviamente, 
+				comporta duplicazione. Yuk.s
+            </p>
+            <p>
+				All'altro estremo, passare o creare il writer ad ogni
+				messaggio sarebbe ripetitivo e ridurrebbe il codice della
+				classe <code>Log</code> ad un singolo metodo, indice chiaro
+				che la classe stessa sarebbe ridondante.
+            </p>
+            <p>
+				La tensione tra la facilità del collaudo e l'evitare le
+				ripetizioni ha permesso di trovare un design pulito e
+				flessibile.
+				Ricordi il nostro breve desiderio di ereditarietà multipla?
+				L'abbiamo rimpiazzata con il polimorfismo (molti writer) e con
+				la separazione della gerarchia riguardante il log dalla gerarchia
+				riguardante la scrittura.
+				Dopo di che, connettiamo le due con una semplice classe
+                <code>Log</code> tramite l'aggregazione.
+				Questo trucchetto, in effetti, è un design pattern chiamato 
+                &quot;Bridge&quot;.
+            </p>
+            <p>
+				Così siamo stati trascinati, partendo dal codice di test (e oltretutto
+				non abbiamo scritto un granché) verso i design pattern.
+				Riflettici un secondo.
+				Non solo i test migliorano la qualità del codice, sicuramente nel mio
+				personale caso, ma fanno qualcosa di molto più profondo e più
+				potente.
+            </p>
+            <p>
+                I test migliorano il design.
+            </p>
+        </section>
+        <section name="design" title="Design dell'applicazione con i mock">
+            <p>
+				Creare un oggetto mock è semplice quanto creare un'interfaccia in forma
+				testuale.
+				Se disponi di un tool UML o di altri strumenti che creano queste
+				interfacce per te allora hai un modo ancora più flessibile per
+				generare rapidamente gli oggetti per il collaudo.
+				Anche se questo non è il tuo caso, puoi sempre passare facilmente dal
+				disegnare su un foglio bianco allo scrivere un test case, sviluppare un
+				mock, generare un'interfaccia che ti porti di nuovo a disegnare sul 
+				foglio e così via, facilmente.
+				E' come se refactoring, design, collaudo e sviluppo fossero stati unificati
+            </p>
+            <p>
+				Siccome gli oggetti mock lavorano in top down possono essere adottati
+				nel design molto più facilmente dell'ordinario refactoring il quale richiede
+				prima di essere applicato che ci sia almeno un codice parzialmente funzionante.
+                Ciò implica che il codice di test interagisce con il design molto più
+				velocemente e che la qualità del design migliora più rapidamente.
+            </p>
+            <p>
+				Uno unit tester è uno strumento di sviluppo.
+				Uno unit tester con oggetti mock è un design tool.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#mock">Fai i mock subito</a>, scrivi il codice dopo.
+        </link>
+        <link>
+            Deriviamo il <a href="#bridge">bridge pattern</a>.
+        </link>
+        <link>
+            <a href="#design">Unire design e collaudo</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            This tutorial follows <a href="boundary_classes_tutorial.php">Boundary classes</a>.
+        </link>
+        <link>
+            You will need the <a href="simple_test.php">SimpleTest testing framework</a>
+            to try these examples.
+        </link>
+        <link>
+            For more mock object discussion see the
+            <a href="http://www.xpdeveloper.org/xpdwiki/Wiki.jsp?page=MockObjects">Extreme Tuesday Wiki</a>
+            or the
+            <a href="http://c2.com/cgi/wiki?MockObject">C2 Wiki</a>
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming tutorial,
+            programming php test cases,
+            software development tools,
+            php tutorial,
+            free php code,
+            architecture,
+            php examples,
+            mock object examples,
+            junit style testing,
+            php testing frameworks,
+            unit test,
+            mock objects in PHP,
+            php testing
+        </keywords>
+    </meta>
+</page>

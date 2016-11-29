@@ -1,0 +1,58 @@
+{
+    "name": "simpletest/simpletest",
+    "description": "Unit testing, mock objects and web testing framework for PHP built around test cases.",
+    "type": "library",
+    "keywords": [
+        "simpletest",
+        "unit-test",
+        "testing",
+        "code-coverage",
+        "selenium"
+    ],
+    "homepage": "http://simpletest.org/",
+    "license": "LGPL-2.0+",
+    "support": {
+        "issues": "https://github.com/simpletest/simpletest/issues"
+    },
+    "authors": [
+        {
+            "name": "Marcus Baker",
+            "email": "marcus@lastcraft.com",
+            "role": "Original project lead"
+        },
+        {
+            "name": "Jason Sweat",
+            "role": "Original developer"
+        },
+        {
+            "name": "Travis Swicegood",
+            "role": "Original developer"
+        },
+        {
+            "name": "Perrick Penet",
+            "role": "Original developer"
+        },
+        {
+            "name": "Edward Z. Yang",
+            "role": "Original developer"
+        },
+        {
+            "name": "Lachlan Donald",
+            "email": "lachlan@ljd.cc"
+        },
+        {
+            "name": "Lars Vierbergen",
+            "email": "vierbergenlars@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.0.5"
+    },
+    "replace": {
+        "vierbergenlars/simpletest": "self.version",
+        "lastcraft/simpletest": "self.version"
+    },
+    "autoload": {
+        "classmap": ["."]
+    }
+}

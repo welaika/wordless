@@ -1,5 +1,5 @@
 <?php
-// $Id: visual_test.php 1884 2009-07-01 16:30:40Z lastcraft $
+// $Id$
 
 // NOTE:
 // Some of these tests are designed to fail! Do not be alarmed.

@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- $Id$ -->
+<page title="Documentation sur le groupement des tests" here="Les groupes de tests">
+    <synchronisation lang="en" version="2007" date="24/05/2011" maintainer="pp11" />
+    <long_title>Documentation SimpleTest : Grouper des tests</long_title>
+    <content>
+        <section name="grouper" title="Grouper des tests">
+            <p>
+                Il existe beaucoup de moyens pour grouper des tests dans des suites de tests.
+                Le premier d'entre eux est tout simplement ajouter tous les scénarios de test
+				au fur et à mesure d'un unique fichier...
+<php><![CDATA[
+<strong><?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once(dirname(__FILE__) . '/../classes/io.php');
+
+class FileTester extends UnitTestCase {
+    ...
+}
+
+class SocketTester extends UnitTestCase {
+    ...
+}
+?></strong>
+]]></php>
+                Autant de scénarios que nécessaires peuvent être
+                mis dans cet unique fichier. Ils doivent contenir
+                tout le code nécessaire, entre autres la bibliothèque testée,
+                mais aucune des bibliothèques de SimpleTest.
+            </p>
+			<p>
+				Occasionnellement des sous-classes spéciales sont créés pour
+				ajouter des méthodes nécessaires à certains tests spécifiques
+				au sein de l'application.
+                Ces nouvelles classes de base sont ensuite utilisées
+				à la place de <code>UnitTestCase</code>
+                ou de <code>WebTestCase</code>.
+                Bien sûr vous ne souhaitez pas les lancer en tant que
+				scénario de tests : il suffit alors de les identifier
+				comme "abstraites"...
+<php><![CDATA[
+<strong>abstract</strong> class MyFileTestCase extends UnitTestCase {
+    ...
+}
+
+class FileTester extends MyFileTestCase { ... }
+
+class SocketTester extends UnitTestCase { ... }
+]]></php>
+                La classe <code>FileTester</code> ne contient aucun test véritable,
+                il s'agit d'une classe de base pour d'autres scénarios de test.
+			</p>
+			<p>
+                Nous appelons ce fichier <em>file_test.php</em>.
+				Pour l'instant les scénarios de tests sont simplement groupés dans le même fichier.
+                Nous pouvons mettre en place des structures plus importantes
+				en incluant d'autres fichiers de tests.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+require_once('file_test.php');
+?>
+]]></php>
+				Ceci fontionnera, tout en créant une hiérarchie tout à fait plate.
+                A la place, nous créons un fichier de suite de tests.
+                Notre suite des tests de premier niveau devient...
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        <strong>$this->addFile('file_test.php');</strong>
+    }
+}
+?>
+]]></php>
+				Voici ce qui arrive : la class <code>TestSuite</code>
+                effecturera le <code>require_once()</code> pour nous.
+				Ensuite elle vérifie si de nouvelles classes de test
+				ont été créées par ce nouveau fichier et les inclut
+				automatiquement dans la suite de tests.
+				Cette méthode nous donne un maximum de contrôle
+				tout comme le ferait des ajouts manuels de fichiers de tests
+				au fur et à mesure où notre suite grandit.
+            </p>
+            <p>
+                Si c'est trop de boulot pour vos petits doigts et qu'en plus
+				vous avez envie de grouper vos suites de tests par répertoire
+				ou par un tag dans le nom des fichiers, alors il y a un moyen
+				encore plus automatique... 
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class AllFileTests extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->collect(dirname(__FILE__) . '/unit',
+                       new SimplePatternCollector('/_test.php/'));
+    }
+}
+?>
+]]></php>
+				Cette fonctionnalités va scanner un répertoire appelé &quot;unit&quot;,
+				y détecter tous les fichiers finissant par &quot;_test.php&quot;
+				et les charger.
+                Vous n'avez pas besoin d'utiliser <code>SimplePatternCollector</code> pour
+				filtrer en fonction d'un motif dans le nom de fichier,
+				mais c'est son usage le plus courant. 
+            </p>
+			<p>
+                Ce morceau de code est très courant.
+				Désormais la seule chose qu'il vous reste à faire, c'est de
+				déposer un fichier avec des scénarios de tests dans ce répertoire
+				et il sera lancé directement par le script de la suite de tests. 
+            </p>
+			<p>
+                Juste un bémol : vous ne pouvez pas contrôler l'ordre de lancement
+				des tests.
+				Si vous souhaitez voir des composants de bas niveau renvoyer leurs erreurs
+				dès le début de la suite de tests - en particulier pour se facilier le travail
+				de diagnostic - alors vous devriez plutôt passer par <code>addFile()</code>
+				pour ces cas spécifiques.
+                Les scénarios de tests ne sont chargés qu'une fois, pas d'inquiétude donc
+				lors du scan de votre répertoire avec tous les tests.
+            </p>
+			<p>
+                Les tests chargés avec la méthode <code>addFile</code> ont certaines propriétés
+				qui peuvent s'avérer intéressantes.
+				Elle vous assure que le constructeur est lancé avant la première méthode
+				de test et que le destructeur est lancé après la dernière méthode de test.
+				Cela vous permet de placer une initialisation (setUp et tearDown) globale
+				au sein de ce destructeur et desctructeur, comme dans n'importe
+				quelle classe. 
+            </p>
+        </section>
+        <section name="plus-haut" title="Groupements de plus haut niveau">
+			<p>
+                La technique ci-dessus place tous les scénarios de test
+                dans un unique et grand groupe.
+                Sauf que pour des projets plus conséquents,
+                ce n'est probablement pas assez souple;
+                vous voudriez peut-être grouper les tests tout à fait différemment.
+            </p>
+<p>
+                Tout ce que nous avons décrit avec des scripts de tests 
+				s'applique pareillement avec des <code>TestSuite</code>s...
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+<strong>
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+    }
+}</strong>
+?>
+]]></php>
+				Cette opération additionne nos scénarios de tests et une unique suite
+				sous la première.
+                Quand un test échoue, nous voyons le fil d'ariane avec l'enchainement.
+                Nous pouvons même mélanger groupes et tests librement en prenant
+				quand même soin d'éviter les inclusions en boucle.
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class BigTestSuite extends TestSuite {
+    function __construct() {
+        parent::__construct();
+        $this->addFile('file_tests.php');
+        <strong>$this->addFile('some_other_test.php');</strong>
+    }
+}
+?>
+]]></php>
+                Petite précision, en cas de double inclusion, seule la première instance
+				sera lancée. 
+            </p>
+		</section>
+    </content>
+    <internal>
+        <link>
+            Plusieurs approches pour <a href="#group">grouper des tests</a> ensemble.
+        </link>
+        <link>
+            Combiner des groupes des tests dans des
+            <a href="#plus-haut">groupes plus grands</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            La page du projet SimpleTest sur
+            <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            La page de téléchargement de SimpleTest sur
+            <a href="http://www.lastcraft.com/simple_test.php">LastCraft</a>.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            test unitaire en php,
+            intégration de test,
+            documentation,
+            marcus baker,
+            perrick penet,
+            test simple,
+            documentation simpletest,
+            phpunit,
+            pear
+        </keywords>
+    </meta>
+</page>
+
