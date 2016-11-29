@@ -25,12 +25,24 @@ class ComposerStaticInite5b34b7ebbce05aded2063cbbbe4b8b3
                 0 => __DIR__ . '/..' . '/pug-php/pug/src',
             ),
         ),
+        'D' => 
+        array (
+            'Detection' => 
+            array (
+                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
+            ),
+        ),
+    );
+
+    public static $classMap = array (
+        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
     );
 
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
             $loader->prefixesPsr0 = ComposerStaticInite5b34b7ebbce05aded2063cbbbe4b8b3::$prefixesPsr0;
+            $loader->classMap = ComposerStaticInite5b34b7ebbce05aded2063cbbbe4b8b3::$classMap;
 
         }, null, ClassLoader::class);
     }

@@ -1,44 +1,43 @@
-<?php 
+<?php
 
 /**
- * Implements media interaction; mostly images manipulation and 
- * 
+ * Implements media interaction; mostly images manipulation and
+ *
  * @ingroup helperclass
  */
 
 class MediaHelper {
-  
+
   /**
    * Includes a PHP class to detect mobile devices and user agent details.
-   * 
+   *
    * \code{.php}
-   *  $detect = detect_user_agent()  
+   *  $detect = detect_user_agent()
    *  $detect->isMobile()
    * \endcode
    *
    *  @return object
-   * 
+   *
    * @see https://github.com/serbanghita/Mobile-Detect
    * \note
    *    Using Mobile Detect - Version 2.5.2 - commit b5b8992dbe
-   * 
+   *
    * @ingroup helperfunc
    */
   function detect_user_agent(){
-    require_once Wordless::join_paths(dirname(dirname(dirname(__FILE__))), 'vendor/mobile_detect.php');
     $detect = new Mobile_Detect();
     return $detect;
   }
 
   /**
    * Get the attached files in specified post.
-   * 
+   *
    * @param int $post_id
    *   The ID of the post of which we need to retrieve attachments.
-   * 
+   *
    * @return array
    *   List of post attachment objects.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_post_attachments($post_id) {
@@ -48,16 +47,16 @@ class MediaHelper {
       'post_status' => null,
       'post_parent' => $post_id
     );
-    
+
     return get_posts($args);
   }
 
   /**
    * Get the attached files in current post.
-   * 
+   *
    * @return array
    *   List of post attachment objects.
-   * 
+   *
    * @ingroup helperfunc
    */
   function get_current_post_attachments() {
@@ -66,21 +65,21 @@ class MediaHelper {
 
   /**
    * Resizes the specified image to the specified dimensions.
-   * 
+   *
    * The crop will be centered relative to the image.
-   * 
+   *
    * @param string $src
    *   The path to the image to be resized
    * @param int $width
    *   The width at which the image will be cropped
    * @param int $height
    *   The height at which the image will be cropped
-   * 
+   *
    * @return string
    *   The valid URL to the image
-   * 
-   * Cropped images are stored in template tmp folder. 
-   * 
+   *
+   * Cropped images are stored in template tmp folder.
+   *
    * @ingroup helperfunc
    */
   function resize_image($src, $width, $height){
@@ -96,7 +95,7 @@ class MediaHelper {
       // Get orig dimensions
       list ($width_orig, $height_orig, $type_orig) = getimagesize($src);
 
-      // get original image ... to improve! 
+      // get original image ... to improve!
       switch($type_orig){
         case IMAGETYPE_JPEG: $image = imagecreatefromjpeg($src);
           break;
@@ -119,7 +118,7 @@ class MediaHelper {
         $min_orig = $width_orig;
       else
         $min_orig = $height_orig;
-      
+
       // image of the right size
       if ($height_orig == $height && $width_orig == $width) ; // nothing to do
       // if something smaller => scale
@@ -138,7 +137,7 @@ class MediaHelper {
         $ratio_orig = $width_orig / $height_orig;
         if ($ratio_dest > $ratio_orig)
           $ratio = $width / $width_orig;
-        else 
+        else
           $ratio = $height / $height_orig;
       }
       // one equal one bigger
@@ -165,10 +164,10 @@ class MediaHelper {
         $new_height = $height_orig;
       }
 
-      // we need to crop the image  
+      // we need to crop the image
       if ($to_crop == 1) {
         $image_cropped = imagecreatetruecolor($width, $height);
-        
+
         // find margins for images
         $margin_x = ($new_width - $width) / 2;
         $margin_y = ($new_height - $height) / 2;

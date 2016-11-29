@@ -4,8 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "e516b9957236696ca447bc07d9dc156b",
-    "content-hash": "c6fb8bee6e32006eb037bb4f224db497",
+    "hash": "722072415f758b0bc72a706313e9e820",
+    "content-hash": "5e34cdc6d1ddd2b84fda1e379c368a73",
     "packages": [
         {
             "name": "js-phpize/js-phpize",
@@ -46,6 +46,60 @@
             ],
             "description": "Convert js-like syntax to standalone PHP code.",
             "time": "2016-11-27 21:46:25"
+        },
+        {
+            "name": "mobiledetect/mobiledetectlib",
+            "version": "2.8.24",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/serbanghita/Mobile-Detect.git",
+                "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
+                "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.0.0"
+            },
+            "require-dev": {
+                "codeclimate/php-test-reporter": "dev-master",
+                "johnkary/phpunit-speedtrap": "~1.0@dev",
+                "phpunit/phpunit": "*"
+            },
+            "type": "library",
+            "autoload": {
+                "classmap": [
+                    "Mobile_Detect.php"
+                ],
+                "psr-0": {
+                    "Detection": "namespaced/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Serban Ghita",
+                    "email": "serbanghita@gmail.com",
+                    "homepage": "http://mobiledetect.net",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
+            "homepage": "https://github.com/serbanghita/Mobile-Detect",
+            "keywords": [
+                "detect mobile devices",
+                "mobile",
+                "mobile detect",
+                "mobile detector",
+                "php mobile detect"
+            ],
+            "time": "2016-11-11 14:56:25"
         },
         {
             "name": "pug-php/pug",
