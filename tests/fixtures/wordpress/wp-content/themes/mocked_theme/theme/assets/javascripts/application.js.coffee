@@ -1,0 +1,2 @@
+jQuery ($) ->
+  "Yep, it works!"

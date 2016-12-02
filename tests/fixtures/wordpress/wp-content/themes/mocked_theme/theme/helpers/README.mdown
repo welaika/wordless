@@ -1,0 +1,1 @@
+Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the default Wordless helpers.
