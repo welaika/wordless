@@ -9,7 +9,6 @@ require_once('../wordless/wordless.php');
 require_once('../wordless/helpers.php');
 
 class ThemeHelperTest extends UnitTestCase {
-  
   function test_mocked_get_bloginfo_template_url() {
     $this->assertEqual(
       'http://mocked.url/wp-content/themes/mocked_theme',
@@ -26,7 +25,11 @@ class ThemeHelperTest extends UnitTestCase {
 
   function test_get_theme_path() {
     $this->assertEqual(
-      '/mocked/file/path/to/mocked_root/mocked_theme',
+        join('/', array(
+            dirname(__FILE__),
+            'support',
+            '../fixtures/wordpress/wp-content/themes/mocked_theme'
+        )),
       get_theme_path()
     );
   }
