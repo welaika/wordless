@@ -6,7 +6,7 @@ require_once('../wordless/wordless.php');
 require_once('../vendor/phamlp/haml/HamlParser.php');
 require_once('../wordless/helpers/render_helper.php');
 
-class MediaHelperTest extends UnitTestCase {
+class RenderHelperTest extends UnitTestCase {
     function test_render_template() {
         ob_start();
         render_template( 'posts/single' );
