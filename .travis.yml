@@ -1,7 +1,8 @@
 language: php
 php:
-  - 5.3
-  - 5.4
+  - 5.5
+  - 5.6
+  - 7.0
 script: "sh -c 'cd tests && php all_tests.php'"
 notifications:
   recipients:
@@ -10,3 +11,5 @@ notifications:
     - federico.parodi@welaika.com
     - filippo.gangidino@welaika.com
     - matteo.piotto@welaika.com
+    - stefano.pau@welaika.com
+    - alessandra.cannata@welaika.com
