@@ -50,22 +50,14 @@ class RenderHelper {
           render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.pug</code> or <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
         }
 
+        $tmp_dir = Wordless::theme_temp_path();
+
         switch ($format) {
             case 'haml':
                 extract($locals);
 
-                $tmp_dir = Wordless::theme_temp_path();
-
-                if (!file_exists($tmp_dir)) {
-                    mkdir($tmp_dir, 0760);
-                }
-
-                if (!is_writable($tmp_dir)) {
-                    chmod($tmp_dir, 0760);
-                }
-
-                if (is_writable($tmp_dir)) {
-                    $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false/*, 'helperFile' => dirname(__FILE__).'/../ThemeHamlHelpers.php'*/));
+                if ($this->ensure_dir($tmp_dir)) {
+                    $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false));
                     include $haml->parse($template_path, $tmp_dir);
                 } else {
                     render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
@@ -74,17 +66,7 @@ class RenderHelper {
                 break;
 
             case 'pug':
-                $tmp_dir = Wordless::theme_temp_path();
-
-                if (!file_exists($tmp_dir)) {
-                    mkdir($tmp_dir, 0760);
-                }
-
-                if (!is_writable($tmp_dir)) {
-                    chmod($tmp_dir, 0760);
-                }
-
-                if (is_writable($tmp_dir)) {
+                if ($this->ensure_dir($tmp_dir)) {
                     $pug = new Pug(array(
                         'prettyprint' => true,
                         'extension' => '.pug',
@@ -95,6 +77,7 @@ class RenderHelper {
                 } else {
                     render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
                 }
+
                 break;
 
             case 'php':
@@ -174,6 +157,24 @@ class RenderHelper {
         render_template("layouts/$layout", $locals);
         ob_flush();
     }
+
+    private function ensure_dir($dir) {
+
+        if (!file_exists($dir)) {
+            mkdir($dir, 0760);
+        }
+
+        if (!is_writable($dir)) {
+            chmod($dir, 0760);
+        }
+
+        if (is_writable($dir)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 Wordless::register_helper("RenderHelper");
