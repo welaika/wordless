@@ -35,10 +35,19 @@ class RenderHelper {
     *
     */
     function render_template($name, $locals = array()) {
-        $valid_filenames = array("$name.html.haml", "$name.haml", "$name.html.php", "$name.php", "$name.pug", "$name.html.pug");
+        $valid_filenames = array(
+            "$name.html.pug",
+            "$name.pug",
+            "$name.html.php",
+            "$name.php",
+            "$name.html.haml",
+            "$name.haml"
+        );
+
         foreach ($valid_filenames as $filename) {
             $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
-                if (is_file($path)) {
+
+            if (is_file($path)) {
                 $template_path = $path;
                 $arr = explode('.', $path);
                 $format = array_pop($arr);
