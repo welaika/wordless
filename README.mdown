@@ -16,6 +16,9 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 <a name="installation"></a>
 ## Requirements, installation and configuration
 
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2216e43525044a10aeb85f6096534838)](https://www.codacy.com/app/matteopiotto/wordless?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=welaika/wordless&amp;utm_campaign=badger)
+
 Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere. :sparkling_heart:
 
 But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs [Ruby](http://www.ruby-lang.org/en).
