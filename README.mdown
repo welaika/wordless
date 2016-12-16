@@ -5,62 +5,27 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails)
 * The ability to create a new theme skeleton directly within the WordPress backend interface
 * The ability to write PHP code using the beautiful [Pug templating system](https://github.com/pug-php/pug)
-* The ability to write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com) and the [Compass framework](http://compass-style.org/)
+* The ability to write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
 * The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
-* The ability to merge and compress Javascript assets using [Yahoo YUI Compressor](http://developer.yahoo.com/yui/compressor/)
 * A growing set of handy and documented helper functions ready to be used within your views
 
 [![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
 
-
-<a name="installation"></a>
 ## Requirements, installation and configuration
 
 Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere. :sparkling_heart:
 
-But what's the catch? It needs [Ruby](http://www.ruby-lang.org/en). No I mean it, it seriously needs [Ruby](http://www.ruby-lang.org/en).
 
-If you are not familiar with Ruby you may read the following tutorial for getting up a fully functional Ruby environment in less than 5 minutes.
-Otherwise, if you are already fluent in Ruby, Wordless depends on [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). The `coffee-script` gem requires a valid javascript runtime available on your machine, see the [ExecJS readme](https://github.com/sstephenson/execjs/blob/master/README.md) to learn about the supported ones.
 
 > Note that the production server doesn't need Ruby at all, since all the assets are precompiled by Wordless on the development machine, then deployed to production and statically served; **so your production server will work with plain PHP, HTML, CSS and Javascript files and won't need anything fancier**.
 
-<a name="rvm-way"></a>
-### The RVM Way
-
-Our recommended way to get Ruby installed on your system is [RVM](https://github.com/wayneeseguin/rvm), the Ruby Version Manager. This beautiful project creates a tight, clean and well organized Ruby platform in your system. Moreover it's deadly easy to setup (this requires `git` installed):
-
-```
-\curl -L https://get.rvm.io | bash -s stable --autolibs=enabled
-```
-
-Now reload your shell and install the latest Ruby version by running (this will take some time, go have a coffee or something):
-
-```
-rvm install 2.1.2
-```
-
-Whew, now you have a fully functional Ruby environment! The following oneliner will create a new gemset called `wordless`, install the gems
-wordless needs and create some handy symbolic links:
-
-```
-rvm use 2.1.2@wordless --create --default && \
-gem install therubyracer sprockets compass coffee-script thor yui-compressor && \
-rvm wrapper 2.1.2@wordless wordless compass ruby
-```
-Now you should be able to know the location of your RVM-wrapped ruby executables typing `which wordless_ruby` and `which wordless_compass` on your terminal.
-
-<a name="the-cool-stuff"></a>
 ### The Cool Stuff
 
 Okay, now we can get everything up and running :)
 
-1. Enable Apache `mod_rewrite` module (`a2enmod rewrite`) and make sure WordPress nice permalinks are enabled under the WP "Settings > Permalinks" section (for example, choose `month and name`)
-2. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section
-3. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section
-4. Configure the path of your `compass` and `ruby` executables within the WP "Appearance > Wordless preferences". You can find the right paths by typing `which wordless_compass` and `which wordless_ruby`
+1. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section
+2. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section
 
-<a name="theme-anatomy"></a>
 ## Wordless Theme anatomy
 
 That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
@@ -80,6 +45,7 @@ your_theme_dir
 │     ├──── assets
 │     │     ├──── javascripts
 │     │     └──── stylesheets
+│     │     └──── main.js
 │     ├──── helpers
 │     │     └──── README.mdown
 │     └──── views
@@ -90,7 +56,6 @@ your_theme_dir
 
 Now let's see in detail what is the purpose of all those directories.
 
-<a name="routing"></a>
 ### Routing
 
 The `index.php` serves as a router to all the theme views.
@@ -133,7 +98,6 @@ Wordless uses [Pug.php](https://github.com/pug-php/pug) - formerly called Jade.p
 
 It looks awesome, right?
 
-<a name="layouts"></a>
 ### Layouts (`theme/views/layouts` directory)
 
 Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `wl_yield()` helper to combine it with the main content:
@@ -153,7 +117,6 @@ html
 
 Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
 
-<a name="helpers"></a>
 ### Helpers (`theme/helpers/*.php` files)
 
 Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](http://welaika.github.io/wordless/docs/0.3/d3/de0/group__helperclass.html). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
@@ -164,7 +127,6 @@ Helpers are basically small functions that can be called in your views to help k
 * `new_post_type()` and `new_taxonomy()` - Help you create custom posts and taxonomy;
 * `distance_of_time_in_words()` - Reports the approximate distance in time between two dates;
 
-<a name="initializers"></a>
 ### Initializers (`config/initializers/*.php` files)
 
 Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
@@ -194,7 +156,6 @@ config/initializers
 
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
-<a name="locales"></a>
 ### Locale files (`config/locales` directory)
 
 Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you.
@@ -211,7 +172,6 @@ Wordless has two different places where you want to put your assets:
 * Place all your custom, project related assets into `theme/assets/*`
 * Place all the static images and vendor assets (i.e. vendor JS plugins) into `assets/*`
 
-<a name="fast_way"></a>
 ### The Fast Way
 
 * jQuery is included by default for you
@@ -220,7 +180,6 @@ Wordless has two different places where you want to put your assets:
 
 and all will automagically works! :) The *long way* follows
 
-<a name="stylesheets"></a>
 ### Stylesheets
 
 #### Custom stylesheets
@@ -314,17 +273,6 @@ You can get it inside any _view_ or _partial_. This will produce the following H
         type="text/javascript"></script>
 ```
 
-### Smart serving assets
-
-If Wordless can't find the static files in `assets/stylesheets/*.css`, it will search for  _*.sass_ or _*.scss_ files inside `theme/assets/stylesheets` and automatically compile them. In a similar fashion, if Wordless can't find the static files in `assets/javascripts/*.js`, it will search for _*.coffee_ files inside `theme/assets/javascripts` and compile them.
-
-To make things faster, Wordless handles nicely precompilation caching, so a new compile will happen only if the file itself really changed since the last recompilation.
-
-### Production environement
-
-Before going production (or staging), you have to compile your assets in order to statically serving them. You will be definitely interested in [wordless-gem](https://github.com/welaika/wordless_gem), which can reduce this boring task to a one liner ;)
-
-<a name="additional-plugins"></a>
 ## Additional recommended plugins and tools
 
 Wordless is not meant to be a bloated, all-included tool. This is why we recommend adding some other plugins to get the most out of your beautiful WP developer life.
@@ -341,12 +289,9 @@ _______________
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines
-* From WP 3.2 WordPress has ceased to support PHP4, and so does Wordless
-* Documentation still to be written
 * The routing part can be drammaticaly improved to make it more readable and DRY
 * This is go-ahead software, everything is subject to change :) but you can pull code from *tagged commits* (stable)
 
-<a name="documentation"></a>
 ## Code documentation
 
 You can find it [here](http://welaika.github.io/wordless/docs.html). If you are intrested in contribuing to the documentation:
@@ -366,7 +311,6 @@ vendor/mobile_detect.php
 * we'll recompile the doxygen doc
 * the community will be grateful!
 
-<a name="localization"></a>
 ## Localization
 
 Wordless is available in English, German, Greek, Italian and Spanish, at the moment.
@@ -375,11 +319,9 @@ The user interface was translated by Wasilis Mandratzis-Walz (German and Greek),
 
 Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
 
-<a name="need-more-tools"></a>
 ## Need more tools?
 Visit [Wordpress Tools](http://wptools.it).
 
-<a name="third-party-libraries"></a>
 ## Third Part Libraries
 
 * [Mobile Detect](http://mobiledetect.net)
@@ -388,7 +330,6 @@ Visit [Wordpress Tools](http://wptools.it).
 
 made with ❤️ and ☕️ by [weLaika](http://dev.welaika.com)
 
-<a name="license"></a>
 ## License
 
 (The MIT License)
