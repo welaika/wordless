@@ -7,7 +7,8 @@ function enqueue_stylesheets() {
   wp_enqueue_style("screen");
 }
 
-add_action('wp_enqueue_scripts', 'enqueue_stylesheets');
+// add_action('wp_enqueue_scripts', 'enqueue_stylesheets');
+// At this version CSS is included in the webpack JS bundle
 
 // This function include jquery and application.js in wp_footer() function
 
