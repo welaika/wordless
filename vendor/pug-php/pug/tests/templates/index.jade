@@ -1,0 +1,81 @@
+!!! 5
+html(lang='pt-br')
+    head
+        link(href='css/bootstrap.css',rel='stylesheet')
+        link(href='css/bootstrap-responsive.css',rel='stylesheet')
+        link(href='css/prettify.css',rel='stylesheet')
+        //
+            style
+                body{padding-top:120px;}
+    body
+        //.navbar.navbar-fixed-top
+        .navbar
+            .navbar-inner
+                .container
+                    ul.nav
+                        - each dropdown, dropdown_name in nav_list
+                            li.dropdown
+                                a.dropdown-toggle(data-toggle='dropdown')
+                                    =dropdown_name
+                                    span.caret
+                                ul.dropdown-menu
+                                    - each item in dropdown
+                                        li
+                                            a(href='?test=' + item.link)=item.name
+
+        - if ($test)
+            .container
+                .row
+                    .span6
+                        ul.nav.nav-tabs
+                            li.active
+                                a Jade
+                .row
+                    .span6
+                        pre.prettyprint.linenums=jade
+
+                .row
+                    .span6
+                        ul.nav.nav-tabs
+                            li.active
+                                a Tokens
+
+                    .span6
+                        ul.nav.nav-tabs
+                            li.active
+                                a Nodes
+                .row
+                    .span6
+                        pre.prettyprint.linenums=tokens
+
+                    .span6
+                        pre.prettyprint.linenums=nodes
+
+                .row
+                    .span6
+                        ul.nav.nav-tabs
+                            li.active
+                                a PHP
+
+                    .span6
+                        ul.nav.nav-tabs
+                            li.active
+                                a HTML
+
+                .row
+                    .span6
+                        pre.prettyprint.linenums.lang-php
+                                code=php
+
+                    .span6
+                        pre.prettyprint.linenums.lang-html
+                                code=html
+
+        script(src='js/jquery-1.7.2.min.js')
+        script(src='js/bootstrap-dropdown.js')
+        script(src='js/prettify.js')
+        script
+            jQuery(function($){
+                $('.dropdown-toggle').dropdown();
+                prettyPrint();
+            });

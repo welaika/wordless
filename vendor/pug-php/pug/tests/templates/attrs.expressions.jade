@@ -1,0 +1,14 @@
+:php
+    class FooClass {
+        public function met() {
+            return 42;
+        }
+    }
+    $ob = (object) array('foo' => array());
+    $ob->foo['bar'] = new FooClass();
+    $foo = 'bar';
+p(answear=ob->foo["bar"]->met())
+p(answear=(ob->foo["bar"]->met()))
+p(answear=substr("foo-bar", strlen("foo") + 1))
+p(answear=substr("foo-bar", strlen(strtoupper("F") . "oo") + 1))
+p(answear=foo[0] . substr(foo, 1 / 3 * strlen(foo)))

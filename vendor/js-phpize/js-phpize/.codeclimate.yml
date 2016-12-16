@@ -1,0 +1,25 @@
+---
+engines:
+  duplication:
+    enabled: true
+    exclude_paths:
+    - "tests/"
+    config:
+      languages:
+      - php
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    exclude_fingerprints:
+    # Ignore Stream checks
+    - 862522819408aad57533cfe39d74fde2
+    - 9fe2454c6fe08317f5451a330cff5305
+    - ea57ee5054e53ca5768b1f49cd5ef638
+    - 7986fd32c99587cde451688d5b55808d
+    - 41ada8ab27cb7d56ab534d0b2abc4702
+    - eb746d53b9a8dabef2c1041d8e37158d
+    - ef7cef7244578b6906e8785db37f6f48
+ratings:
+  paths:
+  - "**.php"

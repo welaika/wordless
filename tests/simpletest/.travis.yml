@@ -1,0 +1,26 @@
+#
+# .travis.yml - configuration file for the travis continuous integration service
+#
+# see http://docs.travis-ci.com/user/languages/php/ for more hints
+#
+language: php
+
+# use container based infrastructure (no sudo possible)
+sudo: false
+
+php: [5.4, 5.5, 5.6, 7, hhvm]
+
+matrix:
+    allow_failures:
+        - php: hhvm
+
+script:
+ - php test/all_tests.php
+
+# disable notifications
+notifications:
+  email: false
+
+# reduce commit history of git checkout
+git:
+  depth: 5

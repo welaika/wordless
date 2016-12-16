@@ -1,0 +1,51 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - ruby
+      - javascript
+      - python
+      - php
+    exclude_fingerprints:
+    # Wrong duplicate detection
+    - 337c4c1b0c20f6efc50cd67f9bce5337
+    - 0db540efb806d580dd92aa79ec13ae6e
+    - 8b82fc8b1590d272c6e877b09a7c8865
+  fixme:
+    enabled: true
+  phpmd:
+    enabled: true
+    exclude_fingerprints:
+    # Camel Case in Template (mandatory due to PHP interface)
+    - bfc9d4bcb17b7370187b6188eb667c32
+    - e26083ecb05f3489ef1afc03151e5d72
+    - 89e3aa3801675c411ff895b35b97a410
+    - 3187e2b8251fa9b85b98ebd74e1595f2
+    - 22b8a69d4867ec56276c9c98777ffb38
+    - aaeb3d11f939d1619d64131aa16357e5
+    - af957bd20b308ce225941c9b2d053a25
+    - ca7400c9de963d4695967f19b944bef6
+    # setAttribute is allowed to use boolean default value for escaped
+    - a5e6f6215d8cc84a0b7750eaafaf8105
+    # else here is the simpliest way to do it
+    - 311e57c70997007dce22492a1426d448
+    # False positives due to dynamic variable name
+    - dd33258e7e716128f54e50df078b03ea
+    - 3b839c8aa97552a3daec01930ff9e5c9
+    checks:
+      # Allow static access such as CommonUtils ones
+      CleanCode/StaticAccess:
+        enabled: false
+ratings:
+  paths:
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  - "**.module"
+  - "**.php"
+  - "**.py"
+  - "**.rb"
+exclude_paths:
+- tests/

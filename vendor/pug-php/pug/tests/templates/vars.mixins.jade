@@ -1,0 +1,28 @@
+mixin foo
+  div
+    a=answear
+    - answear++
+    i
+      block
+    - answear++
+    =answear
+    if answear === 100
+      +foo
+        - answear -= 2
+        strong=answear
+        
+- var answear = 100
++foo
+  b=answear
+  - answear += 10
+  u=answear
+  - answear += 20
+  em=answear
+  - answear += 40
+  +foo
+    code
+      =answear
+      - answear = 100
+  - answear = 90
+- answear += 100
+footer=answear

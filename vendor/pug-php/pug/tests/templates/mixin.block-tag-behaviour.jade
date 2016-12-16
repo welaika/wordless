@@ -1,0 +1,18 @@
+mixin article(name)
+  section.article
+    h1= name
+    article
+      block
+
+html
+  body
+    +article('Foo'): p I'm article foo
+
+html
+  body
+    +article('Something').
+      I'm a much longer
+      text-only article,
+      but you can still
+      inline html tags
+      in me if you want.

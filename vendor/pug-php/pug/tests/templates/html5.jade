@@ -1,0 +1,20 @@
+doctype 5
+
+mixin checkbox1()
+    input(type='checkbox')&attributes(attributes)
+mixin checkbox2(checked)
+    input(type='checkbox', checked=checked)
+
+input(type='checkbox', checked)
+input(type='checkbox', checked=true)
+input(type='checkbox', checked=false)
+input(type='checkbox', checked="true")
+input(type='checkbox', checked="false")
++checkbox1()(checked=true)
++checkbox1()(checked=false)
++checkbox1()(checked="true")
++checkbox1()(checked="false")
++checkbox2(true)
++checkbox2(false)
++checkbox2("true")
++checkbox2("false")

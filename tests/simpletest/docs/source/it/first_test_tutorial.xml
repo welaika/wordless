@@ -1,0 +1,448 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Tutorial: unit testing con SimpleTest" here="Tutorial: unit testing con SimpleTest">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>PHP unit testing tutorial - Creating an example test case in PHP</long_title>
+    <content>
+        <introduction>
+            <p>
+				Nel caso tu sia inesperto di unit testing, la raccomandazione è
+				di provare di volta in volta il codice che si incontrerà durante lettura del tutorial:
+                non richiede molto da scrivere e fornisce la sensazione di quale sia il ritmo
+				della programmazione guidata dal collaudo.
+            </p>
+            <p>
+				Per eseguire gli esempi è necessaria una directory vuota contenente
+				le directory <em>classes</em>, <em>tests</em> e <em>temp</em>.
+				Decomprimere quindi il framework <a href="download.php">SimpleTest</a>
+				in <em>tests</em> ed assicurarsi che il web server possa raggiungere
+				le varie posizioni.
+            </p>
+        </introduction>
+        <section name="new" title="Un nuovo test case">
+            <p>
+				Nel <a href="start-testing.html">tutorial rapido</a>
+				è stato mostrato il collaudo di unità applicato ad una semplice classe di log.
+				In questo tutorial su SimpleTest ho intenzione di provare
+				a raccontare l'argomento dello sviluppo della classe nella sua interezza.
+				La classe dell'esempio è piccola e semplice e nel corso dell'introduzione
+				riceverà probabilmente più attenzione di quanta ne riceverebbe
+				realmente in produzione.
+				Ma perfino una classe minuscola come questa richiederà decisioni sul
+				design di soprendente difficoltà.
+            </p>
+            <p>
+				Può darsi decisioni fin troppo difficili?
+                Piuttosto che tentare di disegnare il tutto fin dall'inizio,
+				si partirà con un requisito noto: il fatto che si vuole
+				scrivere un messaggio su un file.
+				Il messaggio deve essere accodato al file se questo esiste.
+				Successivamente ci si porrà ilproblema di gestire le
+				priorità, i filtraggi etc, ma per adesso posizioneremo
+				il requisito della scrittura del file in cima ai nostri pensieri.
+				Per paura di confonderci non penseremo a nient'altro.
+				Ok, scriviamo un test:
+<php><![CDATA[
+<strong><?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+
+class TestOfLogging extends UnitTestCase {
+    function testFirstLogMessagesCreatesFileIfNonexistent() {
+    }
+}
+?></strong>
+]]></php>
+				Vediamo, passo passo, cosa significa.
+            </p>
+            <p>
+				Il costrutto <code>dirname(__FILE__)</code> si limita a garantire
+				che il path venga interpretato relativamente alla posizione del file corrente.
+            </p>
+            <p>
+				Cos'è il file <em>autorun.php</em>?
+                Questo file si occupa di rendere disponibile la definizione di
+                <code>UnitTestCase</code>.
+				Recupera tutte le classi dei test definite nel file corrente
+				e le esegue automagicamente.
+				Per ottenere questo risultato, imposta un handler di uscita dallo
+				script PHP.
+				Approfondiremo il discorso più tardi quando si affronterà
+				l'argomento della modifica dell'output.
+            </p>
+            <p>
+				I test stessi sono raccolti in classi di test case.
+				La classe dell'esempio, <code>TestOfLogging</code>, estende, come nel caso
+				più tipico, <code>UnitTestCase</code>.
+				Quando il test case viene invocato, l'autorunner si metterà alla ricerca
+				dei metodi della classe il cui nome inizi per &quot;test&quot;.
+				Ciascuno di questi metodi verrà eseguito nell'ordine in cui è
+				definito nella classe.
+            </p>
+            <p>
+				L'unico metodo attualmente presente nella classe è 
+                <code>testFirstLogMessagesCreatesFileIfNonexistent()</code>.
+                Non contiene ancora niente.
+            </p>
+            <p>
+				Adesso, la definizione vuota del metodo non può eseguire alcunché.
+				Abbiamo bisogno di riempirla con del codice.
+				La classe <code>UnitTestCase</code>, normalmente, è
+				pensata per generare durante il suo funzionamento degli eventi  che 
+				vengono inviati ad un reporter in attesa, attraverso i metodi ereditati da
+				<code>UnitTestCase</code>.
+            </p>
+            <p>
+				Adesso, aggiungiamo il codice di test:
+<php><![CDATA[
+<?php
+require_once(dirname(__FILE__) . '/simpletest/autorun.php');
+require_once('../classes/log.php');</strong>
+
+class TestOfLogging extends UnitTestCase {
+    function testFirstLogMessagesCreatesFileIfNonexistent() {<strong>
+        @unlink(dirname(__FILE__) . '/../temp/test.log');
+        $log = new Log(dirname(__FILE__) . '/../temp/test.log');
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists(dirname(__FILE__) . '/../temp/test.log'));</strong>
+    }
+}
+?>
+]]></php>
+            </p>
+            <p>
+				Starai probabilmente pensando che si tratti di troppo codice
+				per un singolo collaudo e su questo concordo.
+				Non temere. Questo è un costo una tantum a da questo momento in poi
+				i test saranno uno scherzo da aggiungere.
+				E saranno ancora più semplici con i meccanismi che vedremo
+				più avanti.
+            </p>
+            <p>
+				Può anche darsi che tu abbia pensato che
+                <code>testFirstLogMessagesCreatesFileIfNonexistent</code>
+				sia un nome orribile e troppo lungo per un metodo.
+				Generalmente questo sarebbe vero, ma in questo contesto è una
+				buona scelta.
+				Non capiterà mai più di dover digitare nuovamente questa stringa ed
+				il nome lungo permette di risparmiare commenti e specifiche.
+            </p>
+            <p>
+				Adesso è il momento della nostra prima decisione.
+				Il nostro file si chiama <em>log_test.php</em> (qualsiasi nome sarebbe
+				andato bene) e si trova in una directory chiamata <em>tests</em> (qualsiasi
+				posizione sarebbe andata ugualmente bene).
+				Abbiamo chiamato il file del codice da collaudare <em>log.php</em> e
+				lo abbiamo posizionato in una directory chiamata <em>classes</em>, il che
+				significa che ci apprestiamo a scrivere una classe, ok?
+            </p>
+            <p>
+				In questo esempio è quello che faremo, ma lo unit tester non
+				è limitato al solo collaudo delle classi.
+				Il fatto è che il codice orientato agli oggetti e semplice
+				da decomporre e da ridisegnare per permettere i collaudi.
+                Non è un caso che lo stile di collaudo granulare degli unit test
+				sia storicamente emerso dalla comunità degli sviluppatori object
+				oriented.
+            </p>
+            <p>
+				Il test di per se' è minimale.
+				Per prima cosa elimina qualsiasi file di test dovesse
+				essere rimasto da precedenti esecuzioni.
+				Le decisioni di design sopraggiungono rapidamente e tutte insieme.
+				
+				La nostra classe si chiama <code>Log</code> ed
+				accetta il path del file nel costruttore.
+				Noi creiamo un log ed immediatamente gli inviamo
+				un messaggio con il metodo
+                <code>message()</code>.
+				Sfortunatamente, la capacità di scegliere nomi originali
+				non è una caratteristica molto richiesta agli sviluppatori
+				software.
+            </p>
+            <p>
+				L'elemento base di uno unit test è l'assert.
+				Qui si desidera assicurarsi che il log file al quale si è
+				inviato il messaggio venga veramente creato.
+				
+                <code>UnitTestCase::assertTrue()</code>
+				invia un evento di successo se la condizione viene valutata come
+				vera ed un evento di fallimento in caso contrario.
+				Disponiamo di una varietà di differenti assert e di un insieme ancor
+				più grande se estendiamo i nostri test case.
+            </p>
+            <p>
+                Questa è una lista base:
+                <table><tbody>
+					 <tr><td><code>assertTrue($x)</code></td><td>Fallisce se $x è falso</td></tr>
+                    <tr><td><code>assertFalse($x)</code></td><td>Fallisce se $x è vero</td></tr>
+                    <tr><td><code>assertNull($x)</code></td><td>Fallisce se $x è impostato</td></tr>
+                    <tr><td><code>assertNotNull($x)</code></td><td>Fallisce se $x è non impostato</td></tr>
+                    <tr><td><code>assertIsA($x, $t)</code></td><td>Fallisce se $x non è una classe del tipo $t</td></tr>
+                    <tr><td><code>assertNotA($x, $t)</code></td><td>Fallisce se $x è una classe del tipo $t</td></tr>
+                    <tr><td><code>assertEqual($x, $y)</code></td><td>Fallisce se $x == $y è falso</td></tr>
+                    <tr><td><code>assertNotEqual($x, $y)</code></td><td>Fallisce se $x == $y è vero</td></tr>
+                    <tr><td><code>assertWithinMargin($x, $y, $m)</code></td><td>Fallisce se abs($x - $y) &lt; $m è falso</td></tr>
+                    <tr><td><code>assertOutsideMargin($x, $y, $m)</code></td><td>Fallisce se abs($x - $y) &lt; $m è vero</td></tr>
+                    <tr><td><code>assertIdentical($x, $y)</code></td><td>Fallisce se $x == $y è falso or se i tipi differiscono</td></tr>
+                    <tr><td><code>assertNotIdentical($x, $y)</code></td><td>Fallisce se $x == $y è vero ed i tipi sono uguali</td></tr>
+                    <tr><td><code>assertReference($x, $y)</code></td><td>Fallisce a meno che $x e $y siano la stessa variabile</td></tr>
+                    <tr><td><code>assertCopy($x, $y)</code></td><td>Fallisce a meno che $x e $y siano copie identiche</td></tr>
+					<tr><td><code>assertSame($x, $y)</code></td><td>Fallisce a meno che $x e $y siano lo stesso oggetto</td></tr>
+					<tr><td><code>assertClone($x, $y)</code></td><td>Fallisce a meno che $x e $y siano identici ma siano oggetti separati</td></tr>
+                    <tr><td><code>assertPattern($p, $x)</code></td><td>Fallisce a meno che l'espressione regolare $p soddisfi $x</td></tr>
+                    <tr><td><code>assertNoPattern($p, $x)</code></td><td>Fallisce se l'espressione regolare $p nonn soddisfi $x</td></tr>
+                    <tr><td><code>expectError($x)</code></td><td>Fallisce se non viene generato un errore che soddisfi il matching con $x</td></tr>
+                    <tr><td><code>expectException($x)</code></td><td>Fallisce se non viene lanciata un'eccezione che soddisfi il matching con $x</td></tr>
+                    <tr><td><code>ignoreException($x)</code></td><td>Ignora qualsiasi eccezione dovesse essere lanciata</td></tr>
+                </tbody></table>
+            </p>
+            <p>
+				Adesso siamo pronti ad eseguire lo script di test puntandovi il browser.
+                Cosa succederà?
+                Dovrebbe essere visualizzato un crash:
+                <div class="demo">
+                    <b>Fatal error</b>: Failed opening required '../classes/log.php' (include_path='') in <b>/home/marcus/projects/lastcraft/tutorial_tests/Log/tests/log_test.php</b> on line <b>7</b>
+                </div>
+				La ragione è che <em>log.php</em> non è ancora stato creato.
+            </p>
+            <p>
+				Aspetta, ma questo è assurdo!
+				Non starai mica cercando di costruire un collaudo senza ancora avere una sola riga del
+				codice che vuoi collaudare, vero?
+            </p>
+        </section>
+        <section name="tdd" title="Test Driven Development">
+            <p>
+				Il coinventore di <a href="http://www.extremeprogramming.org/">eXtreme Programming</a>,
+				Kent Beck, ha pubblicato un nuovo manifesto.
+				Il libro si intitola
+                <a href="http://www.amazon.com/exec/obidos/tg/detail/-/0321146530/ref=lib_dp_TFCV/102-2696523-7458519?v=glance&amp;s=books&amp;vi=reader#reader-link">Test driven development</a>
+				(TDD) e promuove lo unit testing ad una posizione chiave nel design di software.
+				In breve, l'idea è di scrivere  dei piccoli test prima e
+				solo dopo occuparsi della scrittura del codice.
+				Per qualsiasi codice.
+                Fidatevi, funziona.
+            </p>
+            <p>
+				Scrivi un nuovo test e fai in modo che passi con successo.
+				Quello che otterrai all'inizio è un po' di ridondanza e, generalmente, del codice
+				di qualità schifosa.
+				Assicurandoti che i test continuino a passare ti puoi preoccupare, allora, di ri-arrangiare 
+				il codice, cioè di fare il refactoring.
+				Questo ti garantisce di non compromettere le funzionalità.
+				Una volta che il codice è pulito quanto possibile sei pronto ad aggiungere
+				nuove funzionalità, ma non lo farai: aggiungerai, invece, un altro test
+				per la nuova feature e ricomincerai nuovamente il ciclo.
+				Le funzionalità verranno generate attraverso i tentativi di far
+				passare con successo i test che le definiscono.
+            </p>
+            <p>
+				Immagina il test come una specifica eseguibile che sia stata creata per l'occasione.
+            </p>
+            <p>
+				E' un approccio radicale e personalmente mi sembra incompleto ma
+				è molto efficace per spiegare cosa sia uno unit tester.
+				Nel nostro caso abbiamo un test che fallisce (per non dire che va in crash)
+				così avremo bisogno di scrivere del codice in <em>log.php</em>:
+<php><![CDATA[
+<strong><?php
+class Log {
+    
+    function __construct($path) {
+    }
+        
+    function message($message) {
+    }
+}
+?></strong>
+]]></php>
+				Questo è il minimo da fare per evitare fatal error di PHP.
+				Adesso recuperiamo il risultato:
+                <div class="demo">
+                    <h1>TestOfLogging</h1>
+                    <span class="fail">Fail</span>: testFirstLogMessagesCreatesFileIfNonexistent-&gt;True assertion failed.<br />
+                    <div style="padding: 8px; margin-top: 1em; background-color: red; color: white;">1/1 test cases complete.
+                    <strong>0</strong> passes, <strong>1</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				&quot;TestOfLogging&quot; ha fallito.
+				SimpleTest, di default, utilizza i nomi delle classi per descrivere
+				i test ma è sempre possibile sostituire il nome con uno di nostra scelta:
+<php><![CDATA[
+class TestOfLogging extends UnitTestCase {
+    <strong>function __construct() {
+        parent::__construct('Log test');
+    }</strong>
+
+    function testFirstLogMessagesCreatesFileIfNonexistent() {<strong>
+        @unlink(dirname(__FILE__) . '/../temp/test.log');
+        $log = new Log(dirname(__FILE__) . '/../temp/test.log');
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists(dirname(__FILE__) . '/../temp/test.log'));</strong>
+    }
+}
+]]></php>
+                Il che fornisce:
+                <div class="demo">
+                    <h1>Log test</h1>
+                    <span class="fail">Fail</span>: testFirstLogMessagesCreatesFileIfNonexistent-&gt;File created.<br />
+                    <div style="padding: 8px; margin-top: 1em; background-color: red; color: white;">1/1 test cases complete.
+                    <strong>0</strong> passes, <strong>1</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				Se si ha intenzione di cambiare il nome del test si deve intervenire
+				modificando l'output del reporter, operazione che affronteremo più tardi.
+            </p>
+            <p>
+				Per far passare il test si potrebbe semplicemente creare il file
+				nel costruttore di <code>Log</code>.
+				Questa tecnica d'&quot;inganno&quot; è molto utile per controllare
+				che i test funzionino, a mali estremi.
+				Questo è particolarmente vero nel caso si siano registrati fallimenti dei 
+				test e ci si voglia assicurare di non aver dimenticato qualcosa di
+				stupido.
+				Non procederemo così lentamente, perciò:
+<php><![CDATA[
+<?php   
+class Log {<strong>
+    var $path;</strong>
+        
+    function __construct($path) {<strong>
+        $this->path = $path;</strong>
+    }
+        
+    function message($message) {<strong>
+        $file = fopen($this->path, 'a');
+        fwrite($file, $message . "\n");
+        fclose($file);</strong>
+    }
+}
+?>
+]]></php>
+				Ho dovuto incontrare non meno di quattro failure per raggiungere questo passo:
+				non avevo creato la directory temporanea, non l'avevo impostata come
+				pubblicamente accessibile in scrittura, avevo un errore di battitura e mi
+				ero dimenticato di aggiungere la nuova cartella sul CVS (questo l'ho scoperto più 
+				tardi).
+				Ognuno di questi problemi avrebbe potuto tenermi occupato per diverse ore
+				se solo si fosse manifestato in un secondo momento, ma è proprio per
+				questo che i test servono.
+                
+            </p>
+            <p>
+				Con le correzioni necessarie si è ottenuto:
+                <div class="demo">
+                    <h1>Log test</h1>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">1/1 test cases complete.
+                    <strong>1</strong> passes, <strong>0</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+                Successo!
+            </p>
+            <p>
+				Può darsi che tu non gradisca lo stile di visualizzazione minimale.
+				Di default, i successi non vengono mostrati perché, generalmente, non c'è
+				bisogno di ulteriori informazioni quando si ha la situazione
+				sotto controllo.
+				Se non si sa come le cose stanno procedendo, allora è il caso di scrivere
+				ulteriori test.
+            </p>
+            <p>
+				Ok, qui sono stato fin troppo rigido.
+				Se desideri vedere anche i casi di successo allora ti basta
+				<a local="display_subclass_tutorial">estendere la classe
+                <code>HtmlReporter</code></a>
+                ed aggiungerla ai test al posto del reporter standard.
+				Anche io gradisco il comfort, ogni tanto.
+            </p>
+        </section>
+        <section name="doc" title="I test come documentazione">
+            <p>
+				Adesso una sottigliezza.
+                Non vogliamo che il file creato esista fino a che non
+				inviamo il messaggio.
+				Piuttosto che pensarci troppo sopra, aggiungeremo
+				intanto l'assert:
+<php><![CDATA[
+class TestOfLogging extends UnitTestCase {
+    function testFirstLogMessagesCreatesFileIfNonexistent() {
+        @unlink(dirname(__FILE__) . '/../temp/test.log');
+        $log = new Log(dirname(__FILE__) . '/../temp/test.log');<strong>
+        $this->assertFalse(file_exists(dirname(__FILE__) . '/../temp/test.log'));</strong>
+        $log->message('Should write this to a file');
+        $this->assertTrue(file_exists(dirname(__FILE__) . '/../temp/test.log'));
+
+    }
+}
+]]></php>
+                per scoprire che già funzionava così:
+                <div class="demo">
+                    <h1>TestOfLogging</h1>
+                    <div style="padding: 8px; margin-top: 1em; background-color: green; color: white;">1/1 test cases complete.
+                    <strong>2</strong> passes, <strong>0</strong> fails and <strong>0</strong> exceptions.</div>
+                </div>
+				Ora, sapevo che avrebbe funzionato.
+				Ho aggiunto il test che lo conferma in parte per mettere in pace l'animo e in parte
+				per documentare questo comportamento.
+				Questa unica linea extra dice molto di più, in questo contesto, di dozzine
+				di righe di use case o di un intero diagramma di attività UML.
+				Che la test suite sia una sorgente di documentazione è un piacevole
+				effetto collaterale di tutti i test.
+                
+            </p>
+            <p>
+				Dovremmo pulire il file temporaneo alla fine del test?
+                Di solito faccio questa operazione quando ho terminato
+				il metodo di test e vedo che funziona.
+				Non ho voglia di inserire in CVS del codice che lasci in giro 
+				residui di file di test dopo i collaudi.
+                Non voglio farlo mentre scrivo i test, comunque.
+				Probabilmente dovrei, ma a volte ho bisogno di vedere come
+				le cose procedono e, poi, è una questione di comodità.
+            </p>
+            <p>
+				Nella progetti reali si produce più di un test case e, pertanto,
+				il prossimo argomento che dobbiamo trattare è
+				
+				<a local="group_test_tutorial">il raggruppamento dei test in test suite.</a>.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>Creating a <a href="#new">new test case</a>.</link>
+        <link><a href="#tdd">Test driven development</a> in PHP.</link>
+        <link><a href="#doc">Tests as documentation</a> is one of many side effects.</link>
+    </internal>
+    <external>
+        <link>
+            The <a href="http://junit.sourceforge.net/doc/faq/faq.htm">JUnit FAQ</a>
+            has plenty of useful testing advice.
+        </link>
+        <link>
+            <a href="group_test_tutorial.php">Next</a> is grouping test
+            cases together.
+        </link>
+        <link>
+            You will need the <a href="simple_test.php">SimpleTest testing framework</a>
+            for these examples.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming,
+            programming php,
+            software development tools,
+            php tutorial,
+            free php scripts,
+            architecture,
+            php resources,
+            mock objects,
+            junit,
+            php testing,
+            unit test,
+            automated php testing,
+            test cases tutorial,
+            explain unit test case,
+            unit test example,
+            unit test
+        </keywords>
+    </meta>
+</page>

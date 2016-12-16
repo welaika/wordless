@@ -1,0 +1,22 @@
+extends main
+
+block body
+
+  div#cities.container
+    h3 Find for a City / Country
+    form.form-vertical(method='get')
+      div.form-group
+        input.form-control(name='q', value=query, placeholder='type some words')
+
+      div.form-action
+        input.btn.btn-primary(type='submit', value='Search')
+    hr
+
+    if cities.result
+      h4.text-info Found #{cities.total} cities
+      ol.navlist
+        each city in cities.result
+          li= city
+
+    else
+      h4.text-info Sorry, no city matched.

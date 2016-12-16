@@ -1,0 +1,305 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Il collaudo di form" here="Il collaudo di form">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>SimpleTest documentation for testing HTML forms</long_title>
+    <content>
+        <section name="submit" title="Modificare i valori dei form ed eseguire il submit di un semplice form">
+            <p>
+				Quando una pagina viene recuperata da <code>WebTestCase</code>
+				tramite <code>get()</code> o <code>post()</code>
+				il contenuto della pagina viene automaticamente analizzato.
+                Il risultato è che ogni elemento contenuto dentro un tag
+				&lt;form&gt; risulterà disponibile all'interno del test case.
+				Per esempio, con questo snippet HTML:
+<php><![CDATA[
+<form>
+    <input type="text" name="a" value="A default" />
+    <input type="submit" value="Go" />
+</form>
+]]></php>
+				che avrebbe questo aspetto:
+            </p>
+            <p>
+                <form class="demo">
+                    <input type="text" name="a" value="A default" />
+                    <input type="submit" value="Go" />
+                </form>
+            </p>
+            <p>
+				si potrebbe navigare il codice, sul sito 
+				<a href="http://www.lastcraft.com/form_testing_documentation.php">LastCraft</a>
+				con il seguente test:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {<strong>
+    function testDefaultValue() {
+        $this->get('http://www.lastcraft.com/form_testing_documentation.php');
+        $this->assertField('a', 'A default');
+    }</strong>
+}
+]]></php>
+				Immediatamente dopo il caricamento della pagina, tutti gli elementi HTML
+				vengono impostati al loro valore di default, proprio come nel caso
+				apparissero nel browser.
+				Gli assert dell'esempio si assicurano che nella pagina esista un widget HTML con il nome &quot;a&quot;
+				e che il suo valore sia &quot;A default&quot;..
+                Al solito, è possibile utilizzare un pattern invece di una stringa statica:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    function testDefaultValue() {
+        $this->get('http://www.lastcraft.com/form_testing_documentation.php');
+        $this->assertField('a', <strong>new PatternExpectation('/default/')</strong>);
+    }
+}
+]]></php>
+				Si potrebbe eseguire il submit del form così com'è, ma prima
+				si proverà a modificare il valore del campo di testo e solo allora
+				si farà il submit:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    function testDefaultValue() {
+        $this->get('http://www.my-site.com/');
+        $this->assertField('a', 'A default');<strong>
+        $this->setField('a', 'New value');
+        $this->click('Go');</strong>
+    }
+}
+]]></php>
+				Siccome non è stato specificato un attributo method nel tag form e
+				nemmeno una action, il test case seguirà l'usuale comportameto di un
+				browser ed effettuerà il submit dei dati del form con una richiesta 
+				<em>GET</em> allo stesso indirizzo.
+				In generale, piuttosto che cercare di individuare gli elementi mancanti in un form,
+				SimpleTest cerca di emulare il più possibile il tipico comportamento di un
+				browser.
+                Il motivo di questo è che l'obiettivo di un framework di test è il collaudo
+				della logica di un'applicazione PHP e non la valutazione della correttezza
+				sintattica del codice HTML.
+				Per gli errori HTML dovrebbero essere utilizzati altri tool come 
+				<a href="http://www.w3.org/People/Raggett/tidy/">HTMLTidy</a> o qualsiasi
+				altro validatore HTML e CSS già sul mercato.
+            </p>
+            <p>
+				Se un campo non viene trovato in alcun form o se un'opzione non è disponibile,
+				allora <code>WebTestCase::setField()</code> restituirà <code>false</code>.
+				Per esempio, supponiamo che si voglia verificare che l'opzione &quot;Superuser&quot;
+				non sia presente su questo form:
+<pre><![CDATA[
+<strong>Select type of user to add:</strong>
+<select name="type">
+    <option>Subscriber</option>
+    <option>Author</option>
+    <option>Administrator</option>
+</select>
+]]></pre>
+                che apparirebbe così:
+            </p>
+            <p>
+                <form class="demo">
+                    <strong>Select type of user to add:</strong>
+                    <select name="type">
+                        <option>Subscriber</option>
+                        <option>Author</option>
+                        <option>Administrator</option>
+                    </select>
+                </form>
+            </p>
+            <p>
+                Il test seguente lo confermerebbe:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    ...
+    function testNoSuperuserChoiceAvailable() {<strong>
+        $this->get('http://www.lastcraft.com/form_testing_documentation.php');
+        $this->assertFalse($this->setField('type', 'Superuser'));</strong>
+    }
+}
+]]></php>
+				Se il nuovo valore non è una delle opzioni, la selezione corrente non viene modificata.
+            </p>
+            <p>
+				Di seguito un elenco di tutti i widget correntemente supportati:
+                <ul>
+                    <li>Campi di testo, compresi i campi nascosti e le password.</li>
+                    <li>Pulsanti di submit, compreso il tag button ma escluso il pulsante reset</li>
+                    <li>Text area. E' compreso anche il comportamento "A capo automatico"</li>
+                    <li>Checkboxe,  compresi i checkboxe multipli all'interno dello stesso form</li>
+                    <li>Elenchi a cascata, inclusi quelli con selezione multipla</li>
+                    <li>Radio buttons</li>
+                    <li>Immagini</li>
+                </ul>
+            </p>
+            <p>
+				L'emulazione del browser offerta da Simpletest imita
+				le azioni che un utente può effettuare su una pagina
+				HTML standard. Javascript non è supportato ed è
+				improbabile che venga aggiunto il supporto a breve.
+            </p>
+            <p>
+				Un aspetto da tenere in considerazione è che la tecnica
+				Javascript di inviare i form dopo l'impostazione di un
+				campo nascosto non può essere emulata con i normali comandi
+				di SimplTest.
+				Si veda oltre per un sistema di collaudo di form di questo tipo.
+            </p>
+        </section>
+        <section name="multiple" title="Gestire widget con valori multipli">
+            <p>
+				SimpleTest può gestire due tipi di controlli multivalore: i drop-down
+				multipli e i checkbox multipli all'interno dello stesso form.
+				La natura di questi elementi comporta che la loro impostazione
+				ed il loro collaudo debba essere eseguito in modo leggermente differente.
+				Vediamo un esempio con i checkbox:
+<pre><![CDATA[
+<form class="demo">
+    <strong>Create privileges allowed:</strong>
+    <input type="checkbox" name="crud" value="c" checked><br>
+    <strong>Retrieve privileges allowed:</strong>
+    <input type="checkbox" name="crud" value="r" checked><br>
+    <strong>Update privileges allowed:</strong>
+    <input type="checkbox" name="crud" value="u" checked><br>
+    <strong>Destroy privileges allowed:</strong>
+    <input type="checkbox" name="crud" value="d" checked><br>
+    <input type="submit" value="Enable Privileges">
+</form>
+]]></pre>
+                Questo viene visualizzato come:
+            </p>
+            <p>
+                <form class="demo">
+                    <strong>Create privileges allowed:</strong>
+                    <input type="checkbox" name="crud" value="c" checked=""/><br/>
+                    <strong>Retrieve privileges allowed:</strong>
+                    <input type="checkbox" name="crud" value="r" checked=""/><br/>
+                    <strong>Update privileges allowed:</strong>
+                    <input type="checkbox" name="crud" value="u" checked=""/><br/>
+                    <strong>Destroy privileges allowed:</strong>
+                    <input type="checkbox" name="crud" value="d" checked=""/><br/>
+                    <input type="submit" value="Enable Privileges"/>
+                </form>
+            </p>
+            <p>
+				Se si desidera disabilitare tutti i checkbox escluso
+				"Retrieve privileges allowed" ed eseguire poi il submit, si può
+				fare così:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    ...<strong>
+    function testDisableNastyPrivileges() {
+        $this->get('http://www.lastcraft.com/form_testing_documentation.php');
+        $this->assertField('crud', array('c', 'r', 'u', 'd'));
+        $this->setField('crud', array('r'));
+        $this->click('Enable Privileges');
+    }</strong>
+}
+]]></php>
+				Piuttosto che impostare il campo con un singolo valore, si è fornito
+				un elenco di valori.
+				Si fa la stessa cosa quando si verificano i valori attesi.
+				Si può procedere quindi scrivendo altri test per confermare l'effetto
+				di quest'ultimo, per esempio eseguendo il login con l'utente selezionato e tentando
+				di fare un update.
+            </p>
+        </section>
+        <section name="hidden-field" title="Form che utilizzano Javascript per popolare campi nascosti">
+            <p>
+				Se si vuole collaudare un form che fa affidamento sul fatto che Javascript
+				imposti un campo nascosto, non sarà sufficiente invocare setField().
+				Il codice riportato qui di seguito <em>non</em> funzionerà:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    function testEmulateMyJavascriptForm() {
+        <strong>// This does *not* work</strong>
+        $this->setField('a_hidden_field', '123');
+        $this->clickSubmit('OK');
+    }
+}
+]]></php>
+				Piuttosto, ci sarà bisogno di passare dei parametri aggiuntivi
+				al metodo clickSubmit():
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    function testMyJavascriptForm() {
+        <strong>$this->clickSubmit('OK', array('a_hidden_field'=>'123'));</strong>
+    }
+
+}
+]]></php>
+				Si tenga in mente che in questo modo si sta effettivamente cortocircuitando
+				una parte del proprio software (il codice javascript nel form) e forse sarebbe
+				meglio utilizzare strumenti come <a href="http://selenium.openqa.org/">Selenium</a>
+				per assicurare un collaudo più completo.
+            </p>
+        </section>
+        <section name="raw" title="Post manuale in assenza del pulsante di submit">
+            <p>
+				Se si vuole collaudare un gestore di form non non si è ancora
+				scritto il form o non vi si può accedere, è possibile invocare il
+				submit manualmente:
+<php><![CDATA[
+class SimpleFormTests extends WebTestCase {
+    ...<strong>    
+    function testAttemptedHack() {
+        $this->post(
+                'http://www.my-site.com/add_user.php',
+                array('type' => 'superuser'));
+        $this->assertNoText('user created');
+    }</strong>
+}
+]]></php>
+				Aggiungendo <code>WebTestCase::post()</code>
+				si sta emulando il submit del form.
+				Normalmente si userà questo sistema come espediente provvisorio
+				o nel caso ci si aspetti che sia un componente di terze parti ad
+				eseguire il submit.
+				Un'eccezione a questo è quando si desidera collaudare la protezione
+				dai tentativi di spoofing delle pagine.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#submit">Modificare i valori dei form</a> ed eseguire il submit di un semplice form
+        </link>
+        <link>
+            <a href="#multiple">Gestire widget con valori multipli</a>
+            
+        </link>
+        <link>
+            <a href="#hidden-field">Form che utilizzano Javascript per popolare campi nascosti</a>.
+        </link>
+        <link>
+            <a href="#raw">Post manuale in assenza del pulsante di submit</a>
+            to click.
+        </link>
+    </internal>
+    <external>
+        <link>
+            SimpleTest project page on <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            SimpleTest download page on <a href="http://www.lastcraft.com/simple_test.php">LastCraft</a>.
+        </link>
+        <link>
+            The <a href="http://simpletest.org/api/">developer&apos;s API for SimpleTest</a>
+            gives full detail on the classes and assertions available.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development,
+            php programming for clients,
+            customer focused php,
+            software development tools,
+            acceptance testing framework,
+            free php scripts,
+            architecture,
+            php resources,
+            HTMLUnit,
+            JWebUnit,
+            php testing,
+            unit test resource,
+            web testing
+        </keywords>
+    </meta>
+</page>

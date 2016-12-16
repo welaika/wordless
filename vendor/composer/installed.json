@@ -1,0 +1,260 @@
+[
+    {
+        "name": "js-phpize/js-phpize",
+        "version": "0.2.2",
+        "version_normalized": "0.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pug-php/js-phpize.git",
+            "reference": "8c7d897b89e5ff7314b8e6347832a140867c84c7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/8c7d897b89e5ff7314b8e6347832a140867c84c7",
+            "reference": "8c7d897b89e5ff7314b8e6347832a140867c84c7",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "phpunit/phpunit": ">=4.0"
+        },
+        "time": "2016-11-27 21:46:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JsPhpize": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Katarn",
+                "email": "kylekatarnls@gmail.com"
+            }
+        ],
+        "description": "Convert js-like syntax to standalone PHP code."
+    },
+    {
+        "name": "pug-php/pug",
+        "version": "2.4.6",
+        "version_normalized": "2.4.6.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pug-php/pug.git",
+            "reference": "9d4932d5c8f26648d453a1146561ae9046011491"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pug-php/pug/zipball/9d4932d5c8f26648d453a1146561ae9046011491",
+            "reference": "9d4932d5c8f26648d453a1146561ae9046011491",
+            "shasum": ""
+        },
+        "require": {
+            "js-phpize/js-phpize": ">=0.2.0",
+            "php": ">=5.3.0"
+        },
+        "replace": {
+            "kylekatarnls/jade-php": "self.version"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "phpunit/phpunit": ">=4.0"
+        },
+        "time": "2016-11-25 10:28:57",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Pug\\": "src/",
+                "Jade\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Janez Troha",
+                "email": "janez.troha@gmail.com",
+                "homepage": "http://flavors.me/dz0ny",
+                "role": "Maintainer"
+            },
+            {
+                "name": "Luke GB",
+                "email": "git@lukegb.com",
+                "homepage": "http://twitter.com/lukegb",
+                "role": "Maintainer"
+            },
+            {
+                "name": "Ronan Tessier",
+                "email": "ronan.tessier@vaconsulting.lu",
+                "homepage": "http://github.com/ronan-gloo",
+                "role": "Maintainer"
+            },
+            {
+                "name": "kylekatarnls",
+                "email": "jade-php@selfbuild.fr",
+                "homepage": "http://github.com/kylekatarnls",
+                "role": "Developer"
+            },
+            {
+                "name": "volter9",
+                "homepage": "https://github.com/volter9",
+                "role": "Developer"
+            },
+            {
+                "name": "sisoftrg",
+                "homepage": "https://github.com/sisoftrg",
+                "role": "Developer"
+            },
+            {
+                "name": "hackaugusto",
+                "homepage": "https://github.com/hackaugusto",
+                "role": "Developer"
+            },
+            {
+                "name": "peniar",
+                "homepage": "https://github.com/peniar",
+                "role": "Developer"
+            },
+            {
+                "name": "NSinopoli",
+                "homepage": "https://github.com/NSinopoli",
+                "role": "Developer"
+            },
+            {
+                "name": "DJRanger",
+                "homepage": "https://github.com/DJRanger",
+                "role": "Contributor"
+            },
+            {
+                "name": "fcrosfly",
+                "homepage": "https://github.com/fcrosfly",
+                "role": "Contributor"
+            },
+            {
+                "name": "Soviut",
+                "homepage": "http://github.com/Soviut",
+                "role": "Contributor"
+            },
+            {
+                "name": "just-paja",
+                "homepage": "http://github.com/just-paja",
+                "role": "Contributor"
+            },
+            {
+                "name": "cjonasw",
+                "homepage": "http://github.com/cjonasw",
+                "role": "Contributor"
+            },
+            {
+                "name": "s4msung",
+                "homepage": "http://github.com/s4msung",
+                "role": "Contributor"
+            },
+            {
+                "name": "sadjow",
+                "homepage": "http://github.com/sadjow",
+                "role": "Contributor"
+            },
+            {
+                "name": "hkjels",
+                "homepage": "http://github.com/hkjels",
+                "role": "Contributor"
+            },
+            {
+                "name": "krizalys",
+                "homepage": "http://github.com/krizalys",
+                "role": "Contributor"
+            },
+            {
+                "name": "sszigeti",
+                "homepage": "http://github.com/sszigeti",
+                "role": "Contributor"
+            },
+            {
+                "name": "Konstantin Kudryashov",
+                "email": "konstantin.kudryashov@knplabs.com",
+                "homepage": "http://about.me/everzet",
+                "role": "Developer"
+            },
+            {
+                "name": "Marco \"Debo\" De Bortoli",
+                "homepage": "https://github.com/debo",
+                "role": "contributor"
+            }
+        ],
+        "description": "HAML-like template engine for PHP 5.3",
+        "homepage": "https://github.com/pug-php/pug",
+        "keywords": [
+            "jade",
+            "minification",
+            "pug",
+            "template"
+        ]
+    },
+    {
+        "name": "mobiledetect/mobiledetectlib",
+        "version": "2.8.24",
+        "version_normalized": "2.8.24.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/serbanghita/Mobile-Detect.git",
+            "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
+            "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.0.0"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "johnkary/phpunit-speedtrap": "~1.0@dev",
+            "phpunit/phpunit": "*"
+        },
+        "time": "2016-11-11 14:56:25",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "classmap": [
+                "Mobile_Detect.php"
+            ],
+            "psr-0": {
+                "Detection": "namespaced/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Serban Ghita",
+                "email": "serbanghita@gmail.com",
+                "homepage": "http://mobiledetect.net",
+                "role": "Developer"
+            }
+        ],
+        "description": "Mobile_Detect is a lightweight PHP class for detecting mobile devices. It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.",
+        "homepage": "https://github.com/serbanghita/Mobile-Detect",
+        "keywords": [
+            "detect mobile devices",
+            "mobile",
+            "mobile detect",
+            "mobile detector",
+            "php mobile detect"
+        ]
+    }
+]

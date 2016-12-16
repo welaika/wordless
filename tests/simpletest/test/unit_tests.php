@@ -1,15 +1,17 @@
 <?php
-// $Id: unit_tests.php 1986 2010-04-02 10:02:42Z lastcraft $
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../unit_tester.php');
-require_once(dirname(__FILE__) . '/../shell_tester.php');
-require_once(dirname(__FILE__) . '/../mock_objects.php');
-require_once(dirname(__FILE__) . '/../web_tester.php');
-require_once(dirname(__FILE__) . '/../extensions/pear_test_case.php');
 
-class UnitTests extends TestSuite {
-    function UnitTests() {
-        $this->TestSuite('Unit tests');
+require_once dirname(__FILE__) . '/../autorun.php';
+require_once dirname(__FILE__) . '/../unit_tester.php';
+require_once dirname(__FILE__) . '/../shell_tester.php';
+require_once dirname(__FILE__) . '/../mock_objects.php';
+require_once dirname(__FILE__) . '/../web_tester.php';
+require_once dirname(__FILE__) . '/../extensions/pear_test_case.php';
+
+class UnitTests extends TestSuite
+{
+    public function __construct()
+    {
+        parent::__construct('Unit tests');
         $path = dirname(__FILE__);
         $this->addFile($path . '/errors_test.php');
         $this->addFile($path . '/exceptions_test.php');
@@ -46,4 +48,3 @@ class UnitTests extends TestSuite {
         $this->addFile($path . '/../extensions/testdox/test.php');
     }
 }
-?>

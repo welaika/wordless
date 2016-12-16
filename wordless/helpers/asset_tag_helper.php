@@ -8,7 +8,7 @@
 */
 class AssetTagHelper {
 
-    function AssetTagHelper() {}
+    function __construct() {}
 
     /**
     * Return the theme version, based on prederence set in Wordless config file.

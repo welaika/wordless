@@ -3,9 +3,9 @@
 class AssetTagHelperTestVersion extends AssetTagHelper {
   var $mock;
 
-  function AssetTagHelperTestVersion($mock) {
+  function __construct($mock) {
     $this->mock = $mock;
-    $this->AssetTagHelper();
+    parent::__construct();
   }
 
   protected function get_asset_version_string() {

@@ -3,7 +3,6 @@
  *  base include file for SimpleTest
  *  @package    SimpleTest
  *  @subpackage UnitTester
- *  @version    $Id: reflection_php5.php 2011 2011-04-29 08:22:48Z pp11 $
  */
 
 /**
@@ -11,7 +10,8 @@
  *    @package SimpleTest
  *    @subpackage UnitTester
  */
-class SimpleReflection {
+class SimpleReflection
+{
     private $interface;
 
     /**
@@ -19,7 +19,8 @@ class SimpleReflection {
      *    @param string $interface    Class or interface
      *                                to inspect.
      */
-    function __construct($interface) {
+    public function __construct($interface)
+    {
         $this->interface = $interface;
     }
 
@@ -30,7 +31,8 @@ class SimpleReflection {
      *    @return boolean            True if defined.
      *    @access public
      */
-    function classExists() {
+    public function classExists()
+    {
         if (! class_exists($this->interface)) {
             return false;
         }
@@ -44,7 +46,8 @@ class SimpleReflection {
      *    @return boolean        True if defined.
      *    @access public
      */
-    function classExistsSansAutoload() {
+    public function classExistsSansAutoload()
+    {
         return class_exists($this->interface, false);
     }
 
@@ -54,7 +57,8 @@ class SimpleReflection {
      *    @return boolean            True if defined.
      *    @access public
      */
-    function classOrInterfaceExists() {
+    public function classOrInterfaceExists()
+    {
         return $this->classOrInterfaceExistsWithAutoload($this->interface, true);
     }
 
@@ -64,7 +68,8 @@ class SimpleReflection {
      *    @return boolean        True if defined.
      *    @access public
      */
-    function classOrInterfaceExistsSansAutoload() {
+    public function classOrInterfaceExistsSansAutoload()
+    {
         return $this->classOrInterfaceExistsWithAutoload($this->interface, false);
     }
 
@@ -76,13 +81,14 @@ class SimpleReflection {
      *    @return boolean                True if interface defined.
      *    @access private
      */
-    protected function classOrInterfaceExistsWithAutoload($interface, $autoload) {
+    protected function classOrInterfaceExistsWithAutoload($interface, $autoload)
+    {
         if (function_exists('interface_exists')) {
-            if (interface_exists($this->interface, $autoload)) {
+            if (interface_exists($interface, $autoload)) {
                 return true;
             }
         }
-        return class_exists($this->interface, $autoload);
+        return class_exists($interface, $autoload);
     }
 
     /**
@@ -91,7 +97,8 @@ class SimpleReflection {
      *    @returns array              List of method names.
      *    @access public
      */
-    function getMethods() {
+    public function getMethods()
+    {
         return array_unique(get_class_methods($this->interface));
     }
 
@@ -102,7 +109,8 @@ class SimpleReflection {
      *    @returns array          List of interfaces.
      *    @access public
      */
-    function getInterfaces() {
+    public function getInterfaces()
+    {
         $reflection = new ReflectionClass($this->interface);
         if ($reflection->isInterface()) {
             return array($this->interface);
@@ -116,7 +124,8 @@ class SimpleReflection {
      *    @returns array      List of enforced method signatures.
      *    @access public
      */
-    function getInterfaceMethods() {
+    public function getInterfaceMethods()
+    {
         $methods = array();
         foreach ($this->getInterfaces() as $interface) {
             $methods = array_merge($methods, get_class_methods($interface));
@@ -131,7 +140,8 @@ class SimpleReflection {
      *    @returns boolean             True if enforced.
      *    @access private
      */
-    protected function isInterfaceMethod($method) {
+    protected function isInterfaceMethod($method)
+    {
         return in_array($method, $this->getInterfaceMethods());
     }
 
@@ -140,7 +150,8 @@ class SimpleReflection {
      *    @returns string      Parent class name.
      *    @access public
      */
-    function getParent() {
+    public function getParent()
+    {
         $reflection = new ReflectionClass($this->interface);
         $parent = $reflection->getParentClass();
         if ($parent) {
@@ -154,7 +165,8 @@ class SimpleReflection {
      *    @returns boolean      True if abstract.
      *    @access public
      */
-    function isAbstract() {
+    public function isAbstract()
+    {
         $reflection = new ReflectionClass($this->interface);
         return $reflection->isAbstract();
     }
@@ -164,7 +176,8 @@ class SimpleReflection {
      *    @returns boolean      True if interface.
      *    @access public
      */
-    function isInterface() {
+    public function isInterface()
+    {
         $reflection = new ReflectionClass($this->interface);
         return $reflection->isInterface();
     }
@@ -175,7 +188,8 @@ class SimpleReflection {
      *    @returns boolean   True if the class has a final method.
      *    @access public
      */
-    function hasFinal() {
+    public function hasFinal()
+    {
         $reflection = new ReflectionClass($this->interface);
         foreach ($reflection->getMethods() as $method) {
             if ($method->isFinal()) {
@@ -193,11 +207,12 @@ class SimpleReflection {
      *    @returns array               List of parent interface names.
      *    @access private
      */
-    protected function onlyParents($interfaces) {
+    protected function onlyParents($interfaces)
+    {
         $parents = array();
         $blacklist = array();
         foreach ($interfaces as $interface) {
-            foreach($interfaces as $possible_parent) {
+            foreach ($interfaces as $possible_parent) {
                 if ($interface->getName() == $possible_parent->getName()) {
                     continue;
                 }
@@ -218,7 +233,8 @@ class SimpleReflection {
      * @return  bool            true if method is abstract, else false
      * @access  private
      */
-    protected function isAbstractMethod($name) {
+    protected function isAbstractMethod($name)
+    {
         $interface = new ReflectionClass($this->interface);
         if (! $interface->hasMethod($name)) {
             return false;
@@ -232,7 +248,8 @@ class SimpleReflection {
      * @return  bool            true if method is the constructor
      * @access  private
      */
-    protected function isConstructor($name) {
+    protected function isConstructor($name)
+    {
         return ($name == '__construct') || ($name == $this->interface);
     }
 
@@ -242,10 +259,11 @@ class SimpleReflection {
      * @return  bool            true if method is abstract in parent, else false
      * @access  private
      */
-    protected function isAbstractMethodInParents($name) {
+    protected function isAbstractMethodInParents($name)
+    {
         $interface = new ReflectionClass($this->interface);
         $parent = $interface->getParentClass();
-        while($parent) {
+        while ($parent) {
             if (! $parent->hasMethod($name)) {
                 return false;
             }
@@ -263,7 +281,8 @@ class SimpleReflection {
      * @return  bool            true if method is static, else false
      * @access  private
      */
-    protected function isStaticMethod($name) {
+    protected function isStaticMethod($name)
+    {
         $interface = new ReflectionClass($this->interface);
         if (! $interface->hasMethod($name)) {
             return false;
@@ -279,17 +298,16 @@ class SimpleReflection {
      *                           bracket.
      *    @access public
      */
-    function getSignature($name) {
+    public function getSignature($name)
+    {
         if ($name == '__set') {
             return 'function __set($key, $value)';
         }
         if ($name == '__call') {
             return 'function __call($method, $arguments)';
         }
-        if (version_compare(phpversion(), '5.1.0', '>=')) {
-            if (in_array($name, array('__get', '__isset', $name == '__unset'))) {
-                return "function {$name}(\$key)";
-            }
+        if (in_array($name, array('__get', '__isset', $name == '__unset'))) {
+            return "function {$name}(\$key)";
         }
         if ($name == '__toString') {
             return "function $name()";
@@ -317,7 +335,8 @@ class SimpleReflection {
      *                           bracket.
      *    @access private
      */
-    protected function getFullSignature($name) {
+    protected function getFullSignature($name)
+    {
         $interface = new ReflectionClass($this->interface);
         $method = $interface->getMethod($name);
         $reference = $method->returnsReference() ? '&' : '';
@@ -335,7 +354,8 @@ class SimpleReflection {
      *                                      a snippet of code.
      *    @access private
      */
-    protected function getParameterSignatures($method) {
+    protected function getParameterSignatures($method)
+    {
         $signatures = array();
         foreach ($method->getParameters() as $parameter) {
             $signature = '';
@@ -365,7 +385,8 @@ class SimpleReflection {
      *    @return string         Cleaner name.
      *    @access private
      */
-    protected function suppressSpurious($name) {
+    protected function suppressSpurious($name)
+    {
         return str_replace(array('[', ']', ' '), '', $name);
     }
 
@@ -376,11 +397,11 @@ class SimpleReflection {
      *    @return boolean                          True if optional.
      *    @access private
      */
-    protected function isOptional($parameter) {
+    protected function isOptional($parameter)
+    {
         if (method_exists($parameter, 'isOptional')) {
             return $parameter->isOptional();
         }
         return false;
     }
 }
-?>

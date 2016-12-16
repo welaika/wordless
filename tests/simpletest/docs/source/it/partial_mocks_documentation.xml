@@ -1,0 +1,413 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Il mocking parziale" here="Il mocking parziale">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>SimpleTest for PHP partial mocks documentation</long_title>
+    <content>
+        <introduction>
+            <p>
+				Il mocking parziale non è nient'altro che un pattern per facilitare la
+				risoluzione di alcuni problemi specifici che si incontrano nel collaudo con oggetti mock
+				e in cui l'uso degli oggetti mock diviene assai difficoltoso.
+				Si tratta di un tool abbastanza limitato e probabilmente non è nemmeno
+				un'idea brillante.
+				E' stato incluso comunque in SimpleTest perché l'ho personalmente trovato
+				utile in più occasioni e mi ha permesso di risparmiare molto tempo..
+            </p>
+        </introduction>
+        <section name="inject" title="Il problema del Mock Injection">
+            <p>
+				Quando un oggetto ne uso un altro è semplicissimo passarli una versione mock
+				già decorata con le sue expectation.
+				Le cose diventano molto più complicate quando è un oggetto ne crea un altro
+				e l'oggetto creatore è quello che si deve collaudare.
+				Questo significa che è l'oggetto creato che dovrebbe essere sostituito dalla
+				versione mock: ma può essere difficile impartire alla classe sotto test l'ordine
+				di creare una versione mock invece dell'originale.
+				Del resto, la classe sotto test nemmeno dovrebbe essere a conoscenza
+				di essere eseguita all'interno di un test.
+            </p>
+            <p>
+				Per esempio, supponiamo che si stia scrivendo un client telnet e
+				che ci sia la necessità di creare un socket a cui passare i messaggi.
+				Il metodo di connessione potrebbe avere un aspetto simile a questo:
+<php><![CDATA[
+<strong><?php
+require_once('socket.php');
+    
+class Telnet {
+    ...
+    function &connect($ip, $port, $username, $password) {
+        $socket = &new Socket($ip, $port);
+        $socket->read( ... );
+        ...
+    }
+}
+?></strong>
+]]></php>
+				Se volessimo avere una versione mock del socket, cosa si potrebbe fare?
+            </p>
+            <p>
+				La prima soluzione è quella di passare il socket come parametro,
+				in mododi forzare la creazione al livello superiore.
+				Il fatto che sia il client a dover gestire la creazione è un buon approccio
+				se si è disposti a gestire la cosa e dovrebbe spingere verso una
+				fattorizazione della creazione.
+                Difatti, questo è uno dei sistemi con i quali il test con i mock object
+				costringono lo sviluppatore a sviluppare adottando soluzioni più rigorose.
+                I mock migliorano lo stile di programmazione.
+            </p>
+            <p>
+                La soluzione potrebbe quindi essere:
+<php><![CDATA[
+<?php
+require_once('socket.php');
+    
+class Telnet {
+    ...
+    <strong>function &connect(&$socket, $username, $password) {
+        $socket->read( ... );
+        ...
+    }</strong>
+}
+?>
+]]></php>
+                Ciò significa che il codice di test si riduce all'invocazione
+				tipica degli oggetti mock:
+<php><![CDATA[
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {<strong>
+        $socket = &new MockSocket($this);
+        ...
+        $telnet = &new Telnet();
+        $telnet->connect($socket, 'Me', 'Secret');
+        ...</strong>
+    }
+}
+]]></php>
+				E' abbastanza evidente, tuttavia, che un unico livello è tutto quello che
+				ci si può aspettare di ottenere. Difficilmente accetteremo che l'applicazione
+				stessa debba preoccuparsi della creazione di socket, connessione al database
+				ed altri oggetti necessari ai livelli sottostanti.
+				Sarebbe difficile anche conoscere i parametri necessari ai costruttori.
+            </p>
+            <p>
+				Un possibilecompromesso è quello di prevedere l'oggetto istanziato come
+				parametro opzionale:
+<php><![CDATA[
+<?php
+require_once('socket.php');
+    
+class Telnet {
+    ...<strong>
+    function &connect($ip, $port, $username, $password, $socket = false) {
+        if (!$socket) {
+            $socket = &new Socket($ip, $port);
+        }
+        $socket->read( ... );</strong>
+        ...
+        return $socket;
+    }
+}
+?>
+]]></php>
+				Come soluzione di emergenza questo può anche andare bene.
+				Adesso il test funziona come se il parametro fosse formalmente
+				passato:
+<php><![CDATA[
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {<strong>
+        $socket = &new MockSocket($this);
+        ...
+        $telnet = &new Telnet();
+        $telnet->connect('127.0.0.1', 21, 'Me', 'Secret', &$socket);
+        ...</strong>
+    }
+}
+]]></php>
+				Il problema di questo approccio è nel disordine che
+				genera.
+				Nella classe principale c'è del codice di test e nel codice di test
+				ci sono dei paramtri che non vengono mai utilizzati.
+				E' un approccio veloce e sporco, ma nonostante tutto può essere
+				efficace in molte situazioni.
+            </p>
+            <p>
+				Un'ulteriore soluzione è quella di passare un oggetto factory a cui
+				demandare la creazione:
+<php><![CDATA[
+<?php
+require_once('socket.php');
+    
+class Telnet {<strong>
+   function Telnet(&$network) {
+        $this->_network = &$network;
+    }</strong>
+    ...
+    function &connect($ip, $port, $username, $password) {<strong>
+        $socket = &$this->_network->createSocket($ip, $port);
+        $socket->read( ... );</strong>
+        ...
+        return $socket;
+    }
+}
+?>
+]]></php>
+				Questa è probabilmente la soluzione più fattorizzata dal momento che
+				la creazione degli oggetti è stata spostata all'interno di una
+				piccola classe specializzata.
+				Adesso il factory della rete può essere collaudato separatamente dal
+				resto ma risulta anche semplice crearne un mock nel momento del collaudo
+				della classe telnet:
+<php><![CDATA[
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {<strong>
+        $socket = &new MockSocket($this);
+        ...
+        $network = &new MockNetwork($this);
+        $network->returnsByReference('createSocket', $socket);
+        $telnet = &new Telnet($network);
+        $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
+        ...</strong>
+    }
+}
+]]></php>
+				Il rovescio della medaglia è che si sono aggiunte molte classi
+				alla libreria e che si stanno passando molte classi factory in qua
+				e là ed il codice diventa un po' meno intuitivo.
+				Questa è la soluzione più flessibile ma anche la più complessa.
+            </p>
+            <p>
+                Esiste una via di mezzo?
+            </p>
+        </section>
+        <section name="creation" title="Il pattern Protected Factory">
+            <p>
+                Esiste un sistema con cui è possibile circoscrivere il problema
+				senza creare nuove classi ma prevede l'utilizzo di una sottoclasse
+				della classe originale nel test.
+				Intanto, spostiamo la creazione del socket in un metodo dedicato:
+<php><![CDATA[
+<?php
+require_once('socket.php');
+    
+class Telnet {
+    ...
+    function &connect($ip, $port, $username, $password) {<strong>
+        $socket = &$this->_createSocket($ip, $port);</strong>
+        $socket->read( ... );
+        ...
+    }<strong>
+        
+    function &_createSocket($ip, $port) {
+        return new Socket($ip, $port);
+    }</strong>
+}
+?>
+]]></php>
+				Questo è l'unico cambiamento richiesto al codice dell'applicazione.
+            </p>
+            <p>
+				Nel test case si deve creare una sottoclasse in modo da poter
+				intercettare la creazione del socket:
+<php><![CDATA[
+<strong>class TelnetTestVersion extends Telnet {
+    var $_mock;
+    
+    function TelnetTestVersion(&$mock) {
+        $this->_mock = &$mock;
+        $this->Telnet();
+    }
+    
+    function &_createSocket() {
+        return $this->_mock;
+    }
+}</strong>
+]]></php>
+				Qui il mock è stato passato al costruttore ma un
+				ordinario metodo setter avrebbe svolto ugualmente il
+				medesimo compito.
+                Si noti come il mock è stato iniettato dentro l'oggetto
+				prima della chiamata del costruttore.
+				Questo è necessario nel caso il costruttore faccia
+				chiamate a <code>connect()</code>. In caso
+				contrario <code>_createSocket()</code> avrebbe restituito 
+				al costruttore un valore nullo
+                
+            </p>
+            <p>
+				Dopo il completamento di tutto questo lavoro extra,
+				il test in se' è diascretamente più semplice.
+				E' sufficiente colaudare la nuova classe invece di
+				quella originale:
+<php><![CDATA[
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {<strong>
+        $socket = &new MockSocket($this);
+        ...
+        $telnet = &new TelnetTestVersion($socket);
+        $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
+        ...</strong>
+    }
+}
+]]></php>
+                La nuova classe, naturalmente, è molto semplice.
+				Semplicemente imposterà un valore di ritorno, come un mock.
+				Sarebbe bello se, oltre a questo, verificasse anche i parametri 
+				ricevuti. Proprio come un mock.
+				Visto che sembra useremo spesso questa tecnica,
+				possiamo automatizzare la creazione della sottoclasse?
+            </p>
+        </section>
+        <section name="partial" title="Un mock parziale">
+            <p>
+				Naturalmente la risposta è &quot;sì&quot;, altrimenti avrei smesso di 
+				scrivere da un pezzo!
+				L'ultimo test che abbiamo scritto ha comportato un bel po' di lavoro
+				ma si potrebbe utilizzare un approccio simile alla generazione
+				degli oggetti mock per creare la sottoclasse.
+            </p>
+            <p>
+                Questa è la versione del test con il mocking parziale:
+<php><![CDATA[
+<strong>Mock::generatePartial(
+        'Telnet',
+        'TelnetTestVersion',
+        array('_createSocket'));</strong>
+
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {<strong>
+        $socket = &new MockSocket($this);
+        ...
+        $telnet = &new TelnetTestVersion($this);
+        $telnet->setReturnReference('_createSocket', $socket);
+        $telnet->Telnet();
+        $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
+        ...</strong>
+    }
+}
+]]></php>
+				Il mock parziale è una sottoclasse della classe originale
+				nella quale alcuni metodi sono sostituiti con
+				versioni di test.
+                <code>generatePartial()</code> accetta tre parametri: la
+				classe da estendere, il nome dellla nuova classe di test ed
+				un elenco dei metodi da sostituire.
+            </p>
+            <p>
+				Il modo di istanziare gli oggetti risultati è un po' delicato.
+				L'unico parametro atteso dal costruttore di un mock parziale
+				è un riferimento allo unit test. Così come gli ordinari oggetti
+				mock, infatti, questo è necesssario affinché l'oggetto possa restituire
+				i risultati delle expectation valutate.
+            </p>
+            <p>
+				Il costruttore originale non è stato ancora invocato.
+				E' necessario rimandare la sua invocazione perché
+				potrebbe fare uso di uno dei metodi sostituiti ancora non
+				impostati.
+				Si impostano quindi i valori di ritorno e solo a questo punto
+				si invoca il costruttore con i suoi parametri.
+                Quello che distingue i mock parziali dai mock ordinari è la
+				successione di questi tre passi: costruzione con &quot;new&quot;,
+				impostazione dei metodi, invocazione del costruttore vero e proprio.
+            </p>
+            <p>
+				Fatta esclusione del processo di costruzione, tutti i metodi
+				sostituiti si comportano come stabilito dal mock mentre tutti i metodi
+				originari continuano a comportarsi come nell'oggetto originario.
+                E' molto semplice impostare le expectation:
+<php><![CDATA[
+class TelnetTest extends UnitTestCase {
+    ...
+    function testConnection() {
+        $socket = &new MockSocket($this);
+        ...
+        $telnet = &new TelnetTestVersion($this);
+        $telnet->setReturnReference('_createSocket', $socket);<strong>
+        $telnet->expectOnce('_createSocket', array('127.0.0.1', 21));</strong>
+        $telnet->Telnet();
+        $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
+        ...<strong>
+        $telnet->tally();</strong>
+    }
+}
+]]></php>
+            </p>
+        </section>
+        <section name="less" title="Collaudare meno di una classe">
+            <p>
+				Non è necessario che i metodi sostituiti siano metodi factory: è possibile
+				sostituire qualsiasi tipologia di metodo.
+				Questo è il modo in cui i mock parziali permettono di prendere
+				il controllo di qualsiasi parte di una classe, eslcuso il costruttore.
+				Sarebbe perfino possibile sostituire tutti i metodi tranne
+				l'unico da collaudare.
+            </p>
+            <p>
+				Quest'ultima situazione è piuttosto ipotetica dal momento che
+				non l'ho mai provata.
+				Posso anche credere che questo funzioni ma sono convinto che
+				forzando la granularità dell'oggetto non si ottengano necessariamente un
+				codice di qualità migliore.
+				Personalmente utilizzo il mocking parziale come un sistema per
+				l'override della creazione di oggetti o per l'occasionale test
+				di oggetti che implementino il design TemplateMethod.
+            </p>
+            <p>
+                Quale meccanismo utilizzare, alla fine, è una questione legata allo standard che
+				si è scelto per i propri progetti.
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#inject">The mock injection problem</a>.
+        </link>
+        <link>
+            Moving creation to a <a href="#creation">protected factory</a> method.
+        </link>
+        <link>
+            <a href="#partial">Partial mocks</a> generate subclasses.
+        </link>
+        <link>
+            Partial mocks <a href="#less">test less than a class</a>.
+        </link>
+    </internal>
+    <external>
+        <link>
+            SimpleTest project page on <a href="http://sourceforge.net/projects/simpletest/">SourceForge</a>.
+        </link>
+        <link>
+            <a href="http://simpletest.org/api/">Full API for SimpleTest</a>
+            from the PHPDoc.
+        </link>
+        <link>
+            The protected factory is described in
+            <a href="http://www-106.ibm.com/developerworks/java/library/j-mocktest.html">this paper from IBM</a>.
+            This is the only formal comment I have seen on this problem.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            php software development,
+            php test case development,
+            database programming php,
+            software development tools,
+            php advanced tutorial,
+            phpunit style scripts,
+            architecture,
+            php resources,
+            mock objects,
+            junit,
+            php test framework,
+            unit test,
+            php testing
+        </keywords>
+    </meta>
+</page>

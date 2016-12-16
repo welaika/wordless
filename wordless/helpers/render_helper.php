@@ -1,4 +1,5 @@
 <?php
+use Pug\Pug;
 
 /**
 * Handles rendering of views, templates, partials
@@ -6,7 +7,6 @@
 * @ingroup helperclass
 */
 class RenderHelper {
-
     /**
     * Renders a preformatted error display view than dies
     *
@@ -35,10 +35,19 @@ class RenderHelper {
     *
     */
     function render_template($name, $locals = array()) {
-        $valid_filenames = array("$name.html.haml", "$name.haml", "$name.html.php", "$name.php");
+        $valid_filenames = array(
+            "$name.html.pug",
+            "$name.pug",
+            "$name.html.php",
+            "$name.php",
+            "$name.html.haml",
+            "$name.haml"
+        );
+
         foreach ($valid_filenames as $filename) {
             $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
-                if (is_file($path)) {
+
+            if (is_file($path)) {
                 $template_path = $path;
                 $arr = explode('.', $path);
                 $format = array_pop($arr);
@@ -46,35 +55,44 @@ class RenderHelper {
             }
         }
 
-    if (!isset($template_path)) {
-      render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
-    }
+        if (!isset($template_path)) {
+          render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.pug</code> or <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
+        }
 
-    extract($locals);
+        $tmp_dir = Wordless::theme_temp_path();
 
-    switch ($format) {
-      case 'haml':
-      $tmp_dir = Wordless::theme_temp_path();
+        switch ($format) {
+            case 'haml':
+                extract($locals);
 
-      if (!file_exists($tmp_dir)) {
-          mkdir($tmp_dir, 0760);
-      }
+                if ($this->ensure_dir($tmp_dir)) {
+                    $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false));
+                    include $haml->parse($template_path, $tmp_dir);
+                } else {
+                    render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
+                }
 
-      if (!is_writable($tmp_dir)) {
-          chmod($tmp_dir, 0760);
-      }
+                break;
 
-      if (is_writable($tmp_dir)) {
-          $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false/*, 'helperFile' => dirname(__FILE__).'/../ThemeHamlHelpers.php'*/));
-          include $haml->parse($template_path, $tmp_dir);
-      } else {
-          render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
-      }
-      break;
-      case 'php':
-      include $template_path;
-      break;
-    }
+            case 'pug':
+                if ($this->ensure_dir($tmp_dir)) {
+                    $pug = new Pug(array(
+                        'prettyprint' => true,
+                        'extension' => '.pug',
+                        'cache' => $tmp_dir
+                    ));
+
+                    echo $pug->render($template_path, $locals);
+                } else {
+                    render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
+                }
+
+                break;
+
+            case 'php':
+                include $template_path;
+                break;
+        }
 
     }
 
@@ -148,6 +166,24 @@ class RenderHelper {
         render_template("layouts/$layout", $locals);
         ob_flush();
     }
+
+    private function ensure_dir($dir) {
+
+        if (!file_exists($dir)) {
+            mkdir($dir, 0760);
+        }
+
+        if (!is_writable($dir)) {
+            chmod($dir, 0760);
+        }
+
+        if (is_writable($dir)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 }
 
 Wordless::register_helper("RenderHelper");

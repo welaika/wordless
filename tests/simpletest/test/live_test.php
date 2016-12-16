@@ -1,5 +1,5 @@
 <?php
-// $Id: live_test.php 1748 2008-04-14 01:50:41Z lastcraft $
+// $Id$
 require_once(dirname(__FILE__) . '/../autorun.php');
 require_once(dirname(__FILE__) . '/../socket.php');
 require_once(dirname(__FILE__) . '/../http.php');
@@ -9,9 +9,10 @@ if (SimpleTest::getDefaultProxy()) {
     SimpleTest::ignore('LiveHttpTestCase');
 }
 
-class LiveHttpTestCase extends UnitTestCase {
-
-    function testBadSocket() {
+class LiveHttpTestCase extends UnitTestCase
+{
+    public function testBadSocket()
+    {
         $socket = new SimpleSocket('bad_url', 111, 5);
         $this->assertTrue($socket->isError());
         $this->assertPattern(
@@ -21,7 +22,8 @@ class LiveHttpTestCase extends UnitTestCase {
         $this->assertFalse($socket->write('A message'));
     }
     
-    function testSocketClosure() {
+    public function testSocketClosure()
+    {
         $socket = new SimpleSocket('www.lastcraft.com', 80, 15, 8);
         $this->assertTrue($socket->isOpen());
         $this->assertTrue($socket->write("GET /test/network_confirm.php HTTP/1.0\r\n"));
@@ -32,7 +34,8 @@ class LiveHttpTestCase extends UnitTestCase {
         $this->assertIdentical($socket->read(), false);
     }
     
-    function testRecordOfSentCharacters() {
+    public function testRecordOfSentCharacters()
+    {
         $socket = new SimpleSocket('www.lastcraft.com', 80, 15);
         $this->assertTrue($socket->write("GET /test/network_confirm.php HTTP/1.0\r\n"));
         $socket->write("Host: www.lastcraft.com\r\n");
@@ -44,4 +47,3 @@ class LiveHttpTestCase extends UnitTestCase {
                 "Connection: close\r\n\r\n");
     }
 }
-?>

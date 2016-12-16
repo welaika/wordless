@@ -1,0 +1,7 @@
+h2 Post Details
+
+= render_partial("posts/post_pug")
+
+h2
+  - if (isset($answer))
+    = "And the answer is... #{$answer}"

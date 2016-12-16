@@ -1,0 +1,409 @@
+<?xml version="1.0"?>
+<!-- $Id$ -->
+<page title="Panoramica su SimpleTest" here="Panoramica su SimpleTest">
+    <synchronisation lang="en" version="0" date="08/06/2011" maintainer="arialdomartini" />
+    <long_title>
+        Panoramica ed elenco delle caratteristiche dello unit tester e del web tester di SimpleTest
+    </long_title>
+    <content>
+        <section name="summary" title="Cos'è SimpleTest?">
+            <p>
+                Il cuore di SimpleTest è un framework costruito intorno a classi
+				di test case. Queste ereditano delle classi test case di base
+				e vengono estese con dei metodi che contengono il codice di collaudo.
+                Ogni metodo di test di una classe test case è concepito per invocare
+				una serie di metodi assert, come <code>assertEqual()</code>, che lo sviluppatore
+				si attende vengano confermati.
+                Se il risultato atteso viene confermato allora successo dell'operazione
+				viene comunicato al test reporter che è in ascolto mentre qualsiasi
+				insuccesso o qualsiasi eccezione inattesa scatena un alert con la
+				relativa descrizione della discordanza.
+				
+                Le dichiarazioni contenute del test case vengono convertite in
+				test script eseguibili mediante l'inclusione del file 
+				autorun.php di SimpleTest.
+                
+            </p>
+            <p>
+                Nonostante i molti sforzi intrapresi per mantenere la
+				compatibilità tra le varie versioni, la presente documentazione si riferisce 
+				alla versione 1.1 di SimpleTest.
+				
+				Nel caso si rilevi un malfunzionamento nei test dopo un aggiornamento,
+				si provi a consultare i file &quot;HELP_MY_TESTS_DONT_WORK_ANYMORE&quot; nella
+				directory simpletest per accertarsi della possibilità che una delle feature che si stanno utilizzando
+				sia stata rimossa o indicata come deprecata.
+            </p>
+            <p>
+                Un <a local="unit_test_documentation">test case</a> ha questo aspetto:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+
+class <strong>MyTestCase</strong> extends UnitTestCase {
+    <strong>
+    function testWillCreateLogFileOnFirstMessage() {
+        $log = new Log('my.log');
+        $this->assertFalse(file_exists('my.log'));
+        $log->message('Hello');
+        $this->assertTrue(file_exists('my.log'));
+    }</strong>
+}
+?>
+]]></php>
+            </p>
+            <p>
+				SimpleTest è pensato per essere utilizzato da sviluppatori.
+                I destinatari di questo tool includono tutti gli sviluppatori
+				di applicazioni PHP di medie dimensioni, compresi gli sviluppatori
+				che si sono avvicinati da poco all'argomento dello unit testing e del
+				web regression testing.
+                I principi cardine di SimpleTest sono la sua facilità d'uso, l'estendibilità e 
+				l'essenzialità delle sue caratteristiche.
+            </p>
+            <p>
+                I test vengono scritti direttamente in PHP, cioè nel linguaggio principale dell'applicazione.
+				Il vantaggio nell'uso del PHP come linguaggio di testing risiede nel
+				non dover imparare un nuovo linguaggio e nelle possibilità di iniziare
+				immediatamente ad implementare i test e da permettere allo sviluppatore di 
+				collaudare uan qualsiasi parte del codice.
+				Fondamentalmente, qualsiasi sezione possa essere raggiunto dal codice dell'applicazione può
+				essere anche raggiunta dal codice di test dal momento che entrambi utilizzano il
+				medesimo linguaggio di programmazione.
+            </p>
+            <p>
+				Il tipo più semplice di case test è lo 
+				<a local="unit_tester_documentation">UnitTestCase</a>.
+				Questa classe comprende i test standard per valutare l'uguaglianza di valori e
+				riferimenti e il matching con pattern.
+				Tutti questi test eseguono delle verifiche sui valori attesi come ritorno di 
+				funzioni e metodi.
+				Si tratta senz'altro del tipo più comune di test nell'attività quotidiana di sviluppo
+				e costituiscono il 95% dei test case.
+				
+                
+            </p>
+            <p>
+				Tuttavia, l'obiettivo principale di un'applicazione web non è quello di
+				produrre gli output corretti dai suoi metodi e dai suoi oggetti ma quello
+				di generare pagine web.
+				La classe <a local="web_tester_documentation">WebTestCase</a> collauda le pagine web.
+                Simula l'attività di un browser che stia richiedendo una pagina e supporta cookie, proxy,
+				connessioni sicure, autenticazione, form, frame e molti altri elementi di navigazione.
+                Con questa tipologia di test case lo sviluppatore può verificare che le informazioni
+				presenti sulla pagina, sul form e nelle sessioni siano manipolate in modo corretto.
+                
+            </p>
+            <p>
+                Un <a local="web_tester_documentation">WebTestCase</a> ha questo aspetto:
+<php><![CDATA[
+<?php
+require_once('simpletest/autorun.php');
+require_once('simpletest/web_tester.php');
+
+class <strong>MySiteTest</strong> extends WebTestCase {
+    <strong>
+    function testHomePageHasContactDetails() {
+        $this->get('http://www.my-site.com/index.php');
+        $this->assertTitle('My Home Page');
+        $this->clickLink('Contact');
+        $this->assertTitle('Contact me');
+        $this->assertText('/Email me at/');
+    }</strong>
+}
+?>
+]]></php>
+            </p>
+        </section>
+        <section name="features" title="Elenco delle caratteristiche">
+            <p>
+                Quanto segue è una grossolana panoramica delle caratteristiche esistenti e
+				pianificate per SimpleTest con l'indicazione del momento previsto per il loro rilascio.
+				C'è la possibilità che questo elenco possa cambiare senza preavviso dal momento che
+				le milestone dipendono essenzialmente sul tempo libero che ho a disposizione.
+                Gli elementi colorati in verde sono già stati sviluppati ma non sono stati necessariamente
+				rilasciati. Nel caso ci sia la particolare urgenza di accedere ad una
+				feature già svilupata ma non ancora rilasciata è possibile eseguire un checkout
+				direttamente dal server SVN di Sourceforge.
+                <table><thead>
+                    <tr><th>Feature</th><th>Descrizione</th><th>Release</th></tr>
+                    </thead><tbody><tr>
+                        <td>Unit test case</td>
+                        <td>Classi test case di base e assert</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Reportistica Html</td>
+                        <td>Il tipo di visualizzazione più semplice</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Caricamento automatico delle classi</td>
+                        <td>
+							Legge un file contenente i test case e li carica all'interno
+							di un group test in modo automatico
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Oggetti Mock</td>
+                        <td>
+							Oggetti capaci di simulare altri oggetti in modo da
+							rimuovere le dipendenze tra oggetti durante i test
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Web test case</td>
+                        <td>Permette la navigazione tra link e i matching sul tag title</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Mock parziali</td>
+                        <td>
+							Eseguono il mocking di parte in una classe per permettere il
+							collaudo di elementi più piccoli di una classe e simulazioni
+							particolarmente complesse.
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Gestione dei cookie</td>
+                        <td>Manipola i cookie durante la ricezione delle pagine web</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Redirect</td>
+						<td>Il recupero di una pagina produce automaticamente un redirect 300.</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Parsing dei form</td>
+                        <td>Capacità di compilare semplici form e leggere i loro valori di default</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Interfaccia a linea di comando</td>
+                        <td>Lancia e visualizza i test senza l'ausilio di un browser</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Exposure of expectation classes ??</td>
+                        <td>Can create precise tests with mocks as well as test cases</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Parsing e visualizzazione di XML</td>
+                        <td>
+                            Permette di eseguire i test su host multipli e l'integrazione delle estensioni per gli acceptance test
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Browser component</td>
+                        <td>
+                            Espone un'interfaccia di basso livello per accedere al web browser ed eseguire
+							case test più dettagliati
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Autenticazione HTTP</td>
+                        <td>
+                            Recupera pagine web protette: supporta solo l'autenticazione
+							di base
+                        </td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto a SSL</td>
+                        <td>Permette di connettersi alle pagine https:</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto ai proxy</td>
+                        <td>Permette di eseguire richieste tramite proxy</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto ai frame</td>
+                        <td>Gestione dei frame all'interno dei web test case</td>
+                        <td style="color: green;">1.0</td>
+                    </tr>
+                    <tr>
+                        <td>Test dell'upload di file</td>
+                        <td>Supporto al test del tag input di tipo file</td>
+                        <td style="color: green;">1.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>Interfacce di mocking</td>
+                        <td>
+                            Permette di generare oggetti mock di intefacce 
+							Can generate mock objects to interfaces as well as classes
+                            and class interfaces are carried for type hints ???
+                        </td>
+                        <td style="color: green;">1.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>Testing delle eccezioni</td>
+                        <td>Feature simile al test degli errori PHP</td>
+                        <td style="color: green;">1.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto alle label HTML</td>
+                        <td>Consente l'accesso ai controlli tramite la loro label</td>
+                        <td style="color: green;">1.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto ai tag di base</td>
+                        <td>Respects page base tag when clicking ???</td>
+                        <td style="color: green;">1.0.1</td>
+                    </tr>
+                    <tr>
+                        <td>Conformità alla direttiva E_STRICT di PHP 5</td>
+                        <td>Versione per PHP 5 in grado di funzionare con il livello di errore E_STRICT</td>
+                        <td style="color: red;">1.1</td>
+                    </tr>
+                    <tr>
+                        <td>Alternate HTML parsers</td>
+                        <td>Can detect compiled parsers for performance improvements</td>
+                        <td style="color: red;">1.1</td>
+                    </tr>
+                    <tr>
+                        <td>Fixure in stile BDD</td>
+                        <td>Permette di importare le fixture utilizzando un mixing come Can import fixtures using a mixin come il metodo given()</td>
+                        <td style="color: red;">1.5</td>
+                    </tr>
+                    <tr>
+                        <td>Miglioramenti al motore di reporting</td>
+                        <td>Miglioramento al passaggio di messaggio per una migliore cooperazione con gli IDE</td>
+                        <td style="color: red;">1.5</td>
+                    </tr>
+                    <tr>
+                        <td>Fluent mock interface</td>
+                        <td>Oggetti mock ancora più flessibili e compatti</td>
+                        <td style="color: red;">1.6</td>
+                    </tr>
+                    <tr>
+                        <td>Localizzazione</td>
+                        <td>Localizzazione dei messaggi de del codice</td>
+                        <td style="color: red;">1.6</td>
+                    </tr>
+                    <tr>
+                        <td>Selettori CSS</td>
+                        <td>Il contenuto HTML generato può essere analizzato utilizzando i selettori CSS</td>
+                        <td style="color: red;">1.7</td>
+                    </tr>
+                    <tr>
+                        <td>Assert sulle tabelle HTML</td>
+                        <td>Permette esprimere le expectation utilizzando il matching dell'HTML e degli elementi delle tabelle</td>
+                        <td style="color: red;">1.7</td>
+                    </tr>
+                    <tr>
+                        <td>Modello unificato per l'acceptance test</td>
+                        <td>Permette di ricercare all'interno del contenuto per messo di selettori in combinazione alle expectation</td>
+                        <td style="color: red;">1.7</td>
+                    </tr>
+                    <tr>
+                        <td>DatabaseTestCase</td>
+                        <td>Selettori SQL e driver per DB</td>
+                        <td style="color: red;">1.7</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto agli IFrame</td>
+                        <td>Accede al contenuto aggiornabile degli IFrame</td>
+                        <td style="color: red;">1.8</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto integrato a Selenium</td>
+                        <td>Driver integrato per Selenium semplice da usare e provvisto di tutorial</td>
+                        <td style="color: red;">1.9</td>
+                    </tr>
+                    <tr>
+                        <td>Code coverage</td>
+                        <td>Esegue un rapporto sul code coverage utilizzando il tool integrato mediante l'uso di XDebug</td>
+                        <td style="color: red;">1.9</td>
+                    </tr>
+                    <tr>
+                        <td>Vecchi metodi segnati come deprecati</td>
+                        <td>SimpleTest2 possiede un'interfaccia più semplice</td>
+                        <td style="color: red;">2.0</td>
+                    </tr>
+                    <tr>
+                        <td>Supporto a Javascript</td>
+                        <td>Uso del modulo PECL per aggiungere il supporto a Javascript al browser nativo</td>
+                        <td style="color: red;">3.0</td>
+                    </tr>
+                </tbody></table>
+				L'integrazione con PHP 5 è completa il che significa che a partire dalla
+				versione 1.1 di SimpleTest verrà supportato solo PHP versione 5.0.5 o superiore.
+                Le precedenti versioni di SimpleTest sono compatibili con PHP dalla versione 4.2
+				alla versione 5 (non E_STRICT).
+            </p>
+        </section>
+    </content>
+    <internal>
+        <link>
+            <a href="#summary">Quick summary</a>
+            of the SimpleTest tool for PHP.
+        </link>
+        <link>
+            <a href="#features">List of features</a>,
+            both current ones and those planned.
+        </link>
+    </internal>
+    <external>
+        <link>
+            <a local="unit_test_documentation">Documentation for SimpleTest</a>.
+        </link>
+        <link>
+            <a href="http://www.lastcraft.com/first_test_tutorial.php">How to write PHP test cases</a>
+            is a fairly advanced tutorial.
+        </link>
+        <link>
+            <a href="http://simpletest.org/api/">SimpleTest API</a> from phpdoc.
+        </link>
+    </external>
+    <meta>
+        <keywords>
+            software development tools,
+            php programming,
+            programming php,
+            software development tools,
+            Tools for extreme programming,
+            free php scripts,
+            links of testing tools,
+            php testing resources,
+            mock objects,
+            junit,
+            jwebunit,
+            htmlunit,
+            itc,
+            php testing links,
+            unit test advice and documentation,
+            extreme programming in php
+        </keywords>
+    </meta>
+    <refsynopsisdiv>
+        <authorgroup>
+            <author>
+                Marcus Baker
+                <authorblurb>
+                    <para>Primary Developer</para><para>{@link mailto:marcus@lastcraft.com marcus@lastcraft.com}</para>
+                </authorblurb>
+            </author>
+            <author>
+                Perrick Pennet
+                <authorblurb>
+                    <para>General manager</para><para>{@link mailto:perrick@noparking.net perrick@noparking.net}</para>
+                </authorblurb>
+            </author>
+            <author>
+                Jason Sweat
+                <authorblurb>
+                    <para>Documentation</para><para>{@link mailto:jsweat_php@yahoo.com jsweat_php@yahoo.com}</para>
+                </authorblurb>
+            </author>
+        </authorgroup>
+    </refsynopsisdiv>
+</page>
