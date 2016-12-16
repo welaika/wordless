@@ -7,3 +7,4 @@ docs/build
 .ruby-version
 tests/fixtures/wordpress/wp-content/themes/mocked_theme/tmp
 !tests/fixtures/wordpress/wp-content/themes/mocked_theme/tmp/.keep
+node_modules
