@@ -2,16 +2,18 @@ const path = require('path');
 
 const srcDir = path.join(__dirname, '/theme/assets');
 const dstDir = path.join(__dirname, '/assets');
-const javascriptDstPath = path.join(dstDir, '/javascripts');
+const javascriptsDstPath = path.join(dstDir, '/javascripts');
+const stylesheetsDstPath = path.join(dstDir, '/stylesheets');
 
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
   entry: path.join(srcDir, '/main.js'),
 
   output: {
     filename: 'application.js',
-    path: javascriptDstPath,
+    path: javascriptsDstPath,
   },
 
   module: {
@@ -22,7 +24,10 @@ module.exports = {
       },
       {
         test: /\.s(a|c)ss$/,
-        loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap'],
+        loader: ExtractTextPlugin.extract(
+          'style',
+          'css?sourceMap!sass?sourceMap',
+        ),
       },
     ],
   },
@@ -35,5 +40,6 @@ module.exports = {
         target: 'http://127.0.0.1:8080',
       },
     }),
+    new ExtractTextPlugin({ filename: stylesheetsDstPath + '/screen.css', disable: false, allChunks: true }),
   ],
 };
