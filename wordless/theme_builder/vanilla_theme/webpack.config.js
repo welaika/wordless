@@ -38,7 +38,7 @@ module.exports = {
 
   plugins: [
     new BrowserSyncPlugin({
-      host: 'localhost',
+      host: '127.0.0.1',
       port: 3000,
       proxy: {
         target: 'http://127.0.0.1:8080',
