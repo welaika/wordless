@@ -24,10 +24,10 @@ module.exports = {
       },
       {
         test: /\.s(a|c)ss$/,
-        loader: ExtractTextPlugin.extract(
-          'style',
-          'css?sourceMap!sass?sourceMap',
-        ),
+        loader: ExtractTextPlugin.extract({
+          fallbackLoader: 'style-loader',
+          loader: 'css-loader?sourceMap!sass-loader?sourceMap',
+        }),
       },
     ],
   },
