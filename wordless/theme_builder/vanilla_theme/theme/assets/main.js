@@ -1,2 +1,2 @@
-import './javascripts/application.js.coffee';
-import './stylesheets/screen.sass';
+require('./javascripts/application.js.coffee');
+require('./stylesheets/screen.sass');
