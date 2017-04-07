@@ -142,7 +142,6 @@ config/initializers
 ├──── menus.php
 ├──── shortcodes.php
 ├──── thumbnail_sizes.php
-└──── wordless_preferences.php
 ```
 
 * **backend**: remove backend componentes such as widgets, update messages, ecc

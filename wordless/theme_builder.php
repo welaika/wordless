@@ -6,20 +6,30 @@
 class WordlessThemeBuilder {
 
   function __construct($theme_name, $theme_dir, $chmod_set) {
+    $this->source_path = Wordless::join_paths(dirname(__FILE__), "theme_builder", "vanilla_theme");
     $this->theme_dir = Wordless::join_paths(dirname(get_template_directory()), $theme_dir);
+    $this->current_theme_dir = get_template_directory();
     $this->theme_name = $theme_name;
     $this->chmod_set = $chmod_set;
   }
 
   public function build() {
-    $source_path = Wordless::join_paths(dirname(__FILE__), "theme_builder", "vanilla_theme");
-    $this->copy($source_path, $this->theme_dir);
+    $this->copy($this->source_path, $this->theme_dir);
   }
 
   public function set_as_current_theme() {
     update_option('template', basename($this->theme_dir));
     update_option('stylesheet', basename($this->theme_dir));
     update_option('current_theme', $this->theme_name);
+  }
+
+  public function upgrade_to_webpack() {
+    foreach (Wordless::$webpack_files_names as $key => $filename) {
+      copy(
+        Wordless::join_paths($this->source_path, $filename),
+        Wordless::join_paths($this->current_theme_dir, $filename)
+      );
+    }
   }
 
   private function copy($src, $dst) {
