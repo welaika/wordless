@@ -1,0 +1,4 @@
+tmp/*
+!tmp/README.mdown
+assets/javascripts/application.js
+asstes/stylesheets/screen.css
