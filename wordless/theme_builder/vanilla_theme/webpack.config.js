@@ -24,8 +24,8 @@ module.exports = {
         test: /\.coffee$/,
         loader: 'coffee-loader',
       },
-      { test: /\.s(a|c)ss$/, loader: ExtractTextPlugin.extract("css-loader?sourceMap!sass-loader?sourceMap") },
-      { test: /\.css$/, loaders: ["style-loader", "css-loader"] },
+      { test: /\.s(a|c)ss$/, loader: ExtractTextPlugin.extract('css-loader?sourceMap!resolve-url-loader!sass-loader?sourceMap') },
+      { test: /\.css$/, loaders: ['style-loader', 'css-loader', 'resolve-url-loader'] },
       {
         test: /\.(jpe?g|png|gif|svg)$/i,
         loaders: [
