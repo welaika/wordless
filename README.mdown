@@ -2,275 +2,55 @@
 
 Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
-* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails)
-* The ability to create a new theme skeleton directly within the WordPress backend interface
-* The ability to write PHP code using the beautiful [Pug templating system](https://github.com/pug-php/pug)
-* The ability to write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
-* The ability to write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
-* A growing set of handy and documented helper functions ready to be used within your views
+* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme)
+* Bootstrap a new theme directly within the WordPress backend interface
+* Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
+* Write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
+* Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
+* A growing set of handy and documented PHP helper functions ready to be used within your views
+* Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 
 [![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
 
-## Requirements, installation and configuration
+## Getting started
 
-Wordless will make your web development easier, faster and fun again, you will write less and be more productive; you'll love it more than anything else you've ever loved before and there will be rainbows and ponies randomly popping up everywhere. :sparkling_heart:
+Considered you have a standard Wordpress installation already up and running and you are in its root directory:
 
+1. Install WP-CLI http://wp-cli.org/#installing
+2. Install global packages from NPM: `npm install -g foreman yarn`
+3. `wp plugin install wordless`, `wp plugin activate wordless`
+4. Create and name a brand new Wordless theme directly within the WP backend, from menu "Wordless > New Wordless Theme"
+5. `cd wp-content/themes/mybrandnewtheme`
+6. `yarn install`
 
+Now you have all you need to start developing; just be sure to be in your theme directory and run
 
-> Note that the production server doesn't need Ruby at all, since all the assets are precompiled by Wordless on the development machine, then deployed to production and statically served; **so your production server will work with plain PHP, HTML, CSS and Javascript files and won't need anything fancier**.
+`nf start`
 
-### The Cool Stuff
+webpack, php server and your browser will automatically come up and serve your needs :)
 
-Okay, now we can get everything up and running :)
+## GiT and Deployment
 
-1. [Download the Wordless plugin](https://github.com/welaika/wordless/zipball/master), drop it in the `wp-content/plugins` directory (be sure its directory is named 'wordless') and enable it from the WP "Plugins" section
-2. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section
+Wordless 2.x is backed by *WebPack* for all code automation tasks (compiling, but it's up to you eventually extend it to other behaviour - image optimization will probably be v2.1 goal). As a general advice on a default Wordless installation you should add `screen.css` and `application.js` your `.gitignore`.
 
-## Wordless Theme anatomy
+Compiled assets **must** obviously be deployed on remote server.
 
-That's a typical [Wordless theme directory structure](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme):
+PUG templates are compiled by the WP plugin at runtime and cached in theme's `tmp` folder. So just gitignore tmp/* and no other worries.
 
-```
-your_theme_dir
-├──── index.php
-├──── assets
-│     ├──── fonts
-│     ├──── images
-│     ├──── javascripts
-│     └──── stylesheets
-├──── config
-│     ├──── initializers
-│     └──── locales
-├──── theme
-│     ├──── assets
-│     │     ├──── javascripts
-│     │     └──── stylesheets
-│     │     └──── main.js
-│     ├──── helpers
-│     │     └──── README.mdown
-│     └──── views
-│           ├──── layouts
-│           └──── posts
-└──── tmp
+As a result we provide a minimal `.gitignore` inside theme's folder:
+
+```git
+tmp/
+!tmp/README.mdown
+application.js
+screen.css
 ```
 
-Now let's see in detail what is the purpose of all those directories.
+## Insights
 
-### Routing
+[How does it works]() - Basic concepts
 
-The `index.php` serves as a router to all the theme views.
-```php
-<?php
-
-if (is_front_page()) {
-  render_view("static/homepage)");
-} else if (is_post_type_archive("portfolio_work")) {
-  render_view("portfolio/index");
-} else if (is_post_type("portfolio_work")) {
-  render_view("portfolio/show");
-}
-```
-As you can see, you first determine the type of the page using [WordPress conditional tags](http://codex.wordpress.org/Conditional_Tags), and then delegate the rendering to some particular view.
-
-### Theme Views (`theme/views/*.pug` or `theme/views/*.php`)
-
-That's the directory where you'll find yourself coding for most of the time. Here you can create a view for each main page of your theme, using Pug syntax or plain PHP.
-Feel free to create subdirectories to group together the files. Here's what could be an example for the typical [WordPress loop](http://codex.wordpress.org/The_Loop) in an archive page:
-
-```jade
-// theme/views/posts/archive.haml
-h2 Blog archive
-ul.blog_archive
-  while have_posts()
-    - the_post()
-    li.post= render_partial("posts/single")
-
-// theme/views/posts/_single.haml
-h3!= link_to(get_the_title(), get_permalink())
-.content= get_the_filtered_content()
-```
-
-Wordless uses [Pug.php](https://github.com/pug-php/pug) - formerly called Jade.php - for your Pug views, a great PHP port of the [PugJS](https://pugjs.org/api/getting-started.html) templating language. In this little snippet, please note the following:
-
-* The view is delegating some rendering work to a partial called `_single.pug`. Partial templates – usually just called “partials” – are another device for breaking the rendering process into more manageable chunks. Partials are named with a leading underscore to distinguish them from regular views, even though they are referred to without the underscore.
-* There's no layout here, just content: the layout of the page is stored in a secondary file, placed in the `theme/views/layouts` directory;
-* We're already using two of the 40+ Wordless helper functions, `link_to()` and `get_the_filtered_content()`, to DRY up this view.
-
-It looks awesome, right?
-
-### Layouts (`theme/views/layouts` directory)
-
-Just like Rails, when Wordless renders a view as a response, it does so by combining the view with a layout. Within a layout, you have access to the `wl_yield()` helper to combine it with the main content:
-
-```jade
-doctype html
-html
-  head= render_partial("layouts/head")
-  body
-    .page-wrapper
-      header.site-header= render_partial("layouts/header")
-      section.site-content= wl_yield()
-      footer.site-footer= render_partial("layouts/footer")
-    // jQuery and application.js is loaded by default with wp_footer() function. See config/initializers/default_hooks.php for details
-    - wp_footer()
-```
-
-Please note that for content that is shared among all pages in your application, you can use partials directly from layouts.
-
-### Helpers (`theme/helpers/*.php` files)
-
-Helpers are basically small functions that can be called in your views to help keep your code stay DRY. Create as many helper files and functions as you want and put them in this directory, they will all be required within your views, together with the [default Wordless helpers](http://welaika.github.io/wordless/docs/0.3/d3/de0/group__helperclass.html). These are just a small subset of all the 40+ tested and documented helpers Wordless gives you for free:
-
-* `lorem()` - A "lorem ipsum" text and HTML generator;
-* `pluralize()` - Attempts to pluralize words;
-* `truncate()`- Truncates a given text after a given length;
-* `new_post_type()` and `new_taxonomy()` - Help you create custom posts and taxonomy;
-* `distance_of_time_in_words()` - Reports the approximate distance in time between two dates;
-
-### Initializers (`config/initializers/*.php` files)
-
-Remember the freaky `functions.php` file, the one where you would drop every bit of code external to the theme views (custom post types, taxonomies, wordpress filters, hooks, you name it). That was just terrible, isn't it? Well, forget it.
-Wordless lets you split your code into many modular initializer files, each one with a specific target:
-
-```
-config/initializers
-├──── backend.php
-├──── custom_post_types.php
-├──── default_hooks.php
-├──── hooks.php
-├──── login_template.php
-├──── menus.php
-├──── shortcodes.php
-├──── thumbnail_sizes.php
-```
-
-* **backend**: remove backend componentes such as widgets, update messages, ecc
-* **custom_post_types**: well...if you need to manage taxonomies, this is the place to be
-* **default_hooks**: this are used by default wordless' behaviours; tweak them only if you know what are you doing
-* **hooks**: this is intended to be your custom hooks collector
-* **menus**: register new WP nav_menus from here
-* **shortcodes**: as it says
-* **thumbnail_sizes**: if you need custom thumbnailing sizes
-* **wordless_preferences**: no more to be edited. Go to the Wordless menu in the WP backend
-
-These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
-
-### Locale files (`config/locales` directory)
-
-Just drop all your theme locale files in this directory. Wordless will take care of calling [`load_theme_textdomain()`](http://codex.wordpress.org/Function_Reference/load_theme_textdomain) for you.
-
-> Note that due to WordPress localization framework, you need to append our `"wl"` domain when using internationalization. For example, calling `__("News")` without specifying the domain *will not work*.
->
-> You'll **have** to add the domain `"wl"` to make it work: `__("News", "wl")`
-
-<a name="assets"></a>
-## Assets
-
-Wordless has two different places where you want to put your assets:
-
-* Place all your custom, project related assets into `theme/assets/*`
-* Place all the static images and vendor assets (i.e. vendor JS plugins) into `assets/*`
-
-### The Fast Way
-
-* jQuery is included by default for you
-* write your sass in `theme/assets/stylesheets/screen.sass`
-* write your coffeescript in `theme/assets/javascripts/application.js.coffee`
-
-and all will automagically works! :) The *long way* follows
-
-### Stylesheets
-
-#### Custom stylesheets
-
-The Wordless approach is to use `screen.sass`, present by default, as the aggregator of smaller sass _partials_. By default you have:
-
-```
-theme/assets/stylesheets/
-├──── screen.sass
-├──── _post.sass
-├──── _site_header.sass
-└──── _tinymce.sass
-```
-
-where `screen.sass` contains:
-
-```sass
-.page-wrapper
-  [...]
-  @import "site_header"
-  section.site-content
-    [...]
-    @import "tinymce"
-    @import "post"
-```
-Every `@import` will insert in that exact line the content of the called partial, where partials are named `_post.sass` and just called `post`.
-
-This will result in a single compiled `screen.css`. This file, starting from _version 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
-
-At your will, you can add e.g. `mobile.css` or `print.css` support, going in `config/initializers/default_hooks.php` and extending the default function such as
-
-```php
-function enqueue_stylesheets() {
-  wp_register_style("screen", stylesheet_url("screen"), false, false);
-  wp_enqueue_style("screen");
-  wp_register_style("print", stylesheet_url("print"), false, false);
-  wp_enqueue_style("print");
-}
-```
-then write your code into `theme/assets/stylesheets/print.sass`
-
-#### Vendor stylesheets <small>(or how to include assets only in a specific view)</small>
-
-Say that you have a jQuery plugin shipped with custom css, ok? Take the `vendor-plugin.css` and drop it inside `assets/stylesheets` folder; then include the assets in your views using `stylesheet_link_tag()` helper.
-
-```haml
-= stylesheet_link_tag("vendor-plugin")
-```
-
-Usually you want css to load in the `_head.html.haml` partial, but you can get it inside any _view_ or _partial_. This will produce the following HTML, pointing to the `assets/stylesheets` directory:
-
-```html
-<link href="/wp-content/themes/YOUR_THEME/assets/stylesheets/vendor-plugin.css"
-      media="all" rel="stylesheet" type="text/css" />
-```
-
-<a name="javascripts"></a>
-### Javascripts
-
-#### Custom javascripts
-
-The Wordless approach is to use `theme/assets/javascripts/application.js.coffee`, present by default. This file, starting from _version 0.3_, will be served using WordPress internal enqueueing function [`wp_enqueue_style`](http://codex.wordpress.org/Function_Reference/wp_enqueue_style).
-
-At your will, you can add support to other files, going in `config/initializers/default_hooks.php` and extending the default function such as:
-
-```php
-function enqueue_javascripts() {
-  wp_register_script("jquery", 'http://ajax.googleapis.com/ajax/libs/jquery/1.7.0/jquery.min.js', '', false, true);
-  wp_enqueue_script("jquery");
-  wp_register_script("application", javascript_url("application"), '', false, true);
-  wp_enqueue_script("application");
-  wp_register_script("myjs", javascript_url("myjs"), '', false, true);
-  wp_enqueue_script("myjs");
-}
-```
-
-then write you code into `theme/assets/javascripts/myjs.coffee`
-
-#### Vendor stylesheets <small>(or the way to include assets only in a specific view)</small>
-
-Say that you have a jQuery plugin to load, ok? Take the `vendor-plugin.js` and drop it inside `assets/javascripts` folder; then include the assets in your views using `javascript_include_tag()` helper.
-
-```haml
-= javascript_include_tag("vendor-plugin")
-```
-
-You can get it inside any _view_ or _partial_. This will produce the following HTML, pointing to the `assets/javascripts` directory:
-
-```html
-<script src="/wp-content/themes/YOUR_THEME/assets/javascripts/vendor-plugin.js"
-        type="text/javascript"></script>
-```
+[Wordless theme anatomy]() - Structure and conventions
 
 ## Additional recommended plugins and tools
 
