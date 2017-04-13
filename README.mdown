@@ -50,7 +50,7 @@ screen.css
 
 [How does it works]() - Basic concepts
 
-[Wordless theme anatomy]() - Structure and conventions
+[Wordless theme anatomy](https://github.com/welaika/wordless/wiki/Wordless-theme-anatomy) - Structure and conventions
 
 ## Additional recommended plugins and tools
 
