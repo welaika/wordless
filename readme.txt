@@ -2,43 +2,49 @@
 
 Contributors: welaika, stefano.verna
 Donate link: https://github.com/welaika/wordless
-Tags: sass, compass, haml, rails, scss
+Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
-Tested up to: 4.3
-Stable tag: 0.5.5
+Tested up to: 4.7
+Stable tag: 2.0.0
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
-Wordless dramatically speeds up and enhances your custom themes creation, thanks to Sass, Compass, Haml and Coffeescript.
+Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
-== Description ==
+* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme)
+* Bootstrap a new theme directly within the WordPress backend interface
+* Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
+* Write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
+* Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
+* A growing set of handy and documented PHP helper functions ready to be used within your views
+* Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 
-Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. 
+[![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
 
-Some of its features are:
+## Getting started
 
-* A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme) (taken directly from Rails);
-* Ability to create a new theme skeleton directly within the WordPress backend interface;
-* Ability to write PHP code using the beautiful [Haml templating system](http://haml-lang.com/);
-* Ability to write CSS stylesheets using the awesome [Sass syntax](sass-lang.com) and the [Compass framework](http://compass-style.org/);
-* Ability to write [Coffeescript](http://jashkenas.github.com/coffee-script/) instead of the boring, oldish Javascript;
-* A growing set of handy and documented helper functions ready to be used within your views;
+Considered you have a standard Wordpress installation already up and running and you are in its root directory:
 
-You can always find the latest version of this plugin, as well as a
-detailed README, on [Github](https://github.com/welaika/wordless).
+1. Install WP-CLI http://wp-cli.org/#installing
+2. Install global packages from NPM: `npm install -g foreman yarn`
+3. `wp plugin install wordless`, `wp plugin activate wordless`
+4. Create and name a brand new Wordless theme directly within the WP backend, from menu "Wordless > New Wordless Theme"
+5. `cd wp-content/themes/mybrandnewtheme`
+6. `yarn install`
 
-== Installation ==
+Now you have all you need to start developing; just be sure to be in your theme directory and run
 
-1. Your development computer needs [ruby](https://www.ruby-lang.org), [compass](https://github.com/chriseppstein/compass), [sprockets](https://github.com/sstephenson/sprockets) and [coffee-script](https://github.com/josh/ruby-coffee-script). Please follow [this guide](https://github.com/welaika/wordless#requirements-installation-and-configuration).
-2. The production machine doesn't need any extra-dependency. Assets are compiled  on your development computer.
-3. Install the plugin from the WP plugins directory or drop the zip inside your wp-content/plugins directory.
-4. Enable the use of nice permalinks from the WP "Settings > Permalink" section.
-5. Create a brand new Wordless theme directly within the WP backend, from the WP "Appearance > New Wordless Theme" section.
-6. Specify the path of your ruby executables within the WP "Wordless > Preferences" menu voice.
+`nf start`
 
-[Wordless gem](https://github.com/welaika/wordless_gem) is command line tool to help manage your Wordless based WordPress sites.
+webpack, php server and your browser will automatically come up and serve your needs :)
 
 == Changelog ==
+
+= 2.0.0 =
+
+* New major version: now Wordless is backed by WebPack
+* HAML is supported for backward compatibility but deprecated
+* Long live PUG
 
 = 0.5.5 =
 
