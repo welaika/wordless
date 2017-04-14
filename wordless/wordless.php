@@ -1,7 +1,6 @@
 <?php
 
 require_once Wordless::join_paths(dirname(__FILE__), '../vendor/autoload.php');
-require_once Wordless::join_paths(dirname(__FILE__), 'admin.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'preprocessors.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'wp-cli-wordless', 'command.php');
 
@@ -33,12 +32,7 @@ class Wordless {
             self::register_preprocessors();
             self::register_preprocessor_actions();
         }
-        self::load_admin_page();
         self::register_plugin_i18n();
-    }
-
-    public static function load_admin_page() {
-        WordlessAdmin::initialize();
     }
 
     public static function helper($class_name) {
