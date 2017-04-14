@@ -3,7 +3,7 @@
 Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme)
-* Bootstrap a new theme directly within the WordPress backend interface
+* Bootstrap a new theme directly within wp-cli
 * Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
 * Write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
 * Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
@@ -14,26 +14,31 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 ## Getting started
 
-Considered you have a standard Wordpress installation already up and running and you are in its root directory:
+**Prerequisites**
 
 1. Install WP-CLI http://wp-cli.org/#installing
 2. Install global packages from NPM: `npm install -g foreman yarn`
-3. `wp plugin install wordless`, `wp plugin activate wordless`
-4. Create and name a brand new Wordless theme directly within the WP backend, from menu "Wordless > New Wordless Theme"
-5. `cd wp-content/themes/mybrandnewtheme`
-6. `yarn install`
 
-Now you have all you need to start developing; just be sure to be in your theme directory and run
 
-`nf start`
+
+Once done, considered you have a standard Wordpress installation already up and running and you are in its root directory:
+
+1. `wp plugin install wordless`, `wp plugin activate wordless`
+2. `wp wordless theme create mybrandnewtheme`
+3. `cd wp-content/themes/mybrandnewtheme`
+4. `yarn install`
+
+Now you have all you need to start developing 💻; just be sure to be in your theme directory and run
+
+`yarn run server`
 
 webpack, php server and your browser will automatically come up and serve your needs :)
 
 ## GiT and Deployment
 
-Wordless 2.x is backed by *WebPack* for all code automation tasks (compiling, but it's up to you eventually extend it to other behaviour - image optimization will probably be v2.1 goal). As a general advice on a default Wordless installation you should add `screen.css` and `application.js` your `.gitignore`.
+Wordless 2.x is backed by *WebPack* for all code automation tasks (compiling, but it's up to you to eventually extend it to other behaviours - image optimization will probably be v2.1 goal). As a general advice on a default Wordless installation you should add `screen.css` and `application.js` your `.gitignore`.
 
-Compiled assets **must** obviously be deployed on remote server.
+Thos compiled assets **must** obviously **be deployed** on remote server.
 
 PUG templates are compiled by the WP plugin at runtime and cached in theme's `tmp` folder. So just gitignore tmp/* and no other worries.
 
@@ -48,7 +53,7 @@ screen.css
 
 ## Insights
 
-[How does it works]() - Basic concepts
+[How does it works]() - Basic concepts (WIP)
 
 [Wordless theme anatomy](https://github.com/welaika/wordless/wiki/Wordless-theme-anatomy) - Structure and conventions
 
@@ -64,14 +69,14 @@ _______________
 * [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local WordPress installations and DB data back and forth from your local development machine to the remote staging server;
 _______________
 
-* [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! Compile and clean assets, create new WP installation, a new wordless theme and let you set up a deploy command in order to easily deploy your site, collaborating with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy -r`
+* [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! ~~Compile and clean assets~~, create new WP installation, ~~a new wordless theme~~ and let you set up a deploy command in order to easily deploy your site, collaborating with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy` (*warning:* with the advent of Wordless 2.x some wordless-gem's functions are no more useful. We are in the process to imagine its future deveopment path)
 
 ## Known problems and limitations
 * Wordless has not been tested on Windows machines
 * The routing part can be drammaticaly improved to make it more readable and DRY
 * This is go-ahead software, everything is subject to change :) but you can pull code from *tagged commits* (stable)
 
-## Code documentation
+## Inline code documentation
 
 You can find it [here](http://welaika.github.io/wordless/docs.html). If you are intrested in contribuing to the documentation:
 

@@ -34,7 +34,7 @@ Considered you have a standard Wordpress installation already up and running and
 
 Now you have all you need to start developing; just be sure to be in your theme directory and run
 
-`nf start`
+`yarn run server`
 
 webpack, php server and your browser will automatically come up and serve your needs :)
 

@@ -6,6 +6,9 @@
   "repository": "git@github.com:welaika/wordless.git",
   "author": "'weLaika' <info@welaika.com>",
   "license": "MIT",
+  "scripts": {
+    "server": "nf start"
+  },
   "dependencies": {},
   "devDependencies": {
     "browser-sync": "^2.18.5",
