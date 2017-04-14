@@ -25,11 +25,16 @@ class WordlessThemeBuilder {
 
   public function upgrade_to_webpack() {
     foreach (Wordless::$webpack_files_names as $key => $filename) {
-      copy(
+      $copied = copy(
         Wordless::join_paths($this->source_path, $filename),
         Wordless::join_paths($this->current_theme_dir, $filename)
       );
+
+      if ( ! $copied )
+        return false;
     }
+
+    return true;
   }
 
   private function copy($src, $dst) {
