@@ -1,0 +1,19 @@
+{
+    "name": "welaika/wp-cli-wordless",
+    "description": "",
+    "type": "wp-cli-package",
+    "homepage": "https://github.com/welaika/wp-cli-wordless",
+    "license": "MIT",
+    "authors": [],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "autoload": {
+        "files": [ "command.php" ]
+    },
+    "require": {
+        "wp-cli/wp-cli": "^1.1.0"
+    },
+    "require-dev": {
+        "behat/behat": "~2.5"
+    }
+}
