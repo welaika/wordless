@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.7
-Stable tag: 2.0.0
+Stable tag: 2.0.0beta
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -40,7 +40,7 @@ webpack, php server and your browser will automatically come up and serve your n
 
 == Changelog ==
 
-= 2.0.0 =
+= 2.0.0beta =
 
 * New major version: now Wordless is backed by WebPack
 * HAML is supported for backward compatibility but deprecated
