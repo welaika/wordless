@@ -25,13 +25,17 @@ class Wordless {
     );
 
     public static function initialize() {
-        if (Wordless::theme_is_wordless_compatible()){
+        $missing_directories = Wordless::theme_is_wordless_compatible(true);
+        if (empty($missing_directories)){
             self::load_i18n();
             self::require_helpers();
             self::require_theme_initializers();
             self::register_activation();
             self::register_preprocessors();
             self::register_preprocessor_actions();
+        } else {
+            require_once "helpers/render_helper.php";
+            render_error("Missing directories", "Theme is missing directories: " . join(array_map('basename', $missing_directories), " "));
         }
         self::register_plugin_i18n();
     }
