@@ -34,8 +34,7 @@ class Wordless {
             self::register_preprocessors();
             self::register_preprocessor_actions();
         } else {
-            require_once "helpers/render_helper.php";
-            render_error("Missing directories", "Theme is missing directories: " . join(array_map('basename', $missing_directories), " "));
+            trigger_error("Missing directories: theme is missing following directories: " . join(array_map('basename', $missing_directories), ", ") . ". Fix theme or deactivate wordless plugin", E_USER_WARNING);
         }
         self::register_plugin_i18n();
     }
