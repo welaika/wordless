@@ -249,7 +249,7 @@ class Wordless {
             return ($return_array) ? $missing : false;
         }
 
-        return true;
+        return ($return_array) ? array() : true;
     }
 
   /**

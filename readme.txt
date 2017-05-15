@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.7
-Stable tag: 2.0.0beta3
+Stable tag: 2.0.0beta4
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -40,7 +40,15 @@ webpack, php server and your browser will automatically come up and serve your n
 
 == Changelog ==
 
-= 2.0.0beta =
+= 2.0.0beta4 =
+
+* Fix bug in command line theme creation
+
+= 2.0.0beta3 =
+
+* cffce50 better handling of missing directories errors
+
+= 2.0.0beta2 =
 
 * 60e47b2 update deploy script in order to delete deleted files from git
 * 319994b changed unsure_dir function permission
