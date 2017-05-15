@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.7
-Stable tag: 2.0.0beta4
+Stable tag: 2.0.0beta5
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -39,6 +39,10 @@ Now you have all you need to start developing; just be sure to be in your theme 
 webpack, php server and your browser will automatically come up and serve your needs :)
 
 == Changelog ==
+
+= 2.0.0beta5 =
+
+* f47dbb6 error handling must not be blocking: moved from fatal to warning
 
 = 2.0.0beta4 =
 
