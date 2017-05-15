@@ -19,14 +19,13 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 1. Install WP-CLI http://wp-cli.org/#installing
 2. Install global packages from NPM: `npm install -g foreman yarn`
 
-
-
 Once done, considered you have a standard Wordpress installation already up and running and you are in its root directory:
 
-1. `wp plugin install wordless`, `wp plugin activate wordless`
-2. `wp wordless theme create mybrandnewtheme`
-3. `cd wp-content/themes/mybrandnewtheme`
-4. `yarn install`
+1. `wp plugin install wordless`
+2. `wp plugin activate wordless`
+3. `wp wordless theme create mybrandnewtheme`
+4. `cd wp-content/themes/mybrandnewtheme`
+5. `yarn install`
 
 Now you have all you need to start developing 💻; just be sure to be in your theme directory and run
 
@@ -38,7 +37,7 @@ webpack, php server and your browser will automatically come up and serve your n
 
 Wordless 2.x is backed by *WebPack* for all code automation tasks (compiling, but it's up to you to eventually extend it to other behaviours - image optimization will probably be v2.1 goal). As a general advice on a default Wordless installation you should add `screen.css` and `application.js` your `.gitignore`.
 
-Thos compiled assets **must** obviously **be deployed** on remote server.
+Those compiled assets **must** obviously **be deployed** on remote server.
 
 PUG templates are compiled by the WP plugin at runtime and cached in theme's `tmp` folder. So just gitignore tmp/* and no other worries.
 
@@ -49,6 +48,7 @@ tmp/
 !tmp/README.mdown
 application.js
 screen.css
+node_modules
 ```
 
 ## Insights
