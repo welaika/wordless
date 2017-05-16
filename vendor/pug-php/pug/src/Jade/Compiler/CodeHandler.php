@@ -2,16 +2,19 @@
 
 namespace Jade\Compiler;
 
+use Jade\Lexer\Scanner;
+
 /**
  * Class Jade\Compiler\CodeHandler.
  */
 class CodeHandler extends CompilerUtils
 {
+    protected $compiler;
     protected $input;
     protected $name;
     protected $separators;
 
-    public function __construct($input, $name)
+    public function __construct($compiler, $input, $name)
     {
         if (!is_string($input)) {
             throw new \InvalidArgumentException('Expecting a string of PHP, got: ' . gettype($input), 11);
@@ -21,6 +24,7 @@ class CodeHandler extends CompilerUtils
             throw new \InvalidArgumentException('Expecting a string of PHP, empty string received.', 12);
         }
 
+        $this->compiler = $compiler;
         $this->input = trim(preg_replace('/\bvar\b/', '', $input));
         $this->name = $name;
         $this->separators = array();
@@ -28,7 +32,7 @@ class CodeHandler extends CompilerUtils
 
     public function innerCode($input, $name)
     {
-        $handler = new static($input, $name);
+        $handler = new static($this->compiler, $input, $name);
 
         return $handler->parse();
     }
@@ -44,11 +48,11 @@ class CodeHandler extends CompilerUtils
         }
 
         preg_match_all(
-            '/(?<![<>=!])=(?!>|=)|[\[\]\{\}\(\),;\.]|(?!:):|->/', // punctuation
-            preg_replace_callback('/[a-zA-Z0-9\\\\_\\x7f-\\xff]*\((?:[0-9\/%\.\s*+-]++|(?R))*+\)/', function ($match) {
+            '/(?<![<>=!])=(?!>|=)|[\\[\\]\\{\\}\\(\\),;\\.]|(?!:):|->/', // punctuation
+            preg_replace_callback('/[a-zA-Z0-9\\\\_\\x7f-\\xff]*\\((?:[0-9\\/%\\.,\\s*+-]++|(?R))*+\\)/', function ($match) {
                 // no need to keep separators in simple PHP expressions (functions calls, parentheses, calculs)
                 return str_repeat(' ', strlen($match[0]));
-            }, preg_replace_callback('/([\'"]).*?(?<!\\\\)(?:\\\\{2})*\\1/', function ($match) {
+            }, preg_replace_callback('/' . Scanner::QUOTED_STRING . '/', function ($match) {
                 // do not take separators in strings
                 return str_repeat(' ', strlen($match[0]));
             }, $this->input)),
@@ -60,8 +64,8 @@ class CodeHandler extends CompilerUtils
 
         if (count($this->separators) === 0) {
             if (strstr('0123456789-+("\'$', substr($this->input, 0, 1)) === false) {
-                //$this->input = $this->phpizeExpression('addDollarIfNeeded', $this->input);
-                $this->input = static::addDollarIfNeeded($this->input);
+                $this->input = $this->compiler->phpizeExpression('addDollarIfNeeded', $this->input);
+                //$this->input = static::addDollarIfNeeded($this->input);
             }
 
             return array($this->input);

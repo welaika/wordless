@@ -1,17 +1,61 @@
 [
     {
-        "name": "js-phpize/js-phpize",
-        "version": "0.2.2",
-        "version_normalized": "0.2.2.0",
+        "name": "nodejs-php-fallback/nodejs-php-fallback",
+        "version": "1.2.8",
+        "version_normalized": "1.2.8.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/pug-php/js-phpize.git",
-            "reference": "8c7d897b89e5ff7314b8e6347832a140867c84c7"
+            "url": "https://github.com/kylekatarnls/nodejs-php-fallback.git",
+            "reference": "b7a1e744ec5ad3e642da2c5d20c6fc69047e4b37"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/8c7d897b89e5ff7314b8e6347832a140867c84c7",
-            "reference": "8c7d897b89e5ff7314b8e6347832a140867c84c7",
+            "url": "https://api.github.com/repos/kylekatarnls/nodejs-php-fallback/zipball/b7a1e744ec5ad3e642da2c5d20c6fc69047e4b37",
+            "reference": "b7a1e744ec5ad3e642da2c5d20c6fc69047e4b37",
+            "shasum": ""
+        },
+        "require": {
+            "composer-plugin-api": "^1.0",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "composer/composer": "^1.2",
+            "phpunit/phpunit": ">=4.8 <6.0"
+        },
+        "time": "2017-05-12T10:16:01+00:00",
+        "type": "composer-plugin",
+        "extra": {
+            "class": "NodejsPhpFallback\\ComposerPlugin"
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "NodejsPhpFallback\\": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "authors": [
+            {
+                "name": "Kyle",
+                "email": "kylekatarnls@gmail.com"
+            }
+        ],
+        "description": "Allow you to call node.js module or scripts throught PHP and call a fallback function if node.js is not available"
+    },
+    {
+        "name": "js-phpize/js-phpize",
+        "version": "1.3.0",
+        "version_normalized": "1.3.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pug-php/js-phpize.git",
+            "reference": "32d49ff4766329792e19df89b4c0b88256d664b9"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/32d49ff4766329792e19df89b4c0b88256d664b9",
+            "reference": "32d49ff4766329792e19df89b4c0b88256d664b9",
             "shasum": ""
         },
         "require": {
@@ -19,9 +63,9 @@
         },
         "require-dev": {
             "codeclimate/php-test-reporter": "dev-master",
-            "phpunit/phpunit": ">=4.0"
+            "phpunit/phpunit": ">=4.8 <6.0"
         },
-        "time": "2016-11-27 21:46:25",
+        "time": "2017-02-14T09:43:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -43,32 +87,38 @@
     },
     {
         "name": "pug-php/pug",
-        "version": "2.4.6",
-        "version_normalized": "2.4.6.0",
+        "version": "2.5.9",
+        "version_normalized": "2.5.9.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pug-php/pug.git",
-            "reference": "9d4932d5c8f26648d453a1146561ae9046011491"
+            "reference": "b4c50ec3ea2f7f01d794a85c98c9c819a524d352"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pug-php/pug/zipball/9d4932d5c8f26648d453a1146561ae9046011491",
-            "reference": "9d4932d5c8f26648d453a1146561ae9046011491",
+            "url": "https://api.github.com/repos/pug-php/pug/zipball/b4c50ec3ea2f7f01d794a85c98c9c819a524d352",
+            "reference": "b4c50ec3ea2f7f01d794a85c98c9c819a524d352",
             "shasum": ""
         },
         "require": {
-            "js-phpize/js-phpize": ">=0.2.0",
+            "js-phpize/js-phpize": "^1.2",
+            "nodejs-php-fallback/nodejs-php-fallback": "^1.2",
             "php": ">=5.3.0"
         },
         "replace": {
             "kylekatarnls/jade-php": "self.version"
         },
         "require-dev": {
-            "codeclimate/php-test-reporter": "dev-master",
-            "phpunit/phpunit": ">=4.0"
+            "codeclimate/php-test-reporter": ">=0.3",
+            "phpunit/phpunit": ">=4.8 <6.0"
         },
-        "time": "2016-11-25 10:28:57",
+        "time": "2017-05-11T16:35:44+00:00",
         "type": "library",
+        "extra": {
+            "npm": {
+                "pug-cli": "^1.0.0-alpha6"
+            }
+        },
         "installation-source": "dist",
         "autoload": {
             "psr-0": {
@@ -203,28 +253,26 @@
     },
     {
         "name": "mobiledetect/mobiledetectlib",
-        "version": "2.8.24",
-        "version_normalized": "2.8.24.0",
+        "version": "2.8.25",
+        "version_normalized": "2.8.25.0",
         "source": {
             "type": "git",
             "url": "https://github.com/serbanghita/Mobile-Detect.git",
-            "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3"
+            "reference": "f0896b5c7274d1450023b0b376240be902c3251c"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
-            "reference": "cdf8f8efaf993bc687e78e4622f5eebd0b8b3bf3",
+            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/f0896b5c7274d1450023b0b376240be902c3251c",
+            "reference": "f0896b5c7274d1450023b0b376240be902c3251c",
             "shasum": ""
         },
         "require": {
             "php": ">=5.0.0"
         },
         "require-dev": {
-            "codeclimate/php-test-reporter": "dev-master",
-            "johnkary/phpunit-speedtrap": "~1.0@dev",
             "phpunit/phpunit": "*"
         },
-        "time": "2016-11-11 14:56:25",
+        "time": "2017-03-29T13:59:30+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {

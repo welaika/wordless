@@ -1,9 +1,0 @@
-
-tobi = array('name' => 'tobi', 'age' => 2)
-users = array($tobi)
-
-fb:users
-  for user in users
-    fb:user(age=user.age)
-      :cdata
-        #{user.name}

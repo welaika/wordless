@@ -2,7 +2,7 @@
 
 namespace JsPhpize\Nodes;
 
-use JsPhpize\Parse\Exception;
+use JsPhpize\Parser\Exception;
 
 class Constant extends Value implements Assignable
 {
@@ -19,7 +19,7 @@ class Constant extends Value implements Assignable
     public function __construct($type, $value)
     {
         if (!in_array($type, array('constant', 'number', 'string'))) {
-            throw new Exception("The given type [$type] is not a valid constant type.", 8);
+            throw new Exception("The given type [$type] is not a valid constant type.", 23);
         }
         $this->type = $type;
         $this->value = $value;
@@ -36,10 +36,7 @@ class Constant extends Value implements Assignable
         if (substr($this->value, 0, 2) === 'M_') {
             return "'M_' prefix is reserved to mathematical constants.";
         }
-    }
 
-    public function isAssignable()
-    {
-        return !$this->getNonAssignableReason();
+        return false;
     }
 }

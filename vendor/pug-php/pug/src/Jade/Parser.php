@@ -7,6 +7,8 @@ use Jade\Parser\ExtensionsHelper;
 
 class Parser
 {
+    const INLINE_TAG = '/^(.*?)#\[([^\]\n]+)\]/';
+
     public static $includeNotFound = '.alert.alert-danger Page not found.';
 
     protected $allowMixedIndent;
@@ -252,7 +254,7 @@ class Parser
     protected function parseText()
     {
         $token = $this->expect('text');
-        if (preg_match('/^(.*?)#\[([^\]\n]+)\]/', $token->value)) {
+        if (preg_match(static::INLINE_TAG, $token->value)) {
             $block = new Nodes\Block();
             $this->parseInlineTags($block, $token->value);
 
@@ -629,7 +631,9 @@ class Parser
 
     public function parseInlineTags($block, $str)
     {
-        while (preg_match('/^(.*?)#\[([^\]\n]+)\]/', $str, $matches)) {
+        $removeWhiteSpace = substr($str, 0, 1) === ' ';
+        while (preg_match(static::INLINE_TAG, $str, $matches)) {
+            $removeWhiteSpace = false;
             if (!empty($matches[1])) {
                 $text = new Nodes\Text($matches[1]);
                 $text->line = $this->line();
@@ -641,7 +645,7 @@ class Parser
             $block->push($tag);
             $str = substr($str, strlen($matches[0]));
         }
-        if (substr($str, 0, 1) === ' ') {
+        if ($removeWhiteSpace) {
             $str = substr($str, 1);
         }
         $text = new Nodes\Text($str);

@@ -168,10 +168,13 @@ abstract class AttributesCompiler extends CompilerFacade
     {
         return trim($this->createCode(
             'if (!empty($__classes)) { ' .
-                'echo ' . var_export(' ' . (isset($this->options['classAttribute'])
-                    ? $this->options['classAttribute']
-                    : 'class'
-                ) . '=' . $this->quote, true) . ' . $__classes .' . var_export($this->quote, true) . '; ' .
+                'echo ' .
+                    var_export(
+                        ' ' . $this->getOption('classAttribute', 'class') .
+                        '=' .
+                        $this->quote,
+                        true
+                    ) . ' . $__classes . ' . var_export($this->quote, true) . '; ' .
             '} ' .
             'unset($__classes); '
         ));

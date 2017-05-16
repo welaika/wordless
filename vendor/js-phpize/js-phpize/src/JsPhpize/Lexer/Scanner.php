@@ -38,11 +38,6 @@ class Scanner
         return $this->token('constant', $constant);
     }
 
-    public function scanFunction($matches)
-    {
-        return $this->valueToken('function', $matches);
-    }
-
     public function scanKeyword($matches)
     {
         return $this->valueToken('keyword', $matches);

@@ -65,7 +65,7 @@ class SubCodeHandler
                     $arguments,
                     $handleRecursion(
                         array($start, $end),
-                        $name * 10 + count($arguments)
+                        intval($name) * 10 + count($arguments)
                     )
                 );
             }

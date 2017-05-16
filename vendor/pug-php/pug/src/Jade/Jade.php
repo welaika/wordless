@@ -2,12 +2,13 @@
 
 namespace Jade;
 
-use Jade\Engine\Options;
+use Jade\Engine\PugJsEngine;
+use Jade\Lexer\Scanner;
 
 /**
  * Class Jade\Jade.
  */
-class Jade extends Options
+class Jade extends PugJsEngine
 {
     /**
      * expressionLanguage option values.
@@ -57,6 +58,8 @@ class Jade extends Options
      * is missing in the executor include whitelist.
      * Returns false in any other case.
      *
+     * @param string $extension PHP extension name
+     *
      * @return bool
      */
     protected function whiteListNeeded($extension)
@@ -71,12 +74,12 @@ class Jade extends Options
     /**
      * Returns list of requirements in an array identified by keys.
      * For each of them, the value can be true if the requirement is
-     * fullfilled, false else.
+     * fulfilled, false else.
      *
      * If a requirement name is specified, returns only the matching
      * boolean value for this requirement.
      *
-     * @param string name
+     * @param string $name
      *
      * @throws \InvalidArgumentException
      *
@@ -114,10 +117,10 @@ class Jade extends Options
     public function compile($input, $filename = null)
     {
         $parser = new Parser($input, $filename, $this->options);
-        $compiler = new Compiler($this->options, $this->filters, $parser->getFilename());
+        $compiler = new Compiler($this, $this->filters, $parser->getFilename());
         $php = $compiler->compile($parser->parse());
-        if (version_compare(PHP_VERSION, '7.0.0') < 0) {
-            $php = preg_replace_callback('/(' . preg_quote('\\Jade\\Compiler::getPropertyFromAnything', '/') . '\\(((?>[^()]+)|(?-2))*\\))[ \t]*(\\(((?>[^()]+)|(?-2))*\\))/', function ($match) {
+        if (version_compare(PHP_VERSION, '7.0.0') < 0 || $this->getOption('php5compatibility')) {
+            $php = preg_replace_callback('/(' . preg_quote('\\Jade\\Compiler::getPropertyFromAnything', '/') . Scanner::PARENTHESES . ')[ \t]*' . Scanner::PARENTHESES . '/', function ($match) {
                 $parenthesis = trim(substr($match[3], 1, -1));
                 $arguments = $match[1];
                 if ($parenthesis !== '') {
@@ -136,17 +139,17 @@ class Jade extends Options
     }
 
     /**
-     * Compile HTML code from a Pug input or a Pug file.
+     * Render using the PHP engine.
      *
-     * @param sring Pug input or file
-     * @param sring filename (optionnal)
-     * @param array vars to pass to the view
+     * @param string $input    pug input or file
+     * @param string $filename optional file path
+     * @param array  $vars     to pass to the view
      *
      * @throws \Exception
      *
      * @return string
      */
-    public function render($input, $filename = null, array $vars = array())
+    public function renderWithPhp($input, $filename, array $vars)
     {
         if (is_array($filename) || is_object($filename)) {
             $vars = $filename;
@@ -169,10 +172,35 @@ class Jade extends Options
     }
 
     /**
+     * Compile HTML code from a Pug input or a Pug file.
+     *
+     * @param string $input    pug input or file
+     * @param string $filename optional file path
+     * @param array  $vars     to pass to the view
+     *
+     * @throws \Exception
+     *
+     * @return string
+     */
+    public function render($input, $filename = null, array $vars = array())
+    {
+        $callback = array($this, 'renderWithPhp');
+        $fallback = function () use ($callback, $input, $filename, $vars) {
+            return call_user_func($callback, $input, $filename, $vars);
+        };
+
+        if ($this->options['pugjs']) {
+            return $this->renderWithJs($input, $filename, $vars, $fallback);
+        }
+
+        return call_user_func($fallback);
+    }
+
+    /**
      * Create a stream wrapper to allow
      * the possibility to add $scope variables.
      *
-     * @param string input
+     * @param string $input
      *
      * @throws \ErrorException
      *
@@ -185,7 +213,7 @@ class Jade extends Options
         }
 
         if (!in_array($this->options['stream'], stream_get_wrappers())) {
-            stream_wrapper_register($this->options['stream'], 'Jade\Stream\Template');
+            stream_wrapper_register($this->options['stream'], 'Jade\\Stream\\Template');
         }
 
         return $this->options['stream'] . '://data;' . $input;

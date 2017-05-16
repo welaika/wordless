@@ -47,6 +47,21 @@ abstract class TagVisitor extends Visitor
         }
     }
 
+    protected function insertSpacesBetweenBlockNodes($nodes)
+    {
+        $count = count($nodes);
+        for ($i = 1; $i < $count; $i++) {
+            if (
+                $nodes[$i] instanceof Text &&
+                $nodes[$i - 1] instanceof Text &&
+                !preg_match('/^\s/', $nodes[$i]->value) &&
+                !preg_match('/\s$/', $nodes[$i - 1]->value)
+            ) {
+                $nodes[$i - 1]->value .= ' ';
+            }
+        }
+    }
+
     /**
      * @param Nodes\Tag $tag
      */
@@ -58,17 +73,7 @@ abstract class TagVisitor extends Visitor
             $this->visitCode($tag->code);
         }
         if (!$tag->keepWhiteSpaces()) {
-            $count = count($tag->block->nodes);
-            for ($i = 1; $i < $count; $i++) {
-                if (
-                    $tag->block->nodes[$i] instanceof Text &&
-                    $tag->block->nodes[$i - 1] instanceof Text &&
-                    !preg_match('/^\s/', $tag->block->nodes[$i]->value) &&
-                    !preg_match('/\s$/', $tag->block->nodes[$i - 1]->value)
-                ) {
-                    $tag->block->nodes[$i - 1]->value .= ' ';
-                }
-            }
+            $this->insertSpacesBetweenBlockNodes($tag->block->nodes);
         }
         $this->visit($tag->block);
         if ($tag->keepWhiteSpaces() && substr(end($this->buffer), -1) === "\n") {

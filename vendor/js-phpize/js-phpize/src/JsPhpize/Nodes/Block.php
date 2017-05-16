@@ -2,8 +2,6 @@
 
 namespace JsPhpize\Nodes;
 
-use JsPhpize\Parser\Exception;
-
 class Block extends Node
 {
     /**
@@ -12,7 +10,7 @@ class Block extends Node
     protected $type;
 
     /**
-     * @var Value
+     * @var Node
      */
     protected $value;
 
@@ -25,6 +23,11 @@ class Block extends Node
      * @var bool
      */
     protected $inInstruction;
+
+    /**
+     * @var bool
+     */
+    protected $multipleInstructions = false;
 
     /**
      * @var array
@@ -70,6 +73,7 @@ class Block extends Node
             'do',
             'interface',
             'class',
+            'switch',
         ));
     }
 
@@ -87,10 +91,6 @@ class Block extends Node
 
     public function addInstructions($instructions)
     {
-        if (!$this->handleInstructions()) {
-            throw new Exception($this->type . ' blocks cannot contains instructions.', 17);
-        }
-
         $instructions = is_array($instructions) ? $instructions : func_get_args();
         if (count($instructions)) {
             if (!$this->inInstruction) {
@@ -113,16 +113,17 @@ class Block extends Node
         $this->inInstruction = false;
     }
 
-    public function setValue(Value $value)
+    public function setValue(Node $value)
     {
-        if ($this->needParenthesis() && !($value instanceof Parenthesis)) {
-            throw new Exception($this->type . ' blocks need to be followed by a parenthesis.', 18);
-        }
-
         if ($this->type === 'for') {
             $value->setSeparator(';');
         }
 
         $this->value = $value;
+    }
+
+    public function enableMultipleInstructions()
+    {
+        $this->multipleInstructions = true;
     }
 }

@@ -14,6 +14,13 @@ class ComposerStaticInite5b34b7ebbce05aded2063cbbbe4b8b3
                 0 => __DIR__ . '/..' . '/pug-php/pug/src',
             ),
         ),
+        'N' => 
+        array (
+            'NodejsPhpFallback\\' => 
+            array (
+                0 => __DIR__ . '/..' . '/nodejs-php-fallback/nodejs-php-fallback/src',
+            ),
+        ),
         'J' => 
         array (
             'JsPhpize' => 

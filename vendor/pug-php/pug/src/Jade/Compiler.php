@@ -4,6 +4,7 @@ namespace Jade;
 
 use Jade\Compiler\CodeHandler;
 use Jade\Compiler\Options;
+use Jade\Lexer\Scanner;
 use Jade\Parser\Exception as ParserException;
 
 /**
@@ -53,11 +54,22 @@ class Compiler extends Options
      * @param array/Jade $options
      * @param array      $filters
      */
-    public function __construct($options = array(), array $filters = array(), $filename = null)
+    public function __construct($options = array(), array $filters = array(), $filename = null, $jsPhpize = null)
     {
         $this->options = $this->setOptions($options);
         $this->filters = $filters;
         $this->filename = $filename;
+        $this->jsPhpize = $jsPhpize;
+    }
+
+    /**
+     * Get the filename passed to the compiler.
+     *
+     * @return Compiler
+     */
+    public function getFilename()
+    {
+        return $this->filename;
     }
 
     /**
@@ -67,7 +79,7 @@ class Compiler extends Options
      */
     public function subCompiler()
     {
-        return new static($this->options, $this->filters);
+        return new static($this->jade ?: $this->options, $this->filters, $this->filename, $this->jsPhpize);
     }
 
     /**
@@ -91,7 +103,11 @@ class Compiler extends Options
 
         $code = ltrim(implode('', $this->buffer));
         if ($this->jsPhpize) {
-            $code = $this->createCode($this->jsPhpize->compileDependencies()) . $code;
+            $dependencies = $this->jsPhpize->compileDependencies();
+            if (!empty($dependencies)) {
+                $this->jsPhpize->flushDependencies();
+                $code = $this->createCode($dependencies) . $code;
+            }
         }
 
         if ($this->phpSingleLine) {
@@ -168,7 +184,7 @@ class Compiler extends Options
 
     protected function handleCodePhp($input, $name = '')
     {
-        $handler = new CodeHandler($input, $name);
+        $handler = new CodeHandler($this, $input, $name);
 
         return $handler->parse();
     }
@@ -218,7 +234,7 @@ class Compiler extends Options
             // @todo: handleCode() in concat
             $part[0] = trim($part[0]);
 
-            if (preg_match('/^("(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\')(.*)$/', $part[0], $match)) {
+            if (preg_match('/^(' . Scanner::QUOTED_STRING . ')([\\s\\S]*)$/', $part[0], $match)) {
                 if (strlen(trim($match[2]))) {
                     throw new \ErrorException('Unexpected value: ' . $match[2], 8);
                 }
@@ -256,11 +272,9 @@ class Compiler extends Options
      */
     protected function interpolateFromCapture($match)
     {
-        if ($match[1] === '') {
-            return trim($this->escapeIfNeeded($match[2] === '!', $match[3]));
-        }
-
-        return substr($match[0], 1);
+        return $match[1] === ''
+            ? trim($this->escapeIfNeeded($match[2] !== '!', $match[3]))
+            : substr($match[0], 1);
     }
 
     /**
@@ -311,7 +325,7 @@ class Compiler extends Options
 
     protected function handleArgumentValue($arg)
     {
-        if (preg_match('/^"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'/', $arg)) {
+        if (preg_match('/^' . Scanner::QUOTED_STRING . '/', $arg)) {
             return $this->handleString(trim($arg));
         }
 
@@ -320,7 +334,7 @@ class Compiler extends Options
         } catch (\Exception $e) {
             // if a bug occur, try to remove comments
             try {
-                return $this->handleCode(preg_replace('#/\*(.*)\*/#', '', $arg));
+                return $this->handleCode(preg_replace('#/\\*([\\s\\S]*?)\\*/#', '', $arg));
             } catch (\Exception $e) {
                 throw new ParserException('Pug.php did not understand ' . $arg, 10, $e);
             }

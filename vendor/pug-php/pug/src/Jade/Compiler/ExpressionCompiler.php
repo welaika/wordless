@@ -3,6 +3,7 @@
 namespace Jade\Compiler;
 
 use Jade\Jade;
+use Jade\Lexer\Scanner;
 use JsPhpize\JsPhpize;
 
 /**
@@ -26,13 +27,12 @@ class ExpressionCompiler extends MixinVisitor
         // add dollar if missing
         return preg_match('/^' . static::VARNAME . '(\s*,.+)?$/', $arg)
             ? static::addDollarIfNeeded($arg)
-            // $arg = static::addDollarIfNeeded($arg)
             : $arg;
     }
 
     protected function getExpressionLanguage()
     {
-        $expressionLanguage = $this->getOption('expressionLanguage');
+        $expressionLanguage = $this->getOption('expressionLanguage', 'auto');
         if (is_string($expressionLanguage)) {
             $expressionLanguage = strtolower($expressionLanguage);
             if (substr($expressionLanguage, 0, 3) === 'php') {
@@ -48,15 +48,24 @@ class ExpressionCompiler extends MixinVisitor
 
     protected function getPhpCodeFromJs($arguments)
     {
-        if (preg_match('/^\s*array\s*\([\s\S]*\)\s*$/i', $arguments[0])) {
+        if (
+            preg_match('/^\s*array\s*' . Scanner::PARENTHESES . '\s*$/i', $arguments[0]) ||
+            preg_match('/^\(*isset\(\$/i', $arguments[0]) ||
+            (
+                preg_match('/^\s*array_merge\s*' . Scanner::PARENTHESES . '/i', $arguments[0]) &&
+                preg_match('/\s*array\s*' . Scanner::PARENTHESES . '\s*/i', $arguments[0])
+            )
+        ) {
             return $arguments[0];
         }
 
         if ($this->jsPhpize === null) {
-            $this->jsPhpize = new JsPhpize();
+            $this->jsPhpize = new JsPhpize(array(
+                'catchDependencies' => true,
+            ));
         }
 
-        return rtrim(trim(call_user_func(array($this->jsPhpize, 'compileCode'), $arguments[0], true)), ';');
+        return rtrim(trim(call_user_func(array($this->jsPhpize, 'compileCode'), $arguments[0])), ';');
     }
 
     protected function jsToPhp($method, $arguments)
@@ -66,7 +75,7 @@ class ExpressionCompiler extends MixinVisitor
         return in_array($method, array('handleCodePhp')) ? array($code) : $code;
     }
 
-    protected function phpizeExpression($method)
+    public function phpizeExpression($method)
     {
         $arguments = array_slice(func_get_args(), 1);
 

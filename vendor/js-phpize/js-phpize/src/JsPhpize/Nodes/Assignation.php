@@ -2,7 +2,7 @@
 
 namespace JsPhpize\Nodes;
 
-use JsPhpize\Parse\Exception;
+use JsPhpize\Parser\Exception;
 
 class Assignation extends Value
 {
@@ -23,11 +23,11 @@ class Assignation extends Value
 
     public function __construct($operator, Assignable $leftHand, Node $rightHand)
     {
-        if (!$leftHand->isAssignable()) {
-            throw new Exception($leftHand->getNonAssignableReason(), 9);
-        }
+        $reason = $leftHand->getNonAssignableReason();
 
-        $rightHand->mustBeAssignable();
+        if ($reason !== false) {
+            throw new Exception($reason, 9);
+        }
 
         $this->operator = $operator;
         $this->leftHand = $leftHand;

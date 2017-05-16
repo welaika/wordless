@@ -101,6 +101,15 @@ class Options extends ExpressionCompiler
         return $options;
     }
 
+    protected function getRawOptionValue($option)
+    {
+        return is_null($this->jade)
+            ? array_key_exists($option, $this->options)
+                ? $this->options[$option]
+                : null
+            : $this->jade->getOption($option);
+    }
+
     /**
      * Get an option from the jade engine if set or from the options array else.
      *
@@ -110,16 +119,14 @@ class Options extends ExpressionCompiler
      *
      * @return mixed
      */
-    public function getOption($option)
+    public function getOption($option, $defaultValue = null)
     {
-        if (is_null($this->jade)) {
-            if (!isset($this->options[$option])) {
-                throw new \InvalidArgumentException("$option is not a valid option name.", 28);
-            }
-
-            return $this->options[$option];
+        if (is_null($this->jade) && !array_key_exists($option, $this->options) && func_num_args() < 2) {
+            throw new \InvalidArgumentException("$option is not a valid option name.", 28);
         }
 
-        return $this->jade->getOption($option);
+        $value = $this->getRawOptionValue($option);
+
+        return is_null($value) ? $defaultValue : $value;
     }
 }

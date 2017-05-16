@@ -34,7 +34,7 @@ abstract class CompilerConfig
     /**
      * @const string
      */
-    const CONSTANT_VALUE = '[ \t]*("(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'|true|false|null|undefined|[0-9]+|\b\b)[ \t]*';
+    const CONSTANT_VALUE = '[ \\t]*("(?:\\\\[\\s\\S]|[^"\\\\])*"|\'(?:\\\\[\\s\\S]|[^\'\\\\])*\'|true|false|null|undefined|[0-9]+|\\b\\b)[ \\t]*';
 
     /**
      * @const string

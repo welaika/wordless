@@ -92,8 +92,14 @@ class CacheHelper
     {
         $cacheFolder = $this->pug->getOption('cache');
 
-        if (!is_dir($cacheFolder)) {
-            throw new \ErrorException($cacheFolder . ': Cache directory seem\'s to not exists', 5);
+        if (!is_dir($cacheFolder) && !@mkdir($cacheFolder, 0777, true)) {
+            throw new \ErrorException(
+                $cacheFolder . ': Cache directory seem\'s to not exists' . "\n" .
+                'Create it with:' . "\n" .
+                'mkdir -p ' . escapeshellarg(realpath($cacheFolder)) . "\n" .
+                'Or replace your cache setting with a valid writable folder path.',
+                5
+            );
         }
 
         return $cacheFolder;

@@ -87,6 +87,13 @@ class Compiler
 
     protected function visitAssignation(Assignation $assignation, $indent)
     {
+        if ($assignation->leftHand instanceof Constant && $assignation->leftHand->type === 'constant') {
+            return 'define(' .
+                var_export(strval($assignation->leftHand->value), true) . ', ' .
+                $this->visitNode($assignation->rightHand, $indent) .
+            ')';
+        }
+
         return $this->visitNode($assignation->leftHand, $indent) .
             ' ' . $assignation->operator .
             ' ' . $this->visitNode($assignation->rightHand, $indent);
@@ -94,8 +101,8 @@ class Compiler
 
     protected function visitBlock(Block $block, $indent)
     {
-        $head = $block->type . ' ' . ($block->value
-            ? $this->visitNode($block->value, $indent)
+        $head = $block->type . ($block->value
+            ? ' ' . $this->visitNode($block->value, $indent)
             : ''
         );
 
@@ -105,7 +112,7 @@ class Compiler
 
         $letVariables = $this->visitNodesArray($block->getLetVariables(), $indent, '', $indent . "unset(%s);\n");
 
-        return $head . "{\n" .
+        return $head . " {\n" .
             $this->compile($block, '  ' . $indent) .
             $letVariables .
             $indent . '}';
@@ -127,7 +134,7 @@ class Compiler
         )));
     }
 
-    protected function visitConstant(Constant $constant, $indent)
+    protected function visitConstant(Constant $constant)
     {
         $value = $constant->value;
         if ($constant->type === 'string' && substr($constant->value, 0, 1) === '"') {
@@ -183,19 +190,31 @@ class Compiler
         $function = $functionCall->function;
         $arguments = $functionCall->arguments;
         $arguments = $this->visitNodesArray($arguments, $indent, ', ');
+        $dynamicCall = 'call_user_func(' .
+            $this->visitNode($function, $indent) .
+            ($arguments === '' ? '' : ', ' . $arguments) .
+        ')';
 
         if ($function instanceof Variable) {
             $name = $function->name;
+            $staticCall = $name . '(' . $arguments . ')';
+
+            if (in_array($name, array(
+                'array',
+                'echo',
+                'print',
+                'printf',
+                'exit',
+            ))) {
+                return $staticCall;
+            }
 
             return 'function_exists(' . var_export($name, true) . ') ? ' .
-                $name . '(' . $arguments . ') : ' .
-                'call_user_func(' .
-                    $this->visitNode($function, $indent) .
-                    ($arguments === '' ? '' : ', ' . $arguments) .
-                ')';
+                $staticCall . ' : ' .
+                $dynamicCall;
         }
 
-        return $this->visitNode($function, $indent) . '(' . $arguments . ')';
+        return $dynamicCall;
     }
 
     protected function visitHooksArray(HooksArray $array, $indent)
@@ -205,7 +224,18 @@ class Compiler
 
     protected function visitInstruction(Instruction $group, $indent)
     {
-        return $this->visitNodesArray($group->instructions, $indent, '', $indent . "%s;\n");
+        $visitNode = array($this, 'visitNode');
+
+        return implode('', array_map(function ($instruction) use ($visitNode, $indent) {
+            $value = call_user_func($visitNode, $instruction, $indent);
+
+            return $indent .
+                ($instruction instanceof Block && $instruction->handleInstructions()
+                    ? $value
+                    : $value . ';'
+                ) .
+                "\n";
+        }, $group->instructions));
     }
 
     public function visitNode(Node $node, $indent)
@@ -220,12 +250,12 @@ class Compiler
             $php = $node->getBefore() . $php . $node->getAfter();
         }
 
-        return $indent . $php;
+        return $php;
     }
 
     protected function visitParenthesis(Parenthesis $parenthesis, $indent)
     {
-        return '(' . $this->visitNodesArray($parenthesis->nodes, $indent, $parenthesis->separator) . ')';
+        return '(' . $this->visitNodesArray($parenthesis->nodes, $indent, $parenthesis->separator . ' ') . ')';
     }
 
     protected function visitTernary(Ternary $ternary, $indent)
@@ -254,7 +284,6 @@ class Compiler
     public function compile(Block $block, $indent = '')
     {
         $output = '';
-        $line = array();
 
         foreach ($block->instructions as $instruction) {
             $output .= $this->visitNode($instruction, $indent);

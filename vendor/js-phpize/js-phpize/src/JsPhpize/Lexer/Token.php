@@ -21,51 +21,56 @@ class Token
         return in_array($value, array($this->type, $this->value));
     }
 
+    protected function typeIn($values)
+    {
+        return in_array($this->type, $values);
+    }
+
+    protected function valueIn($values)
+    {
+        return in_array($this->value, $values);
+    }
+
     public function isIn($values)
     {
         $values = is_array($values) ? $values : func_get_args();
 
-        return in_array($this->type, $values) || in_array($this->value, $values);
+        return $this->typeIn($values) || $this->valueIn($values);
     }
 
     public function isValue()
     {
-        return in_array($this->type, array('variable', 'constant', 'string', 'number'));
+        return $this->typeIn(array('variable', 'constant', 'string', 'number'));
     }
 
-    public function isComparison()
+    protected function isComparison()
     {
-        return in_array($this->type, array('===', '!==', '>=', '<=', '<>', '!=', '==', '>', '<'));
+        return $this->typeIn(array('===', '!==', '>=', '<=', '<>', '!=', '==', '>', '<'));
     }
 
-    public function isLogical()
+    protected function isLogical()
     {
-        return in_array($this->type, array('&&', '||', '!'));
+        return $this->typeIn(array('&&', '||', '!'));
     }
 
-    public function isBinary()
+    protected function isBinary()
     {
-        return in_array($this->type, array('&', '|', '^', '~', '>>', '<<', '>>>'));
+        return $this->typeIn(array('&', '|', '^', '~', '>>', '<<', '>>>'));
     }
 
-    public function isArithmetic()
+    protected function isArithmetic()
     {
-        return in_array($this->type, array('+', '-', '/', '*', '%', '**', '--', '++'));
+        return $this->typeIn(array('+', '-', '/', '*', '%', '**', '--', '++'));
     }
 
-    public function isVarOperator()
+    protected function isVarOperator()
     {
-        return in_array($this->type, array('delete', 'void', 'typeof'));
+        return $this->typeIn(array('delete', 'void', 'typeof'));
     }
 
-    public function isOpener()
+    public function isLeftHandOperator()
     {
-        return in_array($this->type, array('{', '(', '['));
-    }
-
-    public function isCloser()
-    {
-        return in_array($this->type, array('}', ')', ']'));
+        return $this->typeIn(array('~', '!', '--', '++', '-', '+')) || $this->isVarOperator();
     }
 
     public function isAssignation()
@@ -80,7 +85,7 @@ class Token
 
     public function isNeutral()
     {
-        return $this->isIn('comment', 'newline');
+        return $this->typeIn(array('comment', 'newline'));
     }
 
     public function expectNoLeftMember()
@@ -88,18 +93,13 @@ class Token
         return in_array($this->type, array('!', '~')) || $this->isVarOperator();
     }
 
-    public function expectRightMember()
+    public function isFunction()
     {
-        return $this->isOperator() || $this->isOpener();
+        return $this->type === 'function' || $this->type === 'keyword' && $this->value === 'function';
     }
 
     public function __get($key)
     {
         return isset($this->data[$key]) ? $this->data[$key] : null;
-    }
-
-    public function __toString()
-    {
-        return $this->value ?: $this->type;
     }
 }
