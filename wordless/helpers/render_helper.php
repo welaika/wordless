@@ -78,6 +78,7 @@ class RenderHelper {
                 if ($this->ensure_dir($tmp_dir)) {
                     $pug = new Pug(array(
                         'prettyprint' => true,
+                        'expressionLanguage' => 'php',
                         'extension' => '.pug',
                         'cache' => $tmp_dir
                     ));
