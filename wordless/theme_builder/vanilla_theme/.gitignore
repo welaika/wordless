@@ -2,5 +2,7 @@ tmp/*
 !tmp/README.mdown
 assets/javascripts/application.js
 assets/stylesheets/screen.css
+assets/javascripts/*.map
+assets/stylesheets/*.map
 .DS_Store
 node_modules
