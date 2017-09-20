@@ -1,6 +1,8 @@
 tmp/*
 !tmp/README.mdown
 assets/javascripts/application.js
-asstes/stylesheets/screen.css
+assets/javascripts/application.js.map
+assets/stylesheets/screen.css
+assets/stylesheets/screen.css.map
 .DS_Store
 node_modules
