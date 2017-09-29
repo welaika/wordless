@@ -23,7 +23,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 ## Getting started
 
-Considered you have a standard Wordpress installation already up and running and you are in its root directory:
+Considered you have a standard WordPress installation already up and running and you are in its root directory:
 
 1. Install WP-CLI http://wp-cli.org/#installing
 2. Install global packages from NPM: `npm install -g foreman yarn`
