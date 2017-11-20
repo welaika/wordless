@@ -19,7 +19,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 1. Install WP-CLI http://wp-cli.org/#installing
 2. Install global packages from NPM: `npm install -g foreman yarn`
 
-Once done, considered you have a standard Wordpress installation already up and running and you are in its root directory:
+Once done, considered you have a standard WordPress installation already up and running and you are in its root directory:
 
 1. `wp plugin install wordless`
 2. `wp plugin activate wordless`
@@ -104,7 +104,7 @@ The user interface was translated by Wasilis Mandratzis-Walz (German and Greek),
 Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
 
 ## Need more tools?
-Visit [Wordpress Tools](http://wptools.it).
+Visit [WordPress Tools](http://wptools.it).
 
 ## Third Part Libraries
 

@@ -48,7 +48,7 @@ msgstr "Name des Themes"
 
 #: ../wordless/admin.php:83
 msgid "This will be the name displayed inside WordPress."
-msgstr "Dies ist der Name der innerhalb von Wordpress angezeigt wird."
+msgstr "Dies ist der Name der innerhalb von WordPress angezeigt wird."
 
 #: ../wordless/admin.php:87
 msgid "Theme Directory"
@@ -87,7 +87,7 @@ msgstr "Cache"
 
 #: ../wordless/admin.php:131
 msgid "This enable the wordpress assets cache."
-msgstr "Das aktiviert den Wordpress assets Cache."
+msgstr "Das aktiviert den WordPress assets Cache."
 
 #: ../wordless/admin.php:135
 msgid "Version"
