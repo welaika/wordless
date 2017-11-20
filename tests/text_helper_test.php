@@ -69,6 +69,10 @@ class TextHelperTest extends UnitTestCase {
     $this->assertEqual("Hello Wor...", truncate("Hello World!!", array("length" => 12)));
   }
 
+  function test_truncate_supports_accented_words() {
+    $this->assertEqual("Hello Wòr...", truncate("Hello Wòrld!!", array("length" => 12)));
+  }
+
   function test_truncate_should_use_default_length_of_30() {
     $str = "This is a string that will go longer then the default truncate length of 30";
     $this->assertEqual(substr($str, 0, -3) + "...", truncate($str));
@@ -92,7 +96,7 @@ class TextHelperTest extends UnitTestCase {
   function test_truncate_allowed_tags() {
     $this->assertEqual("<a><strong>Hello Big World!</strong></a> I'm[...]", truncate("<a><strong>Hello Big World!</a> I'm very</strong> happy to be here.", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => 'all')));
     $this->assertEqual("<a>Hello Big World!</a> I'm[...]", truncate("<a><strong>Hello Big World!</a> I'm very</strong> happy to be here.", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => array('a','img'))));
-    $this->assertEqual("<strong><a>Ciao a tutti!</a> è[...]</strong>", truncate("<strong><a>Ciao a tutti!</a> è bello essere qui.</strong>", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => array('a','img', 'strong'))));
+    $this->assertEqual("<strong><a>Ciao a tutti!</a> é [...]</strong>", truncate("<strong><a>Ciao a tutti!</a> é bello essere qui.</strong>", array("omission" => "[...]", "length" => 4, "separator" => ' ', "word_count" => TRUE, 'html' => TRUE, 'allowed_tags' => array('a','img', 'strong'))));
   }
 
   function test_active_if() {
@@ -110,9 +114,9 @@ class TextHelperTest extends UnitTestCase {
   }
 
   function test_is_valid_url() {
-    $this->assertEqual(false, is_valid_url("http:///example.unknown")); 
-    $this->assertEqual(false, is_valid_url("http://:80")); 
-    $this->assertEqual(false, is_valid_url("http://user@:80")); 
+    $this->assertEqual(false, is_valid_url("http:///example.unknown"));
+    $this->assertEqual(false, is_valid_url("http://:80"));
+    $this->assertEqual(false, is_valid_url("http://user@:80"));
     $this->assertEqual(false, is_valid_url("example.unknown"));
     $this->assertEqual(true, is_valid_url("http://example.unknown"));
     $this->assertEqual(true, is_valid_url("http://example.unknown/2013/01/07/something"));

@@ -241,14 +241,14 @@ class TextHelper {
     // add words to result string
                     $text .= $word ." ";
     // if the word is a HTML tag don't count it
-                    if ((substr($word, 0, 1) != "<") || (substr($word, -1) != ">")){
+                    if ((mb_substr($word, 0, 1) != "<") || (mb_substr($word, -1) != ">")){
                         $counter++;
                     }
                 }
             }
     // if the last substring of $text is separator remove it
-            if (substr($text, -strlen($options['separator'])) === $options['separator']){
-                $text = substr($text, 0, (strlen($text) - strlen($options['separator'])));
+            if (mb_substr($text, -strlen($options['separator'])) === $options['separator']){
+                $text = mb_substr($text, 0, (strlen($text) - strlen($options['separator'])));
             }
             if (count($words) >= $options['length']){
                 $text = $text . $options['omission'];
@@ -272,7 +272,7 @@ class TextHelper {
             if ($options['separator']) {
                 $stop = FALSE;
                 for ($i = 0; $i <= min(strlen($text), $length_with_room_for_omission); $i++) {
-                    if (substr($text, $i, strlen($options['separator'])) == $options['separator']) {
+                    if (mb_substr($text, $i, strlen($options['separator'])) == $options['separator']) {
                         $stop = $i;
                     }
                 }
@@ -285,7 +285,7 @@ class TextHelper {
             }
 
             if (strlen($text) > $options['length']) {
-                return substr($text, 0, $stop) . $options['omission'];
+                return mb_substr($text, 0, $stop) . $options['omission'];
             }
             else {
                 return $text;
