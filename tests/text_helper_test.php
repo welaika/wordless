@@ -75,7 +75,7 @@ class TextHelperTest extends UnitTestCase {
 
   function test_truncate_should_use_default_length_of_30() {
     $str = "This is a string that will go longer then the default truncate length of 30";
-    $this->assertEqual(substr($str, 0, -3) + "...", truncate($str));
+    $this->assertEqual(substr($str, 0, 30 - 3) . "...", truncate($str));
   }
 
   function test_truncate_with_options_hash() {
