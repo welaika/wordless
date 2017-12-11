@@ -4,8 +4,8 @@ Contributors: welaika, stefano.verna
 Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
-Tested up to: 4.9
-Stable tag: 2.0.0rc1
+Tested up to: 4.9.1
+Stable tag: 2.0.0
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -39,6 +39,22 @@ Now you have all you need to start developing; just be sure to be in your theme 
 webpack, php server and your browser will automatically come up and serve your needs :)
 
 == Changelog ==
+
+= 2.0.0 =
+
+* 58a1b67 fix broken test. tnx php7.2
+* 5be0b1b travis php 7.2
+* ec7d463 `wp wordless theme upgrade` can no be forced
+* 64cb3b5 add documentation to wordless wpcli plugin
+* 761b892 webpack.config to coffee
+* 2c6d182 remove image-webpack-loader and handle fonts in css
+* c820678 use npx to invoke webpack inside Procfile
+* d2a55d7 fix relative require_once in main file
+* 7afe86d update to webpack 3
+* e1960b4 WordPress. Not Wordpress.
+* 8f070f4 update php version on travis, dismissing 5.5
+* 0da6434 bump version
+* 0c3174f fix handling of accented words within truncate() helper
 
 = 2.0.0beta6 =
 
