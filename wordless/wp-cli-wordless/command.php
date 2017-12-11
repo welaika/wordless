@@ -20,12 +20,19 @@ class WordlessCommand {
 	 *
 	 * @return void
 	 */
-	public function upgrade() {
+	public function upgrade($args, $assoc_args) {
 		if ( $this->theme_is_upgradable() ) {
 			WP_CLI::warning('Theme is not Wordless2 ready. Going ahead upgrading...');
 
 			$builder = new WordlessThemeBuilder(null, null, intval(0664, 8));
+			if ( $builder->upgrade_to_webpack() )
+				WP_CLI::success( 'Theme succesfully upgraded. Now you can getting started with Wordless2 (https://github.com/welaika/wordless#getting-started)' );
+			else
+				WP_CLI::error( 'Sorry, something went wrong during theme upgarde.' );
+		} elseif ($assoc_args['force']) {
+			WP_CLI::warning('Forcing the upgrade...');
 
+			$builder = new WordlessThemeBuilder(null, null, intval(0664, 8));
 			if ( $builder->upgrade_to_webpack() )
 				WP_CLI::success( 'Theme succesfully upgraded. Now you can getting started with Wordless2 (https://github.com/welaika/wordless#getting-started)' );
 			else
