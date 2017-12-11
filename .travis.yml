@@ -2,6 +2,7 @@ language: php
 php:
   - 5.6
   - 7.0
+  - 7.2
 script: "sh -c 'cd tests && php all_tests.php'"
 notifications:
   recipients:
