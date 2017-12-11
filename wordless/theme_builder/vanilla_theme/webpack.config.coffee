@@ -40,13 +40,12 @@ module.exports =
         use: ["style-loader", "css-loader", "resolve-url-loader"]
       },
       {
-        test: /\.(jpe?g|png|gif|svg)$/i
-        use: [
-          "file-loader",
-          loader: "image-webpack-loader",
-          options:
-              bypassOnDebug: false
-        ]
+        test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/
+        loader: "url-loader"
+      }
+      {
+        test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/
+        loader: "url-loader"
       }
     ]
 
