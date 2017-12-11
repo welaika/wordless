@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.9.1
-Stable tag: 2.0.1
+Stable tag: 2.0.2
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 

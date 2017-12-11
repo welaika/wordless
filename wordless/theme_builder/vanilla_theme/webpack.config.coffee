@@ -19,7 +19,7 @@ module.exports =
     path: javascriptsDstPath
 
 
-  devtool: "source-map",
+  devtool: "source-map"
 
   module:
     rules: [
@@ -34,18 +34,30 @@ module.exports =
           "resolve-url-loader"
           "sass-loader?sourceMap"
         ])
-      },
+      }
       {
         test: /\.css$/
         use: ["style-loader", "css-loader", "resolve-url-loader"]
-      },
+      }
+      {
+        test: /\.(jpe?g|png|gif)$/i
+        use: [
+          {
+            loader: 'file-loader'
+            options:
+              hash: 'sha512'
+              digest: 'hex'
+              name: '../images/[name]-[hash].[ext]'
+          }
+        ]
+      }
       {
         test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/
-        loader: "url-loader"
+        use: "url-loader"
       }
       {
         test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/
-        loader: "url-loader"
+        use: "url-loader"
       }
     ]
 
