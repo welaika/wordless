@@ -12,7 +12,7 @@ License URI: http://www.opensource.org/licenses/MIT
 Wordless is an opinionated WordPress plugin that dramatically speeds up and enhances your custom themes creation. Some of its features are:
 
 * A structured, organized and clean [theme organization](https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme)
-* Bootstrap a new theme directly within the WordPress backend interface
+* Bootstrap a new theme directly within wp-cli
 * Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
 * Write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
 * Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
@@ -23,20 +23,27 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 ## Getting started
 
-Considered you have a standard WordPress installation already up and running and you are in its root directory:
+**Prerequisites**
 
 1. Install WP-CLI http://wp-cli.org/#installing
 2. Install global packages from NPM: `npm install -g foreman yarn`
-3. `wp plugin install wordless`, `wp plugin activate wordless`
-4. Create and name a brand new Wordless theme directly within the WP backend, from menu "Wordless > New Wordless Theme"
+
+Once done, considered you have a standard WordPress installation already up and running and you are in its root directory:
+
+1. wp rewrite structure '%postname%'
+2. `wp plugin install wordless`
+3. `wp plugin activate wordless`
+4. `wp wordless theme create mybrandnewtheme`
 5. `cd wp-content/themes/mybrandnewtheme`
 6. `yarn install`
 
-Now you have all you need to start developing; just be sure to be in your theme directory and run
+Now you have all you need to start developing 💻; just be sure to be in your theme directory and run
 
 `yarn run server`
 
 webpack, php server and your browser will automatically come up and serve your needs :)
+
+Read more on [GitHub](https://github.com/welaika/wordless)
 
 == Changelog ==
 
