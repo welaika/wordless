@@ -19,7 +19,7 @@ class Wordless {
         'procfile' => 'Procfile',
         'env' => '.env',
         'package' => 'package.json',
-        'webpack' => 'webpack.config.js',
+        'webpack' => 'webpack.config.coffee',
         'main' => 'theme/assets/main.js',
         'yarn' => 'yarn.lock'
     );
