@@ -12,6 +12,12 @@ class WordlessCommand {
 	 * Upgrade current active Wordless theme to WebPack.
 	 * Does nothnig if the active theme is not a Wordless one.
 	 *
+	 * 	 * ## OPTIONS
+	 *
+	 * [--force]
+	 * : Force the upgrade of the theme. Useful when
+	 * the webpack configuration was updated in the plugin
+	 *
 	 * @return void
 	 */
 	public function upgrade() {
@@ -32,6 +38,11 @@ class WordlessCommand {
 
 	/**
 	 * Create a new Wordless theme
+	 *
+	 * ## OPTIONS
+	 *
+	 * <name>
+	 * : Gives your theme a name
 	 *
 	 * @param string $args Name of the theme
 	 * @return void
