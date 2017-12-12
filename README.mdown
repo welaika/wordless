@@ -21,7 +21,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 Once done, considered you have a standard WordPress installation already up and running and you are in its root directory:
 
-1. wp rewrite structure '%postname%'
+1. `wp rewrite structure '%postname%'`
 2. `wp plugin install wordless`
 3. `wp plugin activate wordless`
 4. `wp wordless theme create mybrandnewtheme`

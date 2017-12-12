@@ -25,15 +25,27 @@ module.exports =
     rules: [
       {
         test: /\.coffee$/
-        loader: "coffee-loader"
+        use: "coffee-loader"
       }
       {
         test: /\.s(a|c)ss$/,
-        use: ExtractTextPlugin.extract([
-          "css-loader?sourceMap"
-          "resolve-url-loader"
-          "sass-loader?sourceMap"
-        ])
+        use: ExtractTextPlugin.extract
+          use: [
+            {
+              loader: 'css-loader'
+              options:
+                sourceMap: true
+                minimize: true
+            }
+            {
+              loader: 'resolve-url-loader'
+            }
+            {
+              loader: 'sass-loader'
+              options:
+                sourceMap: true
+            }
+          ]
       }
       {
         test: /\.css$/

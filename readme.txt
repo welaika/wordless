@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.9.1
-Stable tag: 2.0.2
+Stable tag: 2.0.3
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -30,7 +30,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 Once done, considered you have a standard WordPress installation already up and running and you are in its root directory:
 
-1. wp rewrite structure '%postname%'
+1. `wp rewrite structure '%postname%'`
 2. `wp plugin install wordless`
 3. `wp plugin activate wordless`
 4. `wp wordless theme create mybrandnewtheme`
