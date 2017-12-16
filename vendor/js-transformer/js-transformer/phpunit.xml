@@ -1,0 +1,25 @@
+<phpunit
+    bootstrap="vendor/autoload.php"
+    backupGlobals="false"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    strict="true"
+>
+    <testsuites>
+        <testsuite name="Features">
+            <directory suffix="Test.php">tests</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-clover" target="./coverage/result.xml" />
+        <log type="coverage-html" target="./coverage/result" />
+        <log type="coverage-text" target="./coverage/result.txt" />
+    </logging>
+</phpunit>

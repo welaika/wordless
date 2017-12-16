@@ -1,6 +1,6 @@
 {
     "require": {
-        "pug-php/pug": "^2.4",
+        "pug-php/pug": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8"
     }
 }

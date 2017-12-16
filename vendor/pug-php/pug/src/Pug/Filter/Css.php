@@ -2,9 +2,12 @@
 
 namespace Pug\Filter;
 
-/**
- * Class Pug\Filter\Css.
- */
-class Css extends \Jade\Filter\Css
+use Pug\AbstractFilter as FilterBase;
+
+class Css extends FilterBase
 {
+    public function parse($code)
+    {
+        return '<style type="text/css">' . $code . '</style>';
+    }
 }

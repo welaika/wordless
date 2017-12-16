@@ -2,9 +2,12 @@
 
 namespace Pug\Filter;
 
-/**
- * Class Pug\Filter\Escaped.
- */
-class Escaped extends \Jade\Filter\Escaped
+use Pug\AbstractFilter as FilterBase;
+
+class Escaped extends FilterBase
 {
+    public function parse($code)
+    {
+        return htmlentities($code);
+    }
 }

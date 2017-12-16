@@ -1,0 +1,100 @@
+.profiler-wrapper {
+    position: absolute;
+    font-family: sans-serif;
+    top: 0;
+    left: 0;
+    right: 0;
+}
+.profiler-details-dump,
+.profiler-wrapper {
+    background: rgba(255, 255, 255, 0.85);
+}
+.profiler-wrapper.closed {
+    overflow: hidden;
+    width: 15px;
+    height: 15px;
+ }
+.profiler {
+    position: absolute;
+    z-index: 9998;
+    top: 81px;
+    left: 0;
+    right: 0;
+    height: 30px;
+    width: 100%;
+    background: #f5f5f5;
+    border-bottom: 1px solid black;
+    font-size: 12px;
+}
+.profiler-wrapper.closed .profiler {
+    display: none;
+}
+.profiler-bar {
+    background: #f0ad4e;
+    position: absolute;
+    height: 30px;
+    box-sizing: border-box;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    border: 1px solid #88622e;
+    cursor: pointer;
+}
+.profiler-reduce {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    width: 11px;
+    height: 11px;
+    background: #656565;
+    cursor: pointer;
+}
+.profiler-reduce div {
+    position: absolute;
+    top: 4px;
+    left: 2px;
+    width: 7px;
+    height: 3px;
+    background: white;
+}
+.profiler-info {
+    border-bottom: 1px solid silver;
+    padding: 15px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    max-height: 100%;
+    overflow: auto;
+    z-index: 9999;
+    line-height: 25px;
+    box-sizing: border-box;
+    min-height: 80px;
+}
+.profiler-wrapper.closed {
+    min-height: 0 !important;
+}
+.profiler-wrapper.closed .profiler-info {
+    right: auto;
+    min-height: 0;
+    width: 15px;
+    height: 15px;
+    overflow: hidden;
+    border: none;
+    padding: 0;
+}
+.profiler-wrapper.closed .profiler-info .profiler-details {
+    display: none;
+}
+.profiler-info pre {
+    margin: 0;
+    padding: 0;
+}
+.profiler-info-close {
+    float: right;
+    color: white;
+    padding: 15px;
+    background: #656565;
+    display: none;
+    cursor: pointer;
+}

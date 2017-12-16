@@ -26,7 +26,7 @@ class ExpressionStream
      */
     public function stream_open($path)
     {
-        $this->data = substr(strstr($path, ';'), 1);
+        $this->data = mb_substr(mb_strstr($path, ';'), 1);
 
         return true;
     }
@@ -45,8 +45,8 @@ class ExpressionStream
      */
     public function stream_read($count)
     {
-        $ret = substr($this->data, $this->position, $count);
-        $this->position += strlen($ret);
+        $ret = mb_substr($this->data, $this->position, $count);
+        $this->position += mb_strlen($ret);
 
         return $ret;
     }
@@ -64,7 +64,7 @@ class ExpressionStream
      */
     public function stream_eof()
     {
-        return $this->position >= strlen($this->data);
+        return $this->position >= mb_strlen($this->data);
     }
 
     /**
@@ -74,6 +74,6 @@ class ExpressionStream
      */
     public function url_stat($path, $flags)
     {
-        return array(0, 0, 0, 0, 0, 0, 0, strlen($this->data), 0, 0, 0, 0);
+        return array(0, 0, 0, 0, 0, 0, 0, mb_strlen($this->data), 0, 0, 0, 0);
     }
 }

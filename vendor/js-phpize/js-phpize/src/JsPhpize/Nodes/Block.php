@@ -126,4 +126,26 @@ class Block extends Node
     {
         $this->multipleInstructions = true;
     }
+
+    public function getReadVariables()
+    {
+        $variables = $this->value->getReadVariables();
+        foreach ($this->instructions as $instruction) {
+            $variables = array_merge($variables, $instruction->getReadVariables());
+        }
+        $variables = array_unique($variables);
+        if ($this->type === 'function') {
+            $nodes = isset($this->value, $this->value->nodes) ? $this->value->nodes : array();
+            if (count($nodes)) {
+                $nodes = array_map(function ($node) {
+                    return $node instanceof Variable ? $node->name : null;
+                }, $nodes);
+                $variables = array_filter($variables, function ($variable) use ($nodes) {
+                    return !in_array($variable, $nodes);
+                });
+            }
+        }
+
+        return $variables;
+    }
 }

@@ -2,35 +2,8 @@
 
 namespace JsPhpize\Lexer;
 
-class Token
+class Token extends DataBag
 {
-    /**
-     * @var array
-     */
-    protected $data;
-
-    public function __construct($type, array $data)
-    {
-        $this->data = array_merge(array(
-            'type' => $type,
-        ), $data);
-    }
-
-    public function is($value)
-    {
-        return in_array($value, array($this->type, $this->value));
-    }
-
-    protected function typeIn($values)
-    {
-        return in_array($this->type, $values);
-    }
-
-    protected function valueIn($values)
-    {
-        return in_array($this->value, $values);
-    }
-
     public function isIn($values)
     {
         $values = is_array($values) ? $values : func_get_args();
@@ -40,7 +13,12 @@ class Token
 
     public function isValue()
     {
-        return $this->typeIn(array('variable', 'constant', 'string', 'number'));
+        return $this->typeIn(array('variable', 'constant', 'string', 'number', 'regexp'));
+    }
+
+    public function isValidMember()
+    {
+        return $this->typeIn(array('variable', 'keyword'));
     }
 
     protected function isComparison()
@@ -75,7 +53,7 @@ class Token
 
     public function isAssignation()
     {
-        return substr($this->type, -1) === '=' && !$this->isComparison();
+        return mb_substr($this->type, -1) === '=' && !$this->isComparison();
     }
 
     public function isOperator()
@@ -96,10 +74,5 @@ class Token
     public function isFunction()
     {
         return $this->type === 'function' || $this->type === 'keyword' && $this->value === 'function';
-    }
-
-    public function __get($key)
-    {
-        return isset($this->data[$key]) ? $this->data[$key] : null;
     }
 }

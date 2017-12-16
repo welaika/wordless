@@ -25,4 +25,9 @@ class Dyiade extends Value
         $this->leftHand = $leftHand;
         $this->rightHand = $rightHand;
     }
+
+    public function getReadVariables()
+    {
+        return array_merge($this->leftHand->getReadVariables(), $this->rightHand->getReadVariables());
+    }
 }

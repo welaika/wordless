@@ -2,9 +2,16 @@
 
 namespace Pug\Filter;
 
+use Pug\AbstractFilter as FilterBase;
+
 /**
- * Class Pug\Filter\Cdata.
+ * @obsolete
+ * Already included in Phug.
  */
-class Cdata extends \Jade\Filter\Cdata
+class Cdata extends FilterBase
 {
+    public function parse($code)
+    {
+        return "<![CDATA[\n$code\n]]>";
+    }
 }

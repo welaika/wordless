@@ -2,10 +2,10 @@
 
 namespace JsPhpize\Parser;
 
+use JsPhpize\Lexer\Token;
 use JsPhpize\Nodes\Assignation;
 use JsPhpize\Nodes\Constant;
 use JsPhpize\Nodes\Dyiade;
-use JsPhpize\Nodes\FunctionCall;
 
 abstract class TokenExtractor extends TokenCrawler
 {
@@ -19,9 +19,11 @@ abstract class TokenExtractor extends TokenCrawler
             if (!$token) {
                 throw new Exception('Missing value after ' . $value . $this->exceptionInfos(), 12);
             }
+
             if (!$token->is(':')) {
                 throw $this->unexpected($token);
             }
+
             $key = new Constant($type, $value);
             $value = $this->expectValue($this->next());
 
@@ -29,13 +31,13 @@ abstract class TokenExtractor extends TokenCrawler
         }
     }
 
-    protected function getVariableChildFromToken($token)
+    protected function getVariableChildFromToken(Token $token)
     {
         if ($token->is('.')) {
             $this->skip();
             $token = $this->next();
 
-            if ($token && $token->type === 'variable') {
+            if ($token && $token->isValidMember()) {
                 return new Constant('string', var_export($token->value, true));
             }
 
@@ -61,11 +63,6 @@ abstract class TokenExtractor extends TokenCrawler
         }
     }
 
-    protected function getEndTokenFromBlock($block)
-    {
-        return $block->multipleInstructions ? '}' : ';';
-    }
-
     protected function getInstructionFromToken($token)
     {
         if ($token->type === 'keyword') {
@@ -77,20 +74,20 @@ abstract class TokenExtractor extends TokenCrawler
         }
     }
 
-    protected function getValueFromToken($token)
+    protected function getValueFromToken($token, $previousToken = null, $applicant = null)
     {
         $value = $this->getInitialValue($token);
         if ($value) {
-            $this->appendFunctionsCalls($value);
+            $this->appendFunctionsCalls($value, $previousToken, $applicant);
         }
 
         return $value;
     }
 
-    protected function handleOptionalValue($keyword, $afterKeyword)
+    protected function handleOptionalValue($keyword, $afterKeyword, $applicant)
     {
         if (!$afterKeyword->is(';')) {
-            $value = $this->expectValue($this->next());
+            $value = $this->expectValue($this->next(), $keyword, $applicant);
             $keyword->setValue($value);
         }
     }
@@ -108,7 +105,7 @@ abstract class TokenExtractor extends TokenCrawler
     protected function getInitialValue($token)
     {
         if ($token->isFunction()) {
-            return $this->parseFunction($token);
+            return $this->parseFunction();
         }
         if ($token->is('(')) {
             return $this->parseParentheses();
@@ -130,44 +127,46 @@ abstract class TokenExtractor extends TokenCrawler
         }
     }
 
-    protected function appendFunctionsCalls(&$value)
+    protected function appendFunctionsCalls(&$value, $previousToken = null, $applicant = null)
     {
         while ($token = $this->get(0)) {
             if ($token->is('{') || $token->expectNoLeftMember()) {
                 throw $this->unexpected($this->next());
             }
+
             if ($token->is('?')) {
                 $this->skip();
                 $value = $this->parseTernary($value);
 
                 continue;
             }
+
             if ($token->is('(')) {
                 $this->skip();
-                $arguments = array();
-                $value = new FunctionCall($value, $this->parseParentheses()->nodes);
+                $value = $this->parseFunctionCallChildren($value, $applicant);
 
                 continue;
             }
+
             if ($token->isOperator()) {
                 if ($token->isIn('++', '--')) {
                     $value->append($this->next()->type);
 
                     break;
                 }
+
                 if ($token->isAssignation()) {
                     $this->skip();
-                    $arguments = array();
-                    $valueToAssign = $this->expectValue($this->next());
+                    $valueToAssign = $this->expectValue($this->next(), $previousToken);
                     $value = new Assignation($token->type, $value, $valueToAssign);
 
                     continue;
                 }
 
                 $this->skip();
-                $nextValue = $this->expectValue($this->next());
+                $nextValue = $this->expectValue($this->next(), $previousToken);
                 $value = new Dyiade($token->type, $value, $nextValue);
-                $token = $this->get(0);
+                $this->get(0);
 
                 continue;
             }
@@ -176,15 +175,17 @@ abstract class TokenExtractor extends TokenCrawler
         }
     }
 
-    protected function expectValue($next, $token = null)
+    protected function expectValue($next, $token = null, $applicant = null)
     {
         if (!$next) {
             if ($token) {
                 throw $this->unexpected($token);
             }
+
             throw new Exception('Value expected after ' . $this->exceptionInfos(), 20);
         }
-        $value = $this->getValueFromToken($next);
+
+        $value = $this->getValueFromToken($next, $token, $applicant);
         if (!$value) {
             throw $this->unexpected($next);
         }

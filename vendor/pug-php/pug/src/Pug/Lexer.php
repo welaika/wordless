@@ -3,8 +3,8 @@
 namespace Pug;
 
 /**
- * Class Pug Lexer.
+ * Class Pug\Lexer.
  */
-class Lexer extends \Jade\Lexer
+class Lexer extends \Phug\Lexer
 {
 }

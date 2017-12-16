@@ -2,10 +2,8 @@
 
 namespace JsPhpize\Nodes;
 
-abstract class Node
+use JsPhpize\Readable;
+
+abstract class Node extends Readable
 {
-    public function __get($name)
-    {
-        return $this->$name;
-    }
 }

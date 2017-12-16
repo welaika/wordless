@@ -63,15 +63,17 @@ class Lexer extends Scanner
 
     protected function consume($consumed)
     {
-        $consumed = is_int($consumed) ? substr($this->input, 0, $consumed) : $consumed;
-        $this->consumed = strlen(trim($consumed)) > 1 ? $consumed : $this->consumed . $consumed;
-        $this->line += substr_count($consumed, "\n");
-        $this->input = substr($this->input, strlen($consumed));
+        $consumed = is_int($consumed) ? mb_substr($this->input, 0, $consumed) : $consumed;
+        $this->consumed = mb_strlen(trim($consumed)) > 1 ? $consumed : $this->consumed . $consumed;
+        $this->line += mb_substr_count($consumed, "\n");
+        $this->input = mb_substr($this->input, mb_strlen($consumed));
     }
 
     protected function token($type, $data = array())
     {
-        return new Token($type, is_string($data) ? array('value' => $data) : (array) $data);
+        $className = $this->engine->getOption('tokenClass', '\\JsPhpize\\Lexer\\Token');
+
+        return new $className($type, is_string($data) ? array('value' => $data) : (array) $data);
     }
 
     protected function typeToken($matches)
@@ -93,40 +95,48 @@ class Lexer extends Scanner
         if (preg_match('/^\s*(' . $pattern . ')/', $this->input, $matches)) {
             return $this->{'scan' . ucfirst($method)}($matches);
         }
+
+        return false;
     }
 
+    /**
+     * Return a unexpected exception for a given token.
+     *
+     * @param $token
+     *
+     * @return Exception
+     */
+    public function unexpected($token, $className = '\\JsPhpize\\Lexer\\Exception')
+    {
+        return new $className('Unexpected ' . $token->type . rtrim(' ' . ($token->value ?: '')) . $this->exceptionInfos(), 8);
+    }
+
+    /**
+     * @throws Exception
+     *
+     * @return Token|false
+     */
     public function next()
     {
-        if (!strlen($this->input)) {
-            return;
+        if (!mb_strlen($this->input)) {
+            return false;
         }
 
-        $patterns = array(
-            '\n' => 'newline',
-            '\/\/.*?\n|\/\*[\s\S]*?\*\/' => 'comment',
-            '"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\'' => 'string',
-            '0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+|(\d+(\.\d*)?|\.\d+)([eE]-?\d+)?' => 'number',
-            '=>' => 'lambda',
-            'delete|typeof|void' => 'operator',
-            '>>>=|<<=|>>=|\*\*=' => 'operator',
-            '\\+\\+|--|\\&\\&|\\|\\||\\*\\*|>>>|<<|>>' => 'operator',
-            '===|!==|>=|<=|<>|!=|==|>|<' => 'operator',
-            '[\\|\\^&%\\/\\*\\+\\-]=' => 'operator',
-            '[\\[\\]\\{\\}\\(\\)\\:\\.\\/\\*~\\!\\^\\|&%\\?,;\\+\\-]' => 'operator',
-            '(?<![a-zA-Z0-9\\\\_\\x7f-\\xff])(as|async|await|break|case|catch|class|const|continue|debugger|default|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|of|package|private|protected|public|return|set|static|super|switch|throw|try|var|while|with|yield\*?)(?![a-zA-Z0-9\\\\_\\x7f-\\xff])' => 'keyword',
-            '(?<![a-zA-Z0-9\\\\_\\x7f-\\xff])(null|undefined|Infinity|NaN|true|false|Math\.[A-Z][A-Z0-9_]*|[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*|[\\\\\\x7f-\\xff_][A-Z0-9\\\\_\\x7f-\\xff]*[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*)(?![a-zA-Z0-9\\\\_\\x7f-\\xff])' => 'constant',
-            '(?<![a-zA-Z0-9\\\\_\\x7f-\\xff\\$])[a-zA-Z\\\\\\x7f-\\xff\\$_][a-zA-Z0-9\\\\_\\x7f-\\xff\\$]*(?![a-zA-Z0-9\\\\_\\x7f-\\xff\\$])' => 'variable',
-            '[\\s\\S]' => 'operator',
-        );
+        $patterns = $this->engine->getOption('patterns');
+        usort($patterns, function (Pattern $first, Pattern $second) {
+            return $first->priority - $second->priority;
+        });
 
-        foreach ($patterns as $pattern => $method) {
-            if ($token = $this->scan($pattern, $method)) {
-                if (in_array($method, $this->disallow)) {
-                    throw new Exception($method . ' is disallowed.', 3);
+        foreach ($patterns as $pattern) {
+            if ($token = $this->scan($pattern->regex, $pattern->type)) {
+                if (in_array($pattern->type, $this->disallow)) {
+                    throw new Exception($pattern->type . ' is disallowed.', 3);
                 }
 
                 return $token;
             }
         }
+
+        throw new Exception('Unknow pattern found at: ' . mb_substr($this->input, 0, 100), 12);
     }
 }

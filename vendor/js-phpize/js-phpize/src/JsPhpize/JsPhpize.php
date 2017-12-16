@@ -14,7 +14,7 @@ class JsPhpize extends JsPhpizeOptions
     protected $stream = 'jsphpize.stream';
 
     /**
-     * @var bool
+     * @var array
      */
     protected $streamsRegistered = array();
 
@@ -43,23 +43,41 @@ class JsPhpize extends JsPhpizeOptions
      */
     public function compile($input, $filename = null)
     {
+        $this->flags = 0;
+
         if ($filename === null) {
             $filename = file_exists($input) ? $input : null;
             $input = $filename === null ? $input : file_get_contents($filename);
         }
+
+        $start = '';
+        $end = '';
+        if (preg_match('/^([)}\]\s]*)(.*?)([({\[\s]*)$/', trim($input), $match)) {
+            list(, $start, $input, $end) = $match;
+        }
+
         $parser = new Parser($this, $input, $filename);
         $compiler = new Compiler($this);
         $block = $parser->parse();
         $php = $compiler->compile($block);
 
+        if ($this->hasFlag(self::FLAG_TRUNCATED_PARENTHESES)) {
+            $php = preg_replace('/\)[\s;]*$/', '', $php);
+        }
+
+        if (mb_substr(ltrim($end), 0, 1) === '{') {
+            $php = preg_replace('/\s*\{\s*\}\s*$/', '', $php);
+        }
+
         $dependencies = $compiler->getDependencies();
         if ($this->getOption('catchDependencies')) {
-            $this->dependencies = array_merge($this->dependencies, $dependencies);
+            $this->dependencies = array_unique(array_merge($this->dependencies, $dependencies));
             $dependencies = array();
         }
-        $php = $compiler->compileDependencies($dependencies) . $php;
 
-        return $php;
+        $php = $compiler->compileDependencies($dependencies) . $start . $php . $end;
+
+        return preg_replace('/\{(\s*\}\s*\{)+$/', '{', $php);
     }
 
     /**
@@ -135,20 +153,29 @@ class JsPhpize extends JsPhpizeOptions
         }
 
         extract(array_merge($this->sharedVariables, $variables));
+
         try {
             return include $this->stream . '://data;<?php ' . $this->compile($input, $filename);
-        } catch (\JsPhpize\Compiler\Exception $e) {
-            throw $e;
-        } catch (\JsPhpize\Lexer\Exception $e) {
-            throw $e;
-        } catch (\JsPhpize\Parser\Exception $e) {
-            throw $e;
-        } catch (\Exception $e) {
+        } catch (\JsPhpize\Compiler\Exception $exception) {
+            throw $exception;
+        } catch (\JsPhpize\Lexer\Exception $exception) {
+            throw $exception;
+        } catch (\JsPhpize\Parser\Exception $exception) {
+            throw $exception;
+        } catch (\Exception $exception) {
             $summary = $input;
-            if (strlen($summary) > 50) {
-                $summary = substr($summary, 0, 47) . '...';
+            if (mb_strlen($summary) > 50) {
+                $summary = mb_substr($summary, 0, 47) . '...';
             }
-            throw new Exception("An error occur in [$summary]:\n" . $e->getMessage(), 2, E_ERROR, __FILE__, __LINE__, $e);
+
+            throw new Exception(
+                "An error occur in [$summary]:\n" . $exception->getMessage(),
+                2,
+                E_ERROR,
+                __FILE__,
+                __LINE__,
+                $exception
+            );
         }
     }
 

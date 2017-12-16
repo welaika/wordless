@@ -4,9 +4,11 @@ namespace JsPhpize\Parser;
 
 use JsPhpize\JsPhpize;
 use JsPhpize\Lexer\Lexer;
+use JsPhpize\Nodes\Assignation;
 use JsPhpize\Nodes\Block;
 use JsPhpize\Nodes\BracketsArray;
 use JsPhpize\Nodes\Constant;
+use JsPhpize\Nodes\FunctionCall;
 use JsPhpize\Nodes\HooksArray;
 use JsPhpize\Nodes\Main;
 use JsPhpize\Nodes\Node;
@@ -21,16 +23,6 @@ class Parser extends TokenExtractor
      * @var JsPhpize
      */
     protected $engine;
-
-    /**
-     * @var Lexer
-     */
-    protected $lexer;
-
-    /**
-     * @var array
-     */
-    protected $tokens;
 
     /**
      * @var array
@@ -76,6 +68,7 @@ class Parser extends TokenExtractor
         $parentheses = new Parenthesis();
         $exceptionInfos = $this->exceptionInfos();
         $expectComma = false;
+
         while ($token = $this->next()) {
             if ($token->is(')')) {
                 $next = $this->get(0);
@@ -87,21 +80,31 @@ class Parser extends TokenExtractor
 
                 return $parentheses;
             }
+
             if ($expectComma) {
                 if ($token->isIn(',', ';')) {
                     $expectComma = false;
 
                     continue;
                 }
+
                 throw $this->unexpected($token);
             }
+
             if ($value = $this->getValueFromToken($token)) {
                 $expectComma = true;
                 $parentheses->addNode($value);
 
                 continue;
             }
+
             throw $this->unexpected($token);
+        }
+
+        if ($this->engine->getOption('allowTruncatedParentheses')) {
+            $this->engine->setFlag(JsPhpize::FLAG_TRUNCATED_PARENTHESES, true);
+
+            return $parentheses;
         }
 
         throw new Exception('Missing ) to match ' . $exceptionInfos, 5);
@@ -112,24 +115,29 @@ class Parser extends TokenExtractor
         $array = new HooksArray();
         $exceptionInfos = $this->exceptionInfos();
         $expectComma = false;
+
         while ($token = $this->next()) {
             if ($token->is(']')) {
                 return $array;
             }
+
             if ($expectComma) {
                 if ($token->is(',')) {
                     $expectComma = false;
 
                     continue;
                 }
+
                 throw $this->unexpected($token);
             }
+
             if ($value = $this->getValueFromToken($token)) {
                 $expectComma = true;
                 $array->addItem($value);
 
                 continue;
             }
+
             throw $this->unexpected($token);
         }
 
@@ -141,18 +149,22 @@ class Parser extends TokenExtractor
         $array = new BracketsArray();
         $exceptionInfos = $this->exceptionInfos();
         $expectComma = false;
+
         while ($token = $this->next()) {
             if ($token->is('}')) {
                 return $array;
             }
+
             if ($expectComma) {
                 if ($token->is(',')) {
                     $expectComma = false;
 
                     continue;
                 }
+
                 throw $this->unexpected($token);
             }
+
             if ($pair = $this->getBracketsArrayItemKeyFromToken($token)) {
                 list($key, $value) = $pair;
                 $expectComma = true;
@@ -160,15 +172,44 @@ class Parser extends TokenExtractor
 
                 continue;
             }
+
             throw $this->unexpected($token);
         }
 
         throw new Exception('Missing } to match ' . $exceptionInfos, 7);
     }
 
+    protected function parseFunctionCallChildren($function, $applicant = null)
+    {
+        $arguments = $this->parseParentheses()->nodes;
+        $children = array();
+
+        while ($next = $this->get(0)) {
+            if ($value = $this->getVariableChildFromToken($next)) {
+                $children[] = $value;
+
+                $next = $this->get(0);
+                if ($next && $next->is('(')) {
+                    $this->skip();
+
+                    return $this->parseFunctionCallChildren(
+                        new FunctionCall($function, $arguments, $children, $applicant)
+                    );
+                }
+
+                continue;
+            }
+
+            break;
+        }
+
+        return new FunctionCall($function, $arguments, $children, $applicant);
+    }
+
     protected function parseVariable($name)
     {
         $children = array();
+        $variable = null;
         while ($next = $this->get(0)) {
             if ($next->type === 'lambda') {
                 $this->skip();
@@ -181,20 +222,31 @@ class Parser extends TokenExtractor
             if ($value = $this->getVariableChildFromToken($next)) {
                 $children[] = $value;
 
+                $next = $this->get(0);
+                if ($next && $next->is('(')) {
+                    $this->skip();
+
+                    $variable = $this->parseFunctionCallChildren(new Variable($name, $children));
+
+                    break;
+                }
+
                 continue;
             }
 
             break;
         }
 
-        $variable = new Variable($name, $children);
+        if ($variable === null) {
+            $variable = new Variable($name, $children);
 
-        for ($i = count($this->stack) - 1; $i >= 0; $i--) {
-            $block = $this->stack[$i];
-            if ($block->isLet($name)) {
-                $variable->setScope($block);
+            for ($i = count($this->stack) - 1; $i >= 0; $i--) {
+                $block = $this->stack[$i];
+                if ($block->isLet($name)) {
+                    $variable->setScope($block);
 
-                break;
+                    break;
+                }
             }
         }
 
@@ -208,15 +260,18 @@ class Parser extends TokenExtractor
         if (!$next) {
             throw new Exception("Ternary expression not properly closed after '?' " . $this->exceptionInfos(), 14);
         }
+
         if (!$next->is(':')) {
             throw new Exception("':' expected but " . ($next->value ?: $next->type) . ' given ' . $this->exceptionInfos(), 15);
         }
+
         $next = $this->next();
         if (!$next) {
             throw new Exception("Ternary expression not properly closed after ':' " . $this->exceptionInfos(), 16);
         }
+
         $falseValue = $this->expectValue($next);
-        $next = $this->get(0);
+        $this->get(0);
 
         return new Ternary($condition, $trueValue, $falseValue);
     }
@@ -228,26 +283,29 @@ class Parser extends TokenExtractor
             : new Constant($token->type, $token->value);
     }
 
-    protected function parseFunction($token)
+    protected function parseFunction()
     {
         $function = new Block('function');
+        $function->enableMultipleInstructions();
         $token = $this->get(0);
-        if ($token->type === 'variable') {
+        if ($token && $token->type === 'variable') {
             $this->skip();
             $token = $this->get(0);
         }
-        if (!$token->is('(')) {
+
+        if ($token && !$token->is('(')) {
             throw $this->unexpected($token);
         }
+
         $this->skip();
         $function->setValue($this->parseParentheses());
         $token = $this->get(0);
-        if (!$token->is('{')) {
+        if ($token && !$token->is('{')) {
             throw $this->unexpected($token);
         }
+
         $this->skip();
         $this->parseBlock($function);
-        $this->skip();
 
         return $function;
     }
@@ -257,10 +315,12 @@ class Parser extends TokenExtractor
         $name = $token->value;
         $keyword = new Block($name);
         switch ($name) {
+            case 'new':
+            case 'clone':
             case 'return':
             case 'continue':
             case 'break':
-                $this->handleOptionalValue($keyword, $this->get(0));
+                $this->handleOptionalValue($keyword, $this->get(0), $name);
                 break;
             case 'case':
                 $value = $this->expectValue($this->next());
@@ -287,40 +347,66 @@ class Parser extends TokenExtractor
         return $keyword;
     }
 
-    protected function parseLet($token)
+    protected function parseLet()
     {
         $letVariable = $this->get(0);
         if ($letVariable->type !== 'variable') {
-            throw $this->unexpected($letVariable, $token);
+            throw $this->unexpected($letVariable);
         }
 
         return $letVariable->value;
     }
 
+    protected function parseInstruction($block, $token, &$initNext)
+    {
+        if ($token->type === 'keyword') {
+            if ($token->isIn('var', 'const')) {
+                $initNext = true;
+
+                return true;
+            }
+
+            if ($token->value === 'let') {
+                $initNext = true;
+                $block->let($this->parseLet($token));
+
+                return true;
+            }
+        }
+
+        if ($instruction = $this->getInstructionFromToken($token)) {
+            if ($initNext && $instruction instanceof Variable) {
+                $instruction = new Assignation('=', $instruction, new Constant('constant', 'null'));
+            }
+            $initNext = false;
+            $block->addInstruction($instruction);
+
+            return true;
+        }
+
+        if ($token->is(';') || !$this->engine->getOption('strict')) {
+            $initNext = false;
+            $block->endInstruction();
+
+            return true;
+        }
+
+        return false;
+    }
+
     protected function parseInstructions($block)
     {
-        $endToken = $this->getEndTokenFromBlock($block);
+        $initNext = false;
+
         while ($token = $this->next()) {
-            if ($token->is($endToken)) {
+            if ($token->is($block->multipleInstructions ? '}' : ';')) {
                 break;
             }
-            if ($token->type === 'keyword') {
-                if ($token->isIn('var', 'const')) {
-                    continue;
-                }
-                if ($token->value === 'let') {
-                    $block->let($this->parseLet($token));
-                    continue;
-                }
-            }
-            if ($instruction = $this->getInstructionFromToken($token)) {
-                $block->addInstruction($instruction);
+
+            if ($this->parseInstruction($block, $token, $initNext)) {
                 continue;
             }
-            if ($token->is(';')) {
-                $block->endInstruction();
-                continue;
-            }
+
             throw $this->unexpected($token);
         }
     }
@@ -328,11 +414,6 @@ class Parser extends TokenExtractor
     public function parseBlock($block)
     {
         $this->stack[] = $block;
-        $next = $this->get(0);
-        if ($next && $next->is('(')) {
-            $this->skip();
-            $block->setValue($this->parseParentheses());
-        }
         if (!$block->multipleInstructions) {
             $next = $this->get(0);
             if ($next && $next->is('{')) {

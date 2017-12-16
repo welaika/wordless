@@ -1,0 +1,39 @@
+{
+    "name": "phug/dependency-injection",
+    "type": "library",
+    "keywords": ["phug", "dependency-injection", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
+    "description": "",
+    "license": "MIT",
+    "homepage": "http://phug-lang.com",
+    "authors": [
+        {
+            "name": "Torben Koehn",
+            "email": "torben@talesoft.codes"
+        },
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
+        }
+    ],
+    "support": {
+        "email": "support@phug-lang.com",
+        "issues": "https://github.com/phug-php/util/issues",
+        "source": "https://github.com/phug-php/util",
+        "docs": "http://phug-lang.com/docs"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "phug/util": "^0.4.0"
+    },
+    "require-dev": {
+        "phug/dev-tool": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "./src"
+        }
+    },
+    "bin": [],
+    "suggest": {}
+}

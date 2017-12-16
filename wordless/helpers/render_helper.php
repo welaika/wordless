@@ -77,13 +77,14 @@ class RenderHelper {
             case 'pug':
                 if ($this->ensure_dir($tmp_dir)) {
                     $pug = new Pug(array(
-                        'prettyprint' => true,
+                        'pretty' => true,
                         'expressionLanguage' => 'php',
                         'extension' => '.pug',
-                        'cache' => $tmp_dir
+                        'cache' => $tmp_dir,
+                        'strict' => true
                     ));
 
-                    echo $pug->render($template_path, $locals);
+                    $pug->displayFile($template_path, $locals);
                 } else {
                     render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
                 }

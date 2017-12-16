@@ -1,0 +1,42 @@
+{
+    "name": "phug/parser",
+    "type": "library",
+    "keywords": ["phug", "reader", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
+    "description": "",
+    "license": "MIT",
+    "homepage": "http://phug-lang.com",
+    "authors": [
+        {
+            "name": "Torben Koehn",
+            "email": "torben@talesoft.codes"
+        },
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
+        }
+    ],
+    "support": {
+        "email": "support@phug-lang.com",
+        "issues": "https://github.com/phug-php/reader/issues",
+        "source": "https://github.com/phug-php/reader",
+        "docs": "http://phug-lang.com/docs"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.0",
+        "phug/lexer": "^0.5.6",
+        "phug/util": "^0.4.0",
+        "phug/ast": "^0.1.0"
+    },
+    "require-dev": {
+        "phug/dev-tool": "^0.1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "": "./src"
+        }
+    },
+    "bin": [],
+    "suggest": {}
+}

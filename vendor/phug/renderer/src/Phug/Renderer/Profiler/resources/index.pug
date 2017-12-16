@@ -1,0 +1,25 @@
+style: include:no-php profiler.css
+.profiler-wrapper(style=['min-height' => $height . 'px'])
+    .profiler-info
+        .profiler-reduce:div
+        .profiler-details
+            a.profiler-info-close Close
+            | Use the mousewheel while pressing Shift to zoom
+            br
+            | Click on an event to display more data:
+            pre.profiler-details-dump
+    .profiler
+        | TOTAL
+        br
+        =$duration
+        each $process in $processes
+            .profiler-bar(
+                style=$process->style
+                title=$process->title
+                data-event=$process->event
+                data-previous=$process->previous
+            )
+                =$process->link
+                br
+                =$process->duration
+script: include:no-php profiler.js

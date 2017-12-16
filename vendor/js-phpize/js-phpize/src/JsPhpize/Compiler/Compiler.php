@@ -20,6 +20,15 @@ use JsPhpize\Nodes\Variable;
 class Compiler
 {
     /**
+     * @const string
+     */
+    const STATIC_CALL_FUNCTIONS = 'array,echo,print,printf,exit,__halt_compiler,abstract,and,array,as,break,
+        callable,case,catch,class,clone,const,continue,declare,default,die,do,echo,else,elseif,empty,enddeclare,
+        endfor,endforeach,endif,endswitch,endwhile,eval,exit,extends,final,for,foreach,function,global,goto,if,
+        implements,include,include_once,instanceof,insteadof,interface,isset,list,namespace,new,or,print,private,
+        protected,public,require,require_once,return,static,switch,throw,trait,try,unset,use,var,while,xor';
+
+    /**
      * @var JsPhpize
      */
     protected $engine;
@@ -79,8 +88,19 @@ class Compiler
         $varPrefix = $this->varPrefix;
 
         return implode('', array_map(function ($name) use ($varPrefix) {
+            $code = $name;
+            $file = $name;
+
+            if (preg_match('/^[a-z0-9_-]+$/i', $file)) {
+                $file = __DIR__ . '/Helpers/' . ucfirst($name) . '.h';
+            }
+
+            if (file_exists($file)) {
+                $code = file_get_contents($file);
+            }
+
             return '$GLOBALS[\'' . $varPrefix . $name . '\'] = ' .
-                trim(file_get_contents(__DIR__ . '/Helpers/' . ucfirst($name) . '.h')) .
+                trim($code) .
                 ";\n";
         }, $dependencies));
     }
@@ -94,9 +114,24 @@ class Compiler
             ')';
         }
 
+        $rightHand = $this->visitNode($assignation->rightHand, $indent);
+
+        if ($assignation->leftHand instanceof Variable && count($assignation->leftHand->children)) {
+            $set = $this->engine->getHelperName('set');
+
+            while ($lastChild = $assignation->leftHand->popChild()) {
+                $rightHand = $this->helperWrap($set, array(
+                    $this->visitNode($assignation->leftHand, $indent),
+                    $this->visitNode($lastChild, $indent),
+                    var_export($assignation->operator, true),
+                    $rightHand,
+                ));
+            }
+        }
+
         return $this->visitNode($assignation->leftHand, $indent) .
             ' ' . $assignation->operator .
-            ' ' . $this->visitNode($assignation->rightHand, $indent);
+            ' ' . $rightHand;
     }
 
     protected function visitBlock(Block $block, $indent)
@@ -108,6 +143,10 @@ class Compiler
 
         if (!$block->handleInstructions()) {
             return $head;
+        }
+
+        if ($block->type === 'function' && count($readVariables = $block->getReadVariables())) {
+            $head .= ' use (&$' . implode(', &$', $readVariables) . ')';
         }
 
         $letVariables = $this->visitNodesArray($block->getLetVariables(), $indent, '', $indent . "unset(%s);\n");
@@ -137,8 +176,12 @@ class Compiler
     protected function visitConstant(Constant $constant)
     {
         $value = $constant->value;
-        if ($constant->type === 'string' && substr($constant->value, 0, 1) === '"') {
+        if ($constant->type === 'string' && mb_substr($constant->value, 0, 1) === '"') {
             $value = str_replace('$', '\\$', $value);
+        }
+        if ($constant->type === 'regexp') {
+            $regExp = $this->engine->getHelperName('regExp');
+            $value = $this->helperWrap($regExp, array(var_export($value, true)));
         }
 
         return $value;
@@ -159,7 +202,9 @@ class Compiler
                 $arguments[] = $this->visitNode($dyiade->rightHand, $indent);
             }
 
-            return $this->helperWrap('plus', $arguments);
+            $plus = $this->engine->getHelperName('plus');
+
+            return $this->helperWrap($plus, $arguments);
         }
 
         return $leftHand . ' ' . $dyiade->operator . ' ' . $rightHand;
@@ -189,29 +234,32 @@ class Compiler
     {
         $function = $functionCall->function;
         $arguments = $functionCall->arguments;
+        $applicant = $functionCall->applicant;
         $arguments = $this->visitNodesArray($arguments, $indent, ', ');
         $dynamicCall = 'call_user_func(' .
             $this->visitNode($function, $indent) .
             ($arguments === '' ? '' : ', ' . $arguments) .
         ')';
 
-        if ($function instanceof Variable) {
+        if ($function instanceof Variable && count($function->children) === 0) {
             $name = $function->name;
             $staticCall = $name . '(' . $arguments . ')';
 
-            if (in_array($name, array(
-                'array',
-                'echo',
-                'print',
-                'printf',
-                'exit',
-            ))) {
+            $functions = str_replace(array("\n", "\t", "\r", ' '), '', static::STATIC_CALL_FUNCTIONS);
+            if ($applicant === 'new' || in_array($name, explode(',', $functions))) {
                 return $staticCall;
             }
 
-            return 'function_exists(' . var_export($name, true) . ') ? ' .
+            return '(function_exists(' . var_export($name, true) . ') ? ' .
                 $staticCall . ' : ' .
-                $dynamicCall;
+                $dynamicCall . ')';
+        }
+
+        if (count($functionCall->children)) {
+            $arguments = $this->mapNodesArray($functionCall->children, $indent);
+            array_unshift($arguments, $dynamicCall);
+            $dot = $this->engine->getHelperName('dot');
+            $dynamicCall = $this->helperWrap($dot, $arguments);
         }
 
         return $dynamicCall;
@@ -225,14 +273,18 @@ class Compiler
     protected function visitInstruction(Instruction $group, $indent)
     {
         $visitNode = array($this, 'visitNode');
+        $isReturnPrepended = $group->isReturnPrepended();
 
-        return implode('', array_map(function ($instruction) use ($visitNode, $indent) {
+        return implode('', array_map(function ($instruction) use ($visitNode, $indent, $isReturnPrepended) {
             $value = call_user_func($visitNode, $instruction, $indent);
 
             return $indent .
                 ($instruction instanceof Block && $instruction->handleInstructions()
                     ? $value
-                    : $value . ';'
+                    : ($isReturnPrepended && !preg_match('/^\s*return(?![a-zA-Z0-9_])/', $value)
+                        ? ' return '
+                        : ''
+                    ) . $value . ';'
                 ) .
                 "\n";
         }, $group->instructions));
@@ -275,7 +327,8 @@ class Compiler
         if (count($variable->children)) {
             $arguments = $this->mapNodesArray($variable->children, $indent);
             array_unshift($arguments, $php);
-            $php = $this->helperWrap('dot', $arguments);
+            $dot = $this->engine->getHelperName('dot');
+            $php = $this->helperWrap($dot, $arguments);
         }
 
         return $php;
@@ -285,7 +338,11 @@ class Compiler
     {
         $output = '';
 
-        foreach ($block->instructions as $instruction) {
+        $count = count($block->instructions);
+        foreach ($block->instructions as $index => $instruction) {
+            if ($index === $count - 1 && $this->engine->getOption('returnLastStatement')) {
+                $instruction->prependReturn();
+            }
             $output .= $this->visitNode($instruction, $indent);
         }
 

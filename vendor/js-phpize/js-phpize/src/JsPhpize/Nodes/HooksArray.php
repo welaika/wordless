@@ -10,4 +10,14 @@ class HooksArray extends ArrayBase
             $this->data[] = $value;
         }
     }
+
+    public function getReadVariables()
+    {
+        $variables = array();
+        foreach ($this->data as $value) {
+            $variables = array_merge($variables, $value->getReadVariables());
+        }
+
+        return $variables;
+    }
 }

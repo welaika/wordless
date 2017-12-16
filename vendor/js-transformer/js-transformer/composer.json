@@ -1,0 +1,33 @@
+{
+    "name": "js-transformer/js-transformer",
+    "type": "library",
+    "keywords": ["js-transformer"],
+    "description": "",
+    "license": "MIT",
+    "homepage": "https://github.com/kylekatarnls/js-transformer-php-wrap",
+    "require": {
+        "nodejs-php-fallback/nodejs-php-fallback": "^1.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=4.8 <6.0",
+        "codeclimate/php-test-reporter": ">=0.3"
+    },
+    "extra": {
+        "npm": {
+            "jstransformer": "^1.0.0"
+        }
+    },
+    "scripts": {
+        "post-install-cmd": [
+            "NodejsPhpFallback\\NodejsPhpFallback::install"
+        ],
+        "post-update-cmd": [
+            "NodejsPhpFallback\\NodejsPhpFallback::install"
+        ]
+    },
+    "autoload": {
+        "psr-4": {
+            "": "./src"
+        }
+    }
+}

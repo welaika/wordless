@@ -1,0 +1,21 @@
+#!/usr/bin/env php
+<?php
+
+use Phug\Cli;
+
+include 'vendor/autoload.php';
+
+$cli = new Cli('Phug', [
+    'render',
+    'renderFile',
+    'renderDirectory',
+    'compile',
+    'compileFile',
+    'compileDirectory' => 'textualCacheDirectory',
+    'display'          => 'render',
+    'displayFile'      => 'renderFile',
+    'displayDirectory' => 'renderDirectory',
+    'cacheDirectory'   => 'textualCacheDirectory',
+]);
+
+exit($cli->run($argv) ? 0 : 1);
