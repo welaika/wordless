@@ -53,7 +53,9 @@ node_modules
 
 ## Insights
 
-[How does it works]() - Basic concepts (WIP)
+[Wordless 2. Re-embracing a modern flow.](https://dev.welaika.com/blog/2017/12/17/wordless-2-0.html) - An histotical overview about the Wordless history and why it moved from Ruby to Node.
+
+[How does it works](#) - Basic concepts (WIP)
 
 [Wordless theme anatomy](https://github.com/welaika/wordless/wiki/Wordless-theme-anatomy) - Structure and conventions
 
