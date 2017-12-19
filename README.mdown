@@ -14,6 +14,13 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 
 ## Getting started
 
+### Wordless GEM
+
+The quickest CLI tool to setup a new WordPress locally. Wordless ready.
+Navigate to https://github.com/welaika/wordless_gem to discover the tool to setup all you need for local development. In less than 2 minutes ;)
+
+### (Not so) Manual
+
 **Prerequisites**
 
 1. Install WP-CLI http://wp-cli.org/#installing
