@@ -15,5 +15,6 @@ class AllTests extends TestSuite {
     $this->addFile('theme_helper_test.php');
     $this->addFile('url_helper_test.php');
     $this->addFile('number_helper_test.php');
+    $this->addFile('render_helper_test.php');
   }
 }

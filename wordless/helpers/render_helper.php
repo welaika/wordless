@@ -75,14 +75,10 @@ class RenderHelper {
                 break;
 
             case 'pug':
+                require_once('pug/wordless_pug_options.php');
+
                 if ($this->ensure_dir($tmp_dir)) {
-                    $pug = new Pug(array(
-                        'pretty' => true,
-                        'expressionLanguage' => 'php',
-                        'extension' => '.pug',
-                        'cache' => $tmp_dir,
-                        'strict' => true
-                    ));
+                    $pug = new Pug(WordlessPugOptions::get_options());
 
                     $pug->displayFile($template_path, $locals);
                 } else {

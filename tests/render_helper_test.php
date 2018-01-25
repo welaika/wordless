@@ -51,4 +51,38 @@ class RenderHelperTest extends UnitTestCase {
         );
     }
 
+    function test_pug_instance_options_with_wp_debug_false() {
+        ob_start();
+
+        $this->assertEqual(
+            array(
+                'pretty' => true,
+                'expressionLanguage' => 'php',
+                'extension' => '.pug',
+                'cache' => Wordless::theme_temp_path(),
+                'strict' => true,
+                'debug' => false,
+                'enable_profiler' => false
+            ),
+            WordlessPugOptions::get_options()
+        );
+    }
+
+    function test_pug_instance_options_with_wp_debug_true() {
+        define('WP_DEBUG', true);
+
+        $this->assertEqual(
+            array(
+                'pretty' => true,
+                'expressionLanguage' => 'php',
+                'extension' => '.pug',
+                'cache' => Wordless::theme_temp_path(),
+                'strict' => true,
+                'debug' => true,
+                'enable_profiler' => true
+            ),
+            WordlessPugOptions::get_options()
+        );
+    }
+
 }
