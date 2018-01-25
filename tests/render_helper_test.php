@@ -51,6 +51,10 @@ class RenderHelperTest extends UnitTestCase {
         );
     }
 
+    // test_pug_instance_options_with_wp_debug_false()
+    // test_pug_instance_options_with_wp_debug_true()
+    // these functions are order dependend
+
     function test_pug_instance_options_with_wp_debug_false() {
         ob_start();
 
