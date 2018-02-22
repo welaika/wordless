@@ -8,7 +8,7 @@
  *
  * Welcome to the developer documentation for Wordless. It is a WordPress
  * plugin which makes you create themes using the power of
- * HAML, SASS/SCSS, COMPASS, and CoffeScript, drastically speeding up your
+ * PUG, SASS/SCSS, CoffeScript, Webpack, drastically speeding up your
  * development time!
  *
  * Please refer to the @l{https://github.com/welaika/wordless#readme,online
