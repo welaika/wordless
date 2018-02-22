@@ -5,7 +5,6 @@ namespace Phug\Renderer\Adapter;
 use Phug\Renderer;
 use Phug\Renderer\AbstractAdapter;
 use Phug\Renderer\CacheInterface;
-use Phug\Util\SandBox;
 use RuntimeException;
 
 class FileAdapter extends AbstractAdapter implements CacheInterface
@@ -25,14 +24,15 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
         $this->setOptions($options);
     }
 
-    protected function cacheFile($destination, $output, $importsMap = [])
+    protected function cacheFileContents($destination, $output, $importsMap = [])
     {
-        file_put_contents(
+        $imports = file_put_contents(
             $destination.'.imports.serialize.txt',
             serialize($importsMap)
-        );
+        ) ?: 0;
+        $template = file_put_contents($destination, $output);
 
-        return file_put_contents($destination, $output);
+        return $template === false ? false : $template + $imports;
     }
 
     /**
@@ -55,10 +55,15 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
                 throw new RuntimeException(sprintf('Cache directory must be writable. "%s" is not.', $cacheFolder), 6);
             }
 
-            $success = $this->cacheFile(
+            $compiler = $this->getRenderer()->getCompiler();
+            $fullPath = $compiler->locate($path) ?: $path;
+            $output = $rendered($fullPath, $input);
+            $importsPaths = $compiler->getImportPaths($fullPath);
+
+            $success = $this->cacheFileContents(
                 $destination,
-                $rendered($path, $input),
-                $this->getRenderer()->getCompiler()->getImportPaths($path)
+                $output,
+                $importsPaths
             );
         }
 
@@ -86,6 +91,54 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
     }
 
     /**
+     * Cache a template file in the cache directory (even if the cache is up to date).
+     * Returns the number of bytes written in the cache file or false if a
+     * failure occurred.
+     *
+     * @param string $path
+     *
+     * @return bool|int
+     */
+    public function cacheFile($path)
+    {
+        $outputFile = $path;
+        $this->isCacheUpToDate($outputFile);
+        $compiler = $this->getRenderer()->getCompiler();
+
+        return $this->cacheFileContents(
+            $outputFile,
+            $compiler->compileFile($path),
+            $compiler->getCurrentImportPaths()
+        );
+    }
+
+    /**
+     * Cache a template file in the cache directory if the cache is obsolete.
+     * Returns true if the cache is up to date and cache not change,
+     * else returns the number of bytes written in the cache file or false if
+     * a failure occurred.
+     *
+     * @param string $path
+     *
+     * @return bool|int
+     */
+    public function cacheFileIfChanged($path)
+    {
+        $outputFile = $path;
+        if (!$this->isCacheUpToDate($outputFile)) {
+            $compiler = $this->getRenderer()->getCompiler();
+
+            return $this->cacheFileContents(
+                $outputFile,
+                $compiler->compileFile($path),
+                $compiler->getCurrentImportPaths()
+            );
+        }
+
+        return true;
+    }
+
+    /**
      * Scan a directory recursively, compile them and save them into the cache directory.
      *
      * @param string $directory the directory to search in pug templates
@@ -104,8 +157,8 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
         foreach ($renderer->scanDirectory($directory) as $inputFile) {
             $path = $inputFile;
             $this->isCacheUpToDate($path);
-            $sandBox = new SandBox(function () use (&$success, $compiler, $path, $inputFile) {
-                $this->cacheFile($path, $compiler->compileFile($inputFile), $compiler->getCurrentImportPaths());
+            $sandBox = $this->getRenderer()->getNewSandBox(function () use (&$success, $compiler, $path, $inputFile) {
+                $this->cacheFileContents($path, $compiler->compileFile($inputFile), $compiler->getCurrentImportPaths());
                 $success++;
             });
 
@@ -179,20 +232,19 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
         $algorithm = $algorithms[0];
         $number = 0;
         foreach ($algorithms as $hashAlgorithm) {
-            if (strpos($hashAlgorithm, 'md') === 0) {
-                $hashNumber = substr($hashAlgorithm, 2);
+            $lettersLength = substr($hashAlgorithm, 0, 2) === 'md'
+                ? 2
+                : (substr($hashAlgorithm, 0, 3) === 'sha'
+                    ? 3
+                    : 0
+                );
+            if ($lettersLength) {
+                $hashNumber = substr($hashAlgorithm, $lettersLength);
                 if ($hashNumber > $number) {
                     $number = $hashNumber;
                     $algorithm = $hashAlgorithm;
                 }
-                continue;
-            }
-            if (strpos($hashAlgorithm, 'sha') === 0) {
-                $hashNumber = substr($hashAlgorithm, 3);
-                if ($hashNumber > $number) {
-                    $number = $hashNumber;
-                    $algorithm = $hashAlgorithm;
-                }
+
                 continue;
             }
         }

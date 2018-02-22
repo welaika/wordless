@@ -13,7 +13,7 @@ class CodeScanner implements ScannerInterface
     {
         $reader = $state->getReader();
 
-        if (!$reader->peekChar('-')) {
+        if (!$reader->match('-[ \t]*')) {
             return;
         }
 

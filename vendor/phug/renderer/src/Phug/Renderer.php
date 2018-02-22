@@ -2,15 +2,13 @@
 
 namespace Phug;
 
-use Phug\Renderer\AdapterInterface;
-use Phug\Renderer\CacheInterface;
-use Phug\Renderer\Partial\AdapterTrait;
+use Phug\Renderer\Partial\CacheTrait;
 use Phug\Renderer\Partial\Debug\DebuggerTrait;
 use Phug\Renderer\Partial\RendererOptionsTrait;
 use Phug\Renderer\Partial\SharedVariablesTrait;
 use Phug\Util\ModuleContainerInterface;
+use Phug\Util\Partial\MacroableTrait;
 use Phug\Util\Partial\ModuleContainerTrait;
-use Phug\Util\SandBox;
 
 class Renderer implements ModuleContainerInterface
 {
@@ -18,7 +16,8 @@ class Renderer implements ModuleContainerInterface
     use DebuggerTrait;
     use RendererOptionsTrait;
     use SharedVariablesTrait;
-    use AdapterTrait;
+    use CacheTrait;
+    use MacroableTrait;
 
     /**
      * @var Compiler
@@ -40,15 +39,7 @@ class Renderer implements ModuleContainerInterface
 
         $this->initDebugOptions($this);
 
-        $adapterClassName = $this->getOption('adapter_class_name');
-
-        if (!is_a($adapterClassName, AdapterInterface::class, true)) {
-            throw new RendererException(
-                "Passed adapter class $adapterClassName is ".
-                'not a valid '.AdapterInterface::class
-            );
-        }
-        $this->adapter = new $adapterClassName($this, $this->getOptions());
+        $this->initAdapter();
 
         $this->enableModules();
     }
@@ -148,6 +139,29 @@ class Renderer implements ModuleContainerInterface
     }
 
     /**
+     * Render a pug file and dump it into a file.
+     * Return true if the render and the writing succeeded.
+     *
+     * @param string $inputFile  input file (Pug file)
+     * @param string $outputFile output file (typically the HTML/XML file)
+     * @param array  $parameters local variables
+     *
+     * @return bool
+     */
+    public function renderAndWriteFile($inputFile, $outputFile, $parameters)
+    {
+        $outputDirectory = dirname($outputFile);
+
+        if (!file_exists($outputDirectory) && !@mkdir($outputDirectory, 0777, true)) {
+            return false;
+        }
+
+        return is_int($this->getNewSandBox(function () use ($outputFile, $inputFile, $parameters) {
+            return file_put_contents($outputFile, $this->renderFile($inputFile, $parameters));
+        })->getResult());
+    }
+
+    /**
      * Render all pug template files in an input directory and output in an other or the same directory.
      * Return an array with success count and error count.
      *
@@ -183,19 +197,11 @@ class Renderer implements ModuleContainerInterface
                 $relativeDirectory = trim(mb_substr(dirname($file), $length), '//\\');
                 $filename = pathinfo($file, PATHINFO_FILENAME);
                 $outputDirectory = $destination.DIRECTORY_SEPARATOR.$relativeDirectory;
-                $counter = null;
-                if (!file_exists($outputDirectory)) {
-                    if (!@mkdir($outputDirectory, 0777, true)) {
-                        $counter = 'errors';
-                    }
-                }
-                if (!$counter) {
-                    $outputFile = $outputDirectory.DIRECTORY_SEPARATOR.$filename.$extension;
-                    $sandBox = new SandBox(function () use ($outputFile, $file, $parameters) {
-                        return file_put_contents($outputFile, $this->renderFile($file, $parameters));
-                    });
-                    $counter = $sandBox->getResult() ? 'success' : 'errors';
-                }
+                $counter = $this->renderAndWriteFile(
+                    $file,
+                    $outputDirectory.DIRECTORY_SEPARATOR.$filename.$extension,
+                    $parameters
+                ) ? 'success' : 'errors';
                 $$counter++;
             }
         }
@@ -244,29 +250,5 @@ class Renderer implements ModuleContainerInterface
             },
             $parameters
         );
-    }
-
-    /**
-     * Cache all templates in a directory in the cache directory you specified with the cache_dir option.
-     * You should call after deploying your application in production to avoid a slower page loading for the first
-     * user.
-     *
-     * @param $directory
-     *
-     * @throws RendererException
-     *
-     * @return array
-     */
-    public function cacheDirectory($directory)
-    {
-        $adapter = $this->getAdapter();
-        if (!($adapter instanceof CacheInterface)) {
-            throw new RendererException(
-                'You cannot cache a directory with '.get_class($adapter).
-                ' because this adapter does not implement '.CacheInterface::class
-            );
-        }
-
-        return $adapter->cacheDirectory($directory);
     }
 }

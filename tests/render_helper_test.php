@@ -66,7 +66,8 @@ class RenderHelperTest extends UnitTestCase {
                 'cache' => Wordless::theme_temp_path(),
                 'strict' => true,
                 'debug' => false,
-                'enable_profiler' => false
+                'enable_profiler' => false,
+                'error_reporting' => E_ERROR | E_USER_ERROR
             ),
             WordlessPugOptions::get_options()
         );
@@ -83,7 +84,8 @@ class RenderHelperTest extends UnitTestCase {
                 'cache' => Wordless::theme_temp_path(),
                 'strict' => true,
                 'debug' => true,
-                'enable_profiler' => true
+                'enable_profiler' => false,
+                'error_reporting' => E_ERROR | E_USER_ERROR
             ),
             WordlessPugOptions::get_options()
         );

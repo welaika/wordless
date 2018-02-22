@@ -71,7 +71,6 @@ use Phug\Parser\Node\WhileNode;
 use Phug\Parser\Node\YieldNode;
 use Phug\Parser\NodeInterface;
 // Utils
-use Phug\Util\AssociativeStorage;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
 use Phug\Util\SourceLocation;
@@ -127,11 +126,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
     private $layout;
 
     /**
-     * @var AssociativeStorage
-     */
-    private $mixins;
-
-    /**
      * @var NodeInterface
      */
     private $currentNode;
@@ -161,7 +155,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
             'parser_class_name'    => Parser::class,
             'formatter_class_name' => Formatter::class,
             'locator_class_name'   => FileLocator::class,
-            'mixins_storage_mode'  => AssociativeStorage::REPLACE,
             'compiler_modules'     => [],
             'node_compilers'       => [
                 AssignmentListNode::class  => AssignmentListNodeCompiler::class,
@@ -228,11 +221,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         foreach ($this->getOption('node_compilers') as $className => $handler) {
             $this->setNodeCompiler($className, $handler);
         }
-
-        $this->mixins = new AssociativeStorage(
-            'mixin',
-            $this->getOption('mixins_storage_mode')
-        );
 
         if ($onCompile = $this->getOption('on_compile')) {
             $this->attach(CompilerEvent::COMPILE, $onCompile);

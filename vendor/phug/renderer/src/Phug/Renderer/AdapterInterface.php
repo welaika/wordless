@@ -12,8 +12,22 @@ interface AdapterInterface extends OptionInterface
      */
     public function __construct(Renderer $renderer, $options);
 
+    /**
+     * Return the renderer the adapter was constructed with.
+     *
+     * @return Renderer
+     */
     public function getRenderer();
 
+    /**
+     * Capture buffered output of a callable display action.
+     *
+     * @param callable $display the action that potentially send output to the buffer.
+     *
+     * @throws \Throwable
+     *
+     * @return mixed
+     */
     public function captureBuffer(callable $display);
 
     /**

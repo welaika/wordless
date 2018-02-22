@@ -2,6 +2,8 @@
 
 namespace Phug\Renderer\Partial;
 
+use ErrorException;
+use Phug\Renderer\Adapter\FileAdapter;
 use Phug\Renderer\AdapterInterface;
 use Phug\Renderer\CacheInterface;
 use Phug\Renderer\Event\HtmlEvent;
@@ -20,20 +22,13 @@ trait AdapterTrait
     private $adapter;
 
     /**
-     * Throw an exception if the given argument (typically an adapter) is not a cache adapter
+     * Fallback to FileAdapter if the current adapter (typically an adapter) is not a cache adapter
      * (implement CacheInterface).
-     *
-     * @param $adapter
-     *
-     * @throws RendererException
      */
-    private function expectCacheAdapter($adapter)
+    private function expectCacheAdapter()
     {
-        if (!($adapter instanceof CacheInterface)) {
-            throw new RendererException(
-                'You cannot use "cache_dir" option with '.get_class($adapter).
-                ' because this adapter does not implement '.CacheInterface::class
-            );
+        if (!($this->adapter instanceof CacheInterface)) {
+            $this->setAdapterClassName(FileAdapter::class);
         }
     }
 
@@ -41,6 +36,8 @@ trait AdapterTrait
      * Create/reset if needed the adapter.
      *
      * @throws RendererException
+     *
+     * @return $this
      */
     public function initAdapter()
     {
@@ -55,6 +52,8 @@ trait AdapterTrait
             }
             $this->adapter = new $adapterClassName($this, $this->getOptions());
         }
+
+        return $this;
     }
 
     /**
@@ -65,6 +64,40 @@ trait AdapterTrait
     public function getAdapter()
     {
         return $this->adapter;
+    }
+
+    /**
+     * Set the current adapter engine (file, stream, eval or custom adapter provided).
+     *
+     * @return $this
+     */
+    public function setAdapterClassName($adapterClassName)
+    {
+        return $this->setOption('adapter_class_name', $adapterClassName)->initAdapter();
+    }
+
+    /**
+     * Return a sandbox with renderer settings for a given callable action.
+     *
+     * @param callable $action
+     *
+     * @return SandBox
+     */
+    public function getNewSandBox(callable $action)
+    {
+        $errorHandler = $this->getOption('error_reporting');
+        if ($errorHandler !== null && !is_callable($errorHandler)) {
+            $errorReporting = $errorHandler;
+            $errorHandler = function ($number, $message, $file, $line) use ($errorReporting) {
+                if ($errorReporting & $number) {
+                    throw new ErrorException($message, 0, $number, $file, $line);
+                }
+
+                return true;
+            };
+        }
+
+        return new SandBox($action, $errorHandler);
     }
 
     /**
@@ -81,14 +114,15 @@ trait AdapterTrait
      */
     private function getSandboxCall(&$source, $method, $path, $input, callable $getSource, array $parameters)
     {
-        return new SandBox(function () use (&$source, $method, $path, $input, $getSource, $parameters) {
+        return $this->getNewSandBox(function () use (&$source, $method, $path, $input, $getSource, $parameters) {
             $adapter = $this->getAdapter();
             $cacheEnabled = (
                 $adapter->hasOption('cache_dir') && $adapter->getOption('cache_dir') ||
                 $this->hasOption('cache_dir') && $this->getOption('cache_dir')
             );
             if ($cacheEnabled) {
-                $this->expectCacheAdapter($adapter);
+                $this->expectCacheAdapter();
+                $adapter = $this->getAdapter();
                 $display = function () use ($adapter, $path, $input, $getSource, $parameters) {
                     /* @var CacheInterface $adapter */
                     $adapter->displayCached($path, $input, $getSource, $parameters);
@@ -103,7 +137,7 @@ trait AdapterTrait
 
             return $adapter->$method(
                 $source,
-                $this->mergeWithSharedVariables($parameters)
+                $parameters
             );
         });
     }
@@ -161,7 +195,7 @@ trait AdapterTrait
         $input = $renderEvent->getInput();
         $path = $renderEvent->getPath();
         $method = $renderEvent->getMethod();
-        $parameters = $renderEvent->getParameters();
+        $parameters = $this->mergeWithSharedVariables($renderEvent->getParameters());
         if ($self = $this->getOption('self')) {
             $self = $self === true ? 'self' : strval($self);
             $parameters = [

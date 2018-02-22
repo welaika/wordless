@@ -62,10 +62,15 @@ abstract class AbstractAssignmentContainerElement extends AbstractElement implem
      */
     public function getAssignmentsByName($name)
     {
-        $assignments = iterator_to_array($this->getAssignments());
+        $result = [];
 
-        return array_values(array_filter($assignments, function (AssignmentElement $element) use ($name) {
-            return $element->getName() === $name;
-        }));
+        foreach ($this->getAssignments() as $assignment) {
+            /* @var AssignmentElement $assignment */
+            if ($assignment->getName() === $name) {
+                $result[] = $assignment;
+            }
+        }
+
+        return $result;
     }
 }

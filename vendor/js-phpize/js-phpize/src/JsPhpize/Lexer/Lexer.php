@@ -122,12 +122,7 @@ class Lexer extends Scanner
             return false;
         }
 
-        $patterns = $this->engine->getOption('patterns');
-        usort($patterns, function (Pattern $first, Pattern $second) {
-            return $first->priority - $second->priority;
-        });
-
-        foreach ($patterns as $pattern) {
+        foreach ($this->engine->getPatterns() as $pattern) {
             if ($token = $this->scan($pattern->regex, $pattern->type)) {
                 if (in_array($pattern->type, $this->disallow)) {
                     throw new Exception($pattern->type . ' is disallowed.', 3);

@@ -23,14 +23,14 @@ class SandBox
      */
     private $throwable;
 
-    public function __construct(callable $action)
+    public function __construct(callable $action, callable $errorInterceptor = null)
     {
-        set_error_handler(function ($number, $message, $file, $line) {
-            if (0 === error_reporting()) {
-                return false;
+        set_error_handler($errorInterceptor ?: function ($number, $message, $file, $line) {
+            if (error_reporting() & $number) {
+                throw new ErrorException($message, 0, $number, $file, $line);
             }
 
-            throw new ErrorException($message, 0, $number, $file, $line);
+            return false;
         });
         ob_start();
         // @codeCoverageIgnoreStart

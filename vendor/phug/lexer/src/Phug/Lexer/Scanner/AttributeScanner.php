@@ -87,17 +87,31 @@ class AttributeScanner implements ScannerInterface
         $joinChars = array_merge($chars, ['"', "'"]);
         $expr = $reader->readExpression($chars);
         while ((
-            $reader->match('\s*("(?:\\\\[\\S\\s]|[^"\\\\])*"|\'(?:\\\\[\\S\\s]|[^\'\\\\])*\')') &&
+            $reader->match('\\s*(
+                "(?:\\\\[\\S\\s]|[^"\\\\])*" |
+                \'(?:\\\\[\\S\\s]|[^\'\\\\])*\' |
+                (\\[([^\\[\\]\'"]+|(?1))*\\]) |
+                (\\(([^\\(\\)\'"]+|(?1))*\\)) |
+                (\\{([^\\{\\}\'"]+|(?1))*\\})
+            )', 'x') &&
             !preg_match('/[\'"]$/', $expr)
         ) ||
-            $reader->match('\s+(\?([^:?\'"]+|(?R))*:)\s+') ||
+            $reader->match('\\s*\?((
+                \s+ |
+                "(?:\\\\[\\S\\s]|[^"\\\\])*" |
+                \'(?:\\\\[\\S\\s]|[^\'\\\\])*\' |
+                (\\[([^\\[\\]\'"]+|(?1))*\\]) |
+                (\\(([^\\(\\)\'"]+|(?1))*\\)) |
+                (\\{([^\\{\\}\'"]+|(?1))*\\})
+            )+)\\:', 'x') ||
             $reader->match('\s+([.%*^&|!~[{+-]|\/(?!\/))') || (
                 $reader->match('\s') &&
                 preg_match('/[.%*^&|!~\/\]}+-]\s*$/', $expr)
             )
         ) {
-            $expr .= $reader->getMatch(0);
-            $reader->consume(mb_strlen($reader->getMatch(0)));
+            $match = $reader->getMatch(0);
+            $expr .= $match;
+            $reader->consume(mb_strlen($match));
             $expr .= $reader->readExpression($joinChars);
         }
 

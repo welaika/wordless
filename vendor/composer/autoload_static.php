@@ -40,17 +40,17 @@ class ComposerStaticInite5b34b7ebbce05aded2063cbbbe4b8b3
 
     public static $fallbackDirsPsr4 = array (
         0 => __DIR__ . '/..' . '/js-transformer/js-transformer/src',
-        1 => __DIR__ . '/..' . '/phug/event/src',
-        2 => __DIR__ . '/..' . '/phug/util/src',
-        3 => __DIR__ . '/..' . '/phug/ast/src',
-        4 => __DIR__ . '/..' . '/phug/reader/src',
-        5 => __DIR__ . '/..' . '/phug/lexer/src',
-        6 => __DIR__ . '/..' . '/phug/parser/src',
-        7 => __DIR__ . '/..' . '/phug/dependency-injection/src',
-        8 => __DIR__ . '/..' . '/phug/formatter/src',
-        9 => __DIR__ . '/..' . '/phug/compiler/src',
+        1 => __DIR__ . '/..' . '/phug/ast/src',
+        2 => __DIR__ . '/..' . '/phug/compiler/src',
+        3 => __DIR__ . '/..' . '/phug/dependency-injection/src',
+        4 => __DIR__ . '/..' . '/phug/event/src',
+        5 => __DIR__ . '/..' . '/phug/formatter/src',
+        6 => __DIR__ . '/..' . '/phug/lexer/src',
+        7 => __DIR__ . '/..' . '/phug/parser/src',
+        8 => __DIR__ . '/..' . '/phug/phug/src',
+        9 => __DIR__ . '/..' . '/phug/reader/src',
         10 => __DIR__ . '/..' . '/phug/renderer/src',
-        11 => __DIR__ . '/..' . '/phug/phug/src',
+        11 => __DIR__ . '/..' . '/phug/util/src',
     );
 
     public static $prefixesPsr0 = array (

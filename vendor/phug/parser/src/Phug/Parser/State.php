@@ -31,9 +31,9 @@ class State implements OptionInterface, EventManagerInterface
     private $level;
 
     /**
-     * The Generator returned by the ->lex() method of the lexer.
+     * The Iterator returned by the ->lex() method of the lexer.
      *
-     * @var \Generator
+     * @var \Iterator
      */
     private $tokens;
 
@@ -101,7 +101,7 @@ class State implements OptionInterface, EventManagerInterface
      */
     private $interpolationNodes;
 
-    public function __construct(Parser $parser, \Generator $tokens, array $options = null)
+    public function __construct(Parser $parser, \Iterator $tokens, array $options = null)
     {
         $this->parser = $parser;
         $this->level = 0;
@@ -173,7 +173,7 @@ class State implements OptionInterface, EventManagerInterface
     }
 
     /**
-     * @return \Generator
+     * @return \Iterator
      */
     public function getTokens()
     {
@@ -181,7 +181,7 @@ class State implements OptionInterface, EventManagerInterface
     }
 
     /**
-     * @param \Generator $tokens
+     * @param \Iterator $tokens
      *
      * @return $this
      */

@@ -20,6 +20,9 @@ function ($base) {
             if (preg_match('/^[-+]?\d+$/', strval($key))) {
                 return substr($base, intval($key), 1);
             }
+            if ($key === 'length') {
+                return strlen($base);
+            }
             if ($key === 'substr' || $key === 'slice') {
                 return function ($start, $length = null) use ($base) {
                     return func_num_args() === 1 ? substr($base, $start) : substr($base, $start, $length);

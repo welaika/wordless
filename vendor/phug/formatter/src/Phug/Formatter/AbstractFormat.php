@@ -24,6 +24,7 @@ use Phug\FormatterException;
 use Phug\Parser\Node\ConditionalNode;
 use Phug\Parser\Node\WhenNode;
 use Phug\Parser\NodeInterface;
+use Phug\Util\Joiner;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
 use Phug\Util\SourceLocation;
@@ -105,7 +106,6 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
                 'short_open_tag_fix' => 'auto',
                 'pattern'            => function ($pattern) {
                     $args = func_get_args();
-                    $args[0] = $pattern;
                     $function = 'sprintf';
                     if (is_callable($pattern)) {
                         $function = $pattern;
@@ -332,6 +332,24 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
     protected function handleTokens($code, $checked)
     {
         $phpTokenHandler = $this->getOption('php_token_handlers');
+        $untouched = false;
+        if (!$checked) {
+            try {
+                $reflector = new \ReflectionMethod($this, 'handleVariable');
+                $untouched = (empty($phpTokenHandler) || $phpTokenHandler === [
+                            T_VARIABLE => [$this, 'handleVariable'],
+                        ]) && $reflector->getDeclaringClass()->getName() === self::class;
+            } catch (\ReflectionException $exp) {
+                $untouched = false;
+            }
+        }
+
+        if ($untouched) {
+            yield $code;
+
+            return;
+        }
+
         $tokens = array_slice(token_get_all('<?php '.$code), 1);
         $afterIsset = false;
         $inIsset = false;
@@ -363,7 +381,7 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
                 continue;
             }
 
-            yield $phpTokenHandler[$tokenId]($text, $index, $tokens, $checked && !$inIsset);
+            yield $phpTokenHandler[$tokenId]($text, $index, $tokens, $checked && !$inIsset, $this);
         }
     }
 
@@ -400,10 +418,10 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             );
         }
 
-        return implode('', iterator_to_array($this->handleTokens(
+        return (new Joiner($this->handleTokens(
             $code,
             $checked
-        )));
+        )))->join('');
     }
 
     protected function formatAssignmentValue($value)
@@ -532,7 +550,7 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
 
     protected function formatCodeElement(CodeElement $code)
     {
-        $php = $this->formatCode($code->getValue(), false, !$code->isTransformationAllowed());
+        $php = $this->formatCode($code->getValue(), $code->isChecked(), !$code->isTransformationAllowed());
 
         if ($code->needAccolades()) {
             $php = preg_replace('/\s*\{\s*\}\s*$/', '', $php).$this->pattern(
@@ -582,7 +600,7 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
 
     protected function formatExpressionElement(ExpressionElement $code)
     {
-        $value = $code->getValue();
+        $value = $this->formatCode($code->getValue(), $code->isChecked(), !$code->isTransformationAllowed());
 
         if ($code->hasStaticValue()) {
             $value = strval(eval('return '.$value.';'));
@@ -592,8 +610,6 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
 
             return $value;
         }
-
-        $value = $this->formatCode($value, $code->isChecked(), !$code->isTransformationAllowed());
 
         if ($link = $code->getLink()) {
             if ($link instanceof AttributeElement) {
@@ -748,13 +764,19 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
 
         if ($mixin->hasParent()) {
             $saveVariable = '$__pug_save_'.mt_rand(0, 9999999);
-            $mixinCode = $this->handleCode($saveVariable.'='.$variable).$mixinCode;
+            $mixinCode = $this->handleCode(
+                "if (isset(\$__pug_mixins, $variable)) {\n    $saveVariable = $variable;\n}\n"
+            ).$mixinCode;
             $parent = $mixin->getParent();
             $destructors = $this->formatter->getDestructors();
             $parentDestructors = $destructors->offsetExists($parent)
                 ? $destructors->offsetGet($parent)
                 : [];
-            $parentDestructors[] = new CodeElement($variable.'='.$saveVariable);
+            $restoreMixin = new CodeElement(
+                "if (isset($saveVariable)) {\n    $variable = $saveVariable;\n}\n"
+            );
+            $restoreMixin->preventFromTransformation();
+            $parentDestructors[] = $restoreMixin;
             $destructors->offsetSet($parent, $parentDestructors);
         }
 

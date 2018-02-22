@@ -25,10 +25,10 @@ class AssignmentNodeCompiler extends AbstractNodeCompiler
          */
         $name = $node->getName();
         $attributes = new SplObjectStorage();
-        $input = iterator_to_array($node->getAttributes());
-        array_walk($input, function (AttributeNode $attribute) use ($attributes, $parent) {
+        foreach ($node->getAttributes() as $attribute) {
+            /* @var AttributeNode $attribute */
             $attributes->attach($this->getCompiler()->compileNode($attribute, $parent));
-        });
+        }
 
         return new AssignmentElement($name, $attributes, null, $node);
     }

@@ -8,6 +8,7 @@ use Phug\CompilerException;
 use Phug\Formatter\Element\CodeElement;
 use Phug\Formatter\Element\ExpressionElement;
 use Phug\Formatter\Element\MarkupElement;
+use Phug\Formatter\Element\MixinElement;
 use Phug\Formatter\Element\TextElement;
 use Phug\Formatter\ElementInterface;
 use Phug\Parser\Node\FilterNode;
@@ -125,6 +126,16 @@ class ImportNodeCompiler extends AbstractNodeCompiler
         }
 
         if ($isIncludeImport) {
+            $parentLayout = $compiler->getLayout();
+            if ($parentLayout) {
+                $parentDocument = $parentLayout->getDocument();
+                foreach ($element->getChildren() as $child) {
+                    if ($child instanceof MixinElement) {
+                        $parentDocument->appendChild(clone $child);
+                    }
+                }
+            }
+
             return $element;
         }
 

@@ -34,6 +34,11 @@ class JsPhpizeOptions
     protected $flags = 0;
 
     /**
+     * @var array
+     */
+    protected $patternsCache = array();
+
+    /**
      * Pass options as array or no parameters for all options on default value.
      *
      * @param array|ArrayAccess $options list of options.
@@ -57,7 +62,9 @@ class JsPhpizeOptions
                 new Pattern(100, 'operator', '[\\|\\^&%\\/\\*\\+\\-]='),
                 new Pattern(110, 'operator', '[\\[\\]\\{\\}\\(\\)\\:\\.\\/\\*~\\!\\^\\|&%\\?,;\\+\\-]'),
                 new Pattern(120, 'keyword', array('as', 'async', 'await', 'break', 'case', 'catch', 'class', 'const', 'continue', 'debugger', 'default', 'do', 'else', 'enum', 'export', 'extends', 'finally', 'for', 'from', 'function', 'get', 'if', 'implements', 'import', 'in', 'instanceof', 'interface', 'let', 'new', 'of', 'package', 'private', 'protected', 'public', 'return', 'set', 'static', 'super', 'switch', 'throw', 'try', 'var', 'while', 'with', 'yield', 'yield*'), true),
-                new Pattern(130, 'constant', 'null|undefined|Infinity|NaN|true|false|Math\.[A-Z][A-Z0-9_]*|[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*|[\\\\\\x7f-\\xff_][A-Z0-9\\\\_\\x7f-\\xff]*[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*', true),
+                new Pattern(130, 'constant', 'null|undefined|Infinity|NaN|true|false|Math\.[A-Z][A-Z0-9_]*' . (isset($this->options['disableConstants']) && $this->options['disableConstants']
+                    ? ''
+                    : '|[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*|[\\\\\\x7f-\\xff_][A-Z0-9\\\\_\\x7f-\\xff]*[A-Z][A-Z0-9\\\\_\\x7f-\\xff]*'), true),
                 new Pattern(135, 'variable', '[a-zA-Z\\\\\\x7f-\\xff\\$_][a-zA-Z0-9\\\\_\\x7f-\\xff\\$]*', '$'),
                 new Pattern(140, 'operator', '[\\s\\S]'),
             );
@@ -73,6 +80,8 @@ class JsPhpizeOptions
      */
     public function addPattern(Pattern $pattern)
     {
+        $this->clearPatternsCache();
+
         $this->options['patterns'][] = $pattern;
 
         return $this;
@@ -87,7 +96,38 @@ class JsPhpizeOptions
      */
     public function removePatterns($removeFunction)
     {
+        $this->clearPatternsCache();
+
         $this->options['patterns'] = array_filter($this->options['patterns'], $removeFunction);
+
+        return $this;
+    }
+
+    /**
+     * Return cached and ordered patterns list.
+     *
+     * @return array
+     */
+    public function getPatterns()
+    {
+        if (!$this->patternsCache) {
+            $this->patternsCache = $this->getOption('patterns');
+            usort($this->patternsCache, function (Pattern $first, Pattern $second) {
+                return $first->priority - $second->priority;
+            });
+        }
+
+        return $this->patternsCache;
+    }
+
+    /**
+     * Clear the patterns cache.
+     *
+     * @return $this
+     */
+    public function clearPatternsCache()
+    {
+        $this->patternsCache = null;
 
         return $this;
     }

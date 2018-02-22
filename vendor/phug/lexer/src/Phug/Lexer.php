@@ -169,7 +169,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
 
             //Events
             'on_lex'     => null,
-            'on_end_lex' => null,
+            'on_lex_end' => null,
             'on_token'   => null,
         ]);
 
@@ -179,7 +179,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
             $this->attach(LexerEvent::LEX, $onLex);
         }
 
-        if ($onLex = $this->getOption('on_end_lex')) {
+        if ($onLex = $this->getOption('on_lex_end')) {
             $this->attach(LexerEvent::END_LEX, $onLex);
         }
 
@@ -323,7 +323,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         $this->lastToken = null;
     }
 
-    private function handleTokens(\Generator $tokens)
+    private function handleTokens(\Iterator $tokens)
     {
         foreach ($tokens as $token) {
             $event = new TokenEvent($token);
@@ -359,7 +359,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
             return $this->dumpToken($input);
         }
 
-        if (!($input instanceof \Generator) && !is_array($input)) {
+        if (!($input instanceof \Iterator) && !is_array($input)) {
             $input = $this->lex((string) $input);
         }
 

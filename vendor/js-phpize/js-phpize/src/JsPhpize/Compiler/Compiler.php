@@ -85,24 +85,23 @@ class Compiler
 
     public function compileDependencies($dependencies)
     {
-        $varPrefix = $this->varPrefix;
+        $php = '';
 
-        return implode('', array_map(function ($name) use ($varPrefix) {
-            $code = $name;
-            $file = $name;
+        foreach ($dependencies as $name) {
+            $file = preg_match('/^[a-z0-9_-]+$/i', $name)
+                ? __DIR__ . '/Helpers/' . ucfirst($name) . '.h'
+                : $name;
 
-            if (preg_match('/^[a-z0-9_-]+$/i', $file)) {
-                $file = __DIR__ . '/Helpers/' . ucfirst($name) . '.h';
-            }
+            $code = file_exists($file)
+                ? file_get_contents($file)
+                : $name;
 
-            if (file_exists($file)) {
-                $code = file_get_contents($file);
-            }
-
-            return '$GLOBALS[\'' . $varPrefix . $name . '\'] = ' .
+            $php .= '$GLOBALS[\'' . $this->varPrefix . $name . '\'] = ' .
                 trim($code) .
                 ";\n";
-        }, $dependencies));
+        }
+
+        return $php;
     }
 
     protected function visitAssignation(Assignation $assignation, $indent)

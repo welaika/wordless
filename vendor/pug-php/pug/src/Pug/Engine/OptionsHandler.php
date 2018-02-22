@@ -109,7 +109,8 @@ abstract class OptionsHandler extends PugJsEngine
                 call_user_func($onOutput, $event);
             }
             $output = $event->getOutput();
-            if (stripos($output, 'namespace') !== false) {
+            $pos = stripos($output, 'namespace');
+            if ($pos !== false && in_array(substr($output, $pos + 9, 1), ["\n", "\r", "\t", ' '])) {
                 $output = $this->handleNamespace($output);
             }
             if ($postRender) {

@@ -15,6 +15,7 @@ use Phug\Formatter\Element\TextElement;
 use Phug\Formatter\ElementInterface;
 use Phug\Formatter\MarkupInterface;
 use Phug\Formatter\Partial\AssignmentHelpersTrait;
+use Phug\Util\Joiner;
 use SplObjectStorage;
 
 class XmlFormat extends AbstractFormat
@@ -159,10 +160,11 @@ class XmlFormat extends AbstractFormat
         $value = $element->getValue();
         $name = $element->getName();
         $nonEmptyAttribute = ($name === 'class' || $name === 'id');
-        if ($value instanceof TextElement && $nonEmptyAttribute && (!$value->getValue() || $value->getValue() === '')) {
-            return '';
-        }
-        if ($nonEmptyAttribute && (!$value || (is_string($value) && in_array(trim($value), ['', '""', "''"])))) {
+        if ($nonEmptyAttribute && (
+            !$value ||
+            ($value instanceof TextElement && ($value->getValue() ?: '') === '') ||
+            (is_string($value) && in_array(trim($value), ['', '""', "''"]))
+        )) {
             return '';
         }
         if ($value instanceof ExpressionElement) {
@@ -243,69 +245,70 @@ class XmlFormat extends AbstractFormat
         );
     }
 
-    protected function formatAssignmentElement(AssignmentElement $element)
+    /**
+     * @param AssignmentElement $element
+     *
+     * @throws \Phug\FormatterException
+     *
+     * @return \Generator
+     */
+    protected function yieldAssignmentElement(AssignmentElement $element)
     {
-        $handlers = $this->getOption('assignment_handlers');
-        $newElements = [];
-        array_walk(
-            $handlers,
-            function (callable $handler) use (&$newElements, $element) {
-                $iterator = $handler($element) ?: [];
-                foreach ($iterator as $newElement) {
-                    $newElements[] = $newElement;
-                }
+        foreach ($this->getOption('assignment_handlers') as $handler) {
+            $iterator = $handler($element) ?: [];
+            foreach ($iterator as $newElement) {
+                yield $newElement;
             }
-        );
+        }
 
+        /* @var MarkupElement $markup */
         $markup = $element->getContainer();
 
         $arguments = [];
-        $attributes = $markup->getAssignmentsByName('attributes');
-        array_walk(
-            $attributes,
-            function (AssignmentElement $attributesAssignment) use (&$arguments, $markup) {
-                $attributes = iterator_to_array($attributesAssignment->getAttributes());
-                array_walk(
-                    $attributes,
-                    function (AbstractValueElement $attribute) use (&$arguments) {
-                        $value = $attribute;
-                        $checked = method_exists($value, 'isChecked') && $value->isChecked();
-                        while (method_exists($value, 'getValue')) {
-                            $value = $value->getValue();
-                        }
-                        $arguments[] = $this->formatCode($value, $checked);
-                    }
-                );
-                $markup->removedAssignment($attributesAssignment);
+        foreach ($markup->getAssignmentsByName('attributes') as $attributesAssignment) {
+            /* @var AssignmentElement $attributesAssignment */
+            foreach ($attributesAssignment->getAttributes() as $attribute) {
+                /* @var AbstractValueElement $attribute */
+                $value = $attribute;
+                $checked = method_exists($value, 'isChecked') && $value->isChecked();
+                while (method_exists($value, 'getValue')) {
+                    $value = $value->getValue();
+                }
+                $arguments[] = $this->formatCode($value, $checked);
             }
-        );
-
-        $attributes = $markup->getAttributes();
-        $attributesArray = iterator_to_array($attributes);
-        array_walk(
-            $attributesArray,
-            function (AttributeElement $attribute) use (&$arguments) {
-                $arguments[] = $this->formatAttributeAsArrayItem($attribute);
-            }
-        );
-        $attributes->removeAll($attributes);
-
-        $assignments = iterator_to_array($markup->getAssignments());
-        array_walk(
-            $assignments,
-            function (AssignmentElement $assignment) {
-                $this->throwException(
-                    'Unable to handle '.$assignment->getName().' assignment',
-                    $assignment
-                );
-            }
-        );
-
-        if (count($arguments)) {
-            $newElements[] = $this->attributesAssignmentsFromPairs($arguments);
+            $markup->removedAssignment($attributesAssignment);
         }
 
-        return implode('', array_map([$this, 'format'], $newElements));
+        $attributes = $markup->getAttributes();
+        foreach ($attributes as $attribute) {
+            /* @var AttributeElement $attribute */
+            $arguments[] = $this->formatAttributeAsArrayItem($attribute);
+        }
+        $attributes->removeAll($attributes);
+
+        foreach ($markup->getAssignments() as $assignment) {
+            /* @var AssignmentElement $assignment */
+            $this->throwException(
+                'Unable to handle '.$assignment->getName().' assignment',
+                $assignment
+            );
+        }
+
+        if (count($arguments)) {
+            yield $this->attributesAssignmentsFromPairs($arguments);
+        }
+    }
+
+    /**
+     * @param AssignmentElement $element
+     *
+     * @throws \Phug\FormatterException
+     *
+     * @return string
+     */
+    protected function formatAssignmentElement(AssignmentElement $element)
+    {
+        return (new Joiner($this->yieldAssignmentElement($element)))->mapAndJoin([$this, 'format'], '');
     }
 
     protected function hasDuplicateAttributeNames(MarkupInterface $element)
@@ -329,8 +332,12 @@ class XmlFormat extends AbstractFormat
     {
         if ($this->hasNonStaticAttributes($element) ||
             $this->hasDuplicateAttributeNames($element)) {
-            $attributeAssignment = $element->getAssignmentsByName('attributes');
-            if (!count($attributeAssignment)) {
+            $empty = true;
+            foreach ($element->getAssignmentsByName('attributes') as $attribute) {
+                $empty = false;
+                break;
+            }
+            if ($empty) {
                 $data = new SplObjectStorage();
                 $data->attach(new ExpressionElement('[]'));
                 $element->addAssignment(new AssignmentElement('attributes', $data, $element));
