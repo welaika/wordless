@@ -69,6 +69,9 @@ class ModelHelper {
         'capability_type' => 'post',
         'hierarchical' => false,
         'menu_position' => null,
+        'show_in_rest' => true,
+        'rest_base' => strtolower($uc_plural),
+        'rest_controller_class' => 'WP_REST_Posts_Controller',
         'supports' => $supports
       ), $options);
 
