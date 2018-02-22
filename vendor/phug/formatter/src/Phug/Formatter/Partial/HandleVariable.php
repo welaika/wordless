@@ -31,7 +31,10 @@ trait HandleVariable
                 $afterOpen = true;
                 continue;
             }
-            if ($afterOpen && is_array($tokens[$i]) && $tokens[$i][0] === T_FUNCTION) {
+            if ($afterOpen && is_array($tokens[$i]) && in_array($tokens[$i][0], [
+                T_FUNCTION,
+                T_USE,
+            ])) {
                 return true;
             }
         }
@@ -118,7 +121,7 @@ trait HandleVariable
         return isset($tokens[$index - 1]) && is_array($tokens[$index - 1]) && $tokens[$index - 1][0] === T_CURLY_OPEN;
     }
 
-    protected function handleVariable($variable, $index, &$tokens, $checked)
+    public function handleVariable($variable, $index, &$tokens, $checked)
     {
         if (!$checked ||
             $this->isInExclusionContext($tokens, $index) ||

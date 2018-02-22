@@ -26,6 +26,6 @@ class ConditionalNodeCompiler extends AbstractStatementNodeCompiler
             $subject = '!('.$subject.')';
         }
 
-        return $this->wrapStatement($node, $name, $subject);
+        return $this->wrapStatement($node, $name, $subject)->check();
     }
 }

@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "js-phpize/js-phpize",
-            "version": "1.12.0",
+            "version": "1.14.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pug-php/js-phpize.git",
-                "reference": "0e13b055ea31d9655f98287c5131af1037dd8a6a"
+                "reference": "a4b904fa673e45f82a25e02d3c1592346ab0d716"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/0e13b055ea31d9655f98287c5131af1037dd8a6a",
-                "reference": "0e13b055ea31d9655f98287c5131af1037dd8a6a",
+                "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/a4b904fa673e45f82a25e02d3c1592346ab0d716",
+                "reference": "a4b904fa673e45f82a25e02d3c1592346ab0d716",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "description": "Convert js-like syntax to standalone PHP code.",
-            "time": "2017-12-05T09:22:31+00:00"
+            "time": "2018-02-06T08:50:18+00:00"
         },
         {
             "name": "js-phpize/js-phpize-phug",
@@ -133,23 +133,23 @@
         },
         {
             "name": "mobiledetect/mobiledetectlib",
-            "version": "2.8.25",
+            "version": "2.8.30",
             "source": {
                 "type": "git",
                 "url": "https://github.com/serbanghita/Mobile-Detect.git",
-                "reference": "f0896b5c7274d1450023b0b376240be902c3251c"
+                "reference": "5500bbbf312fe77ef0c7223858dad84fe49ee0c3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/f0896b5c7274d1450023b0b376240be902c3251c",
-                "reference": "f0896b5c7274d1450023b0b376240be902c3251c",
+                "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/5500bbbf312fe77ef0c7223858dad84fe49ee0c3",
+                "reference": "5500bbbf312fe77ef0c7223858dad84fe49ee0c3",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "*"
+                "phpunit/phpunit": "~4.8.35||~5.7"
             },
             "type": "library",
             "autoload": {
@@ -181,7 +181,7 @@
                 "mobile detector",
                 "php mobile detect"
             ],
-            "time": "2017-03-29T13:59:30+00:00"
+            "time": "2017-12-18T10:38:51+00:00"
         },
         {
             "name": "nodejs-php-fallback/nodejs-php-fallback",
@@ -288,22 +288,22 @@
         },
         {
             "name": "phug/compiler",
-            "version": "0.5.15",
+            "version": "0.5.19",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/compiler.git",
-                "reference": "b8a1990d261cde6ec54738958102a96130efc6c2"
+                "reference": "5339dad6804180eeaaff86c54841a92df7aff7e4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/compiler/zipball/b8a1990d261cde6ec54738958102a96130efc6c2",
-                "reference": "b8a1990d261cde6ec54738958102a96130efc6c2",
+                "url": "https://api.github.com/repos/phug-php/compiler/zipball/5339dad6804180eeaaff86c54841a92df7aff7e4",
+                "reference": "5339dad6804180eeaaff86c54841a92df7aff7e4",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0",
                 "phug/dependency-injection": "^1.1.2",
-                "phug/formatter": "^0.5.0",
+                "phug/formatter": "^0.5.37",
                 "phug/parser": "^0.5.0",
                 "phug/util": "^0.4.0"
             },
@@ -344,7 +344,7 @@
                 "template",
                 "views"
             ],
-            "time": "2017-11-28T09:35:37+00:00"
+            "time": "2018-02-06T16:48:16+00:00"
         },
         {
             "name": "phug/dependency-injection",
@@ -406,16 +406,16 @@
         },
         {
             "name": "phug/event",
-            "version": "0.1.0",
+            "version": "0.1.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/event.git",
-                "reference": "e9d126a04582995ec49740a64563a76ff6e15e98"
+                "reference": "8d78b07913d4aeffc6480dfd534fc5fed7adaf4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/event/zipball/e9d126a04582995ec49740a64563a76ff6e15e98",
-                "reference": "e9d126a04582995ec49740a64563a76ff6e15e98",
+                "url": "https://api.github.com/repos/phug-php/event/zipball/8d78b07913d4aeffc6480dfd534fc5fed7adaf4e",
+                "reference": "8d78b07913d4aeffc6480dfd534fc5fed7adaf4e",
                 "shasum": ""
             },
             "require": {
@@ -450,27 +450,27 @@
                 "event",
                 "phug"
             ],
-            "time": "2017-07-06T21:20:20+00:00"
+            "time": "2018-02-19T14:06:44+00:00"
         },
         {
             "name": "phug/formatter",
-            "version": "0.5.33",
+            "version": "0.5.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/formatter.git",
-                "reference": "bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5"
+                "reference": "85c3f40df94e1a953e8ec60181c73459f82c4377"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/formatter/zipball/bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5",
-                "reference": "bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5",
+                "url": "https://api.github.com/repos/phug-php/formatter/zipball/85c3f40df94e1a953e8ec60181c73459f82c4377",
+                "reference": "85c3f40df94e1a953e8ec60181c73459f82c4377",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0",
                 "phug/dependency-injection": "^1.3.0",
                 "phug/parser": "^0.5.0",
-                "phug/util": "^0.4.0"
+                "phug/util": "^0.4.14"
             },
             "require-dev": {
                 "phug/dev-tool": "^0.1.0"
@@ -511,25 +511,25 @@
                 "template",
                 "views"
             ],
-            "time": "2017-12-04T14:52:05+00:00"
+            "time": "2018-02-12T13:03:18+00:00"
         },
         {
             "name": "phug/js-transformer-filter",
-            "version": "1.0.1",
+            "version": "1.1.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/js-transformer-filter.git",
-                "reference": "8349c1853cf66986dd70c839fc32e1f82b097588"
+                "reference": "969c38e00af7f8c95e6345cf1e9006a835394181"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/js-transformer-filter/zipball/8349c1853cf66986dd70c839fc32e1f82b097588",
-                "reference": "8349c1853cf66986dd70c839fc32e1f82b097588",
+                "url": "https://api.github.com/repos/phug-php/js-transformer-filter/zipball/969c38e00af7f8c95e6345cf1e9006a835394181",
+                "reference": "969c38e00af7f8c95e6345cf1e9006a835394181",
                 "shasum": ""
             },
             "require": {
                 "js-transformer/js-transformer": "^1.0",
-                "phug/phug": "^0.1.8 || ^0.2.0"
+                "phug/phug": "^0.1.8 || ^0.2.0 || ^0.3.0"
             },
             "require-dev": {
                 "phug/dev-tool": "^0.1.11"
@@ -554,20 +554,20 @@
             "keywords": [
                 "js-transformer"
             ],
-            "time": "2017-12-05T13:59:45+00:00"
+            "time": "2018-02-09T07:58:41+00:00"
         },
         {
             "name": "phug/lexer",
-            "version": "0.5.15",
+            "version": "0.5.21",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/lexer.git",
-                "reference": "6cf87f331c3dfd5a0525b03aeb65f1900d655fd4"
+                "reference": "fa25ce51d9229965267f29ec73ed0f726d46f65b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/lexer/zipball/6cf87f331c3dfd5a0525b03aeb65f1900d655fd4",
-                "reference": "6cf87f331c3dfd5a0525b03aeb65f1900d655fd4",
+                "url": "https://api.github.com/repos/phug-php/lexer/zipball/fa25ce51d9229965267f29ec73ed0f726d46f65b",
+                "reference": "fa25ce51d9229965267f29ec73ed0f726d46f65b",
                 "shasum": ""
             },
             "require": {
@@ -614,20 +614,20 @@
                 "template",
                 "views"
             ],
-            "time": "2017-12-13T20:28:10+00:00"
+            "time": "2018-02-14T14:49:13+00:00"
         },
         {
             "name": "phug/parser",
-            "version": "0.5.7",
+            "version": "0.5.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/parser.git",
-                "reference": "0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048"
+                "reference": "0e0f1f9cd7925a72928ede61e63c3af6b77269ef"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/parser/zipball/0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048",
-                "reference": "0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048",
+                "url": "https://api.github.com/repos/phug-php/parser/zipball/0e0f1f9cd7925a72928ede61e63c3af6b77269ef",
+                "reference": "0e0f1f9cd7925a72928ede61e63c3af6b77269ef",
                 "shasum": ""
             },
             "require": {
@@ -675,25 +675,25 @@
                 "template",
                 "views"
             ],
-            "time": "2017-11-02T14:04:39+00:00"
+            "time": "2017-12-21T16:58:03+00:00"
         },
         {
             "name": "phug/phug",
-            "version": "0.2.0",
+            "version": "0.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/phug.git",
-                "reference": "57970ea3f60ba50c6de3744ecb15b082df395de2"
+                "reference": "6a7f40af0a41e8e25439573a1e9384885e1d6359"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/phug/zipball/57970ea3f60ba50c6de3744ecb15b082df395de2",
-                "reference": "57970ea3f60ba50c6de3744ecb15b082df395de2",
+                "url": "https://api.github.com/repos/phug-php/phug/zipball/6a7f40af0a41e8e25439573a1e9384885e1d6359",
+                "reference": "6a7f40af0a41e8e25439573a1e9384885e1d6359",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0",
-                "phug/renderer": "^0.3.2"
+                "phug/renderer": "^0.4.0"
             },
             "require-dev": {
                 "phug/dev-tool": "^0.1.0"
@@ -736,7 +736,7 @@
                 "template",
                 "views"
             ],
-            "time": "2017-12-05T13:24:43+00:00"
+            "time": "2018-02-09T17:07:10+00:00"
         },
         {
             "name": "phug/reader",
@@ -796,22 +796,22 @@
         },
         {
             "name": "phug/renderer",
-            "version": "0.3.3",
+            "version": "0.4.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/renderer.git",
-                "reference": "52e2eeceb59d63b9238071db084ca7aa05c73b45"
+                "reference": "5f1f505234afbfcb4b1575260ab0e6ab5925961c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/renderer/zipball/52e2eeceb59d63b9238071db084ca7aa05c73b45",
-                "reference": "52e2eeceb59d63b9238071db084ca7aa05c73b45",
+                "url": "https://api.github.com/repos/phug-php/renderer/zipball/5f1f505234afbfcb4b1575260ab0e6ab5925961c",
+                "reference": "5f1f505234afbfcb4b1575260ab0e6ab5925961c",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.5.0",
                 "phug/compiler": "^0.5.0",
-                "phug/util": "^0.4.5",
+                "phug/util": "^0.4.15",
                 "symfony/var-dumper": "^3.4"
             },
             "require-dev": {
@@ -855,20 +855,20 @@
                 "template",
                 "views"
             ],
-            "time": "2017-12-08T13:08:36+00:00"
+            "time": "2018-02-08T20:22:55+00:00"
         },
         {
             "name": "phug/util",
-            "version": "0.4.12",
+            "version": "0.4.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/phug-php/util.git",
-                "reference": "1716b606e34f73f2753173d5eb4876ae6d2c7e13"
+                "reference": "a52c5f8279bed9c0317be7055dec38b43311183c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/phug-php/util/zipball/1716b606e34f73f2753173d5eb4876ae6d2c7e13",
-                "reference": "1716b606e34f73f2753173d5eb4876ae6d2c7e13",
+                "url": "https://api.github.com/repos/phug-php/util/zipball/a52c5f8279bed9c0317be7055dec38b43311183c",
+                "reference": "a52c5f8279bed9c0317be7055dec38b43311183c",
                 "shasum": ""
             },
             "require": {
@@ -914,7 +914,7 @@
                 "util",
                 "views"
             ],
-            "time": "2017-09-12T15:37:04+00:00"
+            "time": "2018-02-08T10:51:06+00:00"
         },
         {
             "name": "psr/http-message",
@@ -968,16 +968,16 @@
         },
         {
             "name": "pug-php/pug",
-            "version": "3.1.4",
+            "version": "3.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/pug-php/pug.git",
-                "reference": "47043d5ae6b8a23a5a30384cc7b72b5356eeff50"
+                "reference": "7c86ad6384682371381da85dbb9c5efd48c37ed4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/pug-php/pug/zipball/47043d5ae6b8a23a5a30384cc7b72b5356eeff50",
-                "reference": "47043d5ae6b8a23a5a30384cc7b72b5356eeff50",
+                "url": "https://api.github.com/repos/pug-php/pug/zipball/7c86ad6384682371381da85dbb9c5efd48c37ed4",
+                "reference": "7c86ad6384682371381da85dbb9c5efd48c37ed4",
                 "shasum": ""
             },
             "require": {
@@ -985,13 +985,12 @@
                 "nodejs-php-fallback/nodejs-php-fallback": "^1.3.1",
                 "php": ">=5.5.0",
                 "phug/js-transformer-filter": "^1.0",
-                "phug/phug": "^0.2.0"
+                "phug/phug": "^0.3.0"
             },
             "replace": {
                 "kylekatarnls/jade-php": "self.version"
             },
             "require-dev": {
-                "codeclimate/php-test-reporter": ">=0.3",
                 "phpunit/phpunit": ">=4.8.35 <6.0"
             },
             "bin": [
@@ -1136,20 +1135,20 @@
                 "pug",
                 "template"
             ],
-            "time": "2017-12-07T15:57:46+00:00"
+            "time": "2018-02-09T17:14:38+00:00"
         },
         {
             "name": "symfony/polyfill-mbstring",
-            "version": "v1.6.0",
+            "version": "v1.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-mbstring.git",
-                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
+                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-                "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
+                "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+                "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
                 "shasum": ""
             },
             "require": {
@@ -1161,7 +1160,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "1.6-dev"
+                    "dev-master": "1.7-dev"
                 }
             },
             "autoload": {
@@ -1195,20 +1194,20 @@
                 "portable",
                 "shim"
             ],
-            "time": "2017-10-11T12:05:26+00:00"
+            "time": "2018-01-30T19:27:44+00:00"
         },
         {
             "name": "symfony/var-dumper",
-            "version": "v3.4.2",
+            "version": "v3.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/var-dumper.git",
-                "reference": "757074cf71b952ce9e75b557538948811c2bf006"
+                "reference": "472a9849930cf21f73abdb02240f17cf5b5bd1a7"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/757074cf71b952ce9e75b557538948811c2bf006",
-                "reference": "757074cf71b952ce9e75b557538948811c2bf006",
+                "url": "https://api.github.com/repos/symfony/var-dumper/zipball/472a9849930cf21f73abdb02240f17cf5b5bd1a7",
+                "reference": "472a9849930cf21f73abdb02240f17cf5b5bd1a7",
                 "shasum": ""
             },
             "require": {
@@ -1264,7 +1263,7 @@
                 "debug",
                 "dump"
             ],
-            "time": "2017-12-11T22:06:16+00:00"
+            "time": "2018-01-29T09:03:43+00:00"
         }
     ],
     "packages-dev": [],

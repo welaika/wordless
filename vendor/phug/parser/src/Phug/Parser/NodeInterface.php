@@ -18,5 +18,5 @@ interface NodeInterface extends AstNodeInterface
 
     public function getOuterNode();
 
-    public function setOuterNode(NodeInterface $node);
+    public function setOuterNode(self $node);
 }

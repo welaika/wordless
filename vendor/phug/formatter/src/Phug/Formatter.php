@@ -85,12 +85,12 @@ class Formatter implements ModuleContainerInterface
     public function __construct($options = null)
     {
         $this->initFormats()->setOptionsDefaults($options ?: [], [
-            'debug'                       => false,
-            'dependencies_storage'        => 'pugModule',
-            'dependencies_storage_getter' => null,
-            'default_format'              => BasicFormat::class,
-            'doctype'                     => null,
-            'formats'                     => [
+            'debug'                        => false,
+            'located_exception_class_name' => LocatedException::class,
+            'dependencies_storage'         => 'pugModule',
+            'default_format'               => BasicFormat::class,
+            'doctype'                      => null,
+            'formats'                      => [
                 'basic'        => BasicFormat::class,
                 'frameset'     => FramesetFormat::class,
                 'html'         => HtmlFormat::class,
@@ -101,7 +101,7 @@ class Formatter implements ModuleContainerInterface
                 'transitional' => TransitionalFormat::class,
                 'xml'          => XmlFormat::class,
             ],
-            'formatter_modules' => [],
+            'formatter_modules'            => [],
 
             'on_format'             => null,
             'on_new_format'         => null,
@@ -262,7 +262,7 @@ class Formatter implements ModuleContainerInterface
         if ($line === false) {
             return $error;
         }
-        $source = explode("\n", $code, $line);
+        $source = explode("\n", $code, max(2, $line));
         array_pop($source);
         $source = implode("\n", $source);
         $pos = mb_strrpos($source, 'PUG_DEBUG:');
@@ -276,13 +276,14 @@ class Formatter implements ModuleContainerInterface
         $node = $this->getNodeFromDebugId($nodeId);
         $nodeLocation = $node->getSourceLocation();
         $location = new SourceLocation(
-            $nodeLocation->getPath() ?: $path,
-            $nodeLocation->getLine(),
-            $nodeLocation->getOffset(),
-            $nodeLocation->getOffsetLength()
+            ($nodeLocation ? $nodeLocation->getPath() : null) ?: $path,
+            $nodeLocation ? $nodeLocation->getLine() : 0,
+            $nodeLocation ? $nodeLocation->getOffset() : 0,
+            $nodeLocation ? $nodeLocation->getOffsetLength() : 0
         );
+        $className = $this->getOption('located_exception_class_name');
 
-        return new LocatedException(
+        return new $className(
             $location,
             $error->getMessage(),
             $error->getCode(),

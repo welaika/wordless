@@ -4,7 +4,6 @@ namespace Phug\Renderer;
 
 use Phug\Renderer;
 use Phug\Util\Partial\OptionTrait;
-use Phug\Util\SandBox;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
@@ -27,7 +26,7 @@ abstract class AbstractAdapter implements AdapterInterface
     public function captureBuffer(callable $display)
     {
         $throwable = null;
-        $sandBox = new SandBox($display);
+        $sandBox = $this->getRenderer()->getNewSandBox($display);
 
         if ($throwable = $sandBox->getThrowable()) {
             throw $throwable;

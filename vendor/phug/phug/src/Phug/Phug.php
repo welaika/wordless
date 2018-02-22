@@ -3,10 +3,12 @@
 namespace Phug;
 
 use Phug\Partial\ExtensionsTrait;
+use Phug\Partial\FacadeOptionsTrait;
 
 class Phug
 {
     use ExtensionsTrait;
+    use FacadeOptionsTrait;
 
     /**
      * List of global filters stored as array where keys are filter names, and values the action callback.
@@ -48,7 +50,7 @@ class Phug
 
     private static function getOptions(array $options = [])
     {
-        $extras = [];
+        $extras = static::getFacadeOptions();
         foreach (['filters', 'keywords'] as $option) {
             $method = 'get'.ucfirst($option);
             $extras[$option] = static::$method();
@@ -108,6 +110,7 @@ class Phug
      */
     public static function reset()
     {
+        static::resetFacadeOptions();
         self::$renderer = null;
         self::$extensions = [];
         self::$filters = [];
@@ -453,8 +456,8 @@ class Phug
         }
 
         return static::getRenderer(array_merge(
-            $options ?: [],
-            $destination ?: []
+            $options ?: [], // @codeCoverageIgnore
+            $destination ?: [] // @codeCoverageIgnore
         ))->cacheDirectory($source);
     }
 
@@ -492,6 +495,10 @@ class Phug
      */
     public static function __callStatic($name, $arguments)
     {
+        if (!self::$renderer && static::isOptionMethod($name)) {
+            return static::callOption($name, $arguments);
+        }
+
         return call_user_func_array([static::getRenderer(), $name], $arguments);
     }
 }

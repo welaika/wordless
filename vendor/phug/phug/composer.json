@@ -14,14 +14,14 @@
     ],
     "support": {
         "email": "support@phug-lang.com",
-        "issues": "https://github.com/phug-php/compiler/issues",
-        "source": "https://github.com/phug-php/compiler",
+        "issues": "https://github.com/phug-php/phug/issues",
+        "source": "https://github.com/phug-php/phug",
         "docs": "http://phug-lang.com/docs"
     },
     "minimum-stability": "stable",
     "require": {
         "php": ">=5.5.0",
-        "phug/renderer": "^0.3.2"
+        "phug/renderer": "^0.4.0"
     },
     "require-dev": {
         "phug/dev-tool": "^0.1.0"

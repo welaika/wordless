@@ -1,5 +1,8 @@
 function ($base) {
     $arrayPrototype = function ($base, $key) {
+        if ($key === 'length') {
+            return count($base);
+        }
         if ($key === 'forEach') {
             return function ($callback, $userData = null) use (&$base) {
                 return array_walk($base, $callback, $userData);
@@ -37,7 +40,7 @@ function ($base) {
         }
         if ($key === 'indexOf') {
             return function ($item) use (&$base) {
-                $search = array_search($base, $item);
+                $search = array_search($item, $base);
 
                 return $search === false ? -1 : $search;
             };
@@ -95,6 +98,9 @@ function ($base) {
         if (is_string($base)) {
             if (preg_match('/^[-+]?\d+$/', strval($key))) {
                 return substr($base, intval($key), 1);
+            }
+            if ($key === 'length') {
+                return strlen($base);
             }
             if ($key === 'substr' || $key === 'slice') {
                 return function ($start, $length = null) use ($base) {

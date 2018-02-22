@@ -63,7 +63,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
     /**
      * @param bool $recursive Whether values should be resolved recursively or not
      *
-     * @return scalar|array|null|Data[] A native representation of the original value
+     * @return string|int|float|bool|array|null|Data[] A native representation of the original value
      */
     public function getValue($recursive = false)
     {
@@ -172,7 +172,7 @@ class Data implements \ArrayAccess, \Countable, \IteratorAggregate
      */
     public function getRawData()
     {
-        @trigger_error(sprintf('The %s() method is deprecated since version 3.3 and will be removed in 4.0. Use the array or object access instead.', __METHOD__));
+        @trigger_error(sprintf('The %s() method is deprecated since Symfony 3.3 and will be removed in 4.0. Use the array or object access instead.', __METHOD__));
 
         return $this->data;
     }

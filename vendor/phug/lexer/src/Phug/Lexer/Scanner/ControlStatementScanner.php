@@ -24,7 +24,8 @@ abstract class ControlStatementScanner implements ScannerInterface
         $reader = $state->getReader();
         $names = implode('|', $this->names);
 
-        if (!$reader->match("({$names})[ \t\n:]", null, " \t\n:")) {
+        if (!$reader->match("({$names})[ \t\n:]", null, " \t\n:") &&
+            !$reader->match("({$names})(?=\()", null, " \t\n:")) {
             return;
         }
 

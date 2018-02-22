@@ -34,6 +34,7 @@ trait RendererOptionsTrait
             'enable_profiler'       => false,
             'up_to_date_check'      => true,
             'keep_base_name'        => false,
+            'error_reporting'       => null,
             'error_handler'         => null,
             'html_error'            => php_sapi_name() !== 'cli',
             'color_support'         => null,
@@ -53,6 +54,7 @@ trait RendererOptionsTrait
                     return '<![CDATA['.trim($contents).']]>';
                 },
             ],
+            'macros'              => [],
         ];
     }
 

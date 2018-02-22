@@ -2,11 +2,34 @@
 
 namespace Phug\Formatter\Element;
 
+use Phug\Ast\NodeInterface;
 use Phug\Formatter\Partial\TransformableTrait;
+use Phug\Parser\NodeInterface as ParserNode;
+use Phug\Util\Partial\CheckTrait;
 
 class CodeElement extends AbstractValueElement
 {
+    use CheckTrait;
     use TransformableTrait;
+
+    /**
+     * CodeElement constructor.
+     *
+     * @param string|ExpressionElement $value
+     * @param ParserNode|null          $originNode
+     * @param NodeInterface|null       $parent
+     * @param array|null               $children
+     */
+    public function __construct(
+        $value = null,
+        ParserNode $originNode = null,
+        NodeInterface $parent = null,
+        array $children = null
+    ) {
+        parent::__construct($value, $originNode, $parent, $children);
+
+        $this->uncheck();
+    }
 
     protected function getValueTokens()
     {

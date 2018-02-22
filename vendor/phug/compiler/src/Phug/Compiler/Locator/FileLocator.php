@@ -15,7 +15,7 @@ class FileLocator implements LocatorInterface
     {
         // @ catch softly PHP open_basedir restriction
         if (@is_file($path)) {
-            return is_readable($path) ? $path : null;
+            return is_readable($path) ? realpath($path) : null;
         }
 
         $path = ltrim($this->normalize($path), '/');

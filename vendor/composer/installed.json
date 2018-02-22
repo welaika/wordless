@@ -1,26 +1,157 @@
 [
     {
-        "name": "mobiledetect/mobiledetectlib",
-        "version": "2.8.25",
-        "version_normalized": "2.8.25.0",
+        "name": "js-phpize/js-phpize",
+        "version": "1.14.0",
+        "version_normalized": "1.14.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/serbanghita/Mobile-Detect.git",
-            "reference": "f0896b5c7274d1450023b0b376240be902c3251c"
+            "url": "https://github.com/pug-php/js-phpize.git",
+            "reference": "a4b904fa673e45f82a25e02d3c1592346ab0d716"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/f0896b5c7274d1450023b0b376240be902c3251c",
-            "reference": "f0896b5c7274d1450023b0b376240be902c3251c",
+            "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/a4b904fa673e45f82a25e02d3c1592346ab0d716",
+            "reference": "a4b904fa673e45f82a25e02d3c1592346ab0d716",
+            "shasum": ""
+        },
+        "require": {
+            "ext-mbstring": "*",
+            "php": ">=5.3.0"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "phpunit/phpunit": ">=4.8.35 <6.0"
+        },
+        "time": "2018-02-06T08:50:18+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JsPhpize": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Katarn",
+                "email": "kylekatarnls@gmail.com"
+            }
+        ],
+        "description": "Convert js-like syntax to standalone PHP code."
+    },
+    {
+        "name": "js-phpize/js-phpize-phug",
+        "version": "1.1.7",
+        "version_normalized": "1.1.7.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/pug-php/js-phpize-phug.git",
+            "reference": "64aca5c6baecc840372dc1fe515656e15ac31dee"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/pug-php/js-phpize-phug/zipball/64aca5c6baecc840372dc1fe515656e15ac31dee",
+            "reference": "64aca5c6baecc840372dc1fe515656e15ac31dee",
+            "shasum": ""
+        },
+        "require": {
+            "js-phpize/js-phpize": "^1.10.1",
+            "php": ">=5.3.0",
+            "phug/compiler": "^0.5.0"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": "dev-master",
+            "phpunit/phpunit": ">=4.8 <6.0"
+        },
+        "time": "2017-10-06T21:29:49+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "JsPhpize": "src/"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Kyle Katarn",
+                "email": "kylekatarnls@gmail.com"
+            }
+        ],
+        "description": "Convert js-like syntax to standalone PHP code."
+    },
+    {
+        "name": "js-transformer/js-transformer",
+        "version": "1.0.0",
+        "version_normalized": "1.0.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/kylekatarnls/js-transformer-php-wrap.git",
+            "reference": "81730d3ae67824d664615ebb7f721cfa7d77179f"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/kylekatarnls/js-transformer-php-wrap/zipball/81730d3ae67824d664615ebb7f721cfa7d77179f",
+            "reference": "81730d3ae67824d664615ebb7f721cfa7d77179f",
+            "shasum": ""
+        },
+        "require": {
+            "nodejs-php-fallback/nodejs-php-fallback": "^1.2"
+        },
+        "require-dev": {
+            "codeclimate/php-test-reporter": ">=0.3",
+            "phpunit/phpunit": ">=4.8 <6.0"
+        },
+        "time": "2017-10-27T21:27:00+00:00",
+        "type": "library",
+        "extra": {
+            "npm": {
+                "jstransformer": "^1.0.0"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "homepage": "https://github.com/kylekatarnls/js-transformer-php-wrap",
+        "keywords": [
+            "js-transformer"
+        ]
+    },
+    {
+        "name": "mobiledetect/mobiledetectlib",
+        "version": "2.8.30",
+        "version_normalized": "2.8.30.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/serbanghita/Mobile-Detect.git",
+            "reference": "5500bbbf312fe77ef0c7223858dad84fe49ee0c3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/serbanghita/Mobile-Detect/zipball/5500bbbf312fe77ef0c7223858dad84fe49ee0c3",
+            "reference": "5500bbbf312fe77ef0c7223858dad84fe49ee0c3",
             "shasum": ""
         },
         "require": {
             "php": ">=5.0.0"
         },
         "require-dev": {
-            "phpunit/phpunit": "*"
+            "phpunit/phpunit": "~4.8.35||~5.7"
         },
-        "time": "2017-03-29T13:59:30+00:00",
+        "time": "2017-12-18T10:38:51+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -101,293 +232,6 @@
         "description": "Allow you to call node.js module or scripts throught PHP and call a fallback function if node.js is not available"
     },
     {
-        "name": "js-transformer/js-transformer",
-        "version": "1.0.0",
-        "version_normalized": "1.0.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/kylekatarnls/js-transformer-php-wrap.git",
-            "reference": "81730d3ae67824d664615ebb7f721cfa7d77179f"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/kylekatarnls/js-transformer-php-wrap/zipball/81730d3ae67824d664615ebb7f721cfa7d77179f",
-            "reference": "81730d3ae67824d664615ebb7f721cfa7d77179f",
-            "shasum": ""
-        },
-        "require": {
-            "nodejs-php-fallback/nodejs-php-fallback": "^1.2"
-        },
-        "require-dev": {
-            "codeclimate/php-test-reporter": ">=0.3",
-            "phpunit/phpunit": ">=4.8 <6.0"
-        },
-        "time": "2017-10-27T21:27:00+00:00",
-        "type": "library",
-        "extra": {
-            "npm": {
-                "jstransformer": "^1.0.0"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "": "./src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "homepage": "https://github.com/kylekatarnls/js-transformer-php-wrap",
-        "keywords": [
-            "js-transformer"
-        ]
-    },
-    {
-        "name": "symfony/polyfill-mbstring",
-        "version": "v1.6.0",
-        "version_normalized": "1.6.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/polyfill-mbstring.git",
-            "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-            "reference": "2ec8b39c38cb16674bbf3fea2b6ce5bf117e1296",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.3"
-        },
-        "suggest": {
-            "ext-mbstring": "For best performance"
-        },
-        "time": "2017-10-11T12:05:26+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.6-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Symfony\\Polyfill\\Mbstring\\": ""
-            },
-            "files": [
-                "bootstrap.php"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Grekas",
-                "email": "p@tchwork.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony polyfill for the Mbstring extension",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "compatibility",
-            "mbstring",
-            "polyfill",
-            "portable",
-            "shim"
-        ]
-    },
-    {
-        "name": "symfony/var-dumper",
-        "version": "v3.4.2",
-        "version_normalized": "3.4.2.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/symfony/var-dumper.git",
-            "reference": "757074cf71b952ce9e75b557538948811c2bf006"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/757074cf71b952ce9e75b557538948811c2bf006",
-            "reference": "757074cf71b952ce9e75b557538948811c2bf006",
-            "shasum": ""
-        },
-        "require": {
-            "php": "^5.5.9|>=7.0.8",
-            "symfony/polyfill-mbstring": "~1.0"
-        },
-        "conflict": {
-            "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
-        },
-        "require-dev": {
-            "ext-iconv": "*",
-            "twig/twig": "~1.34|~2.4"
-        },
-        "suggest": {
-            "ext-iconv": "To convert non-UTF-8 strings to UTF-8 (or symfony/polyfill-iconv in case ext-iconv cannot be used).",
-            "ext-intl": "To show region name in time zone dump",
-            "ext-symfony_debug": ""
-        },
-        "time": "2017-12-11T22:06:16+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "3.4-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "files": [
-                "Resources/functions/dump.php"
-            ],
-            "psr-4": {
-                "Symfony\\Component\\VarDumper\\": ""
-            },
-            "exclude-from-classmap": [
-                "/Tests/"
-            ]
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Nicolas Grekas",
-                "email": "p@tchwork.com"
-            },
-            {
-                "name": "Symfony Community",
-                "homepage": "https://symfony.com/contributors"
-            }
-        ],
-        "description": "Symfony mechanism for exploring and dumping PHP variables",
-        "homepage": "https://symfony.com",
-        "keywords": [
-            "debug",
-            "dump"
-        ]
-    },
-    {
-        "name": "phug/event",
-        "version": "0.1.0",
-        "version_normalized": "0.1.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phug-php/event.git",
-            "reference": "e9d126a04582995ec49740a64563a76ff6e15e98"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/event/zipball/e9d126a04582995ec49740a64563a76ff6e15e98",
-            "reference": "e9d126a04582995ec49740a64563a76ff6e15e98",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0"
-        },
-        "require-dev": {
-            "phug/dev-tool": "^0.1.0"
-        },
-        "time": "2017-07-06T21:20:20+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "": "./src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Torben Koehn",
-                "email": "torben@talesoft.codes"
-            },
-            {
-                "name": "KyleKatarn",
-                "email": "jade-php@selfbuild.fr",
-                "homepage": "http://github.com/kylekatarnls"
-            }
-        ],
-        "homepage": "http://phug-lang.com",
-        "keywords": [
-            "event",
-            "phug"
-        ]
-    },
-    {
-        "name": "phug/util",
-        "version": "0.4.12",
-        "version_normalized": "0.4.12.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phug-php/util.git",
-            "reference": "1716b606e34f73f2753173d5eb4876ae6d2c7e13"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/util/zipball/1716b606e34f73f2753173d5eb4876ae6d2c7e13",
-            "reference": "1716b606e34f73f2753173d5eb4876ae6d2c7e13",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0",
-            "phug/event": "^0.1.0"
-        },
-        "require-dev": {
-            "phug/dev-tool": "^0.1.0"
-        },
-        "time": "2017-09-12T15:37:04+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "": "./src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Torben Koehn",
-                "email": "torben@talesoft.codes"
-            },
-            {
-                "name": "KyleKatarn",
-                "email": "jade-php@selfbuild.fr",
-                "homepage": "http://github.com/kylekatarnls"
-            }
-        ],
-        "homepage": "http://phug-lang.com",
-        "keywords": [
-            "dialect",
-            "html",
-            "jade",
-            "php",
-            "phtml",
-            "phug",
-            "presentation",
-            "pug",
-            "render",
-            "template",
-            "util",
-            "views"
-        ]
-    },
-    {
         "name": "phug/ast",
         "version": "0.1.0",
         "version_normalized": "0.1.0.0",
@@ -448,82 +292,33 @@
         ]
     },
     {
-        "name": "psr/http-message",
-        "version": "1.0.1",
-        "version_normalized": "1.0.1.0",
+        "name": "phug/compiler",
+        "version": "0.5.19",
+        "version_normalized": "0.5.19.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/php-fig/http-message.git",
-            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
+            "url": "https://github.com/phug-php/compiler.git",
+            "reference": "5339dad6804180eeaaff86c54841a92df7aff7e4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
-            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.3.0"
-        },
-        "time": "2016-08-06T14:39:51+00:00",
-        "type": "library",
-        "extra": {
-            "branch-alias": {
-                "dev-master": "1.0.x-dev"
-            }
-        },
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "Psr\\Http\\Message\\": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "PHP-FIG",
-                "homepage": "http://www.php-fig.org/"
-            }
-        ],
-        "description": "Common interface for HTTP messages",
-        "homepage": "https://github.com/php-fig/http-message",
-        "keywords": [
-            "http",
-            "http-message",
-            "psr",
-            "psr-7",
-            "request",
-            "response"
-        ]
-    },
-    {
-        "name": "phug/reader",
-        "version": "0.2.1",
-        "version_normalized": "0.2.1.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phug-php/reader.git",
-            "reference": "9af727a04f1c22d9ee23fba64b35b375abd5262c"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/reader/zipball/9af727a04f1c22d9ee23fba64b35b375abd5262c",
-            "reference": "9af727a04f1c22d9ee23fba64b35b375abd5262c",
+            "url": "https://api.github.com/repos/phug-php/compiler/zipball/5339dad6804180eeaaff86c54841a92df7aff7e4",
+            "reference": "5339dad6804180eeaaff86c54841a92df7aff7e4",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.0",
-            "psr/http-message": "^1.0",
-            "symfony/polyfill-mbstring": "*"
+            "phug/dependency-injection": "^1.1.2",
+            "phug/formatter": "^0.5.37",
+            "phug/parser": "^0.5.0",
+            "phug/util": "^0.4.0"
         },
         "require-dev": {
+            "js-phpize/js-phpize": "^1.4",
             "phug/dev-tool": "^0.1.0",
-            "phug/util": "^0.3.5"
+            "pug-php/pug-filter-coffee-script": "^1.2"
         },
-        "time": "2017-12-12T16:08:44+00:00",
+        "time": "2018-02-06T16:48:16+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -536,67 +331,6 @@
             "MIT"
         ],
         "authors": [
-            {
-                "name": "Torben Koehn",
-                "email": "torben@talesoft.codes"
-            }
-        ],
-        "homepage": "http://phug-lang.com",
-        "keywords": [
-            "dialect",
-            "html",
-            "jade",
-            "php",
-            "phtml",
-            "phug",
-            "presentation",
-            "pug",
-            "reader",
-            "render",
-            "template",
-            "views"
-        ]
-    },
-    {
-        "name": "phug/lexer",
-        "version": "0.5.15",
-        "version_normalized": "0.5.15.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phug-php/lexer.git",
-            "reference": "6cf87f331c3dfd5a0525b03aeb65f1900d655fd4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/lexer/zipball/6cf87f331c3dfd5a0525b03aeb65f1900d655fd4",
-            "reference": "6cf87f331c3dfd5a0525b03aeb65f1900d655fd4",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0",
-            "phug/reader": "^0.2.0",
-            "phug/util": "^0.4.0"
-        },
-        "require-dev": {
-            "phug/dev-tool": "^0.1.0"
-        },
-        "time": "2017-12-13T20:28:10+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "": "./src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Torben Koehn",
-                "email": "torben@talesoft.codes"
-            },
             {
                 "name": "KyleKatarn",
                 "email": "jade-php@selfbuild.fr",
@@ -605,69 +339,7 @@
         ],
         "homepage": "http://phug-lang.com",
         "keywords": [
-            "dialect",
-            "html",
-            "jade",
-            "lexer",
-            "php",
-            "phtml",
-            "phug",
-            "presentation",
-            "pug",
-            "render",
-            "template",
-            "views"
-        ]
-    },
-    {
-        "name": "phug/parser",
-        "version": "0.5.7",
-        "version_normalized": "0.5.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/phug-php/parser.git",
-            "reference": "0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/parser/zipball/0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048",
-            "reference": "0f1c5ab45ca009f4785ca19cf7c6da6bfa0de048",
-            "shasum": ""
-        },
-        "require": {
-            "php": ">=5.5.0",
-            "phug/ast": "^0.1.0",
-            "phug/lexer": "^0.5.6",
-            "phug/util": "^0.4.0"
-        },
-        "require-dev": {
-            "phug/dev-tool": "^0.1.0"
-        },
-        "time": "2017-11-02T14:04:39+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-4": {
-                "": "./src"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Torben Koehn",
-                "email": "torben@talesoft.codes"
-            },
-            {
-                "name": "KyleKatarn",
-                "email": "jade-php@selfbuild.fr",
-                "homepage": "http://github.com/kylekatarnls"
-            }
-        ],
-        "homepage": "http://phug-lang.com",
-        "keywords": [
+            "compiler",
             "dialect",
             "html",
             "jade",
@@ -676,7 +348,6 @@
             "phug",
             "presentation",
             "pug",
-            "reader",
             "render",
             "template",
             "views"
@@ -743,30 +414,80 @@
         ]
     },
     {
-        "name": "phug/formatter",
-        "version": "0.5.33",
-        "version_normalized": "0.5.33.0",
+        "name": "phug/event",
+        "version": "0.1.1",
+        "version_normalized": "0.1.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/phug-php/formatter.git",
-            "reference": "bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5"
+            "url": "https://github.com/phug-php/event.git",
+            "reference": "8d78b07913d4aeffc6480dfd534fc5fed7adaf4e"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/formatter/zipball/bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5",
-            "reference": "bc09f13b9e256f6fb7a1a6a44bb4b544fc039ce5",
+            "url": "https://api.github.com/repos/phug-php/event/zipball/8d78b07913d4aeffc6480dfd534fc5fed7adaf4e",
+            "reference": "8d78b07913d4aeffc6480dfd534fc5fed7adaf4e",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0"
+        },
+        "require-dev": {
+            "phug/dev-tool": "^0.1.0"
+        },
+        "time": "2018-02-19T14:06:44+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Torben Koehn",
+                "email": "torben@talesoft.codes"
+            },
+            {
+                "name": "KyleKatarn",
+                "email": "jade-php@selfbuild.fr",
+                "homepage": "http://github.com/kylekatarnls"
+            }
+        ],
+        "homepage": "http://phug-lang.com",
+        "keywords": [
+            "event",
+            "phug"
+        ]
+    },
+    {
+        "name": "phug/formatter",
+        "version": "0.5.41",
+        "version_normalized": "0.5.41.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phug-php/formatter.git",
+            "reference": "85c3f40df94e1a953e8ec60181c73459f82c4377"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phug-php/formatter/zipball/85c3f40df94e1a953e8ec60181c73459f82c4377",
+            "reference": "85c3f40df94e1a953e8ec60181c73459f82c4377",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.0",
             "phug/dependency-injection": "^1.3.0",
             "phug/parser": "^0.5.0",
-            "phug/util": "^0.4.0"
+            "phug/util": "^0.4.14"
         },
         "require-dev": {
             "phug/dev-tool": "^0.1.0"
         },
-        "time": "2017-12-04T14:52:05+00:00",
+        "time": "2018-02-12T13:03:18+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -806,33 +527,74 @@
         ]
     },
     {
-        "name": "phug/compiler",
-        "version": "0.5.15",
-        "version_normalized": "0.5.15.0",
+        "name": "phug/js-transformer-filter",
+        "version": "1.1.0",
+        "version_normalized": "1.1.0.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/phug-php/compiler.git",
-            "reference": "b8a1990d261cde6ec54738958102a96130efc6c2"
+            "url": "https://github.com/phug-php/js-transformer-filter.git",
+            "reference": "969c38e00af7f8c95e6345cf1e9006a835394181"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/compiler/zipball/b8a1990d261cde6ec54738958102a96130efc6c2",
-            "reference": "b8a1990d261cde6ec54738958102a96130efc6c2",
+            "url": "https://api.github.com/repos/phug-php/js-transformer-filter/zipball/969c38e00af7f8c95e6345cf1e9006a835394181",
+            "reference": "969c38e00af7f8c95e6345cf1e9006a835394181",
+            "shasum": ""
+        },
+        "require": {
+            "js-transformer/js-transformer": "^1.0",
+            "phug/phug": "^0.1.8 || ^0.2.0 || ^0.3.0"
+        },
+        "require-dev": {
+            "phug/dev-tool": "^0.1.11"
+        },
+        "time": "2018-02-09T07:58:41+00:00",
+        "type": "library",
+        "extra": {
+            "npm-confirm": {
+                "jstransformer": "It allows you to use any jstransformer npm package as filter by adding it in your extra.npm section of composer.json."
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-0": {
+                "Phug\\": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "description": "Allow to use any js-transformer as filter in Phug",
+        "homepage": "https://phug-lang.com",
+        "keywords": [
+            "js-transformer"
+        ]
+    },
+    {
+        "name": "phug/lexer",
+        "version": "0.5.21",
+        "version_normalized": "0.5.21.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phug-php/lexer.git",
+            "reference": "fa25ce51d9229965267f29ec73ed0f726d46f65b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phug-php/lexer/zipball/fa25ce51d9229965267f29ec73ed0f726d46f65b",
+            "reference": "fa25ce51d9229965267f29ec73ed0f726d46f65b",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.0",
-            "phug/dependency-injection": "^1.1.2",
-            "phug/formatter": "^0.5.0",
-            "phug/parser": "^0.5.0",
+            "phug/reader": "^0.2.0",
             "phug/util": "^0.4.0"
         },
         "require-dev": {
-            "js-phpize/js-phpize": "^1.4",
-            "phug/dev-tool": "^0.1.0",
-            "pug-php/pug-filter-coffee-script": "^1.2"
+            "phug/dev-tool": "^0.1.0"
         },
-        "time": "2017-11-28T09:35:37+00:00",
+        "time": "2018-02-14T14:49:13+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -846,6 +608,10 @@
         ],
         "authors": [
             {
+                "name": "Torben Koehn",
+                "email": "torben@talesoft.codes"
+            },
+            {
                 "name": "KyleKatarn",
                 "email": "jade-php@selfbuild.fr",
                 "homepage": "http://github.com/kylekatarnls"
@@ -853,10 +619,10 @@
         ],
         "homepage": "http://phug-lang.com",
         "keywords": [
-            "compiler",
             "dialect",
             "html",
             "jade",
+            "lexer",
             "php",
             "phtml",
             "phug",
@@ -868,36 +634,30 @@
         ]
     },
     {
-        "name": "phug/renderer",
-        "version": "0.3.3",
-        "version_normalized": "0.3.3.0",
+        "name": "phug/parser",
+        "version": "0.5.8",
+        "version_normalized": "0.5.8.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/phug-php/renderer.git",
-            "reference": "52e2eeceb59d63b9238071db084ca7aa05c73b45"
+            "url": "https://github.com/phug-php/parser.git",
+            "reference": "0e0f1f9cd7925a72928ede61e63c3af6b77269ef"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/renderer/zipball/52e2eeceb59d63b9238071db084ca7aa05c73b45",
-            "reference": "52e2eeceb59d63b9238071db084ca7aa05c73b45",
+            "url": "https://api.github.com/repos/phug-php/parser/zipball/0e0f1f9cd7925a72928ede61e63c3af6b77269ef",
+            "reference": "0e0f1f9cd7925a72928ede61e63c3af6b77269ef",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.0",
-            "phug/compiler": "^0.5.0",
-            "phug/util": "^0.4.5",
-            "symfony/var-dumper": "^3.4"
+            "phug/ast": "^0.1.0",
+            "phug/lexer": "^0.5.6",
+            "phug/util": "^0.4.0"
         },
         "require-dev": {
-            "cebe/markdown": "^1.1",
-            "js-phpize/js-phpize-phug": "^1.1.2",
-            "nodejs-php-fallback/coffeescript": "^1.0",
-            "nodejs-php-fallback/less": "^1.0",
-            "nodejs-php-fallback/stylus": "^1.0",
-            "nodejs-php-fallback/uglify": "^1.0",
             "phug/dev-tool": "^0.1.0"
         },
-        "time": "2017-12-08T13:08:36+00:00",
+        "time": "2017-12-21T16:58:03+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -911,6 +671,10 @@
         ],
         "authors": [
             {
+                "name": "Torben Koehn",
+                "email": "torben@talesoft.codes"
+            },
+            {
                 "name": "KyleKatarn",
                 "email": "jade-php@selfbuild.fr",
                 "homepage": "http://github.com/kylekatarnls"
@@ -918,7 +682,6 @@
         ],
         "homepage": "http://phug-lang.com",
         "keywords": [
-            "compiler",
             "dialect",
             "html",
             "jade",
@@ -927,6 +690,7 @@
             "phug",
             "presentation",
             "pug",
+            "reader",
             "render",
             "template",
             "views"
@@ -934,27 +698,27 @@
     },
     {
         "name": "phug/phug",
-        "version": "0.2.0",
-        "version_normalized": "0.2.0.0",
+        "version": "0.3.1",
+        "version_normalized": "0.3.1.0",
         "source": {
             "type": "git",
             "url": "https://github.com/phug-php/phug.git",
-            "reference": "57970ea3f60ba50c6de3744ecb15b082df395de2"
+            "reference": "6a7f40af0a41e8e25439573a1e9384885e1d6359"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/phug/zipball/57970ea3f60ba50c6de3744ecb15b082df395de2",
-            "reference": "57970ea3f60ba50c6de3744ecb15b082df395de2",
+            "url": "https://api.github.com/repos/phug-php/phug/zipball/6a7f40af0a41e8e25439573a1e9384885e1d6359",
+            "reference": "6a7f40af0a41e8e25439573a1e9384885e1d6359",
             "shasum": ""
         },
         "require": {
             "php": ">=5.5.0",
-            "phug/renderer": "^0.3.2"
+            "phug/renderer": "^0.4.0"
         },
         "require-dev": {
             "phug/dev-tool": "^0.1.0"
         },
-        "time": "2017-12-05T13:24:43+00:00",
+        "time": "2018-02-09T17:07:10+00:00",
         "bin": [
             "phug"
         ],
@@ -996,150 +760,254 @@
         ]
     },
     {
-        "name": "phug/js-transformer-filter",
+        "name": "phug/reader",
+        "version": "0.2.1",
+        "version_normalized": "0.2.1.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phug-php/reader.git",
+            "reference": "9af727a04f1c22d9ee23fba64b35b375abd5262c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phug-php/reader/zipball/9af727a04f1c22d9ee23fba64b35b375abd5262c",
+            "reference": "9af727a04f1c22d9ee23fba64b35b375abd5262c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0",
+            "psr/http-message": "^1.0",
+            "symfony/polyfill-mbstring": "*"
+        },
+        "require-dev": {
+            "phug/dev-tool": "^0.1.0",
+            "phug/util": "^0.3.5"
+        },
+        "time": "2017-12-12T16:08:44+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Torben Koehn",
+                "email": "torben@talesoft.codes"
+            }
+        ],
+        "homepage": "http://phug-lang.com",
+        "keywords": [
+            "dialect",
+            "html",
+            "jade",
+            "php",
+            "phtml",
+            "phug",
+            "presentation",
+            "pug",
+            "reader",
+            "render",
+            "template",
+            "views"
+        ]
+    },
+    {
+        "name": "phug/renderer",
+        "version": "0.4.0",
+        "version_normalized": "0.4.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phug-php/renderer.git",
+            "reference": "5f1f505234afbfcb4b1575260ab0e6ab5925961c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phug-php/renderer/zipball/5f1f505234afbfcb4b1575260ab0e6ab5925961c",
+            "reference": "5f1f505234afbfcb4b1575260ab0e6ab5925961c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0",
+            "phug/compiler": "^0.5.0",
+            "phug/util": "^0.4.15",
+            "symfony/var-dumper": "^3.4"
+        },
+        "require-dev": {
+            "cebe/markdown": "^1.1",
+            "js-phpize/js-phpize-phug": "^1.1.2",
+            "nodejs-php-fallback/coffeescript": "^1.0",
+            "nodejs-php-fallback/less": "^1.0",
+            "nodejs-php-fallback/stylus": "^1.0",
+            "nodejs-php-fallback/uglify": "^1.0",
+            "phug/dev-tool": "^0.1.0"
+        },
+        "time": "2018-02-08T20:22:55+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "KyleKatarn",
+                "email": "jade-php@selfbuild.fr",
+                "homepage": "http://github.com/kylekatarnls"
+            }
+        ],
+        "homepage": "http://phug-lang.com",
+        "keywords": [
+            "compiler",
+            "dialect",
+            "html",
+            "jade",
+            "php",
+            "phtml",
+            "phug",
+            "presentation",
+            "pug",
+            "render",
+            "template",
+            "views"
+        ]
+    },
+    {
+        "name": "phug/util",
+        "version": "0.4.15",
+        "version_normalized": "0.4.15.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/phug-php/util.git",
+            "reference": "a52c5f8279bed9c0317be7055dec38b43311183c"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/phug-php/util/zipball/a52c5f8279bed9c0317be7055dec38b43311183c",
+            "reference": "a52c5f8279bed9c0317be7055dec38b43311183c",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.5.0",
+            "phug/event": "^0.1.0"
+        },
+        "require-dev": {
+            "phug/dev-tool": "^0.1.0"
+        },
+        "time": "2018-02-08T10:51:06+00:00",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "": "./src"
+            }
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Torben Koehn",
+                "email": "torben@talesoft.codes"
+            },
+            {
+                "name": "KyleKatarn",
+                "email": "jade-php@selfbuild.fr",
+                "homepage": "http://github.com/kylekatarnls"
+            }
+        ],
+        "homepage": "http://phug-lang.com",
+        "keywords": [
+            "dialect",
+            "html",
+            "jade",
+            "php",
+            "phtml",
+            "phug",
+            "presentation",
+            "pug",
+            "render",
+            "template",
+            "util",
+            "views"
+        ]
+    },
+    {
+        "name": "psr/http-message",
         "version": "1.0.1",
         "version_normalized": "1.0.1.0",
         "source": {
             "type": "git",
-            "url": "https://github.com/phug-php/js-transformer-filter.git",
-            "reference": "8349c1853cf66986dd70c839fc32e1f82b097588"
+            "url": "https://github.com/php-fig/http-message.git",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/phug-php/js-transformer-filter/zipball/8349c1853cf66986dd70c839fc32e1f82b097588",
-            "reference": "8349c1853cf66986dd70c839fc32e1f82b097588",
+            "url": "https://api.github.com/repos/php-fig/http-message/zipball/f6561bf28d520154e4b0ec72be95418abe6d9363",
+            "reference": "f6561bf28d520154e4b0ec72be95418abe6d9363",
             "shasum": ""
         },
         "require": {
-            "js-transformer/js-transformer": "^1.0",
-            "phug/phug": "^0.1.8 || ^0.2.0"
+            "php": ">=5.3.0"
         },
-        "require-dev": {
-            "phug/dev-tool": "^0.1.11"
-        },
-        "time": "2017-12-05T13:59:45+00:00",
+        "time": "2016-08-06T14:39:51+00:00",
         "type": "library",
         "extra": {
-            "npm-confirm": {
-                "jstransformer": "It allows you to use any jstransformer npm package as filter by adding it in your extra.npm section of composer.json."
+            "branch-alias": {
+                "dev-master": "1.0.x-dev"
             }
         },
         "installation-source": "dist",
         "autoload": {
-            "psr-0": {
-                "Phug\\": "./src"
+            "psr-4": {
+                "Psr\\Http\\Message\\": "src/"
             }
         },
         "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
-        "description": "Allow to use any js-transformer as filter in Phug",
-        "homepage": "https://phug-lang.com",
+        "authors": [
+            {
+                "name": "PHP-FIG",
+                "homepage": "http://www.php-fig.org/"
+            }
+        ],
+        "description": "Common interface for HTTP messages",
+        "homepage": "https://github.com/php-fig/http-message",
         "keywords": [
-            "js-transformer"
+            "http",
+            "http-message",
+            "psr",
+            "psr-7",
+            "request",
+            "response"
         ]
     },
     {
-        "name": "js-phpize/js-phpize",
-        "version": "1.12.0",
-        "version_normalized": "1.12.0.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pug-php/js-phpize.git",
-            "reference": "0e13b055ea31d9655f98287c5131af1037dd8a6a"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pug-php/js-phpize/zipball/0e13b055ea31d9655f98287c5131af1037dd8a6a",
-            "reference": "0e13b055ea31d9655f98287c5131af1037dd8a6a",
-            "shasum": ""
-        },
-        "require": {
-            "ext-mbstring": "*",
-            "php": ">=5.3.0"
-        },
-        "require-dev": {
-            "codeclimate/php-test-reporter": "dev-master",
-            "phpunit/phpunit": ">=4.8.35 <6.0"
-        },
-        "time": "2017-12-05T09:22:31+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "JsPhpize": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Kyle Katarn",
-                "email": "kylekatarnls@gmail.com"
-            }
-        ],
-        "description": "Convert js-like syntax to standalone PHP code."
-    },
-    {
-        "name": "js-phpize/js-phpize-phug",
-        "version": "1.1.7",
-        "version_normalized": "1.1.7.0",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/pug-php/js-phpize-phug.git",
-            "reference": "64aca5c6baecc840372dc1fe515656e15ac31dee"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/pug-php/js-phpize-phug/zipball/64aca5c6baecc840372dc1fe515656e15ac31dee",
-            "reference": "64aca5c6baecc840372dc1fe515656e15ac31dee",
-            "shasum": ""
-        },
-        "require": {
-            "js-phpize/js-phpize": "^1.10.1",
-            "php": ">=5.3.0",
-            "phug/compiler": "^0.5.0"
-        },
-        "require-dev": {
-            "codeclimate/php-test-reporter": "dev-master",
-            "phpunit/phpunit": ">=4.8 <6.0"
-        },
-        "time": "2017-10-06T21:29:49+00:00",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "JsPhpize": "src/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "authors": [
-            {
-                "name": "Kyle Katarn",
-                "email": "kylekatarnls@gmail.com"
-            }
-        ],
-        "description": "Convert js-like syntax to standalone PHP code."
-    },
-    {
         "name": "pug-php/pug",
-        "version": "3.1.4",
-        "version_normalized": "3.1.4.0",
+        "version": "3.1.6",
+        "version_normalized": "3.1.6.0",
         "source": {
             "type": "git",
             "url": "https://github.com/pug-php/pug.git",
-            "reference": "47043d5ae6b8a23a5a30384cc7b72b5356eeff50"
+            "reference": "7c86ad6384682371381da85dbb9c5efd48c37ed4"
         },
         "dist": {
             "type": "zip",
-            "url": "https://api.github.com/repos/pug-php/pug/zipball/47043d5ae6b8a23a5a30384cc7b72b5356eeff50",
-            "reference": "47043d5ae6b8a23a5a30384cc7b72b5356eeff50",
+            "url": "https://api.github.com/repos/pug-php/pug/zipball/7c86ad6384682371381da85dbb9c5efd48c37ed4",
+            "reference": "7c86ad6384682371381da85dbb9c5efd48c37ed4",
             "shasum": ""
         },
         "require": {
@@ -1147,16 +1015,15 @@
             "nodejs-php-fallback/nodejs-php-fallback": "^1.3.1",
             "php": ">=5.5.0",
             "phug/js-transformer-filter": "^1.0",
-            "phug/phug": "^0.2.0"
+            "phug/phug": "^0.3.0"
         },
         "replace": {
             "kylekatarnls/jade-php": "self.version"
         },
         "require-dev": {
-            "codeclimate/php-test-reporter": ">=0.3",
             "phpunit/phpunit": ">=4.8.35 <6.0"
         },
-        "time": "2017-12-07T15:57:46+00:00",
+        "time": "2018-02-09T17:14:38+00:00",
         "bin": [
             "pug"
         ],
@@ -1299,6 +1166,138 @@
             "minification",
             "pug",
             "template"
+        ]
+    },
+    {
+        "name": "symfony/polyfill-mbstring",
+        "version": "v1.7.0",
+        "version_normalized": "1.7.0.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/polyfill-mbstring.git",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/polyfill-mbstring/zipball/78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+            "reference": "78be803ce01e55d3491c1397cf1c64beb9c1b63b",
+            "shasum": ""
+        },
+        "require": {
+            "php": ">=5.3.3"
+        },
+        "suggest": {
+            "ext-mbstring": "For best performance"
+        },
+        "time": "2018-01-30T19:27:44+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "1.7-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "psr-4": {
+                "Symfony\\Polyfill\\Mbstring\\": ""
+            },
+            "files": [
+                "bootstrap.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony polyfill for the Mbstring extension",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "compatibility",
+            "mbstring",
+            "polyfill",
+            "portable",
+            "shim"
+        ]
+    },
+    {
+        "name": "symfony/var-dumper",
+        "version": "v3.4.4",
+        "version_normalized": "3.4.4.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/symfony/var-dumper.git",
+            "reference": "472a9849930cf21f73abdb02240f17cf5b5bd1a7"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/symfony/var-dumper/zipball/472a9849930cf21f73abdb02240f17cf5b5bd1a7",
+            "reference": "472a9849930cf21f73abdb02240f17cf5b5bd1a7",
+            "shasum": ""
+        },
+        "require": {
+            "php": "^5.5.9|>=7.0.8",
+            "symfony/polyfill-mbstring": "~1.0"
+        },
+        "conflict": {
+            "phpunit/phpunit": "<4.8.35|<5.4.3,>=5.0"
+        },
+        "require-dev": {
+            "ext-iconv": "*",
+            "twig/twig": "~1.34|~2.4"
+        },
+        "suggest": {
+            "ext-iconv": "To convert non-UTF-8 strings to UTF-8 (or symfony/polyfill-iconv in case ext-iconv cannot be used).",
+            "ext-intl": "To show region name in time zone dump",
+            "ext-symfony_debug": ""
+        },
+        "time": "2018-01-29T09:03:43+00:00",
+        "type": "library",
+        "extra": {
+            "branch-alias": {
+                "dev-master": "3.4-dev"
+            }
+        },
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "Resources/functions/dump.php"
+            ],
+            "psr-4": {
+                "Symfony\\Component\\VarDumper\\": ""
+            },
+            "exclude-from-classmap": [
+                "/Tests/"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "MIT"
+        ],
+        "authors": [
+            {
+                "name": "Nicolas Grekas",
+                "email": "p@tchwork.com"
+            },
+            {
+                "name": "Symfony Community",
+                "homepage": "https://symfony.com/contributors"
+            }
+        ],
+        "description": "Symfony mechanism for exploring and dumping PHP variables",
+        "homepage": "https://symfony.com",
+        "keywords": [
+            "debug",
+            "dump"
         ]
     }
 ]

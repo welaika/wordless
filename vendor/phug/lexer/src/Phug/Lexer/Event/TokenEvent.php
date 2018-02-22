@@ -36,7 +36,7 @@ class TokenEvent extends Event
         return $this->tokenGenerator;
     }
 
-    public function setTokenGenerator(\Generator $tokens)
+    public function setTokenGenerator(\Iterator $tokens)
     {
         $this->tokenGenerator = $tokens;
     }
