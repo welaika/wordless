@@ -21,9 +21,5 @@ deploy:
   script: bash deploy/deploy.sh
   on:
     tags: true
-
-env:
-  global:
-  - SVN_REPOSITORY={PLUGIN SVN REPOSITORY URL}
-  - secure: {ENCRYPTED SVN ACCOUNT USERNAME}
-  - secure: {ENCRYPTED SVN ACCOUNT PASSWORD}
+    branch: master
+    php: 7.2

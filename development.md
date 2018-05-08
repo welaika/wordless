@@ -4,6 +4,6 @@
 * On `master` update the plugin version (SEMVER) in `./wordless.php` ("Version") and `readme.txt` ("Stable tag") files.
 * do `git tag x.y.x` where *x.y.z* equals to the previously written version.
 * `git commit -m "bump version"
-* `git push`
+* `git push --tags`
 
 Travis should do the rest ;)

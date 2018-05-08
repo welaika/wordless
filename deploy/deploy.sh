@@ -1,5 +1,20 @@
 #!/usr/bin/env bash
 
+PLUGINSLUG=${PWD##*/}
+CURRENTDIR=`pwd`
+MAINFILE="wordless.php"
+GITPATH="$CURRENTDIR/"
+
+NEWVERSION1=`grep "^Stable tag" "$GITPATH/readme.txt" | awk -F' ' '{print $3}' | sed 's/[[:space:]]//g'`
+echo "readme version: $NEWVERSION1"
+NEWVERSION2=`grep "^Version" "$GITPATH/$MAINFILE" | awk -F' ' '{print $2}' | sed 's/[[:space:]]//g'`
+echo "$MAINFILE version: $NEWVERSION2"
+GITLASTTAG=`git describe --tags --abbrev=0`
+echo "Git last tag: $GITLASTTAG"
+
+if [[ "$NEWVERSION1" != "$NEWVERSION2" ]]; then echo "Versions don't match. Exiting...."; exit 1; fi
+if [[ "$NEWVERSION1" != "$GITLASTTAG" ]]; then echo "Versions don't match with last Git TAG. Exiting...."; exit 1; fi
+
 # 1. Clone complete SVN repository to separate directory
 svn co $SVN_REPOSITORY ../svn
 
