@@ -3,7 +3,9 @@ php:
   - 5.6
   - 7.0
   - 7.2
+
 script: "sh -c 'cd tests && php all_tests.php'"
+
 notifications:
   recipients:
     - alessandro.fazzi@welaika.com
@@ -13,3 +15,15 @@ notifications:
     - matteo.piotto@welaika.com
     - stefano.pau@welaika.com
     - alessandra.cannata@welaika.com
+
+deploy:
+  provider: script
+  script: deploy/deploy.sh
+  on:
+    tags: true
+
+env:
+  global:
+  - SVN_REPOSITORY={PLUGIN SVN REPOSITORY URL}
+  - secure: {ENCRYPTED SVN ACCOUNT USERNAME}
+  - secure: {ENCRYPTED SVN ACCOUNT PASSWORD}
