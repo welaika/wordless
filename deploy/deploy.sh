@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -x
+
 PLUGINSLUG=${PWD##*/}
 CURRENTDIR=`pwd`
 MAINFILE="wordless.php"
