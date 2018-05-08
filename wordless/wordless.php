@@ -306,6 +306,15 @@ class Wordless {
         }
     }
 
+    public static function clear_theme_temp_path() {
+        $files = self::recursive_glob(self::theme_temp_path());
+
+        foreach($files as $file){
+            if(is_file($file))
+                unlink($file);
+        }
+    }
+
     public static function theme_path() {
         return get_template_directory();
     }
