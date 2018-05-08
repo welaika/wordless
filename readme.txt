@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.9.4
-Stable tag: 2.1.0
+Stable tag: 2.2.0
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -45,6 +45,10 @@ webpack, php server and your browser will automatically come up and serve your n
 Read more on [GitHub](https://github.com/welaika/wordless)
 
 == Changelog ==
+
+= 2.2.0 =
+
+* 6871dcb add wp-cli subcommand clear_tmp + reindentation
 
 = 2.0.6 =
 
