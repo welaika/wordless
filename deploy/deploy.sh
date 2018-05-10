@@ -20,11 +20,15 @@ if [[ "$NEWVERSION1" != "$GITLASTTAG" ]]; then echo "Versions don't match with l
 # 1. Clone complete SVN repository to separate directory
 svn co $SVN_REPOSITORY ../svn
 
+rm -rf ../svn/trunk/*
+
 # 2. Copy git repository contents to SNV trunk/ directory
 cp -R ./* ../svn/trunk/
 
 # 3. Switch to SVN repository
 cd ../svn/trunk/
+
+rm -rf ../assets
 
 # 4. Move assets/ to SVN /assets/
 mv ./assets/ ../assets/
