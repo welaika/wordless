@@ -10,7 +10,7 @@ GITPATH="$CURRENTDIR/"
 NEWVERSION1=`grep "^Stable tag" "$GITPATH/readme.txt" | awk -F' ' '{print $3}' | sed 's/[[:space:]]//g'`
 echo "readme version: $NEWVERSION1"
 NEWVERSION2=`grep "^Version" "$GITPATH/$MAINFILE" | awk -F' ' '{print $2}' | sed 's/[[:space:]]//g'`
-SVNLASTVERSION=`svn list $SVN_REPOSITORY | tail -n 1 | tr -d '/'`
+SVNLASTVERSION=`svn list $SVN_REPOSITORY/tags | tail -n 1 | tr -d '/'`
 echo "$MAINFILE version: $NEWVERSION2"
 echo "Git last tag: $TRAVIS_TAG"
 
