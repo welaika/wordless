@@ -9,6 +9,9 @@
   "scripts": {
     "server": "nf start"
   },
+  "engines": {
+    "node": ">=10.3.0"
+  },
   "dependencies": {},
   "devDependencies": {
     "browser-sync": "^2.18.13",
