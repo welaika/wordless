@@ -1,0 +1,24 @@
+.. _Stack:
+
+Development stack
+=================
+
+Introduction
+############
+
+Following are the stack components of Wordless' development workflow:
+
+* WordPess plugin
+* A theme with a convenient default scaffold
+* Webpack
+* WP-CLI
+
+Details
+#######
+
+.. toctree::
+    :maxdepth: 2
+    :glob:
+
+    stack/server
+    stack/compile

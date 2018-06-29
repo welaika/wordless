@@ -1,0 +1,205 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>How is my site served? &#8212; Wordless 2.3.0 documentation</title>
+    <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../../_static/jquery.js"></script>
+    <script type="text/javascript" src="../../_static/underscore.js"></script>
+    <script type="text/javascript" src="../../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Code compilation" href="compile.html" />
+    <link rel="prev" title="Development stack" href="../stack.html" />
+   
+  <link rel="stylesheet" href="../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <div class="section" id="how-is-my-site-served">
+<span id="server"></span><h1>How is my site served?<a class="headerlink" href="#how-is-my-site-served" title="Permalink to this headline">¶</a></h1>
+<p>Said that with a</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>yarn run server
+</pre></div>
+</div>
+<p>you should be up and running, let’s see in depth what happens behind
+the scenes.</p>
+<hr class="docutils" />
+<div class="section" id="yarn">
+<h2>YARN<a class="headerlink" href="#yarn" title="Permalink to this headline">¶</a></h2>
+<p><code class="docutils literal notranslate"><span class="pre">yarn</span> <span class="pre">run</span></code> will search for a <code class="docutils literal notranslate"><span class="pre">scripts</span></code> section inside your <code class="docutils literal notranslate"><span class="pre">package.json</span></code>
+file and will execute the matched script.</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">package.json</span><a class="headerlink" href="#id2" title="Permalink to this code">¶</a></div>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>  <span class="s2">&quot;scripts&quot;</span><span class="o">:</span> <span class="p">{</span>
+    <span class="s2">&quot;server&quot;</span><span class="o">:</span> <span class="s2">&quot;nf start&quot;</span>
+  <span class="p">},</span>
+</pre></div>
+</div>
+</div>
+<p>Our default config will run <code class="docutils literal notranslate"><span class="pre">nf</span> <span class="pre">start</span></code>, where <code class="docutils literal notranslate"><span class="pre">nf</span></code> is the Node Foreman
+executable.</p>
+</div>
+<div class="section" id="foreman">
+<h2>Foreman<a class="headerlink" href="#foreman" title="Permalink to this headline">¶</a></h2>
+<p><a class="reference external" href="https://www.npmjs.com/package/foreman">Node Foreman</a> (<code class="docutils literal notranslate"><span class="pre">nf</span></code>) could do complex things, but Wordless uses it just
+to be able to launch multiple processes when <code class="docutils literal notranslate"><span class="pre">server</span></code> is fired.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Procfile</span><a class="headerlink" href="#id3" title="Permalink to this code">¶</a></div>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">wp</span><span class="p">:</span> <span class="n">wp</span> <span class="n">server</span> <span class="o">--</span><span class="n">host</span><span class="o">=</span><span class="mf">127.0</span><span class="o">.</span><span class="mf">0.1</span>
+<span class="n">webpack</span><span class="p">:</span> <span class="n">npx</span> <span class="n">webpack</span> <span class="o">--</span><span class="n">watch</span> <span class="o">--</span><span class="n">progress</span> <span class="o">--</span><span class="n">color</span>
+</pre></div>
+</div>
+</div>
+<p>As you can see each line has a simple named command. Each command will be
+launched and <em>foreman</em> will:</p>
+<ul class="simple">
+<li>run all the listed processes</li>
+<li>collect all STDOUTs from processes and print theme as one - with fancyness</li>
+<li>when stopped (CTRL-C) it will stop all of the processes</li>
+</ul>
+</div>
+<div class="section" id="wp-server">
+<h2>wp server<a class="headerlink" href="#wp-server" title="Permalink to this headline">¶</a></h2>
+<p>Launched by <code class="docutils literal notranslate"><span class="pre">nf</span></code>. Is a default <em>WP-CLI</em> command.</p>
+<p>We are invoking it within a theme directory, but it will climb up directories
+until it will find a <code class="docutils literal notranslate"><span class="pre">wp-config.php</span></code> file, then it will start a PHP server
+on its default port (8080) and on <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> address as per our config.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">You can directly reach <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:8080</span></code> in you browser in order
+to reach wordpress bypassing all the webpack <em>things</em> we’re gonna show
+below.</p>
+</div>
+</div>
+<div class="section" id="browsersync">
+<h2>BrowserSync<a class="headerlink" href="#browsersync" title="Permalink to this headline">¶</a></h2>
+<p>The only relevant <strong>Webpack</strong>’s part in this section is the one about
+<a class="reference external" href="https://www.browsersync.io/">BrowserSync</a>. It will start a web server at address <code class="docutils literal notranslate"><span class="pre">127.0.0.1</span></code> on port 3000.
+This is where your browser will automatically go once launched.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">webpack.config.coffee</span><a class="headerlink" href="#id4" title="Permalink to this code">¶</a></div>
+<div class="highlight-coffeescript notranslate"><div class="highlight"><pre><span></span>  <span class="nv">plugins: </span><span class="p">[</span>
+    <span class="k">new</span> <span class="nx">BrowserSyncPlugin</span>
+<span class="hll">      <span class="nv">host: </span><span class="s">&quot;127.0.0.1&quot;</span>
+</span><span class="hll">      <span class="nv">port: </span><span class="mi">3000</span>
+</span><span class="hll">      <span class="nv">proxy:</span>
+</span><span class="hll">        <span class="nv">target: </span><span class="s">&quot;http://127.0.0.1:8080&quot;</span>
+</span>
+    <span class="k">new</span> <span class="nx">ExtractTextPlugin</span> <span class="s">&quot;../stylesheets/screen.css&quot;</span>
+
+    <span class="k">new</span> <span class="nx">ImageminPlugin</span>
+      <span class="nv">test: </span><span class="sr">/\.(jpe?g|png|gif|svg)$/i</span>
+  <span class="p">]</span>
+</pre></div>
+</div>
+</div>
+<p>As you can see from the configuration, web requests will be proxy-ed to the
+underlying <code class="docutils literal notranslate"><span class="pre">wp</span> <span class="pre">server</span></code>.</p>
+<p>Since <em>BrowserSync</em> is invoked through a Webpack plugin
+(<a class="reference external" href="https://www.npmjs.com/package/browser-sync-webpack-plugin">browser-sync-webpack-plugin</a>) we will benefit from automatic browser
+autoreloading when assets will be recompiled by Webpack self.</p>
+<div class="admonition seealso">
+<p class="first admonition-title">See also</p>
+<p class="last"><a class="reference internal" href="compile.html#compilestack"><span class="std std-ref">Code compilation</span></a> for other Webpack default configurations</p>
+</div>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last"><em>BrowserSync</em>’s UI will be reachable at <code class="docutils literal notranslate"><span class="pre">http://127.0.0.1:3001</span></code> as per
+default configuration.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">If you will develop with WordPress backend in a tab, <em>BrowserSync</em> will
+ignorantly reload that tab also (all tabs opened on port 3000 actually).
+This could slow down your server. We advice to use WordPress backend
+using port 8080 and thus bypassing <em>BrowserSync</em>.</p>
+</div>
+</div>
+</div>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h3><a href="../../index.html">Table Of Contents</a></h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../usage.html">Usage</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../stack.html">Development stack</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../stack.html#introduction">Introduction</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../stack.html#details">Details</a></li>
+</ul>
+</li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../index.html">Documentation overview</a><ul>
+  <li><a href="../stack.html">Development stack</a><ul>
+      <li>Previous: <a href="../stack.html" title="previous chapter">Development stack</a></li>
+      <li>Next: <a href="compile.html" title="next chapter">Code compilation</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="../../_sources/_pages/stack/server.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, weLaika.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.11</a>
+      
+      |
+      <a href="../../_sources/_pages/stack/server.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
