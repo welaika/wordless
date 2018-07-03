@@ -1,4 +1,0 @@
-.. _CompileStack:
-
-Code compilation
-================
