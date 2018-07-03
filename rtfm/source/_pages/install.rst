@@ -1,8 +1,8 @@
 Installation
 ============
 
-Wordless GEM
-############
+Wordless GEM (favourite)
+########################
 
 The quickest CLI tool to setup a new WordPress locally. Wordless ready.
 
@@ -14,11 +14,17 @@ setup all you need for local development. In less than 2 minutes ;)
 (Not so) Manual
 ###############
 
+At the end of the installation process you will have
+
+* a plugin - almost invisible: no backend page, just ``wp-cli`` commands
+* a theme - where we will do all the work
+
 Prerequisites
 """""""""""""
 
 #. Install WP-CLI http://wp-cli.org/#installing
 #. Install global packages from NPM: ``npm install -g foreman yarn`` [1]_ [2]_
+   (you already have node on your development machine, haven't you?)
 #. WordPress installed and configured as per `official documentation`_
 
 .. _official documentation: https://codex.wordpress.org/Installing_WordPress
@@ -27,7 +33,7 @@ Prerequisites
     We don't know if you have a local apache {M,L,W}AMPP or whatever in order to
     do the official installation process. Keep in mind that Wordless flow
     do not need any external web server, since it will use `wp server`_ command
-    to serve your wordpress
+    to serve your wordpress.
 
 .. _wp server: https://developer.wordpress.org/cli/commands/server/
 
