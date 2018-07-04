@@ -1,3 +1,4 @@
 {
-  "restructuredtext.confPath": "${workspaceRoot}/rtfm/source"
+  "restructuredtext.confPath": "${workspaceRoot}/rtfm/source",
+  "restructuredtext.builtDocumentationPath": "${workspaceRoot}/rtfm/build/html"
 }
