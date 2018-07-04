@@ -6,7 +6,7 @@ Code compilation
 First thing first: **using "alternative" languages is not a constrain**.
 Wordless scaffolded theme uses the following languages by default:
 
-* **PUG** for views as alternative to PHP
+* **PHUG** for views as alternative to PHP+HTML
 * **CoffeeScript** 2 for JS (ES6 ready)
 * **Sass** for CSS
 
@@ -25,8 +25,12 @@ Wordless' functions which want filenames as arguments such as
 
   javascript_url("application")
 
-will always require extension-less and they will find your files whatever
+will always require extension-less names and they will find your files whatever
 extension they have.
+
+.. seealso::
+
+    :ref:`PlainPhp`
 
 Anyway we think that default languages are **powerful, more productive, more
 pleasant to read and to write**.
@@ -34,8 +38,8 @@ pleasant to read and to write**.
 Add the fact that wordless will take care of all compilation tasks, giving you
 focus on writing: we think this is a win-win scenario.
 
-PUG
-###
+PHUG
+####
 
 Pug_ is a robust, elegant, feature rich template engine for Node.js. Here we
 use a terrific PHP port of the language: Phug_. You can find huge
@@ -57,6 +61,8 @@ We love it because it is concise, clear, tidy and clean.
       header
         h3!= link_to(get_the_title(), get_permalink())
       content!= get_the_content()
+
+
 
 Who compiles PUG?
 """""""""""""""""
