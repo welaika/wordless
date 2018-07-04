@@ -24,7 +24,6 @@ Contents
 ########
 
 .. toctree::
-    :maxdepth: 2
 
     _pages/install
     _pages/usage

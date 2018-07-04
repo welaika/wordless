@@ -2,3 +2,7 @@
 
 Usage
 =====
+
+.. toctree::
+
+    usage/anatomy

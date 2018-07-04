@@ -52,7 +52,7 @@ and HAML (old!).
 
 We love it because it is concise, clear, tidy and clean.
 
-.. code-block:: slim
+.. code-block:: jade
     :caption: A snippet of a minimal WP template
 
     h2 Post Details

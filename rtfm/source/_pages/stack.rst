@@ -18,7 +18,6 @@ Details
 
 .. toctree::
     :maxdepth: 2
-    :glob:
 
     stack/server
     stack/compile
