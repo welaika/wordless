@@ -1,4 +1,9 @@
 {
   "restructuredtext.confPath": "${workspaceRoot}/rtfm/source",
-  "restructuredtext.builtDocumentationPath": "${workspaceRoot}/rtfm/build/html"
+  "restructuredtext.builtDocumentationPath": "${workspaceRoot}/rtfm/build/html",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/bower_components": true,
+    "rtfm/build": true,
+  }
 }
