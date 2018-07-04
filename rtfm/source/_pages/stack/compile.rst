@@ -62,7 +62,8 @@ We love it because it is concise, clear, tidy and clean.
         h3!= link_to(get_the_title(), get_permalink())
       content!= get_the_content()
 
-
+For sure becoming fluent in PUG usage could have a not-so-flat learning curve,
+but starting from the basics shuold be affordable and the reward is high.
 
 Who compiles PUG?
 """""""""""""""""
@@ -80,3 +81,78 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 
 CoffeeScript and Sass
 #####################
+
+Here we are in the **Webpack** domain; from the compilation point of view there
+is nothing Wordless specific but file path configuration.
+
+The default webpack configuration file is written itself in coffeescript,
+because it is `natively supported`_ by Webpack and because it make the code
+more affordable to read.
+
+.. _natively supported: https://webpack.js.org/configuration/configuration-languages/
+
+Configuration is pretty standard, so it's up to you to read Webpack's
+documentation. Let's see how paths are configured in ``webpack.config.coffee``.
+
+Paths
+"""""
+
+Paths are based on the Wordless scaffold. Variables are defined at top:
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
+    :language: coffeescript
+    :caption: webpack.config.coffee
+    :lineno-start: 4
+    :lines: 4-7
+
+and are used by ``entry`` and ``output`` configurations:
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
+    :language: coffeescript
+    :caption: webpack.config.coffee
+    :lineno-start: 14
+    :lines: 14-19
+
+CSS will be extracted from the bundle by the usual extract-text-webpack-plugin_
+
+.. _extract-text-webpack-plugin: https://webpack.js.org/plugins/extract-text-webpack-plugin/
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
+    :language: coffeescript
+    :caption: webpack.config.coffee
+    :lineno-start: 76
+    :lines: 76-87
+    :emphasize-lines: 8
+
+Compiled files inclusion
+""""""""""""""""""""""""
+
+Wrapping up: result files will be
+
+* ``assets/javascripts/application.js``
+* ``assets/stylesheets/screen.css``
+
+As far as those files remain *as-is*, the theme will automatically load theme.
+
+If you want to edit names and/or paths, you have only to edit WordPress
+assets enqueueing configurations:
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/default_hooks.php
+    :language: php
+    :linenos:
+    :emphasize-lines: 6,16
+
+.. note::
+    ``stylesheet_url`` and ``javascript_url`` Wordless' helpers
+    will search for a file named as per the passed parameter inside the default
+    paths, so if you'll use default paths and custom file naming, you'll be ok, but
+    if you'll change the path you'll have to supply it using other WordPress
+    functinons.
+
+.. seealso::
+    `stylesheet_url signature`_
+
+    `javascript_url signature`_
+
+.. _stylesheet_url signature: http://welaika.github.io/wordless/docs/0.5/dd/d16/group__helperfunc.html#ga65c283fa91fd4801187737bf3f3b1e78
+.. _javascript_url signature: http://welaika.github.io/wordless/docs/0.5/dd/d16/group__helperfunc.html#gaca881d0e89bddbab09b37219d8b2efd1
