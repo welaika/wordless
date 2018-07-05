@@ -30,7 +30,7 @@ extension they have.
 
 .. seealso::
 
-    :ref:`PlainPhp`
+    PHUG paragraph @ :ref:`PlainPhp`
 
 Anyway we think that default languages are **powerful, more productive, more
 pleasant to read and to write**.

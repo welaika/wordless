@@ -3,10 +3,6 @@
 Theme anatomy
 =============
 
-.. toctree::
-
-    usage/anatomy
-
 That's a typical `Wordless theme directory structure`_:
 ::
 
@@ -97,6 +93,9 @@ automatically translate them to HTML.
 .. note::
     Extension for ``$name`` can always be omitted.
 
+.. seealso::
+    PHUG section @ :ref:`CompileStack`
+
 Inside the ``theme/views`` folder you can scaffold as you wish, but you'll have
 to always pass the relative path
 
@@ -123,35 +122,46 @@ and inside ``theme/views/folder1/folder2/myview.pug``
 render_partial()
 """"""""""""""""
 
-Render parrtial is almost the same as its sister ``render_view()``, but it does
+``render_partial()`` is almost the same as its sister ``render_view()``, but it does
 not accept a layout as argument. Here is its signature
 
 .. code-block:: php
 
     <?php
     /**
-        * Retrievs contents of partial without printing theme
-        * @param string $name The template filenames (those not starting
-        *                        with an underscore by convention)
-        *
-        * @param  array  $locals An associative array. Keys will be variables'
-        *                        names and values will be variable values inside
-        *                        the partial
-        */
-        function get_partial_content($name, $locals = array()) {
-            /* [...] */
+    * Renders a partial: those views followed by an underscore
+    *   by convention. Partials are inside theme/views.
+    *
+    * @param  string $name   The partial filenames (those starting
+    *                        with an underscore by convention)
+    *
+    * @param  array  $locals An associative array. Keys will be variables'
+    *                        names and values will be variable values inside
+    *                        the partial
+    */
+    function render_partial($name, $locals = array()) {
+        $parts = preg_split("/\//", $name);
+        if (!preg_match("/^_/", $parts[sizeof($parts)-1])) {
+            $parts[sizeof($parts)-1] = "_" . $parts[sizeof($parts)-1];
         }
+        render_template(implode($parts, "/"), $locals);
+    }
 
 Partial templates – usually just called **“partials”** – are another device for
-breaking the rendering process into more manageable chunks. Partials are
-**named with a leading underscore** to distinguish them from regular views,
-even though they are referred to without the underscore.
+breaking the rendering process into more manageable chunks.
 
-Layouts (``theme/views/layouts`` directory)
-"""""""""""""""""""""""""""""""""""""""""""
+.. note::
+    Partials files are **named with a leading underscore** to distinguish them
+    from regular views, even though they are
+    **referred to without the underscore**.
+
+Layouts
+"""""""
+
+  ``theme/views/layouts`` directory
 
 When Wordless renders a view, it does so by combining the view within a layout.
-Within a layout, you have access to the `wl_yield()` helper to combine it with
+Within a layout, you have access to the ``wl_yield()`` helper to combine it with
 the main content:
 
 .. code-block:: jade
@@ -170,8 +180,10 @@ the main content:
     For content that is shared among all pages in your application, you can use
     partials directly inside layouts.
 
-Theme Views (``theme/views/**/*.pug`` or ``theme/views/**/*.php``)
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+Views
+"""""
+
+  ``theme/views/**/*.pug`` or ``theme/views/**/*.php``
 
 That's the directory where you'll find yourself coding for most of the time.
 Here you can create a view for each main page of your theme, using Pug syntax
@@ -221,8 +233,10 @@ It looks awesome, right?
 .. _PugJS: https://pugjs.org/api/getting-started.html
 .. _unescaped buffered code: https://pugjs.org/language/code.html#unescaped-buffered-code
 
-Helpers (``theme/helpers/*.php`` files)
-#######################################
+Helpers
+#######
+
+  ``theme/helpers/*.php`` files
 
 Helpers are basically small functions that can be called in your views to help
 keep your code stay DRY. Create as many helper files and functions as you want
@@ -241,10 +255,13 @@ all the 40+ tested and documented helpers Wordless gives you for free:
   between two dates
 
 Our favourite convention to write custom hepers is to write almost 1 file per
-function and naming both the same way. It will be easier to find with `cmd+p` 😉
+function and naming both the same way. It will be easier to find with ```cmd+p``
+😉
 
-Initializers (``config/initializers/*.php`` files)
-##################################################
+Initializers
+############
+
+  ``config/initializers/*.php`` files
 
 Remember the freaky ``functions.php`` file, the one where you would drop every
 bit of code external to the theme views (custom post types, taxonomies,
@@ -277,8 +294,10 @@ one with a specific target:
 
 These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
 
-Locale files (``config/locales`` directory)
-###########################################
+Locale files
+############
+
+  ``config/locales`` directory
 
 Just drop all your theme locale files in this directory. Wordless will take
 care of calling `load_theme_textdomain()`_ for you.
@@ -293,6 +312,9 @@ care of calling `load_theme_textdomain()`_ for you.
 
 Assets
 ######
+
+.. todo::
+    Improve, extend, deepen, link to the stack section
 
 Wordless has two different places where you want to put your assets:
 
