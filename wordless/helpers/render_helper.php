@@ -115,7 +115,7 @@ class RenderHelper {
     * Renders a partial: those views followed by an underscore
     *   by convention. Partials are inside theme/views.
     *
-    * @param  string $name   The template filenames (those not starting
+    * @param  string $name   The partial filenames (those starting
     *                        with an underscore by convention)
     *
     * @param  array  $locals An associative array. Keys will be variables'
