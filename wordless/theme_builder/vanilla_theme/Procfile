@@ -1,2 +1,3 @@
 wp: wp server --host=127.0.0.1
 webpack: npx webpack --watch --progress --color
+mailhog: mailhog
