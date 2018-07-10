@@ -7,7 +7,13 @@
   "author": "'weLaika' <info@welaika.com>",
   "license": "MIT",
   "scripts": {
-    "server": "nf start"
+    "server": "nf start",
+    "build:dev": "webpack",
+    "build:prod": "webpack -p",
+    "clean:js": "rimraf assets/javascripts/**.js assets/javascripts/**.map",
+    "clean:css": "rimraf assets/stylesheets/**.css assets/stylesheets/**.map",
+    "clean:images": "rimraf assets/images/**.{png,gif,jpg,svg}",
+    "clean:dist": "yarn clean:js && yarn clean:css && yarn clean:images"
   },
   "engines": {
     "node": ">=10.3.0"
@@ -25,6 +31,7 @@
     "imagemin-webpack-plugin": "^1.5.2",
     "node-sass": "^4.7.2",
     "resolve-url-loader": "^2.2.1",
+    "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
     "webpack": "^3.10.0"
