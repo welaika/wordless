@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "server": "nf start",
-    "build:dev": "webpack",
-    "build:prod": "webpack -p",
+    "build:dev": "webpack -d --mode=development",
+    "build:prod": "webpack -p --mode=production",
     "clean:js": "rimraf assets/javascripts/**.js assets/javascripts/**.map",
     "clean:css": "rimraf assets/stylesheets/**.css assets/stylesheets/**.map",
     "clean:images": "rimraf assets/images/**.{png,gif,jpg,svg}",
@@ -21,11 +21,11 @@
   "dependencies": {},
   "devDependencies": {
     "browser-sync": "^2.18.13",
-    "browser-sync-webpack-plugin": "^1.2.0",
+    "browser-sync-webpack-plugin": "^2.2.2",
     "coffee-loader": "^0.9.0",
     "coffeescript": "^2.0.3",
     "css-loader": "^0.28.7",
-    "extract-text-webpack-plugin": "^3.0.2",
+    "extract-text-webpack-plugin": "4.0.0-beta.0",
     "file-loader": "^1.1.5",
     "image-webpack-loader": "^3.4.2",
     "imagemin-webpack-plugin": "^1.5.2",
@@ -34,7 +34,8 @@
     "rimraf": "^2.6.2",
     "sass-loader": "^6.0.6",
     "style-loader": "^0.19.0",
-    "webpack": "^3.10.0"
+    "webpack": "^4.12.0",
+    "webpack-cli": "^3.0.8"
   },
   "peerDependencies": {}
 }
