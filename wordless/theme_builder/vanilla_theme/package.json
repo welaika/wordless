@@ -8,8 +8,8 @@
   "license": "MIT",
   "scripts": {
     "server": "nf start",
-    "build:dev": "webpack -d --mode=development",
-    "build:prod": "webpack -p --mode=production",
+    "build:dev": "webpack --debug --env.WL_ENV=development",
+    "build:prod": "webpack -p --bail --env.WL_ENV=production",
     "clean:js": "rimraf assets/javascripts/**.js assets/javascripts/**.map",
     "clean:css": "rimraf assets/stylesheets/**.css assets/stylesheets/**.map",
     "clean:images": "rimraf assets/images/**.{png,gif,jpg,svg}",

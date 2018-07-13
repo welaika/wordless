@@ -20,6 +20,7 @@ class Wordless {
         'env' => '.env',
         'package' => 'package.json',
         'webpack' => 'webpack.config.coffee',
+        'webpack.env' => 'webpack.env.coffee',
         'main' => 'theme/assets/main.js',
         'yarn' => 'yarn.lock'
     );
@@ -288,6 +289,7 @@ class Wordless {
             self::theme_procfile_path(),
             self::theme_dotenv_path(),
             self::theme_webpackconfig_path(),
+            self::theme_webpackenv_path(),
             self::theme_packagejson_path(),
             self::theme_webpackentrypoint_path(),
             self::theme_yarndotlock_path()
@@ -373,6 +375,10 @@ class Wordless {
 
     public static function theme_webpackconfig_path() {
         return self::join_paths(self::theme_path(), self::$webpack_files_names['webpack']);
+    }
+
+    public static function theme_webpackenv_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['webpack.env']);
     }
 
     public static function theme_packagejson_path() {
