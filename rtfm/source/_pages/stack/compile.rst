@@ -110,8 +110,8 @@ and are used by ``entry`` and ``output`` configurations:
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
     :language: coffeescript
     :caption: webpack.config.coffee
-    :lineno-start: 14
-    :lines: 14-19
+    :lineno-start: 18
+    :lines: 18-23
 
 CSS will be extracted from the bundle by the usual extract-text-webpack-plugin_
 
@@ -120,9 +120,9 @@ CSS will be extracted from the bundle by the usual extract-text-webpack-plugin_
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
     :language: coffeescript
     :caption: webpack.config.coffee
-    :lineno-start: 76
-    :lines: 76-87
-    :emphasize-lines: 8
+    :lineno-start: 69
+    :lines: 69-82
+    :emphasize-lines: 10
 
 Compiled files inclusion
 """"""""""""""""""""""""
@@ -132,12 +132,13 @@ Wrapping up: result files will be
 * ``assets/javascripts/application.js``
 * ``assets/stylesheets/screen.css``
 
-As far as those files remain *as-is*, the theme will automatically load theme.
+As far as those files remain *as-is*, the theme will automatically load them.
 
 If you want to edit names and/or paths, you have only to edit WordPress
 assets enqueueing configurations:
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/default_hooks.php
+    :caption: config/initializers/default_hooks.php
     :language: php
     :linenos:
     :emphasize-lines: 6,16

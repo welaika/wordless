@@ -26,8 +26,11 @@ Prerequisites
 #. Install global packages from NPM: ``npm install -g foreman yarn`` [1]_ [2]_
    (you already have node on your development machine, haven't you?)
 #. WordPress installed and configured as per `official documentation`_
+#. Install MailHog_. On MacOS is as simple
+   as ``brew install mailhog``. Wordless will do the rest.
 
 .. _official documentation: https://codex.wordpress.org/Installing_WordPress
+.. _MailHog: https://github.com/mailhog/MailHog
 
 .. note::
     We don't know if you have a local apache {M,L,W}AMPP or whatever in order to

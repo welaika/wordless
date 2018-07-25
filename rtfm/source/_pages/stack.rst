@@ -3,9 +3,6 @@
 Development stack
 =================
 
-Introduction
-############
-
 Following are the stack components of Wordless' development workflow:
 
 * WordPess plugin
@@ -13,8 +10,7 @@ Following are the stack components of Wordless' development workflow:
 * Webpack
 * WP-CLI
 
-Details
-#######
+**Contents**
 
 .. toctree::
     :maxdepth: 2
