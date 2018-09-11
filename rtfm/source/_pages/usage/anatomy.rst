@@ -161,8 +161,22 @@ Layouts
   ``theme/views/layouts`` directory
 
 When Wordless renders a view, it does so by combining the view within a layout.
-Within a layout, you have access to the ``wl_yield()`` helper to combine it with
-the main content:
+
+E.g. calling
+
+.. code-block:: php
+
+    render_view('folder1/folder2/myview')
+
+will be the same as calling
+
+.. code-block:: php
+
+    render_view('folder1/folder2/myview', 'default', array())
+
+so that the ``default.html.phug`` layout will be rendered. Within the layout,
+you have access to the ``wl_yield()`` helper, which will be combine the required
+view inside the layout when it is called:
 
 .. code-block:: jade
 
@@ -177,8 +191,8 @@ the main content:
         - wp_footer()
 
 .. note::
-    For content that is shared among all pages in your application, you can use
-    partials directly inside layouts.
+    For content that is shared among all pages in your application that use the
+    same layout, you can use partials directly inside layouts.
 
 Views
 """""
