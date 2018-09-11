@@ -6,5 +6,6 @@
     "**/bower_components": true,
     "rtfm/build": true,
   },
-  "css.validate": false
+  "css.validate": false,
+  "restructuredtext.languageServer.disabled": false
 }
