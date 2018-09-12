@@ -9,6 +9,7 @@ stylesheetsDstPath = path.join(dstDir, '/stylesheets')
 BrowserSyncPlugin = require('browser-sync-webpack-plugin')
 ExtractTextPlugin = require('extract-text-webpack-plugin')
 ImageminPlugin = require("imagemin-webpack-plugin").default
+CopyWebpackPlugin = require('copy-webpack-plugin')
 
 
 module.exports = (env) ->
@@ -78,5 +79,15 @@ module.exports = (env) ->
       new ExtractTextPlugin "../stylesheets/screen.css"
 
       new ImageminPlugin { test: /\.(jpe?g|png|gif|svg)$/i }
+
+      new CopyWebpackPlugin(
+        [
+          {
+            from: path.join(srcDir, '/images'),
+            to: '../images/[name].[ext]'
+            toType: 'template'
+          }
+        ]
+      )
     ]
   }
