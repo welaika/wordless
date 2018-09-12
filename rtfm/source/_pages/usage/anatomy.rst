@@ -306,7 +306,8 @@ one with a specific target:
 - **shortcodes**: as it says
 - **thumbnail_sizes**: if you need custom thumbnailing sizes
 
-These are just some file name examples: you can organize them the way you prefer. Each file in this directory will be automatically required by Wordless.
+These are just some file name examples: you can organize them the way you
+prefer. Each file in this directory will be automatically required by Wordless.
 
 Locale files
 ############
@@ -320,23 +321,14 @@ care of calling `load_theme_textdomain()`_ for you.
 
 .. note::
     Due to WordPress localization framework, you need to append our
-    ``"wl"`` domain when using internationalization. For example, calling ``__("News")`` without specifying the domain *will not work*.
+    ``"wl"`` domain when using internationalization. For example, calling
+    ``__("News")`` without specifying the domain *will not work*.
 
-    You'll **have** to add the domain `"wl"` to make it work: ``__("News", "wl")``
+    You'll **have** to add the domain `"wl"` to make it work:
+    ``__("News", "wl")``
 
 Assets
 ######
-
-.. todo::
-    Improve, extend, deepen, link to the stack section
-
-Wordless has two different places where you want to put your assets:
-
-- Place all your custom, project related assets into ``theme/assets/*``
-- Place all the static images and vendor assets (i.e. vendor JS plugins) into
-  ``assets/*``
-- Since you are backed by Webpack, you can use NPM to import new dependencies
-  following a completely standard approach
 
 The Fast Way
 """"""""""""
@@ -346,3 +338,63 @@ The Fast Way
 - write your coffeescript in ``theme/assets/javascripts/application.js.coffee``
 
 and all will automagically work! :)
+
+I need to really understand
+"""""""""""""""""""""""""""
+
+Wordless has 2 different places where you want to put your assets (javascript,
+css, images):
+
+- Place all your custom, project related assets into ``theme/assets/*``
+- Since you are backed by Webpack, you can use NPM (``node_modules``) to import new dependencies
+  following a completely standard approach
+
+Custom assets
+^^^^^^^^^^^^^
+
+They must be placed inside ``theme/assets/javascript/`` and
+``theme/assets/stylesheets/`` and ``theme/assets/images/``.
+
+They will be compiled and resulting compilation files will be moved in
+``assets/assetType`` folder.
+
+Compilation, naming and other logic is completely handled by webpack.
+
+Images will be optimized by `ImageminPlugin`_. Default setup already translates
+``url`` s inside css/sass files in order to point to images in the
+right folder via `resolve-url-loader`_.
+
+.. _ImageminPlugin: https://www.npmjs.com/package/imagemin-webpack-plugin
+.. _resolve-url-loader: https://www.npmjs.com/package/resolve-url-loader
+
+Take a look to the default ``screen.sass`` and ``application.js.coffee`` to see
+example usage.
+
+.. seealso::
+    :ref:`CompileStack`
+
+.. seealso::
+    * `Official Sass guide <https://sass-lang.com/guide>`_
+    * `Official CoffeeScritp guide <https://coffeescript.org/>`_
+
+node_modules
+^^^^^^^^^^^^
+
+You can use node modules just as any SO answer teaches to you :)
+
+Add any vendor library through `YARN`_ with
+
+.. code-block:: bash
+
+    yarn add slick-carousel
+
+Than in your CoffeeScritp/Javascript you can do
+
+.. code-block:: coffeescript
+
+    require('slick-carousel')
+
+and go on as usual.
+
+
+.. _YARN: https://yarnpkg.com/en/
