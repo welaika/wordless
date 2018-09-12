@@ -7,5 +7,6 @@
     "rtfm/build": true,
   },
   "css.validate": false,
-  "restructuredtext.languageServer.disabled": false
+  "restructuredtext.languageServer.trace.server": "messages",
+  "restructuredtext.linter.executablePath": "/usr/local/bin/doc8"
 }
