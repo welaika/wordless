@@ -79,6 +79,8 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 .. _Pug: https://github.com/pugjs/pug
 .. _Phug: https://github.com/pug-php/pug
 
+.. _CoffeeScript and Sass:
+
 CoffeeScript and Sass
 #####################
 

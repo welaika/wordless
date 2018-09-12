@@ -17,17 +17,17 @@ _________
 YARN
 ####
 
-``yarn run`` will search for a ``scripts`` section inside your ``package.json``
-file and will execute the matched script.
+``yarn run`` (or simply ``yarn scriptName``) will search for a ``scripts``
+section inside your ``package.json`` file and will execute the matched script.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/package.json
     :lines: 9-17
     :language: javascript
     :caption: package.json
+    :emphasize-lines: 2
 
-Our default config will run ``nf start``, where ``nf`` is the Node Foreman
+``yarn server`` will run ``nf start``, where ``nf`` is the Node Foreman
 executable.
-
 
 Foreman
 #######

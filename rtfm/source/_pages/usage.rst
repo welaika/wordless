@@ -6,3 +6,4 @@ Usage
 .. toctree::
 
     usage/anatomy
+    usage/build
