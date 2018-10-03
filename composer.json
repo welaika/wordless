@@ -2,5 +2,8 @@
     "require": {
         "pug-php/pug": "^3.0",
         "mobiledetect/mobiledetectlib": "^2.8"
+    },
+    "config": {
+        "classmap-authoritative": true
     }
 }
