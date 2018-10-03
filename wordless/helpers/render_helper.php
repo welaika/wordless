@@ -78,9 +78,20 @@ class RenderHelper {
                 require_once('pug/wordless_pug_options.php');
 
                 if ($this->ensure_dir($tmp_dir)) {
-                    $pug = new Pug(WordlessPugOptions::get_options());
+                    if ( getenv('ENVIRONMENT') ) {
+                        $env = getenv('ENVIRONMENT');
+                    } elseif ( defined('ENVIRONMENT') ) {
+                        $env = ENVIRONMENT;
+                    }
 
-                    $pug->displayFile($template_path, $locals);
+                    if ( in_array( $env, array('staging', 'production') ) ) {
+                        \Phug\Optimizer::call(
+                            'displayFile', [$template_path, $locals], WordlessPugOptions::get_options()
+                        );
+                    } else {
+                        $pug = new Pug(WordlessPugOptions::get_options());
+                        $pug->displayFile($template_path, $locals);
+                    }
                 } else {
                     render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
                 }
