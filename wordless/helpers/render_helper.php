@@ -82,6 +82,8 @@ class RenderHelper {
                         $env = getenv('ENVIRONMENT');
                     } elseif ( defined('ENVIRONMENT') ) {
                         $env = ENVIRONMENT;
+                    } else {
+                        $env = 'development';
                     }
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
