@@ -2,11 +2,29 @@
 
 namespace Phug;
 
+use Phug\Event\ListenerQueue;
+
 /**
  * Interface for EventManager.
  */
 interface EventManagerInterface
 {
+    /**
+     * Returns current event listeners by event name.
+     *
+     * @return ListenerQueue[]
+     */
+    public function getEventListeners();
+
+    /**
+     * Merge current events listeners with a given list.
+     *
+     * @param ListenerQueue[] $eventListeners event listeners by event name
+     *
+     * @return bool true on success false on failure
+     */
+    public function mergeEventListeners($eventListeners);
+
     /**
      * Attaches a listener to an event.
      *

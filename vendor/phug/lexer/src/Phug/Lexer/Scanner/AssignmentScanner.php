@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example &attributes($var)
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;

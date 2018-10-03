@@ -2,7 +2,7 @@
     "name": "phug/event",
     "type": "library",
     "keywords": ["phug", "event"],
-    "description": "",
+    "description": "Phug events manager (compatible with PSR-14)",
     "license": "MIT",
     "homepage": "http://phug-lang.com",
     "authors": [

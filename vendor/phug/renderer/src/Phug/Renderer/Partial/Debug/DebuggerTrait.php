@@ -350,9 +350,15 @@ trait DebuggerTrait
         $handler = $options['error_handler'];
         if (!$handler) {
             // @codeCoverageIgnoreStart
-            if ($options['debug'] && $options['html_error']) {
-                echo $exception->getMessage();
-                exit(1);
+            if ($options['debug'] && $options['exit_on_error']) {
+                if ($options['html_error']) {
+                    echo $exception->getMessage();
+                    exit(1);
+                }
+                if (!function_exists('xdebug_is_enabled') || !xdebug_is_enabled()) {
+                    echo $exception->getMessage()."\n".$exception->getTraceAsString();
+                    exit(1);
+                }
             }
             // @codeCoverageIgnoreEnd
             throw $exception;

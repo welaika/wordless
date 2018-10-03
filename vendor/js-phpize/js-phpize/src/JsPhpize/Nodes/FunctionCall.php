@@ -4,7 +4,14 @@ namespace JsPhpize\Nodes;
 
 use JsPhpize\Parser\Exception;
 
-class FunctionCall extends Value
+/**
+ * Class Value.
+ *
+ * @property-read Value|Block $function  Function body
+ * @property-read array       $arguments List the function arguments passed
+ * @property-read null|string $applicant Optional related keyword name (new, clone, ...)
+ */
+class FunctionCall extends DynamicValue
 {
     /**
      * @var Value|Block
@@ -17,15 +24,20 @@ class FunctionCall extends Value
     protected $arguments;
 
     /**
-     * @var array
-     */
-    protected $children;
-
-    /**
      * @var null|string
      */
     protected $applicant;
 
+    /**
+     * FunctionCall constructor.
+     *
+     * @param Node        $function
+     * @param array       $arguments
+     * @param array       $children
+     * @param null|string $applicant
+     *
+     * @throws Exception
+     */
     public function __construct(Node $function, array $arguments, array $children, $applicant = null)
     {
         if (!($function instanceof Value || $function instanceof Block)) {
@@ -40,11 +52,6 @@ class FunctionCall extends Value
 
     public function getReadVariables()
     {
-        $variables = $this->function->getReadVariables();
-        foreach ($this->arguments as $argument) {
-            $variables = array_merge($variables, $argument->getReadVariables());
-        }
-
-        return $variables;
+        return $this->mergeVariables($this->function->getReadVariables(), $this->arguments);
     }
 }

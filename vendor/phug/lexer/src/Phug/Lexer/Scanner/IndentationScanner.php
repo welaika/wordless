@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example space or tab to put contents inside parent element
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer;

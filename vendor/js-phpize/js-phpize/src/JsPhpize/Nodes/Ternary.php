@@ -2,6 +2,13 @@
 
 namespace JsPhpize\Nodes;
 
+/**
+ * Class Dyiade.
+ *
+ * @property-read Value $condition  value used as ternary condition
+ * @property-read Value $trueValue  returned value if the ternary condition is truthy
+ * @property-read Value $falseValue returned value if the ternary condition is falsy
+ */
 class Ternary extends Value
 {
     /**

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example include foo.pug
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;

@@ -13,42 +13,42 @@ class Token extends DataBag
 
     public function isValue()
     {
-        return $this->typeIn(array('variable', 'constant', 'string', 'number', 'regexp'));
+        return $this->typeIn(['variable', 'constant', 'string', 'number', 'regexp']);
     }
 
     public function isValidMember()
     {
-        return $this->typeIn(array('variable', 'keyword'));
+        return $this->typeIn(['variable', 'keyword']);
     }
 
     protected function isComparison()
     {
-        return $this->typeIn(array('===', '!==', '>=', '<=', '<>', '!=', '==', '>', '<'));
+        return $this->typeIn(['===', '!==', '>=', '<=', '<>', '!=', '==', '>', '<']);
     }
 
     protected function isLogical()
     {
-        return $this->typeIn(array('&&', '||', '!'));
+        return $this->typeIn(['&&', '||', '!']);
     }
 
     protected function isBinary()
     {
-        return $this->typeIn(array('&', '|', '^', '~', '>>', '<<', '>>>'));
+        return $this->typeIn(['&', '|', '^', '~', '>>', '<<', '>>>']);
     }
 
     protected function isArithmetic()
     {
-        return $this->typeIn(array('+', '-', '/', '*', '%', '**', '--', '++'));
+        return $this->typeIn(['+', '-', '/', '*', '%', '**', '--', '++']);
     }
 
     protected function isVarOperator()
     {
-        return $this->typeIn(array('delete', 'void', 'typeof'));
+        return $this->typeIn(['delete', 'void', 'typeof']);
     }
 
     public function isLeftHandOperator()
     {
-        return $this->typeIn(array('~', '!', '--', '++', '-', '+')) || $this->isVarOperator();
+        return $this->typeIn(['~', '!', '--', '++', '-', '+']) || $this->isVarOperator();
     }
 
     public function isAssignation()
@@ -63,12 +63,12 @@ class Token extends DataBag
 
     public function isNeutral()
     {
-        return $this->typeIn(array('comment', 'newline'));
+        return $this->typeIn(['comment', 'newline']);
     }
 
     public function expectNoLeftMember()
     {
-        return in_array($this->type, array('!', '~')) || $this->isVarOperator();
+        return in_array($this->type, ['!', '~']) || $this->isVarOperator();
     }
 
     public function isFunction()

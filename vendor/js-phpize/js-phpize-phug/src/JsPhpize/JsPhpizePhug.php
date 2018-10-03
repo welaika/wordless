@@ -59,6 +59,16 @@ class JsPhpizePhug extends AbstractCompilerModule
                     return $jsCode;
                 },
             ],
+            'checked_variable_exceptions' => [
+                'js-phpize' => function ($variable, $index, $tokens) {
+                    return $index > 2 &&
+                        $tokens[$index - 1] === '(' &&
+                        $tokens[$index - 2] === ']' &&
+                        is_array($tokens[$index - 3]) &&
+                        $tokens[$index - 3][0] === T_CONSTANT_ENCAPSED_STRING &&
+                        preg_match('/_with_ref\'$/', $tokens[$index - 3][1]);
+                },
+            ],
         ]);
     }
 
@@ -74,6 +84,15 @@ class JsPhpizePhug extends AbstractCompilerModule
         return $compiler->getOption('jsphpize_engine');
     }
 
+    /**
+     * @param JsPhpize $jsPhpize
+     * @param int      $code
+     * @param string   $fileName
+     *
+     * @throws Exception
+     *
+     * @return Exception|string
+     */
     public function compile(JsPhpize $jsPhpize, $code, $fileName)
     {
         try {
@@ -99,10 +118,14 @@ class JsPhpizePhug extends AbstractCompilerModule
         }
     }
 
+    /**
+     * @return array
+     */
     public function getEventListeners()
     {
         return [
             CompilerEvent::OUTPUT => function (Compiler\Event\OutputEvent $event) {
+                /** @var CompilerInterface $compiler */
                 $compiler = $event->getTarget();
                 $jsPhpize = $this->getJsPhpizeEngine($compiler);
                 $output = preg_replace(

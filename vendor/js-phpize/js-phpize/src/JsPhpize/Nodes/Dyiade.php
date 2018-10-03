@@ -2,6 +2,13 @@
 
 namespace JsPhpize\Nodes;
 
+/**
+ * Class Dyiade.
+ *
+ * @property-read Value  $leftHand  left hand dyiade value
+ * @property-read Value  $rightHand right hand dyiade value
+ * @property-read string $operator  dyiade operator
+ */
 class Dyiade extends Value
 {
     /**

@@ -6,12 +6,12 @@ class BracketsArray extends ArrayBase
 {
     public function addItem(Constant $key, Node $value)
     {
-        $this->data[] = array($key, $value);
+        $this->data[] = [$key, $value];
     }
 
     public function getReadVariables()
     {
-        $variables = array();
+        $variables = [];
         foreach ($this->data as $data) {
             $variables = array_merge($variables, $data[1]->getReadVariables());
         }

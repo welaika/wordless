@@ -74,6 +74,6 @@ class ExpressionStream
      */
     public function url_stat($path, $flags)
     {
-        return array(0, 0, 0, 0, 0, 0, 0, mb_strlen($this->data), 0, 0, 0, 0);
+        return [0, 0, 0, 0, 0, 0, 0, mb_strlen($this->data), 0, 0, 0, 0];
     }
 }

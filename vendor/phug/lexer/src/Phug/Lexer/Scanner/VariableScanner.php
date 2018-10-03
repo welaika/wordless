@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * /!\ Warning, this is a PHP-specific syntax, this does not exists in pugjs.
+ *
+ * @example $foo = 'bar'
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;

@@ -2,6 +2,12 @@
 
 namespace JsPhpize\Nodes;
 
+/**
+ * Class Parenthesis.
+ *
+ * @property-read array  $nodes     parenthesis items
+ * @property-read string $separator string separator used between parenthesis items
+ */
 class Parenthesis extends Value
 {
     /**
@@ -16,7 +22,7 @@ class Parenthesis extends Value
 
     public function __construct()
     {
-        $this->nodes = array();
+        $this->nodes = [];
     }
 
     public function addNodes($nodes)
@@ -39,7 +45,7 @@ class Parenthesis extends Value
 
     public function getReadVariables()
     {
-        $variables = array();
+        $variables = [];
         foreach ($this->nodes as $node) {
             $variables = array_merge($variables, $node->getReadVariables());
         }

@@ -13,7 +13,7 @@ class HooksArray extends ArrayBase
 
     public function getReadVariables()
     {
-        $variables = array();
+        $variables = [];
         foreach ($this->data as $value) {
             $variables = array_merge($variables, $value->getReadVariables());
         }

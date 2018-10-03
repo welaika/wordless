@@ -36,9 +36,9 @@ class Parser extends TokenExtractor
 
     public function __construct(JsPhpize $engine, $input, $filename)
     {
-        $input = str_replace(array("\r\n", "\r"), array("\n", ''), $input);
-        $this->tokens = array();
-        $this->dependencies = array();
+        $input = str_replace(["\r\n", "\r"], ["\n", ''], $input);
+        $this->tokens = [];
+        $this->dependencies = [];
         $this->engine = $engine;
         $this->lexer = new Lexer($engine, $input, $filename);
     }
@@ -182,7 +182,7 @@ class Parser extends TokenExtractor
     protected function parseFunctionCallChildren($function, $applicant = null)
     {
         $arguments = $this->parseParentheses()->nodes;
-        $children = array();
+        $children = [];
 
         while ($next = $this->get(0)) {
             if ($value = $this->getVariableChildFromToken($next)) {
@@ -208,7 +208,7 @@ class Parser extends TokenExtractor
 
     protected function parseVariable($name)
     {
-        $children = array();
+        $children = [];
         $variable = null;
         while ($next = $this->get(0)) {
             if ($next->type === 'lambda') {
@@ -430,7 +430,7 @@ class Parser extends TokenExtractor
     public function parse()
     {
         $block = new Main();
-        $this->stack = array();
+        $this->stack = [];
         $this->parseBlock($block);
 
         return $block;

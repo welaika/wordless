@@ -29,11 +29,11 @@ class Scanner
             throw new Exception('Constants cannot start with ' . $constPrefix . ', this prefix is reserved for JsPhpize' . $this->exceptionInfos(), 1);
         }
 
-        $translate = array(
+        $translate = [
             'Infinity' => 'INF',
             'NaN' => 'NAN',
             'undefined' => 'null',
-        );
+        ];
 
         if (isset($translate[$constant])) {
             $constant = $translate[$constant];

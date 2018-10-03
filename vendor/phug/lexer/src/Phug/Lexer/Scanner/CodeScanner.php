@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example - call_something()
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;
@@ -23,7 +27,7 @@ class CodeScanner implements ScannerInterface
         $reader->consume();
 
         //Single-line code
-        foreach ($state->scan(TextScanner::class) as $textToken) {
+        foreach ($state->scan(RawTextScanner::class) as $textToken) {
             //Trim the text as expressions usually would
             yield $state->endToken($token);
 

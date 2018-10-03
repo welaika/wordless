@@ -2,7 +2,7 @@
     "name": "phug/formatter",
     "type": "library",
     "keywords": ["phug", "ast", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
-    "description": "",
+    "description": "Pug (ex-Jade) formatter for PHP, HTML template engine structured by indentation",
     "license": "MIT",
     "homepage": "http://phug-lang.com",
     "authors": [

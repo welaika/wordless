@@ -123,7 +123,7 @@ class Cli
         return false;
     }
 
-    protected function getCustomMethods()
+    public function getCustomMethods()
     {
         $facade = $this->facade;
         $options = is_callable([$facade, 'getOptions']) ? call_user_func([$facade, 'getOptions']) : [];
@@ -184,11 +184,13 @@ class Cli
     /**
      * Yield all available methods.
      *
+     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
+     *
      * @return \Generator
      */
-    public function getAvailableMethods($customMethods = [])
+    public function getAvailableMethods($customMethods = null)
     {
-        foreach ([$this->methods, $customMethods] as $methods) {
+        foreach ([$this->methods, $customMethods ?: $this->getCustomMethods()] as $methods) {
             foreach ($methods as $method => $action) {
                 $method = is_int($method) ? $action : $method;
                 if (substr($method, 0, 2) !== '__') {
@@ -200,11 +202,13 @@ class Cli
 
     /**
      * Dump the list of available methods as textual output.
+     *
+     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
      */
-    public function listAvailableMethods($customMethods = [])
+    public function listAvailableMethods($customMethods = null)
     {
         echo "Available methods are:\n";
-        foreach ($this->getAvailableMethods($customMethods) as $method) {
+        foreach ($this->getAvailableMethods($customMethods ?: $this->getCustomMethods()) as $method) {
             $action = $this->convertToKebabCase($method);
             $target = isset($this->methods[$method]) ? $this->methods[$method] : $method;
             $key = array_search($target, $this->methods);

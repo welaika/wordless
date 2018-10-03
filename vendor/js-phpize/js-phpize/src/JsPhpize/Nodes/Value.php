@@ -2,17 +2,23 @@
 
 namespace JsPhpize\Nodes;
 
+/**
+ * Class Value.
+ *
+ * @property-read array $before List prefixed codes
+ * @property-read array $after  List suffixed codes
+ */
 abstract class Value extends Node
 {
     /**
      * @var array
      */
-    protected $before = array();
+    protected $before = [];
 
     /**
      * @var array
      */
-    protected $after = array();
+    protected $after = [];
 
     public function getBefore()
     {

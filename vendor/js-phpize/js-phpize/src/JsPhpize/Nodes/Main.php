@@ -9,8 +9,8 @@ class Main extends Block
      */
     protected $multipleInstructions = true;
 
-    public function __construct($parentheses = null)
+    public function __construct()
     {
-        parent::__construct('main', $parentheses);
+        parent::__construct('main');
     }
 }

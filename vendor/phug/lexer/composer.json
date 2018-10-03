@@ -2,7 +2,7 @@
     "name": "phug/lexer",
     "type": "library",
     "keywords": ["phug", "lexer", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
-    "description": "",
+    "description": "Pug (ex-Jade) lexer for PHP, HTML template engine structured by indentation",
     "license": "MIT",
     "homepage": "http://phug-lang.com",
     "authors": [

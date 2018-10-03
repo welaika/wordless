@@ -5,48 +5,11 @@ namespace Phug;
 use Phug\Lexer\Event\EndLexEvent;
 use Phug\Lexer\Event\LexEvent;
 use Phug\Lexer\Event\TokenEvent;
-use Phug\Lexer\Scanner\AssignmentScanner;
-use Phug\Lexer\Scanner\AttributeScanner;
-use Phug\Lexer\Scanner\BlockScanner;
-use Phug\Lexer\Scanner\CaseScanner;
-use Phug\Lexer\Scanner\ClassScanner;
-use Phug\Lexer\Scanner\CodeScanner;
-use Phug\Lexer\Scanner\CommentScanner;
-use Phug\Lexer\Scanner\ConditionalScanner;
-use Phug\Lexer\Scanner\DoctypeScanner;
-use Phug\Lexer\Scanner\DoScanner;
-use Phug\Lexer\Scanner\DynamicTagScanner;
-use Phug\Lexer\Scanner\EachScanner;
-use Phug\Lexer\Scanner\ExpansionScanner;
-use Phug\Lexer\Scanner\ExpressionScanner;
-use Phug\Lexer\Scanner\FilterScanner;
-use Phug\Lexer\Scanner\ForScanner;
-use Phug\Lexer\Scanner\IdScanner;
-use Phug\Lexer\Scanner\ImportScanner;
-use Phug\Lexer\Scanner\IndentationScanner;
-use Phug\Lexer\Scanner\KeywordScanner;
-use Phug\Lexer\Scanner\MarkupScanner;
-use Phug\Lexer\Scanner\MixinCallScanner;
-use Phug\Lexer\Scanner\MixinScanner;
-use Phug\Lexer\Scanner\NewLineScanner;
-use Phug\Lexer\Scanner\TagScanner;
-use Phug\Lexer\Scanner\TextBlockScanner;
-use Phug\Lexer\Scanner\TextLineScanner;
+use Phug\Lexer\Partial\DumpTokenTrait;
+use Phug\Lexer\Partial\StateTrait;
 use Phug\Lexer\Scanner\TextScanner;
-use Phug\Lexer\Scanner\VariableScanner;
-use Phug\Lexer\Scanner\WhenScanner;
-use Phug\Lexer\Scanner\WhileScanner;
-use Phug\Lexer\Scanner\YieldScanner;
 use Phug\Lexer\ScannerInterface;
 use Phug\Lexer\State;
-use Phug\Lexer\Token\AttributeEndToken;
-use Phug\Lexer\Token\AttributeStartToken;
-use Phug\Lexer\Token\AttributeToken;
-use Phug\Lexer\Token\ExpressionToken;
-use Phug\Lexer\Token\IndentToken;
-use Phug\Lexer\Token\NewLineToken;
-use Phug\Lexer\Token\OutdentToken;
-use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\TokenInterface;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
@@ -79,17 +42,12 @@ use Phug\Util\Partial\ModuleContainerTrait;
 class Lexer implements LexerInterface, ModuleContainerInterface
 {
     use ModuleContainerTrait;
+    use StateTrait;
+    use DumpTokenTrait;
 
     const INDENT_SPACE = ' ';
     const INDENT_TAB = "\t";
     const DEFAULT_TAB_WIDTH = 4;
-
-    /**
-     * The state of the current lexing process.
-     *
-     * @var State
-     */
-    private $state;
 
     /**
      * @var TokenInterface
@@ -120,52 +78,16 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     public function __construct($options = null)
     {
         $this->setOptionsDefaults($options ?: [], [
-            'lexer_state_class_name' => State::class,
-            'level'                  => 0,
-            'indent_style'           => null,
-            'indent_width'           => null,
-            'allow_mixed_indent'     => true,
-            'encoding'               => null,
-            'lexer_modules'          => [],
-            'keywords'               => [],
-            'scanners'               => [
-                //TODO: Several of these are non-standard and need to be encapsulated into extensions
-                //Namely: ForScanner, DoScanner, VariableScanner
-                'new_line'    => NewLineScanner::class,
-                'indent'      => IndentationScanner::class,
-                'import'      => ImportScanner::class,
-                'block'       => BlockScanner::class,
-                'yield'       => YieldScanner::class,
-                'conditional' => ConditionalScanner::class,
-                'each'        => EachScanner::class,
-                'case'        => CaseScanner::class,
-                'when'        => WhenScanner::class,
-                'do'          => DoScanner::class,
-                'while'       => WhileScanner::class,
-                'for'         => ForScanner::class,
-                'mixin'       => MixinScanner::class,
-                'mixin_call'  => MixinCallScanner::class,
-                'doctype'     => DoctypeScanner::class,
-                'keyword'     => KeywordScanner::class,
-                'tag'         => TagScanner::class,
-                'class'       => ClassScanner::class,
-                'id'          => IdScanner::class,
-                'attribute'   => AttributeScanner::class,
-                'assignment'  => AssignmentScanner::class,
-                'variable'    => VariableScanner::class,
-                'comment'     => CommentScanner::class,
-                'filter'      => FilterScanner::class,
-                'expression'  => ExpressionScanner::class,
-                'code'        => CodeScanner::class,
-                'markup'      => MarkupScanner::class,
-                'expansion'   => ExpansionScanner::class,
-                'dynamic_tag' => DynamicTagScanner::class,
-                'text_block'  => TextBlockScanner::class,
-                'text_line'   => TextLineScanner::class,
-                //Notice that TextScanner is always added in lex(), as we'd basically disable extensions otherwise
-                //As this array is replaced recursively, your extensions are either added or overwritten
-                //If Text would be last one, every extension would end up as text, as text matches everything
-            ],
+            'lexer_state_class_name'   => State::class,
+            'level'                    => 0,
+            'indent_style'             => null,
+            'indent_width'             => null,
+            'allow_mixed_indent'       => true,
+            'multiline_markup_enabled' => true,
+            'encoding'                 => null,
+            'lexer_modules'            => [],
+            'keywords'                 => [],
+            'scanners'                 => Scanners::getList(),
 
             //Events
             'on_lex'     => null,
@@ -175,6 +97,14 @@ class Lexer implements LexerInterface, ModuleContainerInterface
 
         $this->state = null;
 
+        $this->updateOptions();
+    }
+
+    /**
+     * Synchronize the lexer to the new options values.
+     */
+    public function updateOptions()
+    {
         if ($onLex = $this->getOption('on_lex')) {
             $this->attach(LexerEvent::LEX, $onLex);
         }
@@ -201,29 +131,31 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     }
 
     /**
-     * Returns true if a lexing process is active and a state exists, false if not.
+     * Adds a new scanner class to use in the lexing process at the top of scanning order.
      *
-     * @return bool
+     * The scanner class needs to extend Phug\Lexer\ScannerInterface. It can be the class name itself
+     * or an instance of it.
+     *
+     * @param string                  $name
+     * @param ScannerInterface|string $scanner
+     *
+     * @return $this
      */
-    public function hasState()
+    public function prependScanner($name, $scanner)
     {
-        return $this->state instanceof State;
-    }
+        $this->filterScanner($scanner);
 
-    /**
-     * Returns the state object of the current lexing process.
-     *
-     * @return State
-     */
-    public function getState()
-    {
-        if (!$this->state) {
-            throw new \RuntimeException(
-                'Failed to get state: No lexing process active. Use the `lex()`-method'
-            );
+        $scanners = [
+            $name => $scanner,
+        ];
+
+        foreach ($this->getScanners() as $scannerName => $classNameOrInstance) {
+            if ($scannerName !== $name) {
+                $scanners[$scannerName] = $classNameOrInstance;
+            }
         }
 
-        return $this->state;
+        return $this->setOption('scanners', $scanners);
     }
 
     /**
@@ -234,28 +166,14 @@ class Lexer implements LexerInterface, ModuleContainerInterface
      *
      * @param string                  $name
      * @param ScannerInterface|string $scanner
-     * @param string                  $before
      *
      * @return $this
      */
-    public function addScanner($name, $scanner, $before = null)
+    public function addScanner($name, $scanner)
     {
         $this->filterScanner($scanner);
 
-        $scanners = $before ? [] : $this->getOption('scanners');
-        $scanners[$name] = $scanner;
-
-        if ($before) {
-            foreach ($this->getOption('scanners') as $scannerName => $classNameOrInstance) {
-                if ($scannerName !== $name) {
-                    $scanners[$scannerName] = $classNameOrInstance;
-                }
-            }
-        }
-
-        $this->setOption('scanners', $scanners);
-
-        return $this;
+        return $this->setOption(['scanners', $name], $scanner);
     }
 
     /**
@@ -277,11 +195,12 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     {
         $stateClassName = $this->getOption('lexer_state_class_name');
         $lexEvent = new LexEvent($input, $path, $stateClassName, [
-            'encoding'           => $this->getOption('encoding'),
-            'indent_style'       => $this->getOption('indent_style'),
-            'indent_width'       => $this->getOption('indent_width'),
-            'allow_mixed_indent' => $this->getOption('allow_mixed_indent'),
-            'level'              => $this->getOption('level'),
+            'encoding'                 => $this->getOption('encoding'),
+            'indent_style'             => $this->getOption('indent_style'),
+            'indent_width'             => $this->getOption('indent_width'),
+            'allow_mixed_indent'       => $this->getOption('allow_mixed_indent'),
+            'multiline_markup_enabled' => $this->getOption('multiline_markup_enabled'),
+            'level'                    => $this->getOption('level'),
         ]);
 
         $this->trigger($lexEvent);
@@ -323,25 +242,34 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         $this->lastToken = null;
     }
 
-    private function handleTokens(\Iterator $tokens)
+    private function handleToken($token)
     {
-        foreach ($tokens as $token) {
-            $event = new TokenEvent($token);
-            $this->trigger($event);
+        $event = new TokenEvent($token);
+        $this->trigger($event);
 
-            $token = $event->getToken();
-            $tokens = $event->getTokenGenerator();
+        $tokens = $event->getTokenGenerator();
 
-            if ($tokens) {
-                //N> yield from $this->>handleTokens($tokens)
-                foreach ($this->handleTokens($tokens) as $tok) {
-                    yield $tok;
-                }
-                continue;
+        if ($tokens) {
+            //N> yield from $this->handleTokens($tokens)
+            foreach ($this->handleTokens($tokens) as $tok) {
+                yield $tok;
             }
 
-            $this->lastToken = $token;
-            yield $token;
+            return;
+        }
+
+        $token = $event->getToken();
+        $this->lastToken = $token;
+
+        yield $token;
+    }
+
+    private function handleTokens(\Iterator $tokens)
+    {
+        foreach ($tokens as $rawToken) {
+            foreach ($this->handleToken($rawToken) as $token) {
+                yield $token;
+            }
         }
     }
 
@@ -371,57 +299,6 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         return $dumped;
     }
 
-    private function dumpToken(TokenInterface $token)
-    {
-        $suffix = '';
-        switch (get_class($token)) {
-            case IndentToken::class:
-                $dumped = '->';
-                break;
-            case OutdentToken::class:
-                $dumped = '<-';
-                break;
-            case NewLineToken::class:
-                $dumped = '\n';
-                $suffix = "\n";
-                break;
-            case AttributeStartToken::class:
-                $dumped = '(';
-                break;
-            case AttributeToken::class:
-                /** @var AttributeToken $token */
-                $dumped = sprintf(
-                    'Attr %s=%s (%s, %s)',
-                    $token->getName() ?: '""',
-                    $token->getValue() ?: '""',
-                    $token->isEscaped() ? 'escaped' : 'unescaped',
-                    $token->isChecked() ? 'checked' : 'unchecked'
-                );
-                break;
-            case AttributeEndToken::class:
-                $dumped = ')';
-                break;
-            case TextToken::class:
-                /** @var TextToken $token */
-                $dumped = 'Text '.$token->getValue();
-                break;
-            case ExpressionToken::class:
-                /** @var ExpressionToken $token */
-                $dumped = sprintf(
-                    'Expr %s (%s, %s)',
-                    $token->getValue() ?: '""',
-                    $token->isEscaped() ? 'escaped' : 'unescaped',
-                    $token->isChecked() ? 'checked' : 'unchecked'
-                );
-                break;
-            default:
-                $dumped = $this->getTokenName($token);
-                break;
-        }
-
-        return "[$dumped]".$suffix;
-    }
-
     private function filterScanner($scanner)
     {
         if (!is_subclass_of($scanner, ScannerInterface::class)) {
@@ -429,11 +306,6 @@ class Lexer implements LexerInterface, ModuleContainerInterface
                 "Scanner $scanner is not a valid ".ScannerInterface::class.' instance or extended class'
             );
         }
-    }
-
-    private function getTokenName($token)
-    {
-        return preg_replace('/Token$/', '', get_class($token));
     }
 
     public function getModuleBaseClassName()

@@ -1,7 +1,12 @@
 <?php
 
+/**
+ * @example // comment
+ */
+
 namespace Phug\Lexer\Scanner;
 
+use Phug\Lexer\Analyzer\LineAnalyzer;
 use Phug\Lexer\State;
 use Phug\Lexer\Token\CommentToken;
 use Phug\Lexer\Token\NewLineToken;
@@ -29,42 +34,15 @@ class CommentScanner extends MultilineScanner
         }
 
         yield $state->endToken($token);
-        $level = $state->getLevel();
         $line = $reader->readUntilNewLine();
-        $lines = $line === '' ? [] : [$line];
+        $lines = $line === '' ? [] : [[$line]];
 
         /** @var TextToken $token */
         $token = $state->createToken(TextToken::class);
 
-        $newLine = false;
-        while ($reader->hasLength()) {
-            $newLine = true;
-            $indentationScanner = new IndentationScanner();
-            $newLevel = $indentationScanner->getIndentLevel($state, $level);
-
-            if (!$reader->peekChars([' ', "\t", "\n"])) {
-                break;
-            }
-
-            if ($newLevel < $level) {
-                if ($reader->match('[ \t]*\n')) {
-                    $reader->consume(mb_strlen($reader->getMatch(0)));
-                    $lines[] = '';
-
-                    continue;
-                }
-
-                $state->setLevel($newLevel);
-
-                break;
-            }
-
-            $lines[] = $reader->readUntilNewLine();
-
-            if ($newLine = $reader->peekNewLine()) {
-                $reader->consume(1);
-            }
-        }
+        $analyzer = new LineAnalyzer($state, $reader, $lines);
+        $analyzer->analyze(false);
+        $lines = $analyzer->getFlatLines();
 
         if (end($lines) === '') {
             array_pop($lines);
@@ -77,15 +55,13 @@ class CommentScanner extends MultilineScanner
         $token->getSourceLocation()->setOffsetLength(1); //Let it have at least 1 length for debugging
         yield $token;
 
-        if ($newLine) {
+        if ($analyzer->hasNewLine()) {
             yield $state->createToken(NewLineToken::class);
 
-            if (isset($newLevel)) {
-                $state->setLevel($newLevel);
+            $state->setLevel($analyzer->getNewLevel());
 
-                while ($state->nextOutdent() !== false) {
-                    yield $state->createToken(OutdentToken::class);
-                }
+            while ($state->nextOutdent() !== false) {
+                yield $state->createToken(OutdentToken::class);
             }
         }
     }

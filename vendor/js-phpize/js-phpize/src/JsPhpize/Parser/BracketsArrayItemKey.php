@@ -24,7 +24,7 @@ class BracketsArrayItemKey
 
     protected function getStringExport($value)
     {
-        return array('string', var_export($value, true));
+        return ['string', var_export($value, true)];
     }
 
     protected function parseTypeAndValue()
@@ -43,10 +43,10 @@ class BracketsArrayItemKey
                 return $this->getStringExport($value);
             }
 
-            return array($token->type, $token->value);
+            return [$token->type, $token->value];
         }
 
-        return array(null, null);
+        return [null, null];
     }
 
     public function isValid()

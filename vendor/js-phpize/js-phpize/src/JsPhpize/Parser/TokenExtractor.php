@@ -27,7 +27,7 @@ abstract class TokenExtractor extends TokenCrawler
             $key = new Constant($type, $value);
             $value = $this->expectValue($this->next());
 
-            return array($key, $value);
+            return [$key, $value];
         }
     }
 

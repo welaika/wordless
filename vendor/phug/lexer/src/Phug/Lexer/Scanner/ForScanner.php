@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example for $item in $items
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\Token\ForToken;

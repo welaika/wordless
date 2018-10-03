@@ -11,14 +11,14 @@ class DataBag
 
     public function __construct($type, array $data)
     {
-        $this->data = array_merge(array(
+        $this->data = array_merge([
             'type' => $type,
-        ), $data);
+        ], $data);
     }
 
     public function is($value)
     {
-        return in_array($value, array($this->type, $this->value));
+        return in_array($value, [$this->type, $this->value]);
     }
 
     protected function typeIn($values)

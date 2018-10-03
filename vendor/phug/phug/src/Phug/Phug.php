@@ -56,7 +56,7 @@ class Phug
             $extras[$option] = static::$method();
         }
 
-        return array_merge_recursive(self::getExtensionsOptions(self::$extensions, $extras), $options);
+        return array_merge_recursive(static::getExtensionsOptions(self::$extensions, $extras), $options);
     }
 
     /**
@@ -95,6 +95,21 @@ class Phug
         if (self::$renderer && (empty($path) || self::$renderer->hasOption($path))) {
             if (is_array($options)) {
                 foreach ($options as $key => $value) {
+                    if (is_int($key)) {
+                        $callbacks = self::$renderer->getOption($path);
+                        if (!is_array($callbacks) || is_callable($callbacks)) {
+                            $callbacks = [$callbacks];
+                        }
+                        self::$renderer->setOption($path, array_filter(
+                            $callbacks,
+                            function ($item) use ($value) {
+                                return $item !== $value;
+                            }
+                        ));
+
+                        continue;
+                    }
+
                     static::removeOptions(array_merge($path, [$key]), $value);
                 }
 

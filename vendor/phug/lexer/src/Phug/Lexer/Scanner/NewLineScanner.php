@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Scanner for new line.
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;

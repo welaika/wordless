@@ -141,7 +141,9 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
     /**
      * Scan a directory recursively, compile them and save them into the cache directory.
      *
-     * @param string $directory the directory to search in pug templates
+     * @param string $directory the directory to search in pug
+     *
+     * @throws \Phug\RendererException
      *
      * @return array count of cached files and error count
      */
@@ -152,24 +154,23 @@ class FileAdapter extends AbstractAdapter implements CacheInterface
         $errorDetails = [];
 
         $renderer = $this->getRenderer();
-        $compiler = $renderer->getCompiler();
+        $events = $renderer->getCompiler()->getEventListeners();
 
         foreach ($renderer->scanDirectory($directory) as $inputFile) {
+            $renderer->initCompiler();
+            $compiler = $renderer->getCompiler();
+            $compiler->mergeEventListeners($events);
             $path = $inputFile;
             $this->isCacheUpToDate($path);
             $sandBox = $this->getRenderer()->getNewSandBox(function () use (&$success, $compiler, $path, $inputFile) {
                 $this->cacheFileContents($path, $compiler->compileFile($inputFile), $compiler->getCurrentImportPaths());
                 $success++;
             });
+            $error = $sandBox->getThrowable();
 
-            if ($sandBox->getThrowable()) {
+            if ($error) {
                 $errors++;
-                $errorDetails[] = [
-                    'directory' => $directory,
-                    'inputFile' => $inputFile,
-                    'path'      => $path,
-                    'error'     => $sandBox->getThrowable(),
-                ];
+                $errorDetails[] = compact(['directory', 'inputFile', 'path', 'error']);
             }
         }
 

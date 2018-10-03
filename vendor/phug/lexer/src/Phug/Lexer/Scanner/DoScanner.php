@@ -1,5 +1,11 @@
 <?php
 
+/**
+ * /!\ Warning, this is a PHP-specific syntax, this does not exists in pugjs.
+ *
+ * @example do ... while
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\Token\DoToken;

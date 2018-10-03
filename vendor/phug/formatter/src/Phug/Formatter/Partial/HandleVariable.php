@@ -134,6 +134,12 @@ trait HandleVariable
             return $variable;
         }
 
+        foreach ($this->getOption('checked_variable_exceptions') as $exception) {
+            if (call_user_func($exception, $variable, $index, $tokens, $checked)) {
+                return $variable;
+            }
+        }
+
         $checkedVariable = '(isset('.$variable.') ? '.$variable.' : null)';
         if ($this->isInInterpolation($tokens, $index)) {
             $checkedVariable = '".'.$checkedVariable.'."';

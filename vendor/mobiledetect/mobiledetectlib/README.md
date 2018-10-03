@@ -1,6 +1,6 @@
 ![Mobile Detect](http://demo.mobiledetect.net/logo-github.png)
 
-> Motto: "Every business should have a mobile detection script to detect mobile readers."
+> Motto: "Every business should have a detection script to detect mobile readers."
 
 [![Build Status](https://travis-ci.org/serbanghita/Mobile-Detect.svg?branch=devel)](https://travis-ci.org/serbanghita/Mobile-Detect) 
 [![Latest Stable Version](https://poser.pugx.org/mobiledetect/mobiledetectlib/v/stable.svg)](https://packagist.org/packages/mobiledetect/mobiledetectlib) 
@@ -14,29 +14,30 @@
 Mobile Detect is a lightweight PHP class for detecting mobile devices (including tablets).
 It uses the User-Agent string combined with specific HTTP headers to detect the mobile environment.
 
+*Why*
+
 Your website's _content strategy_ is important! You need a complete toolkit to deliver an experience that is _optimized_, 
 _fast_ and _relevant_ to your users. Mobile Detect class is a 
 [server-side detection](http://www.w3.org/TR/mwabp/#bp-devcap-detection) tool that can help you with your RWD strategy, 
 it is not a replacement for CSS3 media queries or other forms of client-side feature detection.
 
-We're committed to make Mobile_Detect the best open-source mobile detection resource and this is why before 
-each release we're running [unit tests](./tests), we also research and update the detection rules on **daily** 
-and **weekly** basis.
+*How*
 
-See also [the history](./docs/HISTORY.md) of the project.
+We're committed to make Mobile_Detect the best open-source mobile detection resource and this is why before 
+each release we're running [unit tests](./tests) and research and update the detection rules on **monthly** basis.
+
+*Who*
+
+See [the history](./docs/HISTORY.md) of the project.
 
 #### Announcements
 
-For `2.x` branch we are only integrating new regexes and User-Agents for our tests.
-On `2.x` releases we are focusing on **new tablets only**. All the pull requests about TVs, bots or optimizations will 
-be closed and analyzed after `3.0.0-beta` is released.
-
-Still working on `3.0.0` branch to provide you with device detection!
-We're really excited on this one!
-We would like to speed this up, but life and family gets in the way ;)
-
-Many thanks **JetBrains** team for providing licenses for [PHPStorm](https://www.jetbrains.com/phpstorm/) and 
+* **JetBrains** is sponsoring the project by providing licenses for [PHPStorm](https://www.jetbrains.com/phpstorm/) and 
 [DataGrip](https://www.jetbrains.com/datagrip/).
+* **Mobile_Detect `2.x.x`** is only integrating new regexes, User-Agents and tests. We are focusing on **new tablets only**. 
+The rest of the PRs about TVs, bots or optimizations will be closed and analyzed after `3.0.0-beta` is released.
+* **Mobile_Detect `3.x.x`** is experimental and WIP.
+
 
 #### Install
 
@@ -77,9 +78,9 @@ or include the dependency in the `composer.json` file:
 
 *Donate*
 
-|Pledgie|Paypal|
-|-------|------|
-|[Donate :+1:](https://pledgie.com/campaigns/21856)|[Donate :beer:](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mobiledetectlib%40gmail%2ecom&lc=US&item_name=Mobile%20Detect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)|
+|Paypal|
+|------|
+|[Donate :+1:](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=mobiledetectlib%40gmail%2ecom&lc=US&item_name=Mobile%20Detect&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donate_SM%2egif%3aNonHosted)|
 
 
 I'm currently paying for hosting and spend a lot of my family time to maintain the project and planning the future releases.
@@ -138,6 +139,16 @@ easy styling based on various attributes (archive, user, post, mobile) and vario
 Mobile attributes include type of device, Operating System, Browser, etc. Examples: .is-mobile, .is-not-mobile, 
 .is-tablet, .is-ios, .is-not-ios, .is-androidos, .is-chromebrowser. 
 Made by [wescleveland56](https://github.com/wescleveland56).
+
+* [Adaptive Content](https://wordpress.org/plugins/addfunc-adaptive-content/) for WordPress provides the most
+intuitive set of shortcodes for including/excluding content  on mobile devices, tablets desktops and other
+more specific device parameters. This lightweight plugin lets content writers and theme authors choose when
+WordPress should or shouldn’t show any give content item using shortcodes and quicktags or theme elements using functions.
+Made by [AddFunc](https://profiles.wordpress.org/addfunc).
+
+* [AddFunc Mobile Detect](https://wordpress.org/plugins/addfunc-mobile-detect/) for WordPress redirects
+mobile traffic to your mobile website and, basically, gives you loads of control over your mobile redirects.
+Made by [AddFunc](https://profiles.wordpress.org/addfunc).
 
 **Drupal**
 
@@ -282,9 +293,13 @@ Made by [quentin389](https://github.com/quentin389).
 * [LJ Mobile Detect](https://github.com/lewisjenkins/craft-lj-mobiledetect) is a simple implementation of Mobile Detect 
 for Craft CMS. Made by [Lewis Jenkins](https://github.com/lewisjenkins).
 
+* [Detect Craft](https://github.com/mmikkel/Detect-Craft) is a Craft CMS wrapper for the Mobile_Detect library. Made by [Mikkel Rummelhoff](https://github.com/mmikkel).
+
 * [Grav Plugin Mobile Detect](https://github.com/dimitrilongo/grav-plugin-mobile-detect/) is a simple implementation 
 of Mobile Detect for Grav CMS. Made by [Dimitri Longo](https://github.com/dimitrilongo).
 
+* [Mobile_Detect module for UliCMS](https://github.com/derUli/ulicms-Mobile_Detect). 
+Made by [derUli](https://github.com/derUli).
 
 **Perl**
 
@@ -318,3 +333,12 @@ Made by [Frédéric Robinet](https://github.com/robinef).
 
 * [mobile-detect](https://github.com/validide/mobile-detect) is a .Net partial port written in C#. 
 Made by [Valentin Dide](https://github.com/validide).
+
+**ColdFusion**
+
+* [MobileDetect](https://github.com/GiancarloGomez/ColdFusion-MobileDetect) is a CFC port of the 
+Mobile_Detect PHP Library. Made by [Giancarlo Gomez](https://github.com/GiancarloGomez).
+
+**Experiments** :bulb:
+
+* [Mobile Detect Fast](https://bitbucket.org/lanaguani/mobile-detect-fast/) (See: [#474](https://github.com/serbanghita/Mobile-Detect/issues/474)) is a class to increase the performance of Mobile Detect lib. Made by [LanaGuani](https://github.com/lanaguanifw).

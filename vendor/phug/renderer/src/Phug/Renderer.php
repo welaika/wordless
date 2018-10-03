@@ -148,7 +148,7 @@ class Renderer implements ModuleContainerInterface
      *
      * @return bool
      */
-    public function renderAndWriteFile($inputFile, $outputFile, $parameters)
+    public function renderAndWriteFile($inputFile, $outputFile, array $parameters = [])
     {
         $outputDirectory = dirname($outputFile);
 

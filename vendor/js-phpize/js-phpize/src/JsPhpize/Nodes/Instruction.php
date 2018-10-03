@@ -2,6 +2,12 @@
 
 namespace JsPhpize\Nodes;
 
+/**
+ * Class Instruction.
+ *
+ * @property-read array $instructions block body (list of instructions)
+ * @property-read bool  $appendReturn true if it should return the last instruction
+ */
 class Instruction extends Node
 {
     /**
@@ -31,7 +37,7 @@ class Instruction extends Node
 
     public function getReadVariables()
     {
-        $variables = array();
+        $variables = [];
         foreach ($this->instructions as $instruction) {
             $variables = array_merge($variables, $instruction->getReadVariables());
         }

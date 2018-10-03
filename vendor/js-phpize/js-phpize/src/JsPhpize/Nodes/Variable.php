@@ -2,17 +2,18 @@
 
 namespace JsPhpize\Nodes;
 
-class Variable extends Value implements Assignable
+/**
+ * Class Variable.
+ *
+ * @property-read string $name     Variable name
+ * @property-read Block  $scope    Current block scope
+ */
+class Variable extends DynamicValue implements Assignable
 {
     /**
      * @var string
      */
     protected $name;
-
-    /**
-     * @var array
-     */
-    protected $children = array();
 
     /**
      * @var Block
@@ -42,11 +43,6 @@ class Variable extends Value implements Assignable
 
     public function getReadVariables()
     {
-        $variables = array($this->name);
-        foreach ($this->children as $child) {
-            $variables = array_merge($variables, $child->getReadVariables());
-        }
-
-        return $variables;
+        return $this->mergeVariables([$this->name], $this->children);
     }
 }

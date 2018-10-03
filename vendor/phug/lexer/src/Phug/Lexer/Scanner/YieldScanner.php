@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @alias block
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;

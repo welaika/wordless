@@ -16,6 +16,6 @@ abstract class Readable
 
     public function getReadVariables()
     {
-        return array();
+        return [];
     }
 }

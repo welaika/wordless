@@ -31,6 +31,7 @@ trait RendererOptionsTrait
     {
         return [
             'debug'                 => true,
+            'exit_on_error'         => true,
             'enable_profiler'       => false,
             'up_to_date_check'      => true,
             'keep_base_name'        => false,

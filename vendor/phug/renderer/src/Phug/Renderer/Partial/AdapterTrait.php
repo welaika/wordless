@@ -158,6 +158,7 @@ trait AdapterTrait
         if ($error = $htmlEvent->getError()) {
             $this->handleError($error, 1, $path, $getSource(), $parameters, [
                 'debug'               => $this->getOption('debug'),
+                'exit_on_error'       => $this->getOption('exit_on_error'),
                 'error_handler'       => $this->getOption('error_handler'),
                 'html_error'          => $this->getOption('html_error'),
                 'error_context_lines' => $this->getOption('error_context_lines'),

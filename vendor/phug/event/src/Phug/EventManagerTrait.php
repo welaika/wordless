@@ -12,6 +12,50 @@ trait EventManagerTrait
     private $eventListeners = [];
 
     /**
+     * Returns current event listeners by event name.
+     *
+     * @return ListenerQueue[]
+     */
+    public function getEventListeners()
+    {
+        return $this->eventListeners;
+    }
+
+    /**
+     * Merge current events listeners with a given list.
+     *
+     * @param ListenerQueue[]|EventManagerInterface $eventListeners event listeners by event name
+     *
+     * @return bool true on success false on failure
+     */
+    public function mergeEventListeners($eventListeners)
+    {
+        if ($eventListeners instanceof EventManagerInterface) {
+            $eventListeners = $eventListeners->getEventListeners();
+        }
+
+        foreach (((array) $eventListeners) as $eventName => $listeners) {
+            $queue = [];
+            if (isset($this->eventListeners[$eventName])) {
+                $innerListeners = clone $this->eventListeners[$eventName];
+                $innerListeners->setExtractFlags(ListenerQueue::EXTR_DATA);
+                foreach ($innerListeners as $callback) {
+                    $queue[] = $callback;
+                }
+            }
+            $listeners = clone $listeners;
+            $listeners->setExtractFlags(ListenerQueue::EXTR_BOTH);
+            foreach ($listeners as $listener) {
+                if (!in_array($listener['data'], $queue)) {
+                    $this->attach($eventName, $listener['data'], $listener['priority']);
+                }
+            }
+        }
+
+        return true;
+    }
+
+    /**
      * Attaches a listener to an event.
      *
      * @param string   $event    the event to attach too
@@ -104,6 +148,7 @@ trait EventManagerTrait
         }
 
         $listeners = clone $this->eventListeners[$eventName];
+        $listeners->setExtractFlags(ListenerQueue::EXTR_DATA);
         $result = null;
         foreach ($listeners as $callback) {
             $result = call_user_func($callback, $event);

@@ -4,6 +4,13 @@ namespace JsPhpize\Nodes;
 
 use JsPhpize\Parser\Exception;
 
+/**
+ * Class Assignation.
+ *
+ * @property-read Assignable $leftHand  left hand assignation slot
+ * @property-read Node       $rightHand right hand assigned value
+ * @property-read string     $operator  assignation operator
+ */
 class Assignation extends Value
 {
     /**
@@ -12,7 +19,7 @@ class Assignation extends Value
     protected $leftHand;
 
     /**
-     * @var Value
+     * @var Node
      */
     protected $rightHand;
 
@@ -21,6 +28,15 @@ class Assignation extends Value
      */
     protected $operator;
 
+    /**
+     * Assignation constructor.
+     *
+     * @param string     $operator
+     * @param Assignable $leftHand
+     * @param Node       $rightHand
+     *
+     * @throws Exception
+     */
     public function __construct($operator, Assignable $leftHand, Node $rightHand)
     {
         $reason = $leftHand->getNonAssignableReason();
@@ -37,7 +53,7 @@ class Assignation extends Value
     public function getReadVariables()
     {
         return array_merge(
-            $this->leftHand->getReadVariables(),
+            method_exists($this->leftHand, 'getReadVariables') ? $this->leftHand->getReadVariables() : [],
             $this->rightHand->getReadVariables()
         );
     }

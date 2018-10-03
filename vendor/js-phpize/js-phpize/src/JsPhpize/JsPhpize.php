@@ -16,22 +16,22 @@ class JsPhpize extends JsPhpizeOptions
     /**
      * @var array
      */
-    protected $streamsRegistered = array();
+    protected $streamsRegistered = [];
 
     /**
      * @var array
      */
-    protected $options = array();
+    protected $options = [];
 
     /**
      * @var array
      */
-    protected $dependencies = array();
+    protected $dependencies = [];
 
     /**
      * @var array
      */
-    protected $sharedVariables = array();
+    protected $sharedVariables = [];
 
     /**
      * Compile file or code (detect if $input is an exisisting file, else use it as content).
@@ -72,7 +72,7 @@ class JsPhpize extends JsPhpizeOptions
         $dependencies = $compiler->getDependencies();
         if ($this->getOption('catchDependencies')) {
             $this->dependencies = array_unique(array_merge($this->dependencies, $dependencies));
-            $dependencies = array();
+            $dependencies = [];
         }
 
         $php = $compiler->compileDependencies($dependencies) . $start . $php . $end;
@@ -123,7 +123,7 @@ class JsPhpize extends JsPhpizeOptions
      */
     public function flushDependencies()
     {
-        $this->dependencies = array();
+        $this->dependencies = [];
 
         return $this;
     }
@@ -137,7 +137,7 @@ class JsPhpize extends JsPhpizeOptions
      *
      * @return mixed
      */
-    public function render($input, $filename = null, array $variables = array())
+    public function render($input, $filename = null, array $variables = [])
     {
         if (is_array($filename)) {
             $variables = $filename;
@@ -187,7 +187,7 @@ class JsPhpize extends JsPhpizeOptions
      *
      * @return string
      */
-    public function renderFile($file, array $variables = array())
+    public function renderFile($file, array $variables = [])
     {
         return $this->render(file_get_contents($file), $file, $variables);
     }
@@ -200,7 +200,7 @@ class JsPhpize extends JsPhpizeOptions
      *
      * @return string
      */
-    public function renderCode($code, array $variables = array())
+    public function renderCode($code, array $variables = [])
     {
         return $this->render($code, 'source.js', $variables);
     }
@@ -219,7 +219,7 @@ class JsPhpize extends JsPhpizeOptions
     public function share($variables, $value = null)
     {
         if (!is_array($variables)) {
-            $variables = array(strval($variables) => $value);
+            $variables = [strval($variables) => $value];
         }
         $this->sharedVariables = array_merge($this->sharedVariables, $variables);
     }
@@ -229,6 +229,6 @@ class JsPhpize extends JsPhpizeOptions
      */
     public function resetSharedVariables()
     {
-        $this->sharedVariables = array();
+        $this->sharedVariables = [];
     }
 }

@@ -8,6 +8,7 @@ use JsPhpize\Nodes\Block;
 use JsPhpize\Nodes\BracketsArray;
 use JsPhpize\Nodes\Constant;
 use JsPhpize\Nodes\Dyiade;
+use JsPhpize\Nodes\DynamicValue;
 use JsPhpize\Nodes\FunctionCall;
 use JsPhpize\Nodes\HooksArray;
 use JsPhpize\Nodes\Instruction;
@@ -19,6 +20,8 @@ use JsPhpize\Nodes\Variable;
 
 class Compiler
 {
+    use DependenciesTrait;
+
     /**
      * @const string
      */
@@ -34,74 +37,20 @@ class Compiler
     protected $engine;
 
     /**
-     * @var string
-     */
-    protected $varPrefix;
-
-    /**
-     * @var string
-     */
-    protected $constPrefix;
-
-    /**
      * @var bool
      */
     protected $arrayShortSyntax;
 
-    /**
-     * @var array
-     */
-    protected $helpers = array();
-
     public function __construct(JsPhpize $engine)
     {
         $this->engine = $engine;
-        $this->varPrefix = $engine->getVarPrefix();
-        $this->constPrefix = $engine->getConstPrefix();
+        $this->setPrefixes($engine->getVarPrefix(), $engine->getConstPrefix());
         $this->arrayShortSyntax = $engine->getOption('arrayShortSyntax', false);
-    }
-
-    protected function helperWrap($helper, $arguments)
-    {
-        $this->helpers[$helper] = true;
-
-        return 'call_user_func(' .
-            '$GLOBALS[\'' . $this->varPrefix . $helper . '\']' .
-            implode('', array_map(function ($argument) {
-                return ', ' . $argument;
-            }, $arguments)) .
-        ')';
     }
 
     protected function arrayWrap($arrayBody)
     {
         return sprintf($this->arrayShortSyntax ? '[ %s ]' : 'array( %s )', $arrayBody);
-    }
-
-    public function getDependencies()
-    {
-        return array_keys($this->helpers);
-    }
-
-    public function compileDependencies($dependencies)
-    {
-        $php = '';
-
-        foreach ($dependencies as $name) {
-            $file = preg_match('/^[a-z0-9_-]+$/i', $name)
-                ? __DIR__ . '/Helpers/' . ucfirst($name) . '.h'
-                : $name;
-
-            $code = file_exists($file)
-                ? file_get_contents($file)
-                : $name;
-
-            $php .= '$GLOBALS[\'' . $this->varPrefix . $name . '\'] = ' .
-                trim($code) .
-                ";\n";
-        }
-
-        return $php;
     }
 
     protected function visitAssignation(Assignation $assignation, $indent)
@@ -119,12 +68,12 @@ class Compiler
             $set = $this->engine->getHelperName('set');
 
             while ($lastChild = $assignation->leftHand->popChild()) {
-                $rightHand = $this->helperWrap($set, array(
+                $rightHand = $this->helperWrap($set, [
                     $this->visitNode($assignation->leftHand, $indent),
                     $this->visitNode($lastChild, $indent),
                     var_export($assignation->operator, true),
                     $rightHand,
-                ));
+                ]);
             }
         }
 
@@ -158,15 +107,15 @@ class Compiler
 
     protected function visitBracketsArray(BracketsArray $array, $indent)
     {
-        $visitNode = array($this, 'visitNode');
+        $visitNode = [$this, 'visitNode'];
 
         return $this->arrayWrap(implode(', ', array_map(
             function ($pair) use ($visitNode, $indent) {
                 list($key, $value) = $pair;
 
-                return call_user_func($visitNode, $key, $indent) .
+                return $visitNode($key, $indent) .
                     ' => ' .
-                    call_user_func($visitNode, $value, $indent);
+                    $visitNode($value, $indent);
             },
             $array->data
         )));
@@ -180,7 +129,7 @@ class Compiler
         }
         if ($constant->type === 'regexp') {
             $regExp = $this->engine->getHelperName('regExp');
-            $value = $this->helperWrap($regExp, array(var_export($value, true)));
+            $value = $this->helperWrap($regExp, [var_export($value, true)]);
         }
 
         return $value;
@@ -191,7 +140,7 @@ class Compiler
         $leftHand = $this->visitNode($dyiade->leftHand, $indent);
         $rightHand = $this->visitNode($dyiade->rightHand, $indent);
         if ($dyiade->operator === '+') {
-            $arguments = array($leftHand, $rightHand);
+            $arguments = [$leftHand, $rightHand];
             while (
                 ($dyiade = $dyiade->rightHand) instanceof Dyiade &&
                 $dyiade->operator === '+'
@@ -211,10 +160,10 @@ class Compiler
 
     protected function mapNodesArray($array, $indent, $pattern = null)
     {
-        $visitNode = array($this, 'visitNode');
+        $visitNode = [$this, 'visitNode'];
 
         return array_map(function ($value) use ($visitNode, $indent, $pattern) {
-            $value = call_user_func($visitNode, $value, $indent);
+            $value = $visitNode($value, $indent);
 
             if ($pattern) {
                 $value = sprintf($pattern, $value);
@@ -235,16 +184,13 @@ class Compiler
         $arguments = $functionCall->arguments;
         $applicant = $functionCall->applicant;
         $arguments = $this->visitNodesArray($arguments, $indent, ', ');
-        $dynamicCall = 'call_user_func(' .
-            $this->visitNode($function, $indent) .
-            ($arguments === '' ? '' : ', ' . $arguments) .
-        ')';
+        $dynamicCall = $this->visitNode($function, $indent) . '(' . $arguments . ')';
 
         if ($function instanceof Variable && count($function->children) === 0) {
             $name = $function->name;
             $staticCall = $name . '(' . $arguments . ')';
 
-            $functions = str_replace(array("\n", "\t", "\r", ' '), '', static::STATIC_CALL_FUNCTIONS);
+            $functions = str_replace(["\n", "\t", "\r", ' '], '', static::STATIC_CALL_FUNCTIONS);
             if ($applicant === 'new' || in_array($name, explode(',', $functions))) {
                 return $staticCall;
             }
@@ -254,14 +200,7 @@ class Compiler
                 $dynamicCall . ')';
         }
 
-        if (count($functionCall->children)) {
-            $arguments = $this->mapNodesArray($functionCall->children, $indent);
-            array_unshift($arguments, $dynamicCall);
-            $dot = $this->engine->getHelperName('dot');
-            $dynamicCall = $this->helperWrap($dot, $arguments);
-        }
-
-        return $dynamicCall;
+        return $this->handleVariableChildren($functionCall, $indent, $dynamicCall);
     }
 
     protected function visitHooksArray(HooksArray $array, $indent)
@@ -271,11 +210,11 @@ class Compiler
 
     protected function visitInstruction(Instruction $group, $indent)
     {
-        $visitNode = array($this, 'visitNode');
+        $visitNode = [$this, 'visitNode'];
         $isReturnPrepended = $group->isReturnPrepended();
 
         return implode('', array_map(function ($instruction) use ($visitNode, $indent, $isReturnPrepended) {
-            $value = call_user_func($visitNode, $instruction, $indent);
+            $value = $visitNode($instruction, $indent);
 
             return $indent .
                 ($instruction instanceof Block && $instruction->handleInstructions()
@@ -316,13 +255,8 @@ class Compiler
             ' : ' . $this->visitNode($ternary->falseValue, $indent);
     }
 
-    protected function visitVariable(Variable $variable, $indent)
+    protected function handleVariableChildren(DynamicValue $variable, $indent, $php)
     {
-        $name = $variable->name;
-        if ($variable->scope) {
-            $name = '__let_' . spl_object_hash($variable->scope) . $name;
-        }
-        $php = '$' . $name;
         if (count($variable->children)) {
             $arguments = $this->mapNodesArray($variable->children, $indent);
             array_unshift($arguments, $php);
@@ -331,6 +265,16 @@ class Compiler
         }
 
         return $php;
+    }
+
+    protected function visitVariable(Variable $variable, $indent)
+    {
+        $name = $variable->name;
+        if ($variable->scope) {
+            $name = '__let_' . spl_object_hash($variable->scope) . $name;
+        }
+
+        return $this->handleVariableChildren($variable, $indent, '$' . $name);
     }
 
     public function compile(Block $block, $indent = '')

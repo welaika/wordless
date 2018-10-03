@@ -41,7 +41,7 @@ class Lexer extends Scanner
         $this->engine = $engine;
         $this->filename = $filename;
         $this->line = 1;
-        $disallow = $engine->getOption('disallow', array());
+        $disallow = $engine->getOption('disallow', []);
         if (is_string($disallow)) {
             $disallow = explode(' ', $disallow);
         }
@@ -69,11 +69,11 @@ class Lexer extends Scanner
         $this->input = mb_substr($this->input, mb_strlen($consumed));
     }
 
-    protected function token($type, $data = array())
+    protected function token($type, $data = [])
     {
         $className = $this->engine->getOption('tokenClass', '\\JsPhpize\\Lexer\\Token');
 
-        return new $className($type, is_string($data) ? array('value' => $data) : (array) $data);
+        return new $className($type, is_string($data) ? ['value' => $data] : (array) $data);
     }
 
     protected function typeToken($matches)

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * @example #{'h'.$headerLevel} (produce h1 tag if $headerLevel = 1
+ */
+
 namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\EscapeTokenInterface;
@@ -29,22 +33,8 @@ class DynamicTagScanner implements ScannerInterface
                 if ($token instanceof InterpolationEndToken) {
                     $reader->consume();
 
-                    foreach ($state->scan(ClassScanner::class) as $subToken) {
+                    foreach ($state->scan(ElementScanner::class) as $subToken) {
                         yield $subToken;
-                    }
-
-                    foreach ($state->scan(IdScanner::class) as $subToken) {
-                        yield $subToken;
-                    }
-
-                    foreach ($state->scan(AutoCloseScanner::class) as $subToken) {
-                        yield $subToken;
-                    }
-
-                    if ($reader->match('[\t ]')) {
-                        foreach ($state->scan(SubScanner::class) as $subToken) {
-                            yield $subToken;
-                        }
                     }
 
                     break;

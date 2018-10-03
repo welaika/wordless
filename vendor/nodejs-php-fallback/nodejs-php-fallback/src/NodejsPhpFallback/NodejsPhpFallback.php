@@ -3,6 +3,7 @@
 namespace NodejsPhpFallback;
 
 use Composer\Composer;
+use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
 use Composer\Script\Event;
 
@@ -219,6 +220,33 @@ class NodejsPhpFallback
         return false;
     }
 
+    protected static function getConfirmRemindedChoiceFile()
+    {
+        return __DIR__ . '/npm-confirm-reminded-choice.txt';
+    }
+
+    public static function forgetConfirmRemindedChoice()
+    {
+        $remindedChoice = static::getConfirmRemindedChoiceFile();
+
+        if (file_exists($remindedChoice)) {
+            unlink($remindedChoice);
+        }
+    }
+
+    protected static function getGlobalInstallChoice(IOInterface $io, $message)
+    {
+        $remindedChoice = static::getConfirmRemindedChoiceFile();
+        if (!file_exists($remindedChoice) || !is_readable($remindedChoice)) {
+            $manual = strtolower($io->ask($message));
+            @file_put_contents($remindedChoice, $manual);
+
+            return $manual;
+        }
+
+        return file_get_contents($remindedChoice);
+    }
+
     public static function askForInstall(Event $event, $npmConfirm, $npm)
     {
         $io = $event->getIO();
@@ -227,13 +255,23 @@ class NodejsPhpFallback
             return $npm;
         }
 
+        $count = count($npmConfirm);
+        $packageWord = $count > 1 ? 'packages' : 'package';
+        $manual = static::getGlobalInstallChoice($io,
+            "$count node $packageWord can be optionally installed/updated.\n" .
+            "  - Enter Y to install/update them automatically on composer install/update.\n" .
+            "  - Enter N to ignore them and not asking again.\n" .
+            '  - Enter M to manually decide for each package at each run. [Y/N/M] '
+        );
+        $manual = ($manual === 'y' ? true : ($manual === 'n' ? false : null));
+
         $confirm = array();
         foreach ($npmConfirm as $package => $message) {
-            $confirm[$package] = $io->askConfirmation(
+            $confirm[$package] = $manual === null ? $io->askConfirmation(
                 "The node package [$package] can be installed:\n$message\n" .
                 "Would you like to install/update it? (if you're not sure, you can safely " .
                 'press Y to get the package ready to use if you need it later) [Y/N] '
-            );
+            ) : $manual;
         }
 
         $packages = array();

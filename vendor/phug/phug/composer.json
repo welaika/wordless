@@ -34,6 +34,11 @@
             "Phug": "./src"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "Phug\\Test\\": "./tests/Phug/"
+        }
+    },
     "bin": ["phug"],
     "suggest": {}
 }
