@@ -32,8 +32,10 @@ class Wordless {
             self::require_helpers();
             self::require_theme_initializers();
             self::register_activation();
-            self::register_preprocessors();
-            self::register_preprocessor_actions();
+            if (defined('WORDLESS_LEGACY') && true === WORDLESS_LEGACY){
+                self::register_preprocessors();
+                self::register_preprocessor_actions();
+            }
         } else {
             trigger_error("Missing directories: theme is missing following directories: " . join(array_map('basename', $missing_directories), ", ") . ". Fix theme or deactivate wordless plugin", E_USER_WARNING);
         }
