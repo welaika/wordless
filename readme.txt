@@ -53,6 +53,11 @@ You can find the changelog @ https://github.com/welaika/wordless/releases
 
 == Upgrade Notice ==
 
+= 2.5 =
+
+* Old ruby preprocessors are no more activated by default. Please refer to
+the changelog for more info.
+
 = 0.5 =
 
 * WARNING! Version 0.5 is not backward compatible! Wordless had always used `yield()` function in its template; starting from some point yield() become a reseved PHP function, so we had to rename it in Wordless code. If you get errors search and replace `yield()` inside the pugin directory with `wl_yield()`. Sorry for the inconvenient.

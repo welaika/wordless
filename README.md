@@ -96,6 +96,8 @@ them by setting the following in your `wp-config.php`
 define('WORDLESS_LEGACY', true);
 ```
 
+Wordless 3 is planned to completely remove this support.
+
 ## Inline code documentation
 
 You can find it [here](http://welaika.github.io/wordless/docs.html). If you are intrested in contribuing to the documentation:
