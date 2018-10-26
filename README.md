@@ -82,9 +82,19 @@ _______________
 * [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! ~~Compile and clean assets~~, create new WP installation, ~~a new wordless theme~~ and let you set up a deploy command in order to easily deploy your site, collaborating with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy` (*warning:* with the advent of Wordless 2.x some wordless-gem's functions are no more useful. We are in the process to imagine its future deveopment path)
 
 ## Known problems and limitations
+
 * Wordless has not been tested on Windows machines
 * The routing part can be drammaticaly improved to make it more readable and DRY
-* This is go-ahead software, everything is subject to change :) but you can pull code from *tagged commits* (stable)
+
+## Deprecations
+
+Wordless 2.5 deprecates the old ruby preprocessors support. It is disabled by
+default. If you need to develop an old theme you need to explicitely activate
+them by setting the following in your `wp-config.php`
+
+```php
+define('WORDLESS_LEGACY', true);
+```
 
 ## Inline code documentation
 
