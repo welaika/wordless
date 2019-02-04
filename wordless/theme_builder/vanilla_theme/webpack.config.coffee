@@ -73,7 +73,11 @@ module.exports = (env) ->
           port: 3000
           proxy: { target: "http://127.0.0.1:8080" }
           watchOptions: { ignoreInitial: true }
-          files: [ './theme/views/**/*.pug' ]
+          files: [
+            './theme/views/**/*.pug'
+            './theme/views/**/*.php'
+            './theme/helpers/**/*.php'
+            ]
         }
 
       new ExtractTextPlugin "../stylesheets/screen.css"
