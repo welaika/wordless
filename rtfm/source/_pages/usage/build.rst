@@ -48,7 +48,44 @@ Production build will essentially
 * do not produce source maps
 * do minimize assets
 
-**Deploy**
+.. _PHUG optimizer:
+
+PHUG optimizer
+##############
+
+When performance is a goal, PHUG ships a built-in `Optimizer`. You can read
+about it in the `phug documentation`_:
+
+    The Optimizer is a tool that avoid to load the Phug engine if a file is
+    available in the cache. In counterpart, it does not allow to change the
+    adapter or user post-render events.
+
+Wordless supports enabling this important optimization by setting an
+environment variable (in any way supported by your system) or a global
+constant to be defined in ``wp-config.php``. Let's see this Wordless'
+internal code snippet:
+
+.. literalinclude:: /../../wordless/helpers/render_helper.php
+    :lines: 81-87,89-91
+    :language: php
+    :caption: render_helper.php
+
+where we search for ``ENVIRONMENT`` and thus we'll activate PHUG's
+``Optimizer`` if the value will be ``production`` or ``staging``.
+
+.. note::
+    Arbitrary values are not supported.
+
+The simplest approach is to to define a constant inside ``wp-config.php``.
+
+.. code-block:: php
+    :caption: wp-config.php
+
+    <?php
+    define('ENVIRONMENT', 'production');
+
+Deploy
+######
 
 Wordless is agnostic about deploy strategy. Our favourite product to deploy
 WordPress is `Wordmove`_.
@@ -58,3 +95,4 @@ WordPress is `Wordmove`_.
 .. _Wordmove: https://github.com/welaika/wordmove
 .. _production mode: https://webpack.js.org/concepts/mode/
 .. [#f1] https://docs.npmjs.com/files/package.json#scripts
+.. _phug documentation: https://phug-lang.com/#usage

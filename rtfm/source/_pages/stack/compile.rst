@@ -73,7 +73,8 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 
 .. important::
 
-    You have to do nothing to deploy in production.
+    By deafult, you have nothing to do to deploy in production, but if performance is
+    crucial in your project, than you can optimize. See :ref:`PHUG optimizer` for more informations.
 
 
 .. _Pug: https://github.com/pugjs/pug

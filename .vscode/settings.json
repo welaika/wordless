@@ -1,5 +1,5 @@
 {
-  "restructuredtext.confPath": "${workspaceRoot}/rtfm/source",
+  "restructuredtext.confPath": "${workspaceFolder}/rtfm/source",
   "restructuredtext.builtDocumentationPath": "${workspaceRoot}/rtfm/build/html",
   "search.exclude": {
     "**/node_modules": true,
