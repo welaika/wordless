@@ -7,11 +7,11 @@ Introduction
 ############
 
 Wordless is an opinionated WordPress plugin + starter theme that dramatically
-speeds up and enhances your custom themes creation. Some of its features are:
+speeds up and enhances your custom theme creation. Some of its features are:
 
 * A structured, organized and clean theme organization
 * Scaffold a new theme directly within wp-cli
-* Write PHP templates with Pug templating system
+* Write PHP templates with the Pug templating system
 * Write CSS stylesheets using the awesome Sass syntax
 * Write Javascript logic in Coffeescript
 * A growing set of handy and documented PHP helper functions ready to be used
