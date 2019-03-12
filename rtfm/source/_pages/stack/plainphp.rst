@@ -24,7 +24,7 @@ like PUG or we need to write complex code there.
 
 #. Rename ``_header.html.pug`` in ``_header.html.php``
 
-#. Update it's content, e.g.:
+#. Update its content, e.g.:
 
     .. code-block:: php
         :caption: theme/views/layouts/_header.html.php
@@ -34,13 +34,13 @@ like PUG or we need to write complex code there.
 
 #. Done
 
-When ``render_partial("layouts/header")`` won't find ``_header.html.pug`` it
+When ``render_partial("layouts/header")`` doesn't find ``_header.html.pug`` it
 will automatically search for ``_header.html.php`` and will use it *as is*,
 without passing through any compilation process.
 
 Conclusions
 ###########
 
-As you can see, Wordless do not force you so much. Moreover you will continue
+As you can see, Wordless does not force you that much. Moreover, you will continue
 to have its goodies/helpers to break down views in little partials, simplifying
 code readability and organization.
