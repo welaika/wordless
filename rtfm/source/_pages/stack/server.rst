@@ -93,7 +93,7 @@ template changes too.
 
 .. warning::
     If you will develop with the WordPress backend in a tab, *BrowserSync* will
-    ignorantly reload that tab aas well (all tabs opened on port 3000 actually).
+    ignorantly reload that tab as well (all tabs opened on port 3000 actually).
     This could slow down your server. We advise to use the WordPress backend
     using port 8080 and thus bypassing *BrowserSync*.
 
