@@ -3,9 +3,9 @@
 Development stack
 =================
 
-Following are the stack components of Wordless' development workflow:
+Here are the stack components of Wordless' development workflow:
 
-* WordPess plugin
+* WordPress plugin
 * A theme with a convenient default scaffold
 * Webpack
 * WP-CLI

@@ -3,7 +3,7 @@
 Development environment
 =======================
 
-Said that with a
+Starting by saying that with a
 
 .. code-block:: bash
 
@@ -40,7 +40,7 @@ to be able to launch multiple processes when ``server`` is fired.
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/Procfile
     :caption: Procfile
 
-As you can see each line has a simple named command. Each command will be
+As you can see, each line has a simple named command. Each command will be
 launched and *foreman* will:
 
 * run all the listed processes
@@ -53,19 +53,19 @@ wp server
 Launched by ``nf``. Is a default *WP-CLI* command.
 
 We are invoking it within a theme directory, but it will climb up directories
-until it will find a ``wp-config.php`` file, then it will start a PHP server
-on its default port (8080) and on ``127.0.0.1`` address as per our config.
+until it finds a ``wp-config.php`` file, then it will start a PHP server
+on its default port (8080) and on the ``127.0.0.1`` address as per our config.
 
 .. note::
     You can directly reach ``http://127.0.0.1:8080`` in you browser in order
-    to reach wordpress bypassing all the webpack *things* we're gonna show
+    to reach wordpress, bypassing all the webpack *things* we're going to show
     below.
 
 BrowserSync
 ###########
 
-The only relevant **Webpack**'s part in this section is the one about
-BrowserSync_. It will start a web server at address ``127.0.0.1`` on port 3000.
+The only relevant **Webpack** part in this section is BrowserSync_. It will
+start a web server at address ``127.0.0.1`` on port 3000.
 This is where your browser will automatically go once launched.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
@@ -78,10 +78,10 @@ underlying ``wp server``.
 
 Since *BrowserSync* is invoked through a Webpack plugin
 (`browser-sync-webpack-plugin`_) we will benefit from automatic
-**browser autoreloading** when assets will be recompiled by Webpack self.
+**browser autoreloading** when assets are recompiled by Webpack itself.
 
 The ``files`` option is there because ``.pug`` files are not compiled by
-webpack, so we force watching those files too thus caling autoreload on
+webpack, so we force watching those files too, thus calling autoreload on
 template changes too.
 
 .. seealso::
@@ -92,9 +92,9 @@ template changes too.
     default configuration.
 
 .. warning::
-    If you will develop with WordPress backend in a tab, *BrowserSync* will
-    ignorantly reload that tab also (all tabs opened on port 3000 actually).
-    This could slow down your server. We advice to use WordPress backend
+    If you will develop with the WordPress backend in a tab, *BrowserSync* will
+    ignorantly reload that tab as well (all tabs opened on port 3000 actually).
+    This could slow down your server. We advise to use the WordPress backend
     using port 8080 and thus bypassing *BrowserSync*.
 
 .. _BrowserSync: https://www.browsersync.io/
@@ -115,8 +115,8 @@ your site, from WordPress and from your forms.
 The UI will be at
 http://localhost:8025 as per default configuration.
 
-When you'll spawn ``yarn server``, you'll have an environment variable
-esported thanks to the ``.env`` file:
+When you spawn ``yarn server``, you'll have an environment variable
+exported thanks to the ``.env`` file:
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/.env
     :caption: .env

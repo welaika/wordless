@@ -3,7 +3,7 @@
 Theme anatomy
 =============
 
-That's a typical `Wordless theme directory structure`_:
+This is a typical `Wordless theme directory structure`_:
 ::
 
   your_theme_dir
@@ -49,7 +49,7 @@ The `index.php` serves as a router to all the theme views.
       render_view("portfolio/show");
     }
 
-As you can see, you first determine the type of the page using `WordPress conditional tags`_, and then delegate the rendering to some particular view.
+As you can see, you first determine the type of the page using `WordPress conditional tags`_, and then delegate the rendering to an individual view.
 
 .. seealso::
     `render_view()`_ helper documentation
@@ -67,7 +67,7 @@ Rendering
 render_view()
 """""""""""""
 
-The main helper function used to render a view is - fantasy name - ``render_view()``. Here's its signature:
+The main helper function used to render a view is - fantasy name - ``render_view()``. Here is its signature:
 
 .. code-block:: php
 
@@ -75,11 +75,11 @@ The main helper function used to render a view is - fantasy name - ``render_view
     /**
         * Renders a view. Views are rendered based on the routing.
         *   They will show a template and a yielded content based
-        *   on the user requested page.
+        *   on the page requested by the user.
         *
         * @param  string $name   Filename with path relative to theme/views
         * @param  string $layout The template to use to render the view
-        * @param  array  $locals An associative array. Keys will be variables'
+        * @param  array  $locals An associative array. Keys will be variable
         *                        names and values will be variable values inside
         *                        the view
         */
@@ -87,7 +87,7 @@ The main helper function used to render a view is - fantasy name - ``render_view
           /* [...] */
         }
 
-Thanks to this helper, Worldess will always intercept **PUG** files and
+Thanks to this helper, Wordless will always intercept **PUG** files and
 automatically translate them to HTML.
 
 .. note::
@@ -123,7 +123,7 @@ render_partial()
 """"""""""""""""
 
 ``render_partial()`` is almost the same as its sister ``render_view()``, but it does
-not accept a layout as argument. Here is its signature
+not accept a layout as argument. Here is its signature:
 
 .. code-block:: php
 
@@ -175,7 +175,7 @@ will be the same as calling
     render_view('folder1/folder2/myview', 'default', array())
 
 so that the ``default.html.phug`` layout will be rendered. Within the layout,
-you have access to the ``wl_yield()`` helper, which will be combine the required
+you have access to the ``wl_yield()`` helper, which will combine the required
 view inside the layout when it is called:
 
 .. code-block:: jade
@@ -199,7 +199,7 @@ Views
 
   ``theme/views/**/*.pug`` or ``theme/views/**/*.php``
 
-That's the directory where you'll find yourself coding for most of the time.
+This is the directory where you'll find yourself coding most of the time.
 Here you can create a view for each main page of your theme, using Pug syntax
 or plain HTML.
 
@@ -234,7 +234,7 @@ please note the following:
   secondary file, placed in the ``theme/views/layouts`` directory, as mentioned
   in the paragraph above
 
-* We're already using two of the 40+ Wordless helper functions, ``link_to()``
+* We are already using two of the 40+ Wordless helper functions, ``link_to()``
   and ``get_the_filtered_content()``, to DRY up this view
 
 * Because the ``link_to`` helper will return html code, we used
@@ -254,7 +254,7 @@ Helpers
 
 Helpers are basically small functions that can be called in your views to help
 keep your code stay DRY. Create as many helper files and functions as you want
-and put them in this directory, they will all be required within your views,
+and put them in this directory: they will all be required within your views,
 together with the `default Wordless helpers`_. These are just a small subset of
 all the 40+ tested and documented helpers Wordless gives you for free:
 
@@ -268,7 +268,7 @@ all the 40+ tested and documented helpers Wordless gives you for free:
 - ``distance_of_time_in_words()`` - Reports the approximate distance in time
   between two dates
 
-Our favourite convention to write custom hepers is to write almost 1 file per
+Our favourite convention for writing custom helpers is to write almost 1 file per
 function and naming both the same way. It will be easier to find with ```cmd+p``
 😉
 
@@ -279,7 +279,7 @@ Initializers
 
 Remember the freaky ``functions.php`` file, the one where you would drop every
 bit of code external to the theme views (custom post types, taxonomies,
-wordpress filters, hooks, you name it). That was just terrible, isn't it?
+wordpress filters, hooks, you name it?) That was just terrible, right?
 Well, forget it.
 
 Wordless lets you split your code into many modular initializer files, each
@@ -296,15 +296,15 @@ one with a specific target:
   ├──── shortcodes.php
   ├──── thumbnail_sizes.php
 
-- **backend**: remove backend componentes such as widgets, update messages, ecc
-- **custom_post_types**: well...if you need to manage taxonomies, this is the
+- **backend**: remove backend components such as widgets, update messages, etc
+- **custom_post_types**: well... if you need to manage taxonomies, this is the
   place to be
-- **default_hooks**: this are used by default wordless' behaviours; tweak them
+- **default_hooks**: these are used by wordless's default behaviours; tweak them
   only if you know what are you doing
 - **hooks**: this is intended to be your custom hooks collector
 - **menus**: register new WP nav_menus from here
 - **shortcodes**: as it says
-- **thumbnail_sizes**: if you need custom thumbnailing sizes
+- **thumbnail_sizes**: if you need custom thumbnail sizes
 
 These are just some file name examples: you can organize them the way you
 prefer. Each file in this directory will be automatically required by Wordless.
@@ -314,13 +314,13 @@ Locale files
 
   ``config/locales`` directory
 
-Just drop all your theme locale files in this directory. Wordless will take
+Just drop all of your theme's locale files in this directory. Wordless will take
 care of calling `load_theme_textdomain()`_ for you.
 
 .. _load_theme_textdomain(): http://codex.wordpress.org/Function_Reference/load_theme_textdomain
 
 .. note::
-    Due to WordPress localization framework, you need to append our
+    Due to the WordPress localization framework, you need to append our
     ``"wl"`` domain when using internationalization. For example, calling
     ``__("News")`` without specifying the domain *will not work*.
 
@@ -334,8 +334,8 @@ The Fast Way
 """"""""""""
 
 - jQuery is included by default for you (not aliased to ``$`` though)
-- write your sass in ``theme/assets/stylesheets/screen.sass``
-- write your coffeescript in ``theme/assets/javascripts/application.js.coffee``
+- write your Sass in ``theme/assets/stylesheets/screen.sass``
+- write your Coffeescript in ``theme/assets/javascripts/application.js.coffee``
 
 and all will automagically work! :)
 
@@ -355,12 +355,12 @@ Custom assets
 They must be placed inside ``theme/assets/javascript/`` and
 ``theme/assets/stylesheets/`` and ``theme/assets/images/``.
 
-They will be compiled and resulting compilation files will be moved in
+They will be compiled and resulting compilation files will be moved in the
 ``assets/assetType`` folder.
 
-Compilation, naming and other logic is completely handled by webpack.
+Compilation, naming and other logic is fully handled by webpack.
 
-Images will be optimized by `ImageminPlugin`_. Default setup already translates
+Images will be optimized by `ImageminPlugin`_. The default setup already translates
 ``url`` s inside css/sass files in order to point to images in the
 right folder via `resolve-url-loader`_.
 
@@ -368,7 +368,7 @@ right folder via `resolve-url-loader`_.
 .. _resolve-url-loader: https://www.npmjs.com/package/resolve-url-loader
 
 Take a look to the default ``screen.sass`` and ``application.js.coffee`` to see
-example usage.
+usage examples.
 
 .. seealso::
     :ref:`CompileStack`
@@ -380,7 +380,7 @@ example usage.
 node_modules
 ^^^^^^^^^^^^
 
-You can use node modules just as any SO answer teaches to you :)
+You can use node modules just as any SO answer teaches you :)
 
 Add any vendor library through `YARN`_ with
 
@@ -388,7 +388,7 @@ Add any vendor library through `YARN`_ with
 
     yarn add slick-carousel
 
-Than in your CoffeeScritp/Javascript you can do
+Then in your CoffeeScritp/Javascript you can do
 
 .. code-block:: coffeescript
 
