@@ -84,7 +84,7 @@ _______________
 ## Known problems and limitations
 
 * Wordless has not been tested on Windows machines
-* The routing part can be drammtically improved to make it more readable and DRY
+* The routing part can be dramatically improved to make it more readable and DRY
 
 ## Deprecations
 
