@@ -299,7 +299,7 @@ one with a specific target:
 - **backend**: remove backend components such as widgets, update messages, etc
 - **custom_post_types**: well... if you need to manage taxonomies, this is the
   place to be
-- **default_hooks**: thiese are used by wordless's default behaviours; tweak them
+- **default_hooks**: these are used by wordless's default behaviours; tweak them
   only if you know what are you doing
 - **hooks**: this is intended to be your custom hooks collector
 - **menus**: register new WP nav_menus from here
