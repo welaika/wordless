@@ -123,6 +123,11 @@ The user interface was translated by Wasilis Mandratzis-Walz (German and Greek),
 
 Your help is welcome! Add your own language using [Transifex](https://www.transifex.com/projects/p/wordless/).
 
+## Documentation
+
+Helper documentation - [welaika.github.io/wordless/docs/0.5](http://welaika.github.io/wordless/docs/0.5/index.html)
+Wordless full documentation - [wordless.readthedocs.io](https://wordless.readthedocs.io/en/latest/?badge=latest)
+
 ## Need more tools?
 Visit [WordPress Tools](https://www.wptools.it).
 
