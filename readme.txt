@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 4.9.8
-Stable tag: 2.6.0
+Stable tag: 2.6.1
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -52,6 +52,10 @@ Read more on [GitHub](https://github.com/welaika/wordless) and on
 You can find the changelog @ https://github.com/welaika/wordless/releases
 
 == Upgrade Notice ==
+
+= 2.6.1 =
+
+Added helper for Gutenberg/ACF blocks.
 
 = 2.5 =
 
