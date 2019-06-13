@@ -10,7 +10,7 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * A growing set of handy and documented PHP helper functions ready to be used within your views
 * Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 
-[![Build Status](https://secure.travis-ci.org/welaika/wordless.png)](http://travis-ci.org/welaika/wordless)
+[![Build Status](https://travis-ci.org/welaika/wordless.svg?branch=master)](http://travis-ci.org/welaika/wordless)
 [![Documentation Status](https://readthedocs.org/projects/wordless/badge/?version=latest)](https://wordless.readthedocs.io/en/latest/?badge=latest)
 
 ## Getting started
