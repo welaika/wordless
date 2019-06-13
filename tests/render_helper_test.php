@@ -5,6 +5,7 @@ require_once('support/mocked_get_template_directory.php');
 require_once('../wordless/wordless.php');
 require_once('../vendor/phamlp/haml/HamlParser.php');
 require_once('../wordless/helpers/render_helper.php');
+require_once('support/mocked_apply_filters.php');
 
 class RenderHelperTest extends UnitTestCase {
     function test_render_template_haml() {
@@ -56,11 +57,9 @@ class RenderHelperTest extends UnitTestCase {
     // these functions are order dependend
 
     function test_pug_instance_options_with_wp_debug_false() {
-        ob_start();
-
+        xdebug_break();
         $this->assertEqual(
             array(
-                'pretty' => true,
                 'expressionLanguage' => 'php',
                 'extension' => '.pug',
                 'cache' => Wordless::theme_temp_path(),
@@ -78,7 +77,6 @@ class RenderHelperTest extends UnitTestCase {
 
         $this->assertEqual(
             array(
-                'pretty' => true,
                 'expressionLanguage' => 'php',
                 'extension' => '.pug',
                 'cache' => Wordless::theme_temp_path(),
