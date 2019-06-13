@@ -79,6 +79,7 @@ where we search for ``ENVIRONMENT`` and thus we'll activate PHUG's
 The simplest approach is to to define a constant inside ``wp-config.php``.
 
 .. code-block:: php
+
     :caption: wp-config.php
 
     <?php
