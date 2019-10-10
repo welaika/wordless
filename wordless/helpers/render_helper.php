@@ -179,16 +179,7 @@ class RenderHelper {
     }
 
     private function ensure_dir($dir) {
-
-        if (!file_exists($dir)) {
-            mkdir($dir, 0770);
-        }
-
-        if (!is_writable($dir)) {
-            chmod($dir, 0770);
-        }
-
-        if (is_writable($dir)) {
+        if ( file_exists( $dir ) ) {
             return true;
         } else {
             return false;
