@@ -5,7 +5,7 @@ Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn
 Requires at least: 3.0
 Tested up to: 5.2.1
-Stable tag: 2.7.0
+Stable tag: 3.0.0
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
@@ -52,6 +52,12 @@ Read more on [GitHub](https://github.com/welaika/wordless) and on
 You can find the changelog @ https://github.com/welaika/wordless/releases
 
 == Upgrade Notice ==
+
+= 3.0.0 =
+
+* Haml is no longer supported
+* This version of wordless is not compatible with theme structure from <3.0.0.
+  It's up to you to adapt your folders accordingly if you'd like to update the plugin.
 
 = 2.6.1 =
 
