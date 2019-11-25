@@ -1,20 +1,20 @@
 <?php
 
-// This function include screen.css in wp_head() function
+// This function include main.css in wp_head() function
 
 function enqueue_stylesheets() {
-  wp_register_style("screen", stylesheet_url("screen"), false, false);
-  wp_enqueue_style("screen");
+  wp_register_style("main", stylesheet_url("main"), false, false);
+  wp_enqueue_style("main");
 }
 
 add_action('wp_enqueue_scripts', 'enqueue_stylesheets');
 
-// This function include jquery and application.js in wp_footer() function
+// This function include jquery and main.js in wp_footer() function
 
 function enqueue_javascripts() {
   wp_enqueue_script("jquery");
-  wp_register_script("application", javascript_url("application"), '', false, true);
-  wp_enqueue_script("application");
+  wp_register_script("main", javascript_url("main"), '', false, true);
+  wp_enqueue_script("main");
 }
 
 add_action('wp_enqueue_scripts', 'enqueue_javascripts');

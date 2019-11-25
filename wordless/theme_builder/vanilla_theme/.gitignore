@@ -1,8 +1,7 @@
 tmp/*
 !tmp/.gitkeep
-assets/javascripts/application.js
-assets/javascripts/application.js.map
-assets/stylesheets/screen.css
-assets/stylesheets/screen.css.map
+assets/*/*
+!assets/*/.gitkeep
+!assets/fonts
 .DS_Store
 node_modules

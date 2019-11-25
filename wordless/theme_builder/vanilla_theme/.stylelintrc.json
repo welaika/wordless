@@ -1,0 +1,13 @@
+{
+  "extends": [
+    "stylelint-config-sass-guidelines"
+  ],
+  "rules": {
+    "block-opening-brace-space-before": null,
+    "declaration-block-trailing-semicolon": null,
+    "max-nesting-depth": 2,
+    "selector-class-pattern": "^[a-z0-9]+(?:(?:-{1,2}|__)[a-z0-9]+)*$",
+    "scss/percent-placeholder-pattern": "^[a-z0-9]+(?:(?:-{1,2}|__)[a-z0-9]+)*$",
+    "declaration-no-important": true
+  }
+}
