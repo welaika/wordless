@@ -236,7 +236,7 @@ class Wordless {
     }
 
     public static function theme_helpers_path() {
-        return self::join_paths(self::theme_path(), 'theme/helpers');
+        return self::join_paths(self::theme_path(), 'helpers');
     }
 
     public static function theme_initializers_path() {
@@ -248,27 +248,27 @@ class Wordless {
     }
 
     public static function theme_views_path() {
-        return self::join_paths(self::theme_path(), 'theme/views');
+        return self::join_paths(self::theme_path(), 'views');
     }
 
     public static function theme_assets_path() {
-        return self::join_paths(self::theme_path(), 'theme/assets');
+        return self::join_paths(self::theme_path(), 'src');
     }
 
     public static function theme_stylesheets_path() {
-        return self::join_paths(self::theme_path(), 'theme/assets/stylesheets');
+        return self::join_paths(self::theme_path(), 'src/stylesheets');
     }
 
     public static function theme_javascripts_path() {
-        return self::join_paths(self::theme_path(), 'theme/assets/javascripts');
+        return self::join_paths(self::theme_path(), 'src/javascripts');
     }
 
     public static function theme_static_assets_path() {
-        return self::join_paths(self::theme_path(), 'assets');
+        return self::join_paths(self::theme_path(), 'dist');
     }
 
     public static function theme_static_javascripts_path() {
-        return self::join_paths(self::theme_path(), 'assets/javascripts');
+        return self::join_paths(self::theme_path(), 'dist/javascripts');
     }
 
     public static function theme_temp_path() {
