@@ -1,4 +1,3 @@
-SentryWebpackPlugin = require('@sentry/webpack-plugin')
 MiniCssExtractPlugin = require('mini-css-extract-plugin')
 fs = require('fs')
 
