@@ -6,10 +6,11 @@
     "license": "MIT",
     "homepage": "https://phug-lang.com",
     "require": {
-        "phug/phug": "^0.1.8 || ^0.2.0 || ^0.3.0",
+        "phug/phug": "^0.1.8 || ^0.2.0 || ^0.3.0 || ^1.0",
         "js-transformer/js-transformer": "^1.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "^4 || ^5",
         "phug/dev-tool": "^0.1.11"
     },
     "autoload": {

@@ -28,9 +28,11 @@ abstract class TokenCrawler
         return array_shift($this->tokens) ?: $this->retrieveNext();
     }
 
-    protected function skip()
+    protected function skip($count = 1)
     {
-        $this->next();
+        for ($i = $count; $i; $i--) {
+            $this->next();
+        }
     }
 
     protected function get($index)

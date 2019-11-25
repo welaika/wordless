@@ -76,4 +76,18 @@ class ExpressionStream
     {
         return [0, 0, 0, 0, 0, 0, 0, mb_strlen($this->data), 0, 0, 0, 0];
     }
+
+    /**
+     * Dummy option setter.
+     *
+     * @param $option
+     * @param $arg1
+     * @param $arg2
+     *
+     * @return bool
+     */
+    public function stream_set_option($option, $arg1, $arg2)
+    {
+        return true;
+    }
 }

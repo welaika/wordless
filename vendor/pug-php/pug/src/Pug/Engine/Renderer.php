@@ -59,6 +59,20 @@ class Renderer extends Options
         return call_user_func($fallback);
     }
 
+    protected function stringCanBeLoadedAsFile($input)
+    {
+        if (!$this->getOption('strict') && strpos($input, "\n") === false && file_exists($input) && !is_dir($input) && is_readable($input)) {
+            $extension = pathinfo($input, PATHINFO_EXTENSION);
+            $extension = $extension === '' ? '' : '.' . $extension;
+
+            if (in_array($extension, $this->getOption('extensions'))) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     /**
      * Render HTML code from a Pug input or a Pug file.
      *
@@ -72,12 +86,8 @@ class Renderer extends Options
      */
     public function render($input, array $vars = [], $filename = null)
     {
-        if (!$this->getOption('strict') && strpos($input, "\n") === false && file_exists($input) && !is_dir($input) && is_readable($input)) {
-            $extension = pathinfo($input, PATHINFO_EXTENSION);
-            $extension = $extension === '' ? '' : '.' . $extension;
-            if (in_array($extension, $this->getOption('extensions'))) {
-                return $this->renderFile($input, $vars);
-            }
+        if ($this->stringCanBeLoadedAsFile($input)) {
+            return $this->renderFile($input, $vars);
         }
 
         return $this->renderString($input, $vars, $filename);
@@ -141,14 +151,10 @@ class Renderer extends Options
      */
     public function display($input, array $vars = [], $filename = null)
     {
-        if (!$this->getOption('strict') && strpos($input, "\n") === false && file_exists($input) && !is_dir($input) && is_readable($input)) {
-            $extension = pathinfo($input, PATHINFO_EXTENSION);
-            $extension = $extension === '' ? '' : '.' . $extension;
-            if (in_array($extension, $this->getOption('extensions'))) {
-                echo $this->renderFile($input, $vars);
+        if ($this->stringCanBeLoadedAsFile($input)) {
+            echo $this->renderFile($input, $vars);
 
-                return;
-            }
+            return;
         }
 
         $this->displayString($input, $vars, $filename);

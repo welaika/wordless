@@ -25,9 +25,14 @@ trait DependenciesTrait
         $this->constPrefix = $constPrefix;
     }
 
-    protected function helperWrap($helper, $arguments)
+    protected function requireHelper($helper)
     {
         $this->helpers[$helper] = true;
+    }
+
+    protected function helperWrap($helper, $arguments)
+    {
+        $this->requireHelper($helper);
 
         if (isset($arguments[0]) && preg_match('/^\$.*[^)]$/', $arguments[0])) {
             $helper .= '_with_ref';

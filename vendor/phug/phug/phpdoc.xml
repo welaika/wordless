@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<phpdoc>
+    <title><![CDATA[Phug]]></title>
+    <parser>
+        <target>docs/structure</target>
+        <extensions>
+            <extension>php</extension>
+        </extensions>
+    </parser>
+    <transformer>
+        <target>docs/html</target>
+    </transformer>
+    <transformations>
+        <template name="clean" />
+    </transformations>
+    <files>
+        <directory>../../../../src</directory>
+    </files>
+</phpdoc>

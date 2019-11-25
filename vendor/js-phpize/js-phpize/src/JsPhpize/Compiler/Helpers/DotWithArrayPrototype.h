@@ -92,7 +92,7 @@ function ($base) {
         }
     };
     $getRegExp = function ($value) {
-        return isset($value->isRegularExpression) && $value->isRegularExpression ? $value->regExp : null;
+        return is_object($value) && isset($value->isRegularExpression) && $value->isRegularExpression ? $value->regExp : null;
     };
     $fallbackDot = function ($base, $key) use ($getCallable, $getRegExp) {
         if (is_string($base)) {
@@ -131,9 +131,8 @@ function ($base) {
             }
             if ($key === 'match') {
                 return function ($search) use ($base, $getRegExp) {
-                    if (!$getRegExp($search)) {
-                        $search = '/' . preg_quote($search) . '/';
-                    }
+                    $regExp = $getRegExp($search);
+                    $search = $regExp ? $regExp : (is_string($search) ? '/' . preg_quote($search, '/') . '/' : strval($search));
 
                     return preg_match($search, $base);
                 };

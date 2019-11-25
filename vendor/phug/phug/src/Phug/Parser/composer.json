@@ -1,0 +1,39 @@
+{
+    "name": "phug/parser",
+    "type": "library",
+    "keywords": ["phug", "reader", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
+    "description": "Pug (ex-Jade) parser for PHP, HTML template engine structured by indentation",
+    "license": "MIT",
+    "homepage": "http://phug-lang.com",
+    "authors": [
+        {
+            "name": "Torben Koehn",
+            "email": "torben@talesoft.codes"
+        },
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
+        }
+    ],
+    "support": {
+        "email": "support@phug-lang.com",
+        "issues": "https://github.com/phug-php/reader/issues",
+        "source": "https://github.com/phug-php/reader",
+        "docs": "http://phug-lang.com/docs"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.0",
+        "phug/lexer": "^0.5.6 || ^1.0",
+        "phug/util": "^0.4.0 || ^1.0",
+        "phug/ast": "^0.1.0 || ^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phug\\": ""
+        }
+    },
+    "bin": [],
+    "suggest": {}
+}
