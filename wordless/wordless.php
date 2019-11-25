@@ -21,7 +21,11 @@ class Wordless {
         'webpack' => 'webpack.config.coffee',
         'webpack.env' => 'webpack.env.coffee',
         'main' => 'theme/assets/main.js',
-        'yarn' => 'yarn.lock'
+        'yarn' => 'yarn.lock',
+        'nvmrc' => '.nvmrc',
+        'stylelintignore' => '.stylelintignore',
+        'stylelintrc' => '.stylelintrc.json',
+        'release' => 'release.txt'
     );
 
     public static function initialize() {
@@ -206,7 +210,10 @@ class Wordless {
             self::theme_webpackenv_path(),
             self::theme_packagejson_path(),
             self::theme_webpackentrypoint_path(),
-            self::theme_yarndotlock_path()
+            self::theme_yarndotlock_path(),
+            self::theme_nvmrc_path(),
+            self::theme_stylelintignore_path(),
+            self::theme_stylelintrc_path()
             );
 
         foreach ($required_files as $file) {
@@ -305,6 +312,22 @@ class Wordless {
 
     public static function theme_yarndotlock_path() {
         return self::join_paths(self::theme_path(), self::$webpack_files_names['yarn']);
+    }
+
+    public static function theme_nvmrc_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['nvmrc']);
+    }
+
+    public static function theme_stylelintignore_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['stylelintignore']);
+    }
+
+    public static function theme_stylelintrc_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['stylelintrc']);
+    }
+
+    public static function theme_release_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['release']);
     }
 
     public static function join_paths() {
