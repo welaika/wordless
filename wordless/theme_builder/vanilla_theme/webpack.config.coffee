@@ -97,7 +97,11 @@ module.exports = (env) ->
         port: 3000
         proxy: { target: "http://127.0.0.1:8080" }
         watchOptions: { ignoreInitial: true }
-        files: [ './theme/views/**/*.pug' ]
+        files: [
+          './views/**/*.pug',
+          './views/**/*.php'
+          './helpers/**/*.php',
+        ]
       }
 
       new MiniCssExtractPlugin {
