@@ -6,14 +6,10 @@ Build and distribution
 Since Wordless uses Webpack, we have to manage build and distribution
 strategies for dev and staging/production.
 
-The most widespread folder naming approach to distinguish between source
-and built code are ``src`` and ``dst``, but Wordless has different naming
-due to its backward compatibility effort.
-
 The source asset code is placed in
-``theme/assets/{javascripts|stylesheets|images}``, while built/optimized code
+``src/{javascripts|stylesheets|images}``, while built/optimized code
 is placed - automatically by Webpack - in
-``assets/{javascripts|stylesheets|images}``
+``dist/{javascripts|stylesheets|images}``
 
 .. seealso::
     :ref:`CoffeeScript and Sass`
@@ -22,13 +18,12 @@ We offer standard approaches for both environments. They are handled -
 as expected - through ``package.json`` 's scripts [#f1]_:
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/package.json
-    :lines: 9-17
+    :lines: 13-24
     :language: javascript
     :caption: package.json
-    :emphasize-lines: 3,4,8
 
 It is expected - but it's still up to you - that before every build you will
-clean the compiled files.
+clean the compiled files. ``yarn clean:dist`` will do the cleanup.
 
 **Build for development**
 
@@ -45,8 +40,17 @@ clean the compiled files.
 Production build will essentially:
 
 * enable Webpack's `production mode`_
-* do not produce source maps
+* do not produce source maps for CSS
 * do minimize assets
+
+.. note::
+    By default the production build **will** produce source-maps for JS; this is done to
+    lower the debugging effort, to respect the readability of the source code in users'
+    browser and to simplify the shipping of source-maps to error monitoring softwares such
+    as Sentry.
+
+    You can easily disable this behaviour setting ``devtool: false`` in ``webpack.env.coffee``
+    inside the ``prodOptions`` object.
 
 .. _PHUG optimizer:
 
@@ -66,7 +70,7 @@ constant to be defined in ``wp-config.php``. Let's see this Wordless
 internal code snippet:
 
 .. literalinclude:: /../../wordless/helpers/render_helper.php
-    :lines: 81-87,89-91
+    :lines: 66-82
     :language: php
     :caption: render_helper.php
 
