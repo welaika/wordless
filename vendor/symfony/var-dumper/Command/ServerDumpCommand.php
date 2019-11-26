@@ -41,13 +41,13 @@ class ServerDumpCommand extends Command
     /** @var DumpDescriptorInterface[] */
     private $descriptors;
 
-    public function __construct(DumpServer $server, array $descriptors = array())
+    public function __construct(DumpServer $server, array $descriptors = [])
     {
         $this->server = $server;
-        $this->descriptors = $descriptors + array(
+        $this->descriptors = $descriptors + [
             'cli' => new CliDescriptor(new CliDumper()),
             'html' => new HtmlDescriptor(new HtmlDumper()),
-        );
+        ];
 
         parent::__construct();
     }
@@ -75,7 +75,7 @@ EOF
         ;
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $format = $input->getOption('format');

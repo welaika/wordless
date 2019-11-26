@@ -42,14 +42,19 @@ abstract class Options extends OptionsHandler
         }
     }
 
+    protected function addFilterResolver(&$options, $name, $filter)
+    {
+        if (!isset($options['filter_resolvers'])) {
+            $options['filter_resolvers'] = [];
+        }
+
+        $options['filter_resolvers'][$name] = $filter;
+    }
+
     protected function setUpFilterAutoload(&$options)
     {
         if (!isset($options['filterAutoLoad']) || $options['filterAutoLoad']) {
-            if (!isset($options['filter_resolvers'])) {
-                $options['filter_resolvers'] = [];
-            }
-
-            $options['filter_resolvers']['pugFilterAutoLoad'] = function ($name) {
+            $this->addFilterResolver($options, 'pugFilterAutoLoad', function ($name) {
                 if (isset($this->filters[$name])) {
                     return $this->filters[$name];
                 }
@@ -68,7 +73,7 @@ abstract class Options extends OptionsHandler
                         return $this->filters[$name];
                     }
                 }
-            };
+            });
         }
     }
 
@@ -114,24 +119,24 @@ abstract class Options extends OptionsHandler
         $this->setUpPostRender($options);
     }
 
+    protected function copyDeepOption(&$options, $baseInput, $baseOutput, $outputKey)
+    {
+        if (isset($options[$baseInput])) {
+            if (!isset($options[$baseOutput])) {
+                $options[$baseOutput] = [];
+            }
+            $options[$baseOutput][$outputKey] = $options[$baseInput];
+        }
+    }
+
     protected function setUpJsPhpize(&$options)
     {
-        if (isset($options['jsLanguage'])) {
-            if (!isset($options['module_options'])) {
-                $options['module_options'] = [];
-            }
-            $options['module_options']['jsphpize'] = $options['jsLanguage'];
-        }
+        $this->copyDeepOption($options, 'jsLanguage', 'module_options', 'jsphpize');
     }
 
     protected function setUpAttributesMapping(&$options)
     {
-        if (isset($options['classAttribute'])) {
-            if (!isset($options['attributes_mapping'])) {
-                $options['attributes_mapping'] = [];
-            }
-            $options['attributes_mapping']['class'] = $options['classAttribute'];
-        }
+        $this->copyDeepOption($options, 'classAttribute', 'attributes_mapping', 'class');
     }
 
     protected function extractExtensionsFromKeywords(&$options)

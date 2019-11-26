@@ -1,5 +1,0 @@
-# Stylesheet assets path
-
-Drop here all your static CSS assets.
-
-

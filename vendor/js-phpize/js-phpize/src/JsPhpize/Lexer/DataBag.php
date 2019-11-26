@@ -21,12 +21,12 @@ class DataBag
         return in_array($value, [$this->type, $this->value]);
     }
 
-    protected function typeIn($values)
+    public function typeIn($values)
     {
         return in_array($this->type, $values);
     }
 
-    protected function valueIn($values)
+    public function valueIn($values)
     {
         return in_array($this->value, $values);
     }

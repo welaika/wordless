@@ -1,0 +1,25 @@
+pug-php/pug: default
+
+pug/bemto: default
+
+pug-php/pug-assets: default
+
+pug-php/pug-minify: default
+
+pug/slim: default
+
+pug/twig:
+  autoload:
+    - cp -r vendor/phug/phug vendor/phug/compiler
+    - composer dump-autoload --optimize --no-interaction --quiet
+  script: vendor/bin/phpunit -c ./vendor/phug/dev-tool/config/
+
+ci-pug/ci-pug: default
+
+bkwld/laravel-pug:
+  install:
+    - php tests/setDependenciesVersions.php 6.0.* ^3.0
+    - composer update --no-interaction
+  script: LARAVEL_VERSION=6.0 ./vendor/bin/phpunit --no-coverage
+
+pug/yii2: default

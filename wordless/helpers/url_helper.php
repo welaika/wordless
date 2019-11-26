@@ -38,7 +38,7 @@ class UrlHelper {
    * @ingroup helperfunc
    */
   function asset_url($path) {
-    return get_bloginfo('stylesheet_directory') . "/assets/$path";
+    return get_bloginfo('stylesheet_directory') . "/dist/$path";
   }
 
   /**

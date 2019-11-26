@@ -7,25 +7,42 @@ This is a typical `Wordless theme directory structure`_:
 ::
 
   your_theme_dir
-  ├── assets/
-  │   ├── fonts/
-  │   ├── images/
-  │   ├── javascripts/
-  │   └── stylesheets/
   ├── config/
   │   ├── initializers/
   │   └── locales/
-  ├── theme/
-  │   ├── assets/
-  │   ├── helpers/
-  │   └── views/
-  ├── tmp/
+  ├── dist/
+  │   ├── fonts/
+  │   ├── images/
+  │   ├── javascripts/
+  │   ├── stylesheets/
+  │   └── README.md
+  ├── helpers/
+  │   └── README.mdown
+  ├── node_modules/
+  ├── src/
+  │   ├── images/
+  │   ├── javascripts/
+  │   ├── stylesheets/
+  │   └── main.js
+  ├── tmp
+  │   └── .gitkeep
+  ├── views
+  │   ├── layouts
+  │   └── posts
+  ├── .browserslistrc
+  ├── .env
+  ├── .gitignore
+  ├── .nvmrc
+  ├── .stylelintignore
+  ├── .stylelintrc.json
   ├── Procfile
   ├── index.php
   ├── package.json
+  ├── release.txt
   ├── screenshot.png
   ├── style.css
   ├── webpack.config.coffee
+  ├── webpack.env.coffee
   └── yarn.lock
 
 .. _Wordless theme directory structure : https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme
@@ -96,8 +113,8 @@ automatically translate them to HTML.
 .. seealso::
     PHUG section @ :ref:`CompileStack`
 
-Inside the ``theme/views`` folder you can scaffold as you wish, but you'll have
-to always pass the relative path
+Inside the ``views`` folder you can scaffold as you wish, but you'll have
+to always pass the relative path to the render function:
 
 .. code-block:: php
 
@@ -112,7 +129,7 @@ The ``$locals`` array will be auto-``extract()``-ed inside the required view, so
     <?php
     render_view('folder1/folder2/myview', 'default', array('title' => 'My title'))
 
-and inside ``theme/views/folder1/folder2/myview.pug``
+and inside ``views/folder1/folder2/myview.pug``
 
 .. code-block:: jade
 
@@ -158,7 +175,7 @@ breaking the rendering process into more manageable chunks.
 Layouts
 """""""
 
-  ``theme/views/layouts`` directory
+  ``views/layouts`` directory
 
 When Wordless renders a view, it does so by combining the view within a layout.
 
@@ -197,7 +214,7 @@ view inside the layout when it is called:
 Views
 """""
 
-  ``theme/views/**/*.pug`` or ``theme/views/**/*.php``
+  ``views/**/*.pug`` or ``views/**/*.php``
 
 This is the directory where you'll find yourself coding most of the time.
 Here you can create a view for each main page of your theme, using Pug syntax
@@ -210,7 +227,7 @@ could be an example for the typical `WordPress loop`_ in an archive page:
 
 .. code-block:: jade
 
-    // theme/views/posts/archive.html.pug
+    // views/posts/archive.html.pug
     h2 Blog archive
     ul.blog_archive
       while have_posts()
@@ -219,7 +236,7 @@ could be an example for the typical `WordPress loop`_ in an archive page:
 
 .. code-block:: jade
 
-    // theme/views/posts/_single.html.pug
+    // views/posts/_single.html.pug
     h3!= link_to(get_the_title(), get_permalink())
     .content= get_the_filtered_content()
 
@@ -231,7 +248,7 @@ please note the following:
   ``_single.html.pug``
 
 * There's no layout here, just content: the layout of the page is stored in a
-  secondary file, placed in the ``theme/views/layouts`` directory, as mentioned
+  secondary file, placed in the ``views/layouts`` directory, as mentioned
   in the paragraph above
 
 * We are already using two of the 40+ Wordless helper functions, ``link_to()``
@@ -250,7 +267,7 @@ It looks awesome, right?
 Helpers
 #######
 
-  ``theme/helpers/*.php`` files
+  ``helpers/*.php`` files
 
 Helpers are basically small functions that can be called in your views to help
 keep your code stay DRY. Create as many helper files and functions as you want
@@ -268,7 +285,7 @@ all the 40+ tested and documented helpers Wordless gives you for free:
 - ``distance_of_time_in_words()`` - Reports the approximate distance in time
   between two dates
 
-Our favourite convention for writing custom helpers is to write almost 1 file per
+Our favourite convention for writing custom helpers is to write 1 file per
 function and naming both the same way. It will be easier to find with ```cmd+p``
 😉
 
@@ -333,9 +350,8 @@ Assets
 The Fast Way
 """"""""""""
 
-- jQuery is included by default for you (not aliased to ``$`` though)
-- write your Sass in ``theme/assets/stylesheets/screen.sass``
-- write your Coffeescript in ``theme/assets/javascripts/application.js.coffee``
+- write your SASS in ``src/stylesheets/screen.sass``
+- write your CoffeeScript in ``src/javascripts/application.js.coffee``
 
 and all will automagically work! :)
 
@@ -345,27 +361,26 @@ I need to really understand
 Wordless has 2 different places where you want to put your assets (javascript,
 css, images):
 
-- Place all your custom, project related assets into ``theme/assets/*``
+- Place all your custom, project related assets into ``src/*``
 - Since you are backed by Webpack, you can use NPM (``node_modules``) to import new dependencies
   following a completely standard approach
 
 Custom assets
 ^^^^^^^^^^^^^
 
-They must be placed inside ``theme/assets/javascript/`` and
-``theme/assets/stylesheets/`` and ``theme/assets/images/``.
+They must be placed inside ``src/javascript/`` and
+``src/stylesheets/`` and ``src/images/``.
 
-They will be compiled and resulting compilation files will be moved in the
-``assets/assetType`` folder.
+They will be compiled and resulting compilation files will be moved in the corresponding
+``assets/xxx`` folder.
 
 Compilation, naming and other logic is fully handled by webpack.
 
 Images will be optimized by `ImageminPlugin`_. The default setup already translates
 ``url`` s inside css/sass files in order to point to images in the
-right folder via `resolve-url-loader`_.
+right folder.
 
 .. _ImageminPlugin: https://www.npmjs.com/package/imagemin-webpack-plugin
-.. _resolve-url-loader: https://www.npmjs.com/package/resolve-url-loader
 
 Take a look to the default ``screen.sass`` and ``application.js.coffee`` to see
 usage examples.

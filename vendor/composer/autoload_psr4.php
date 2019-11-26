@@ -6,9 +6,8 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Symfony\\Polyfill\\Php72\\' => array($vendorDir . '/symfony/polyfill-php72'),
     'Symfony\\Polyfill\\Mbstring\\' => array($vendorDir . '/symfony/polyfill-mbstring'),
     'Symfony\\Component\\VarDumper\\' => array($vendorDir . '/symfony/var-dumper'),
-    'Psr\\Http\\Message\\' => array($vendorDir . '/psr/http-message/src'),
-    '' => array($vendorDir . '/js-transformer/js-transformer/src', $vendorDir . '/phug/ast/src', $vendorDir . '/phug/compiler/src', $vendorDir . '/phug/dependency-injection/src', $vendorDir . '/phug/event/src', $vendorDir . '/phug/formatter/src', $vendorDir . '/phug/lexer/src', $vendorDir . '/phug/parser/src', $vendorDir . '/phug/phug/src', $vendorDir . '/phug/reader/src', $vendorDir . '/phug/renderer/src', $vendorDir . '/phug/util/src', $vendorDir . '/pug-php/pug/src'),
+    'Phug\\' => array($vendorDir . '/phug/phug/src/Phug/Ast', $vendorDir . '/phug/phug/src/Phug/Compiler', $vendorDir . '/phug/phug/src/Phug/DependencyInjection', $vendorDir . '/phug/phug/src/Phug/Event', $vendorDir . '/phug/phug/src/Phug/Formatter', $vendorDir . '/phug/phug/src/Phug/Lexer', $vendorDir . '/phug/phug/src/Phug/Parser', $vendorDir . '/phug/phug/src/Phug/Reader', $vendorDir . '/phug/phug/src/Phug/Renderer', $vendorDir . '/phug/phug/src/Phug/Util'),
+    '' => array($vendorDir . '/js-transformer/js-transformer/src', $vendorDir . '/pug-php/pug/src'),
 );

@@ -40,8 +40,6 @@ class RenderHelper {
             "$name.pug",
             "$name.html.php",
             "$name.php",
-            "$name.html.haml",
-            "$name.haml"
         );
 
         foreach ($valid_filenames as $filename) {
@@ -56,24 +54,12 @@ class RenderHelper {
         }
 
         if (!isset($template_path)) {
-          render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.pug</code> or <code>$name.html.haml</code> or <code>$name.html.php</code> doesn't exist!");
+          render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.pug</code> or <code>$name.html.php</code> doesn't exist!");
         }
 
         $tmp_dir = Wordless::theme_temp_path();
 
         switch ($format) {
-            case 'haml':
-                extract($locals);
-
-                if ($this->ensure_dir($tmp_dir)) {
-                    $haml = new HamlParser(array('style' => 'expanded', 'ugly' => false));
-                    include $haml->parse($template_path, $tmp_dir);
-                } else {
-                    render_error("Temp dir not writable", "<strong>Ouch!!</strong> It seems that the <code>$tmp_dir</code> directory is not writable by the server! Go fix it!");
-                }
-
-                break;
-
             case 'pug':
                 require_once('pug/wordless_pug_options.php');
 

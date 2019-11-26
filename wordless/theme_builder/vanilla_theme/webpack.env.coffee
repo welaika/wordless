@@ -1,16 +1,20 @@
+MiniCssExtractPlugin = require('mini-css-extract-plugin')
+fs = require('fs')
+
 devOptions = {
   mode: 'development'
-
   styleLoaders: [
+    {
+      loader: MiniCssExtractPlugin.loader
+      options: {
+        sourceMap: true
+      }
+    }
     {
       loader: 'css-loader'
       options: {
         sourceMap: true
-        minimize: false
       }
-    }
-    {
-      loader: 'resolve-url-loader'
     }
     {
       loader: 'sass-loader'
@@ -19,22 +23,24 @@ devOptions = {
       }
     }
   ]
-  devtool: "source-map"
+  devtool: "source-map",
+  plugins: []
 }
 
 prodOptions = {
   mode: 'production'
-
   styleLoaders: [
+    {
+      loader: MiniCssExtractPlugin.loader
+      options: {
+        sourceMap: false
+      }
+    }
     {
       loader: 'css-loader'
       options: {
         sourceMap: false
-        minimize: true
       }
-    }
-    {
-      loader: 'resolve-url-loader'
     }
     {
       loader: 'sass-loader'
@@ -43,11 +49,12 @@ prodOptions = {
       }
     }
   ]
-  devtool: false
+  devtool: 'source-map'
+  plugins: []
 }
 
 module.exports = (env) ->
-  if env.WL_ENV is 'development'
+  if env.NODE_ENV is 'production'
+    return prodOptions
+  else if env.NODE_ENV is 'development'
     return devOptions
-
-  return prodOptions

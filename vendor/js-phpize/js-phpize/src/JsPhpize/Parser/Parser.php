@@ -11,7 +11,6 @@ use JsPhpize\Nodes\Constant;
 use JsPhpize\Nodes\FunctionCall;
 use JsPhpize\Nodes\HooksArray;
 use JsPhpize\Nodes\Main;
-use JsPhpize\Nodes\Node;
 use JsPhpize\Nodes\Parenthesis;
 use JsPhpize\Nodes\Ternary;
 use JsPhpize\Nodes\Value;
@@ -63,7 +62,7 @@ class Parser extends TokenExtractor
         return $lambda;
     }
 
-    protected function parseParentheses()
+    protected function parseParentheses($allowedSeparators = [',', ';'])
     {
         $parentheses = new Parenthesis();
         $exceptionInfos = $this->exceptionInfos();
@@ -82,7 +81,14 @@ class Parser extends TokenExtractor
             }
 
             if ($expectComma) {
-                if ($token->isIn(',', ';')) {
+                if ($token->is('in') && in_array('in', $allowedSeparators)) {
+                    $parentheses->setSeparator('in');
+                    $expectComma = false;
+
+                    continue;
+                }
+
+                if ($token->isIn(',', ';') && in_array($token->type, $allowedSeparators)) {
                     $expectComma = false;
 
                     continue;
@@ -94,6 +100,15 @@ class Parser extends TokenExtractor
             if ($value = $this->getValueFromToken($token)) {
                 $expectComma = true;
                 $parentheses->addNode($value);
+
+                continue;
+            }
+
+            if ($token->type === 'keyword' && $token->valueIn(['var', 'const', 'let'])) {
+                // @TODO handle let scope here
+                // if ($token->value === 'let') {
+                //     $this->letForNextBlock = $this->parseLet();
+                // }
 
                 continue;
             }
@@ -253,7 +268,7 @@ class Parser extends TokenExtractor
         return $variable;
     }
 
-    protected function parseTernary(Node $condition)
+    protected function parseTernary(Value $condition)
     {
         $trueValue = $this->expectValue($this->next());
         $next = $this->next();
@@ -276,8 +291,49 @@ class Parser extends TokenExtractor
         return new Ternary($condition, $trueValue, $falseValue);
     }
 
+    protected function jsonMethodToPhpFunction($method)
+    {
+        $function = null;
+        switch ($method) {
+            case 'stringify':
+                $function = 'json_encode';
+                break;
+            case 'parse':
+                $function = 'json_decode';
+                break;
+        }
+
+        return $function;
+    }
+
+    protected function parseJsonMethod($method)
+    {
+        if ($method->type === 'variable' && ($function = $this->jsonMethodToPhpFunction($method->value))) {
+            $this->skip(2);
+            if (($next = $this->get(0)) && $next->is('(')) {
+                $this->skip();
+
+                return $this->parseFunctionCallChildren($this->parseVariable($function));
+            }
+
+            return new Constant('string', var_export($function, true));
+        }
+
+        return false;
+    }
+
     protected function parseValue($token)
     {
+        if (
+            $token->type === 'constant' &&
+            $token->value === 'JSON' &&
+            ($next = $this->get(0)) &&
+            $next->is('.') &&
+            ($method = $this->parseJsonMethod($this->get(1))) !== false
+        ) {
+            return $method;
+        }
+
         return $token->type === 'variable'
             ? $this->parseVariable($token->value)
             : new Constant($token->type, $token->value);
@@ -315,12 +371,23 @@ class Parser extends TokenExtractor
         $name = $token->value;
         $keyword = new Block($name);
         switch ($name) {
+            case 'typeof':
+                throw new Exception('typeof keyword not supported', 26);
+                break;
             case 'new':
             case 'clone':
             case 'return':
             case 'continue':
             case 'break':
-                $this->handleOptionalValue($keyword, $this->get(0), $name);
+                $expects = [
+                    'new' => 'Class name',
+                    'clone' => 'Object',
+                ];
+                $value = $this->get(0);
+                if (isset($expects[$name]) && !$value) {
+                    throw new Exception($expects[$name] . " expected after '" . $name . "'", 25);
+                }
+                $this->handleOptionalValue($keyword, $value, $name);
                 break;
             case 'case':
                 $value = $this->expectValue($this->next());
@@ -368,7 +435,7 @@ class Parser extends TokenExtractor
 
             if ($token->value === 'let') {
                 $initNext = true;
-                $block->let($this->parseLet($token));
+                $block->let($this->parseLet());
 
                 return true;
             }
@@ -411,6 +478,11 @@ class Parser extends TokenExtractor
         }
     }
 
+    /**
+     * @param Block $block
+     *
+     * @throws \JsPhpize\Lexer\Exception
+     */
     public function parseBlock($block)
     {
         $this->stack[] = $block;
