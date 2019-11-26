@@ -1,4 +1,0 @@
-# Static javascripts path
-
-Drop here all your static/vendor JS assets.
-

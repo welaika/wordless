@@ -1,4 +1,0 @@
-# Fonts path
-
-Drop here all your fonts.
-
