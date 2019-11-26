@@ -14,13 +14,13 @@
     "server": "npx nf start",
     "build:dev": "webpack --debug --env.NODE_ENV=development",
     "build:prod": "yarn sign-release && webpack -p --bail --env.NODE_ENV=production",
-    "clean:js": "rimraf assets/javascripts/*",
-    "clean:css": "rimraf assets/stylesheets/*",
-    "clean:images": "rimraf assets/images/*",
+    "clean:js": "rimraf dist/javascripts/*",
+    "clean:css": "rimraf dist/stylesheets/*",
+    "clean:images": "rimraf dist/images/*",
     "clean:dist": "yarn clean:js && yarn clean:css && yarn clean:images",
     "sign-release": "git rev-parse HEAD | cut -c 1-8 > release.txt",
     "lint": "yarn lint:sass",
-    "lint:sass": "npx stylelint --report-needless-disables 'theme/assets/stylesheets/**/*.sass' && npx stylelint 'theme/assets/stylesheets/**/*.sass'"
+    "lint:sass": "npx stylelint --report-needless-disables 'src/stylesheets/**/*.sass' && npx stylelint 'src/stylesheets/**/*.sass'"
   },
   "dependencies": {},
   "devDependencies": {
