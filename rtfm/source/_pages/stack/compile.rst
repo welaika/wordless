@@ -113,31 +113,30 @@ and are used by the ``entry`` and ``output`` configurations:
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
     :language: coffeescript
     :caption: webpack.config.coffee
-    :lineno-start: 18
-    :lines: 18-23
+    :lineno-start: 22
+    :lines: 22-30
 
-CSS will be extracted from the bundle by the usual extract-text-webpack-plugin_
+CSS will be extracted from the bundle by the standard mini-css-extract-plugin_
 
-.. _extract-text-webpack-plugin: https://webpack.js.org/plugins/extract-text-webpack-plugin/
+.. _mini-css-extract-plugin: https://webpack.js.org/plugins/extract-text-webpack-plugin/
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
     :language: coffeescript
     :caption: webpack.config.coffee
-    :lineno-start: 69
-    :lines: 69-82
-    :emphasize-lines: 10
+    :lineno-start: 107
+    :lines: 107-109
 
 Inclusion of compiled files
 """""""""""""""""""""""""""
 
 Wrapping up: the resulting files will be
 
-* ``assets/javascripts/application.js``
-* ``assets/stylesheets/screen.css``
+* ``dist/javascripts/application.js``
+* ``dist/stylesheets/screen.css``
 
 As far as those files remain *as-is*, the theme will automatically load them.
 
-If you want to edit names and/or paths, you have only to edit the WordPress
+If you want to edit names, you have to edit the WordPress
 asset enqueue configurations:
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/default_hooks.php
@@ -160,3 +159,63 @@ asset enqueue configurations:
 
 .. _stylesheet_url signature: http://welaika.github.io/wordless/docs/0.5/dd/d16/group__helperfunc.html#ga65c283fa91fd4801187737bf3f3b1e78
 .. _javascript_url signature: http://welaika.github.io/wordless/docs/0.5/dd/d16/group__helperfunc.html#gaca881d0e89bddbab09b37219d8b2efd1
+
+Multiple "entries"
+""""""""""""""""""
+
+"Entries" in the WebPack world means JS files (please, let me say that!).
+
+Wordless is configured to produce a new bundle for each entry and by default
+the only entry is ``main``
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/src/main.js
+    :language: javascript
+    :caption: main.js
+
+As we've already said having an *entry* which requires both JS and SASS,
+will produce 2 separate files with the same name and different extension.
+
+Add another *entry* and producing new bundles is as easy as
+
+* create a new file
+
+.. code-block::
+
+    touch src/backend.js
+
+* write something in it, should it be a ``require`` for a SASS file or
+  a piece of JS logic
+* add the *entry* to webpack config
+
+.. code-block:: coffeescript
+
+    entries = ['main', 'backend']
+
+* include somewhere in your theme. For example in the WP's asset queue
+  in ``default_hooks.php``
+
+  .. code-block:: php
+
+        function enqueue_stylesheets() {
+            wp_register_style("main", stylesheet_url("main"), [], false, 'all');
+            wp_register_style("backend", stylesheet_url("backend"), [], false, 'all');
+            wp_enqueue_style("main");
+            wp_enqueue_style("backend");
+        }
+
+        function enqueue_javascripts() {
+            wp_enqueue_script("jquery");
+            wp_register_script("main", javascript_url("main"), [], false, true);
+            wp_register_script("backend", javascript_url("backend"), [], false, true);
+            wp_enqueue_script("main");
+            wp_enqueue_script("backend");
+        }
+
+  or add it anywhere in your templates:
+
+  .. code-block:: jade
+
+        header
+            = stylesheet_link_tag('backend')
+        footer
+            = javascript_include_tag('backend')
