@@ -21,10 +21,10 @@ YARN
 section inside your ``package.json`` file and will execute the matched script.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/package.json
-    :lines: 9-17
+    :lines: 13-20
     :language: javascript
     :caption: package.json
-    :emphasize-lines: 2
+
 
 ``yarn server`` will run ``nf start``, where ``nf`` is the Node Foreman
 executable.
@@ -32,7 +32,7 @@ executable.
 Foreman
 #######
 
-`Node Foreman`_ (``nf``) could do complex things, but Wordless uses it just
+`Node Foreman`_ (``nf``) could do complex things, but Wordless uses it only
 to be able to launch multiple processes when ``server`` is fired.
 
 .. _Node Foreman: https://www.npmjs.com/package/foreman
@@ -69,7 +69,7 @@ start a web server at address ``127.0.0.1`` on port 3000.
 This is where your browser will automatically go once launched.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :lines: 70-76
+    :lines: 95-105
     :language: coffeescript
     :caption: webpack.config.coffee
 
@@ -103,7 +103,7 @@ template changes too.
 MailHog
 #######
 
-MailHog is an email testing tool for developers:
+`MailHog`_ is an email testing tool for developers:
 
 * Configure your application to use MailHog for SMTP delivery
 * View messages in the web UI, or retrieve them with the JSON API
@@ -126,3 +126,5 @@ This will trigger the ``smtp.php`` initializer:
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/smtp.php
     :language: php
     :caption: config/initializers/smtp.php
+
+.. _MailHog: https://github.com/mailhog/MailHog
