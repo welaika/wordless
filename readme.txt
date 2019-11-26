@@ -46,9 +46,9 @@ Once done, assuming you have a standard WordPress installation already up and ru
 4. `cd wp-content/themes/mybrandnewtheme`
 5. `yarn install`
 
-Now you have all you need to start developing 💻; just be sure to be in your theme directory and run
+Now you have all you need to start developing 💻; just be sure you are in your theme directory and run
 
-`yarn run server`
+`yarn server`
 
 webpack, php server and your browser will automatically come up and serve your needs :)
 
