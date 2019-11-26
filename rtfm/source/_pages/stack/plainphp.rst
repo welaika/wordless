@@ -7,14 +7,14 @@ Let's take the unaltered default theme as an example. In ``views/layouts`` we
 have the ``default`` template which calls a ``render_partial`` for the
 ``_header`` partial.
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/theme/views/layouts/default.html.pug
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/views/layouts/default.html.pug
     :language: slim
-    :caption: theme/views/layouts/default.html.pug
+    :caption: views/layouts/default.html.pug
     :emphasize-lines: 6
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/theme/views/layouts/_header.html.pug
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/views/layouts/_header.html.pug
     :language: slim
-    :caption: theme/views/layouts/_header.html.pug
+    :caption: views/layouts/_header.html.pug
 
 Let's suppose we need to change ``_header`` in a PHP template because we don't
 like PUG or we need to write complex code there.
@@ -27,7 +27,7 @@ like PUG or we need to write complex code there.
 #. Update its content, e.g.:
 
     .. code-block:: php
-        :caption: theme/views/layouts/_header.html.php
+        :caption: views/layouts/_header.html.php
 
         <h1> <?php echo link_to(get_bloginfo('name'), get_bloginfo('url')); ?> </h1>
         <h2> <?php echo htmlentities(get_bloginfo('description')) ?> </h2>
