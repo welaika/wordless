@@ -6,7 +6,9 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * Bootstrap a new theme directly within wp-cli
 * Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
 * Write CSS stylesheets using the awesome [Sass syntax](http://sass-lang.com)
+* Out-of-the-box support to [Stylelint](https://stylelint.io/) configured for indented SASS syntax.
 * Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
+* Automatically polyfill and transpile your JS setting your support inside [`.browserslistrc`](https://github.com/browserslist/browserslist)
 * A growing set of handy and documented PHP helper functions ready to be used within your views
 * Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 
@@ -37,26 +39,29 @@ Once done, assuming you have a standard WordPress installation already up and ru
 
 Now you have all you need to start developing 💻; just be sure you are in your theme directory and run
 
-`yarn run server`
+`yarn server`
 
 webpack, php server and your browser will automatically come up and serve your needs :)
 
 ## GiT and Deployment
 
-Wordless 2.x is backed by *WebPack* for all code automation tasks (compiling, but it's up to you to eventually extend it to other behaviours - image optimization will probably be a goal for v2.1). As a general advice, on a default Wordless installation you should add `screen.css` and `application.js` your `.gitignore`.
+Wordless >=2 is backed by *WebPack* for all build tasks (it's up to you to eventually extend it to other behaviours).
 
 Those compiled assets **must** obviously **be deployed** on the remote server.
 
 PUG templates are compiled by the WP plugin at runtime and cached in the theme's `tmp` folder. So just `gitignore tmp/*` and no other worries.
 
-As a result we provide a minimal `.gitignore` inside the theme folder:
+We provide a minimal `.gitignore` inside the theme's folder:
 
 ```git
-tmp/
-!tmp/README.mdown
-application.js
-screen.css
+tmp/*
+!tmp/.gitkeep
+assets/*/*
+!assets/*/.gitkeep
+!assets/fonts
+.DS_Store
 node_modules
+
 ```
 
 ## Insights
@@ -77,9 +82,6 @@ Wordless is not meant to be a bloated, all-inclusive tool. This is why we recomm
 _______________
 
 * [Wordmove](https://github.com/welaika/wordmove): a great gem (from yours truly) to automatically mirror local WordPress installations and DB data back and forth from your local development machine to the remote staging server;
-_______________
-
-* [Wordless-gem](https://github.com/welaika/wordless_gem): the CLI sheriff for your Wordless theme! ~~Compile and clean assets~~, create new WP installation, ~~a new wordless theme~~ and let you set up a deploy command in order to easily deploy your site, in collaboration with [Wordmove](https://github.com/welaika/wordmove), with a `wordless deploy` (*warning:* with the advent of Wordless 2.x some wordless-gem's functions are not useful anymore. We are in the process of imagining its future deveopment path)
 
 ## Known problems and limitations
 
@@ -87,6 +89,13 @@ _______________
 * The routing part can be dramatically improved to make it more readable and DRY
 
 ## Deprecations
+
+### 3.0
+
+Ruby-based preprocessors and the `WORDLESS_LEGACY` configuration are definitely dropped.
+Theme's folder structure changed.
+
+### 2.5
 
 Wordless 2.5 deprecates the old ruby preprocessor support. It is disabled by default. If you need to develop an old theme you need to explicitely activate them by setting the following in your `wp-config.php`:
 
