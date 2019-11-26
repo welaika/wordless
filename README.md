@@ -70,7 +70,7 @@ node_modules
 
 [How does it work](#) - Basic concepts (WIP)
 
-[Wordless theme anatomy](https://github.com/welaika/wordless/wiki/Wordless-theme-anatomy) - Structure and conventions
+[Wordless theme anatomy](https://wordless.readthedocs.io/en/latest/_pages/usage/anatomy.html) - Structure and conventions
 
 ## Additional recommended plugins and tools
 
