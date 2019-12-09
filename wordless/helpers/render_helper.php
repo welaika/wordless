@@ -85,6 +85,8 @@ class RenderHelper {
                     } else {
                         $env = 'development';
                     }
+                    
+                    $env = apply_filters( 'wordless_environment', $env );
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
                         \Phug\Optimizer::call(
