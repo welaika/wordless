@@ -2,6 +2,7 @@
 
 namespace JsPhpize\Lexer;
 
+use Generator;
 use JsPhpize\Readable;
 
 class Pattern extends Readable
@@ -30,16 +31,33 @@ class Pattern extends Readable
                 return preg_quote($pattern, '/');
             }, $patterns))
             : $patterns;
+
         $exception = false;
+
         if ($notInsideAWord !== false) {
             $exception = 'a-zA-Z0-9\\\\_\\x7f-\\xff';
+
             if (is_string($notInsideAWord)) {
                 $exception .= preg_quote($notInsideAWord, '/');
             }
         }
+
         $this->regex = '(' . $this->regex . ')';
+
         if ($exception) {
             $this->regex = '(?<![' . $exception . '])' . $this->regex . '(?![' . $exception . '])';
         }
+    }
+
+    /**
+     * Return generator of tokens.
+     *
+     * @param Lexer $lexer
+     *
+     * @return Generator<Token>
+     */
+    public function lexWith(Lexer $lexer): Generator
+    {
+        yield $lexer->scan($this->regex, $this->type);
     }
 }

@@ -3,10 +3,10 @@
 namespace NodejsPhpFallback;
 
 use Composer\Composer;
+use Composer\EventDispatcher\Event;
 use Composer\EventDispatcher\EventSubscriberInterface;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
-use Composer\Script\Event;
 
 class ComposerPlugin implements PluginInterface, EventSubscriberInterface
 {
@@ -29,5 +29,15 @@ class ComposerPlugin implements PluginInterface, EventSubscriberInterface
     public function onAutoloadDump(Event $event)
     {
         NodejsPhpFallback::install($event);
+    }
+
+    public function deactivate(Composer $composer, IOInterface $io)
+    {
+        // Not needed
+    }
+
+    public function uninstall(Composer $composer, IOInterface $io)
+    {
+        // Not needed
     }
 }

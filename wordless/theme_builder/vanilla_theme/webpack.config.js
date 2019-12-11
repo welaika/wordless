@@ -5,8 +5,11 @@ const javascriptsDstPath = path.join(dstDir, '/javascripts');
 const _stylesheetsDstPath = path.join(dstDir, '/stylesheets');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ImageminPlugin = require("imagemin-webpack-plugin").default;
+const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+
+const wordpressDir = path.resolve('../../../');
+const imageFolderName = 'images'
 const entries = ['main'];
 
 module.exports = (env) => {
@@ -15,6 +18,8 @@ module.exports = (env) => {
   return {
     mode: envOptions.mode,
 
+    bail: envOptions.mode == 'production' ? true : false,
+
     entry: entries.reduce((object, current) => {
       object[current] = path.join(srcDir, `${current}.js`);
       return object;
@@ -22,7 +27,14 @@ module.exports = (env) => {
 
     output: {
       filename: "[name].js",
-      path: javascriptsDstPath
+      path: javascriptsDstPath,
+      publicPath: () => {
+        return path.join(
+          '/', // prepend slash to make an absolute web path
+          path.relative(wordpressDir, dstDir) // dist folder relative to wordpress folder. Will be
+                                              // something like `wp-content/theme/themeName/dist`
+        )
+      }
     },
 
     devtool: envOptions.devtool,
@@ -59,25 +71,14 @@ module.exports = (env) => {
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                publicPath: (_url, resourcePath, context) => {
-                  let relative = path.relative(context, resourcePath).split('/');
-                  relative.shift();
-
-                  return path.join(
-                    '/wp-content/themes',
-                    path.basename(__dirname),
-                    'dist',
-                    ...relative
-                  );
-                },
-                name: '[name].[ext]'
-              }
+          loader: 'file-loader',
+          options: {
+            name: '[name].[ext]',
+            context: path.join(srcDir),
+            outputPath: (_url, resourcePath, context) => {
+              return resourcePath.replace(context, '')
             }
-          ]
+          },
         },
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -111,17 +112,38 @@ module.exports = (env) => {
         filename: '../stylesheets/[name].css'
       }),
 
-      new ImageminPlugin({
-        test: /\.(jpe?g|png|gif|svg)$/i
+      new ImageminWebpack({
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        severityError: 'warning',
+        minimizerOptions: {
+          plugins: [
+            ['gifsicle', { interlaced: true }],
+            ['jpegtran', { progressive: true }],
+            ['optipng', { optimizationLevel: 5 }],
+            [
+              'svgo',
+              {
+                plugins: [
+                  {
+                    removeViewBox: false,
+                  },
+                ],
+              },
+            ],
+          ],
+        },
       }),
 
-      new CopyWebpackPlugin([
-        {
-          from: path.join(srcDir, '/images'),
-          to: path.join(dstDir, '/images', '[path][name].[ext]'),
-          toType: 'template'
-        }
-      ])
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join('**/*'),
+            to: path.join(dstDir, imageFolderName, '[folder]', '[name].[ext]'),
+            toType: 'template',
+            context: path.join(srcDir, imageFolderName)
+          }
+        ],
+      }),
     ].concat(envOptions.plugins),
 
     optimization: {

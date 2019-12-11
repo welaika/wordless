@@ -2,6 +2,10 @@
 
 namespace Phug\Renderer;
 
+/**
+ * CacheInterface describes additional methods an adapter must implement to be compatible with caching methods
+ * and commands.
+ */
 interface CacheInterface
 {
     /**
@@ -47,7 +51,7 @@ interface CacheInterface
     public function displayCached($path, $input, callable $rendered, array $variables, &$success = null);
 
     /**
-     * @param string $directory the directory to search in pug templates
+     * @param string[]|string $directory the directory(ies) to search in pug templates
      *
      * @return array count of cached files and error count
      */

@@ -11,9 +11,9 @@
   ],
   "require": {
     "php": ">=7.0",
-    "js-phpize/js-phpize": "^2.0.0",
-    "phug/compiler": "^0.5.0 || ^1.0@dev",
-    "phug/formatter": "^0.5.43 || ^1.0@dev"
+    "js-phpize/js-phpize": "^2.8.3",
+    "phug/compiler": "^1.7.2",
+    "phug/formatter": "^1.7.2"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.8.35 <6.0",

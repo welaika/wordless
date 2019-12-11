@@ -7,5 +7,6 @@ namespace Phug\Util\Partial;
  */
 trait DocumentLocationTrait
 {
-    use LineGetTrait, OffsetGetTrait;
+    use LineGetTrait;
+    use OffsetGetTrait;
 }

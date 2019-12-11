@@ -4,6 +4,8 @@ namespace Phug\Lexer;
 
 use Phug\Lexer;
 use Phug\Lexer\Partial\IndentStyleTrait;
+use Phug\Lexer\Token\InterpolationEndToken;
+use Phug\Lexer\Token\TagInterpolationEndToken;
 use Phug\LexerException;
 use Phug\Reader;
 use Phug\Util\OptionInterface;
@@ -40,6 +42,13 @@ class State implements OptionInterface
      * @var array
      */
     private $indentStack;
+
+    /**
+     * List of scanner instances.
+     *
+     * @var ScannerInterface[]
+     */
+    private $scanners;
 
     /**
      * Creates a new instance of the state.
@@ -104,6 +113,7 @@ class State implements OptionInterface
     public function lastTokenIs($classNames)
     {
         $token = $this->getLastToken();
+
         foreach ($classNames as $className) {
             if ($token instanceof $className) {
                 return true;
@@ -111,6 +121,18 @@ class State implements OptionInterface
         }
 
         return false;
+    }
+
+    /**
+     * Return true if previous token was TagInterpolationEndToken or InterpolationEndToken.
+     *
+     * @return bool
+     */
+    public function isAfterInterpolation()
+    {
+        $previous = $this->getLastToken();
+
+        return $previous instanceof TagInterpolationEndToken || $previous instanceof InterpolationEndToken;
     }
 
     /**
@@ -211,7 +233,7 @@ class State implements OptionInterface
      *
      * @throws LexerException
      *
-     * @return \Generator the generator yielding all tokens found
+     * @return iterable the generator yielding all tokens found
      */
     public function scan($scanners)
     {
@@ -249,14 +271,20 @@ class State implements OptionInterface
      *
      * @throws LexerException
      *
-     * @return \Generator
+     * @return iterable
      */
     public function loopScan($scanners, $required = false)
     {
+        if ($this->reader->hasLength() && $this->scanners === null) {
+            $this->scanners = $this->filterScanners($scanners);
+        }
+
         while ($this->reader->hasLength()) {
             $success = false;
+
             foreach ($this->scan($scanners) as $token) {
                 $success = true;
+
                 yield $token;
             }
 
@@ -321,7 +349,7 @@ class State implements OptionInterface
      * @param $pattern
      * @param null $modifiers
      *
-     * @return \Generator
+     * @return iterable
      */
     public function scanToken($className, $pattern, $modifiers = null)
     {
@@ -333,6 +361,7 @@ class State implements OptionInterface
 
         $token = $this->createToken($className);
         $this->reader->consume();
+
         foreach ($data as $key => $value) {
             $method = 'set'.ucfirst($key);
 
@@ -359,11 +388,27 @@ class State implements OptionInterface
     }
 
     /**
+     * Load a scan class name as a scanner instance (use cache if yet loaded in the state).
+     *
+     * @param string $scanner scanner class name
+     *
+     * @return ScannerInterface
+     */
+    private function loadScanner($scanner)
+    {
+        if (!isset($this->scanners[$scanner])) {
+            $this->scanners[$scanner] = new $scanner();
+        }
+
+        return $this->scanners[$scanner];
+    }
+
+    /**
      * Filters and validates the passed scanners.
      *
      * This method makes sure that all scanners given are turned into their respective instances.
      *
-     * @param $scanners
+     * @param array<ScannerInterface|string> $scanners list of scanner instances/class names.
      *
      * @return array
      */
@@ -371,6 +416,7 @@ class State implements OptionInterface
     {
         $scannerInstances = [];
         $scanners = is_array($scanners) ? $scanners : [$scanners];
+
         foreach ($scanners as $key => $scanner) {
             if (!is_a($scanner, ScannerInterface::class, true)) {
                 throw new \InvalidArgumentException(
@@ -381,7 +427,7 @@ class State implements OptionInterface
 
             $scannerInstances[] = $scanner instanceof ScannerInterface
                 ? $scanner
-                : new $scanner();
+                : $this->loadScanner($scanner);
         }
 
         return $scannerInstances;
@@ -401,20 +447,13 @@ class State implements OptionInterface
      */
     public function throwException($message, $code = 0, $previous = null)
     {
-        $pattern = "Failed to lex: %s \nNear: %s \nLine: %s \nOffset: %s";
-        $path = $this->getOption('path');
-
-        if ($path) {
-            $pattern .= "\nPath: $path";
-        }
-
         throw new LexerException(
             $this->createCurrentSourceLocation(),
-            vsprintf($pattern, [
-                $message,
-                $this->reader->peek(20),
-                $this->reader->getLine(),
-                $this->reader->getOffset(),
+            LexerException::message($message, [
+                'near'   => $this->reader->peek(20),
+                'path'   => $this->getOption('path'),
+                'line'   => $this->reader->getLine(),
+                'offset' => $this->reader->getOffset(),
             ]),
             $code,
             $previous

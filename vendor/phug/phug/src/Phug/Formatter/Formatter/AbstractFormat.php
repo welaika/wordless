@@ -27,7 +27,9 @@ use Phug\Parser\NodeInterface;
 use Phug\Util\Joiner;
 use Phug\Util\OptionInterface;
 use Phug\Util\Partial\OptionTrait;
+use Phug\Util\PhpTokenizer;
 use Phug\Util\SourceLocation;
+use ReflectionMethod;
 use SplObjectStorage;
 
 abstract class AbstractFormat implements FormatInterface, OptionInterface
@@ -42,6 +44,13 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             ? json_encode($_pug_temp)
             : strval($_pug_temp))';
     const EXPRESSION_IN_TEXT = '(is_bool($_pug_temp = %s) ? var_export($_pug_temp, true) : $_pug_temp)';
+    const EXPRESSION_IN_BOOL = 'method_exists($_pug_temp = %s, "__toBoolean")
+        ? $_pug_temp->__toBoolean()
+        : $_pug_temp';
+    const EXPRESSION_IN_BOOL_PHP8 = '
+        is_object($_pug_temp = %s) && method_exists($_pug_temp, "__toBoolean")
+            ? $_pug_temp->__toBoolean()
+            : $_pug_temp';
     const HTML_EXPRESSION_ESCAPE = 'htmlspecialchars(%s)';
     const HTML_TEXT_ESCAPE = 'htmlspecialchars';
     const PAIR_TAG = '%s%s%s';
@@ -74,6 +83,9 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             'class_attribute'        => static::CLASS_ATTRIBUTE,
             'string_attribute'       => static::STRING_ATTRIBUTE,
             'expression_in_text'     => static::EXPRESSION_IN_TEXT,
+            'expression_in_bool'     => PHP_MAJOR_VERSION < 8
+                ? static::EXPRESSION_IN_BOOL // @codeCoverageIgnore
+                : static::EXPRESSION_IN_BOOL_PHP8, // @codeCoverageIgnore
             'html_expression_escape' => static::HTML_EXPRESSION_ESCAPE,
             'html_text_escape'       => static::HTML_TEXT_ESCAPE,
             'pair_tag'               => static::PAIR_TAG,
@@ -311,6 +323,7 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
     protected function getIndent()
     {
         $pretty = $this->getOption('pretty');
+
         if (!$pretty) {
             return '';
         }
@@ -330,17 +343,12 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
     {
         $phpTokenHandler = $this->getOption('php_token_handlers');
         $untouched = false;
+
         if (!$checked) {
-            // @codeCoverageIgnoreStart
-            try {
-                $reflector = new \ReflectionMethod($this, 'handleVariable');
-                $untouched = (empty($phpTokenHandler) || $phpTokenHandler === [
-                    T_VARIABLE => [$this, 'handleVariable'],
-                ]) && $reflector->getDeclaringClass()->getName() === self::class;
-            } catch (\ReflectionException $exp) {
-                $untouched = false;
-            }
-            // @codeCoverageIgnoreEnd
+            $reflector = new ReflectionMethod($this, 'handleVariable');
+            $untouched = (empty($phpTokenHandler) || $phpTokenHandler === [
+                T_VARIABLE => [$this, 'handleVariable'],
+            ]) && $reflector->getDeclaringClass()->getName() === self::class;
         }
 
         if ($untouched) {
@@ -349,7 +357,7 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             return;
         }
 
-        $tokens = array_slice(token_get_all('<?php '.$code), 1);
+        $tokens = PhpTokenizer::getTokens($code);
         $afterIsset = false;
         $inIsset = false;
 
@@ -421,6 +429,18 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
             $code,
             $checked
         )))->join('');
+    }
+
+    /**
+     * Return an expression to be casted as boolean according to expression_in_bool pattern.
+     *
+     * @param string $code expression input code.
+     *
+     * @return string
+     */
+    public function formatBoolean($code)
+    {
+        return $this->pattern('expression_in_bool', $code);
     }
 
     protected function formatAssignmentValue($value)
@@ -519,12 +539,14 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
         }
 
         foreach (['begin', 'end'] as $key) {
-            $result[$key] = (isset($result[$key.'Php'])
-                ? "<?php\n".$result[$key.'Php']."\n?>"
-                : ''
-            ).(isset($result[$key])
-                ? $result[$key]
-                : ''
+            $result[$key] = (
+                isset($result[$key.'Php'])
+                    ? "<?php\n".$result[$key.'Php']."\n?>"
+                    : ''
+            ).(
+                isset($result[$key])
+                    ? $result[$key]
+                    : ''
             );
         }
 
@@ -651,14 +673,14 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
         $pattern = $type ? 'custom_doctype' : 'doctype';
         $code = $this->pattern($pattern, $type);
         $shortTagFix = $this->getOption('short_open_tag_fix');
+
         if ($shortTagFix === 'auto') {
             $shortTagFix = intval(ini_get('short_open_tag')) || intval(ini_get('hhvm.enable_short_tags'));
         }
-        // @codeCoverageIgnoreStart
+
         if ($shortTagFix) {
             $code = preg_replace('/<\?(?!php)/', '<<?= "?" ?>', $code);
         }
-        // @codeCoverageIgnoreEnd
 
         return $code.$this->getNewLine();
     }
@@ -893,12 +915,13 @@ abstract class AbstractFormat implements FormatInterface, OptionInterface
                 '        if (mb_substr($__local_pug_key, 0, 6) === \'__pug_\') {'."\n".
                 '            continue;'."\n".
                 '        }'."\n".
-                ($variablesVariable
-                    ? '        if(isset($'.$variablesVariable.'[$__local_pug_key])){'."\n".
-                    '            $$__local_pug_key = &$'.$variablesVariable.'[$__local_pug_key];'."\n".
-                    '            continue;'."\n".
-                    '        }'."\n"
-                    : ''
+                (
+                    $variablesVariable
+                        ? '        if(isset($'.$variablesVariable.'[$__local_pug_key])){'."\n".
+                        '            $$__local_pug_key = &$'.$variablesVariable.'[$__local_pug_key];'."\n".
+                        '            continue;'."\n".
+                        '        }'."\n"
+                        : ''
                 ).
                 '        $__local_pug_ref = &$GLOBALS[$__local_pug_key];'."\n".
                 '        $__local_pug_value = &$__pug_children_vars[$__local_pug_key];'."\n".

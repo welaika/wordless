@@ -388,7 +388,7 @@ class Formatter implements ModuleContainerInterface
      * Format a code with transform_expression and tokens handlers.
      *
      * @param string $code             input code
-     * @param bool   $checked          test variables
+     * @param bool   $checked          rather the expression is checked for escaping or not
      * @param bool   $noTransformation disable transform_expression
      *
      * @return string
@@ -396,6 +396,20 @@ class Formatter implements ModuleContainerInterface
     public function formatCode($code, $checked = false, $noTransformation = false)
     {
         return $this->getFormatInstance()->formatCode($code, $checked, $noTransformation);
+    }
+
+    /**
+     * Return an expression to be casted as boolean according to expression_in_bool pattern.
+     *
+     * @param string $code             input code
+     * @param bool   $checked          rather the expression is checked for escaping or not
+     * @param bool   $noTransformation disable transform_expression
+     *
+     * @return string
+     */
+    public function formatBoolean($code, $checked = false, $noTransformation = false)
+    {
+        return $this->getFormatInstance()->formatBoolean($this->formatCode($code, $checked, $noTransformation));
     }
 
     /**

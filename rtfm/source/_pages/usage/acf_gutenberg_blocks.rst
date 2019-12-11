@@ -53,3 +53,10 @@ front-end template, since it's a simple partial:
     You can change the path where the partial is searched for
     by using the :ref:`wordless_acf_gutenberg_blocks_views_path`
     filter
+
+.. todo::
+    This page is orphan: it's not listed in any navigation
+
+.. todo::
+    There is a note with a ref to ``wordless_acf_gutenberg_blocks_views_path`` but
+    the ref apparently does not exists

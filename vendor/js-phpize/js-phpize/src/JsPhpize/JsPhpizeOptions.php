@@ -4,6 +4,8 @@ namespace JsPhpize;
 
 use ArrayAccess;
 use JsPhpize\Lexer\Pattern;
+use JsPhpize\Lexer\Patterns\NumberPattern;
+use JsPhpize\Lexer\Patterns\StringPattern;
 
 class JsPhpizeOptions
 {
@@ -46,12 +48,13 @@ class JsPhpizeOptions
     public function __construct($options = [])
     {
         $this->options = is_array($options) || $options instanceof ArrayAccess ? $options : [];
+
         if (!isset($this->options['patterns'])) {
             $this->options['patterns'] = [
                 new Pattern(10, 'newline', '\n'),
                 new Pattern(20, 'comment', '\/\/.*?\n|\/\*[\s\S]*?\*\/'),
-                new Pattern(30, 'string', '"(?:\\\\.|[^"\\\\])*"|\'(?:\\\\.|[^\'\\\\])*\''),
-                new Pattern(40, 'number', '0[bB][01]+|0[oO][0-7]+|0[xX][0-9a-fA-F]+|(\d+(\.\d*)?|\.\d+)([eE]-?\d+)?'),
+                new StringPattern(30),
+                new NumberPattern(40),
                 new Pattern(50, 'lambda', '=>'),
                 new Pattern(60, 'operator', ['delete', 'typeof', 'void'], true),
                 new Pattern(65, 'unexpected', ['::']),
@@ -106,7 +109,7 @@ class JsPhpizeOptions
     /**
      * Return cached and ordered patterns list.
      *
-     * @return array
+     * @return Pattern[]
      */
     public function getPatterns()
     {

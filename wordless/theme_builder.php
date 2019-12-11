@@ -39,6 +39,7 @@ class WordlessThemeBuilder {
                 } else {
                     $source_content = file_get_contents($src . '/' . $file);
                     $source_content = str_replace("%THEME_NAME%", $this->theme_name, $source_content);
+                    $source_content = str_replace("%ABSPATH%", ABSPATH, $source_content);
                     file_put_contents($dst . '/' . $file, $source_content);
                     chmod($dst . '/' . $file, $this->chmod_set);
                 }

@@ -2,13 +2,16 @@
 
 namespace Phug;
 
+use ArrayAccess;
 use Phug\Renderer\Partial\CacheTrait;
 use Phug\Renderer\Partial\Debug\DebuggerTrait;
 use Phug\Renderer\Partial\RendererOptionsTrait;
 use Phug\Renderer\Partial\SharedVariablesTrait;
+use Phug\Renderer\Task\TasksGroup;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\MacroableTrait;
 use Phug\Util\Partial\ModuleContainerTrait;
+use Throwable;
 
 class Renderer implements ModuleContainerInterface
 {
@@ -20,6 +23,8 @@ class Renderer implements ModuleContainerInterface
     use MacroableTrait;
 
     /**
+     * The current compiler in use to convert Pug code into PHP code.
+     *
      * @var Compiler
      */
     private $compiler;
@@ -27,7 +32,7 @@ class Renderer implements ModuleContainerInterface
     /**
      * Renderer constructor.
      *
-     * @param array|\ArrayAccess|null $options
+     * @param array|ArrayAccess|null $options
      *
      * @throws RendererException
      */
@@ -181,32 +186,34 @@ class Renderer implements ModuleContainerInterface
             $parameters = $extension;
             $extension = '.html';
         }
+
         if (!$destination) {
             $destination = $path;
         }
+
         $path = realpath($path);
         $destination = realpath($destination);
 
-        $success = 0;
-        $errors = 0;
+        $tasks = new TasksGroup();
+
         if ($path && $destination) {
             $path = rtrim($path, '/\\');
             $destination = rtrim($destination, '/\\');
             $length = mb_strlen($path);
+
             foreach ($this->scanDirectory($path) as $file) {
                 $relativeDirectory = trim(mb_substr(dirname($file), $length), '//\\');
                 $filename = pathinfo($file, PATHINFO_FILENAME);
                 $outputDirectory = $destination.DIRECTORY_SEPARATOR.$relativeDirectory;
-                $counter = $this->renderAndWriteFile(
+                $tasks->record($this->renderAndWriteFile(
                     $file,
                     $outputDirectory.DIRECTORY_SEPARATOR.$filename.$extension,
                     $parameters
-                ) ? 'success' : 'errors';
-                $$counter++;
+                ));
             }
         }
 
-        return [$success, $errors];
+        return $tasks->getResult();
     }
 
     /**
@@ -216,7 +223,7 @@ class Renderer implements ModuleContainerInterface
      * @param array  $parameters parameters or file name
      * @param string $filename
      *
-     * @throws RendererException|\Throwable
+     * @throws RendererException|Throwable
      */
     public function display($string, array $parameters = [], $filename = null)
     {
@@ -237,7 +244,7 @@ class Renderer implements ModuleContainerInterface
      * @param string $path       pug input file
      * @param array  $parameters parameters (values for variables used in the template)
      *
-     * @throws RendererException|\Throwable
+     * @throws RendererException|Throwable
      */
     public function displayFile($path, array $parameters = [])
     {

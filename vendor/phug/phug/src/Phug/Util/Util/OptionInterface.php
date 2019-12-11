@@ -2,6 +2,8 @@
 
 namespace Phug\Util;
 
+use ArrayAccess;
+
 /**
  * Interface OptionInterface.
  */
@@ -30,19 +32,19 @@ interface OptionInterface
     public function setOption($name, $value);
 
     /**
-     * @return array
+     * @return array|ArrayAccess
      */
     public function getOptions();
 
     /**
-     * @param array $options
+     * @param array|ArrayAccess $options
      *
      * @return $this
      */
     public function setOptions($options);
 
     /**
-     * @param array $options
+     * @param array|ArrayAccess $options
      *
      * @return $this
      */

@@ -1,0 +1,11 @@
+extends /layouts/default.pug
+
+block yield
+  h2 Archive (static example)
+
+  ul.archive
+    while (have_posts())
+      - the_post()
+
+      li
+        include /partials/post.pug
