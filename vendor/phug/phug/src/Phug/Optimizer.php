@@ -154,16 +154,16 @@ class Optimizer
      */
     public function isExpired($file, &$cachePath = null)
     {
-        if (isset($this->options['up_to_date_check']) && !$this->options['up_to_date_check']) {
-            return false;
-        }
-
         if (!$this->cacheDirectory) {
             return true;
         }
 
         $sourcePath = $this->resolve($file);
         $cachePath = rtrim($this->cacheDirectory, '\\/').DIRECTORY_SEPARATOR.$this->hashPrint($sourcePath).'.php';
+
+        if (isset($this->options['up_to_date_check']) && !$this->options['up_to_date_check']) {
+            return false;
+        }
 
         if (!file_exists($cachePath)) {
             return true;
