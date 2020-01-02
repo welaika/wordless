@@ -73,7 +73,7 @@ class RenderHelper {
                     }
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
-                        \Phug\Optimizer::call(
+                        \Pug\Optimizer::call(
                             'displayFile', [$template_path, $locals], WordlessPugOptions::get_options()
                         );
                     } else {
