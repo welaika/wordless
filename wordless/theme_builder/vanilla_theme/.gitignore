@@ -1,7 +1,7 @@
 tmp/*
 !tmp/.gitkeep
-assets/*/*
-!assets/*/.gitkeep
-!assets/fonts
+dist/*/*
+!dist/*/.gitkeep
+!dist/fonts
 .DS_Store
 node_modules
