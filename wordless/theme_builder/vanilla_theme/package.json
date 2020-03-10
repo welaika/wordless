@@ -20,7 +20,6 @@
     "clean:dist": "yarn clean:js && yarn clean:css && yarn clean:images",
     "sign-release": "git rev-parse HEAD | cut -c 1-8 > release.txt",
     "lint": "yarn lint:sass",
-    "lint:sass": "npx stylelint --report-needless-disables 'src/stylesheets/**/*.sass' && npx stylelint 'src/stylesheets/**/*.sass'"
   },
   "dependencies": {},
   "devDependencies": {
