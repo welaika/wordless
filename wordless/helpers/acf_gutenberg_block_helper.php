@@ -48,16 +48,19 @@ class AcfGutenbergBlockHelper {
   function _acf_block_render_callback( $block ) {
     $slug = str_replace('acf/', '', $block['name']);
 
-    if ( file_exists( get_theme_file_path("/theme/views/blocks/admin/_{$slug}.pug") ) ) {
-        $admin_partial = "blocks/admin/{$slug}";
+    // The filter must return a string, representing a folder relative to `views/`
+    $blocks_folder = apply_filters('wordless_acf_gutenberg_blocks_views_path', 'blocks/');
+
+    if ( file_exists( get_theme_file_path("/views/{$blocks_folder}/admin/_{$slug}.pug") ) ) {
+        $admin_partial = "{$blocks_folder}/admin/{$slug}";
     } else {
-        $admin_partial = "blocks/{$slug}";
+        $admin_partial = "{$blocks_folder}/{$slug}";
     }
 
     if ( is_admin() ) {
         render_partial($admin_partial);
     } else {
-        render_partial("blocks/{$slug}");
+        render_partial("{$blocks_folder}/{$slug}");
     }
   }
 }
