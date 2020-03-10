@@ -1,2 +1,5 @@
 .sass-cache
 .DS_Store
+rtfm/
+tests/
+wordless/
