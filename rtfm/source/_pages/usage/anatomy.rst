@@ -350,7 +350,7 @@ Assets
 The Fast Way
 """"""""""""
 
-- write your SASS in ``src/stylesheets/screen.sass``
+- write your SCSS in ``src/stylesheets/screen.scss``
 - write your CoffeeScript in ``src/javascripts/application.js.coffee``
 
 and all will automagically work! :)
@@ -377,19 +377,19 @@ They will be compiled and resulting compilation files will be moved in the corre
 Compilation, naming and other logic is fully handled by webpack.
 
 Images will be optimized by `ImageminPlugin`_. The default setup already translates
-``url`` s inside css/sass files in order to point to images in the
+``url`` s inside css/scss files in order to point to images in the
 right folder.
 
 .. _ImageminPlugin: https://www.npmjs.com/package/imagemin-webpack-plugin
 
-Take a look to the default ``screen.sass`` and ``application.js.coffee`` to see
+Take a look to the default ``screen.scss`` and ``application.js.coffee`` to see
 usage examples.
 
 .. seealso::
     :ref:`CompileStack`
 
 .. seealso::
-    * `Official Sass guide <https://sass-lang.com/guide>`_
+    * `Official SCSS guide <https://sass-lang.com/guide>`_
     * `Official CoffeeScritp guide <https://coffeescript.org/>`_
 
 node_modules

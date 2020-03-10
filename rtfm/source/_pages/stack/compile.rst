@@ -8,7 +8,7 @@ Wordless's scaffolded theme uses the following languages by default:
 
 * **PHUG** for views as an alternative to PHP+HTML
 * **CoffeeScript** 2 for JS (ES6 ready)
-* **Sass** for CSS
+* **SCSS** for CSS
 
 You could decide to use *plain* languages, just by renaming (and rewriting)
 your files.
@@ -32,8 +32,8 @@ extension they have.
 
     PHUG paragraph @ :ref:`PlainPhp`
 
-Anyway we think that the default languages are **powerful, more productive, more
-pleasant to read and to write**.
+Anyway we think that the default languages are **powerful, more productive,
+more pleasant to read and to write**.
 
 Add the fact that wordless will take care of all compilation tasks, giving you
 focus on writing: we think this is a win-win scenario.
@@ -62,7 +62,8 @@ We love it because it is concise, clear, tidy and clean.
         h3!= link_to(get_the_title(), get_permalink())
       content!= get_the_content()
 
-Certainly, becoming fluent in PUG usage could have a not-so-flat learning curve,
+Certainly, becoming fluent in PUG usage could have a not-so-flat
+learning curve,
 but starting from the basics shuold be affordable and the reward is high.
 
 Who compiles PUG?
@@ -80,9 +81,9 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 .. _Pug: https://github.com/pugjs/pug
 .. _Phug: https://github.com/pug-php/pug
 
-.. _CoffeeScript and Sass:
+.. _CoffeeScript and SCSS:
 
-CoffeeScript and Sass
+CoffeeScript and SCSS
 #####################
 
 Here we are in the **Webpack** domain; from the compilation point of view there
@@ -172,7 +173,7 @@ the only entry is ``main``
     :language: javascript
     :caption: main.js
 
-As we've already said having an *entry* which requires both JS and SASS,
+As we've already said having an *entry* which requires both JS and SCSS,
 will produce 2 separate files with the same name and different extension.
 
 Add another *entry* and producing new bundles is as easy as
@@ -183,7 +184,7 @@ Add another *entry* and producing new bundles is as easy as
 
     touch src/backend.js
 
-* write something in it, should it be a ``require`` for a SASS file or
+* write something in it, should it be a ``require`` for a SCSS file or
   a piece of JS logic
 * add the *entry* to webpack config
 

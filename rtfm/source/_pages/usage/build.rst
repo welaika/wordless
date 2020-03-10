@@ -12,7 +12,8 @@ is placed - automatically by Webpack - in
 ``dist/{javascripts|stylesheets|images}``
 
 .. seealso::
-    :ref:`CoffeeScript and Sass`
+
+    :ref:`CoffeeScript and SCSS`
 
 We offer standard approaches for both environments. They are handled -
 as expected - through ``package.json`` 's scripts [#f1]_:
@@ -75,7 +76,7 @@ versioning (for us in Sentry).
 Code linting
 ############
 
-Wordless ships with preconfigured linting of SASS (indented syntax)
+Wordless ships with preconfigured linting of SCSS
 using `Stylelint`_.
 
 It is configured in ``.stylelintrc.json``, you can add exclusion in
@@ -87,9 +88,9 @@ The script ``yarn lint`` is preconfigured to run the the lint tasks.
 
     Code linting could be chained in a build script, e.g.:
 
-        .. code-block::
+    .. code-block::
 
-            "build:prod": "yarn sign-release && webpack -p --bail --env.NODE_ENV=production"
+        "build:prod": "yarn lint && webpack -p --bail --env.NODE_ENV=production"
 
 .. tip::
 
@@ -136,11 +137,12 @@ where we search for ``ENVIRONMENT`` and thus we'll activate PHUG's
 The simplest approach is to to define a constant inside ``wp-config.php``.
 
 .. code-block:: php
-
     :caption: wp-config.php
 
     <?php
+    // [...]
     define('ENVIRONMENT', 'production');
+    // [...]
 
 Deploy
 ######
