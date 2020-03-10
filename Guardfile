@@ -5,6 +5,9 @@ guard 'haml', output: '.', input: 'src/views' do
   watch(/^.+(\.haml)/)
 end
 
-guard 'compass', configuration_file: 'compass.rb' do
-  watch(/^.+\.s[ac]ss$/)
-end
+# No longer works: use
+# `compass compile -c compass.rb`
+# on command line
+# guard 'compass', cli: 'compile -c compass.rb' do
+#   watch(/^.+\.s[ac]ss$/)
+# end
