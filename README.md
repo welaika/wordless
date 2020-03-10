@@ -105,25 +105,6 @@ define('WORDLESS_LEGACY', true);
 
 We plan to completely remove this support in Wordless 3.
 
-## Inline code documentation
-
-You can find it [here](http://welaika.github.io/wordless/docs.html). If you are interested in contributing to the documentation:
-
-* we are documenting the following at the moment (path recursive)
-
-```
-wordless/helpers/*
-wordless/helpers/placeholder_images/*
-wordless/helpers/templates/*
-vendor/mobile_detect.php
-```
-
-* here is a [list](http://welaika.github.io/wordless/docs/0.3/dd/da0/todo.html) of documentation gaps :9
-* go and add doc following the [doxygen](http://www.stack.nl/~dimitri/doxygen/) guides
-* pull-request your commits
-* we'll recompile the doxygen doc
-* the community will be grateful!
-
 ## Localization
 
 Wordless is available in English, German, Greek, Italian and Spanish, at the moment.
@@ -134,8 +115,43 @@ Your help is welcome! Add your own language using [Transifex](https://www.transi
 
 ## Documentation
 
-Helper documentation - [welaika.github.io/wordless/docs/0.5](http://welaika.github.io/wordless/docs/0.5/index.html)
+### Complete documentation
+
 Wordless full documentation - [wordless.readthedocs.io](https://wordless.readthedocs.io/en/latest/?badge=latest)
+
+If you want to contribute to the documentation.
+
+* `brew install sphinx-doc`
+* `cd rtfm/`
+* `sphinx-autobuild source/ build/html` and open http://127.0.0.1:8000 to watch the preview
+  * the build server will autoreload your page on modifications
+* update the doc; documentation about the RST syntax can be found at
+  https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
+* `commit` and `push`; the `rtfm/` folder on master will be auto-deployed on https://wordless.readthedocs.io/
+
+As a side note: [reStructuredText](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext)
+plugin in VSCode could be of great help linting, highlighting and previewing your texts.
+
+### Helpers documentation
+
+You can find it at http://welaika.github.io/wordless/docs/latest/html/index.html.
+
+If you are interested in contributing to the documentation:
+
+* we are documenting the following at the moment (path recursive)
+
+```
+wordless/helpers/*
+```
+
+* here is a [list](http://welaika.github.io/wordless/docs/latest/html/dd/da0/todo.html) of documentation gaps :9
+* `brew install doxygen`
+* go and add doc following the [doxygen](http://www.stack.nl/~dimitri/doxygen/) conventions
+* compile the new doc with `doxygen docs/Doxyfile` (from project's root)
+* you'll have an untracked folder `docs/build` in GiT. Leave it alone and `git checkout gh-pages`
+  instead.
+* `mv docs/build docs/latest` overwriting the old one
+* `commit` and `push` the branch
 
 ## Need more tools?
 Visit [WordPress Tools](https://www.wptools.it).
