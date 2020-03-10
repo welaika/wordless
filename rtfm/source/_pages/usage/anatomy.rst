@@ -305,6 +305,7 @@ one with a specific target:
 
   config/initializers
   ├──── backend.php
+  ├──── custom_gutenberg_acf_blocks.php
   ├──── custom_post_types.php
   ├──── default_hooks.php
   ├──── hooks.php
@@ -314,6 +315,8 @@ one with a specific target:
   ├──── thumbnail_sizes.php
 
 - **backend**: remove backend components such as widgets, update messages, etc
+- **custom_gutenbers_acf_blocks**: Wordless has built-in support to ACF/Gutenberg blocks. Read more
+  at :ref:`Blocks`
 - **custom_post_types**: well... if you need to manage taxonomies, this is the
   place to be
 - **default_hooks**: these are used by wordless's default behaviours; tweak them
