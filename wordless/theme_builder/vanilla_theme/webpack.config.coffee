@@ -136,4 +136,8 @@ module.exports = (env) ->
     }
 
     stats: 'normal'
+
+    externals: {
+      jquery: 'jQuery'
+    }
   }
