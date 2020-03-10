@@ -1,0 +1,22 @@
+$primary-color: rgb(53, 85, 147);
+
+@import 'site_header';
+@import 'tinymce';
+
+.page-wrapper {
+  color: rgb(51, 51, 51);
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: 13px;
+  margin: 0 auto;
+  width: 960px;
+}
+
+.page-wrapper .site-content {
+  padding: 20px;
+}
+
+.page-wrapper .site-content h2 {
+  color: $primary-color;
+  font-size: 20px;
+  margin-bottom: 20px;
+}
