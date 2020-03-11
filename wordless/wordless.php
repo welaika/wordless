@@ -20,7 +20,7 @@ class Wordless {
         'package' => 'package.json',
         'webpack' => 'webpack.config.js',
         'webpack.env' => 'webpack.env.js',
-        'main' => 'theme/assets/main.js',
+        'main' => 'src/main.js',
         'yarn' => 'yarn.lock',
         'nvmrc' => '.nvmrc',
         'stylelintignore' => '.stylelintignore',
