@@ -16,8 +16,8 @@ Wordless is an opinionated WordPress plugin that dramatically speeds up and enha
 * Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
 * Write CSS stylesheets using the awesome [SCSS syntax](http://sass-lang.com)
 * Out-of-the-box support to [Stylelint](https://stylelint.io/) configured for SCSS syntax.
-* Write Javascript logic in [Coffeescript](http://jashkenas.github.com/coffee-script/)
-* Automatically polyfill and transpile your JS setting your support inside [`.browserslistrc`](https://github.com/browserslist/browserslist)
+* Write Javascript logic in ES2015 thanks to [Babel](https://babeljs.io/)
+* Automatically polyfill (with [core-js](https://github.com/zloirock/core-js)) and transpile Javascript based on your support inside [`.browserslistrc`](https://github.com/browserslist/browserslist)
 * A growing set of handy and documented PHP helper functions ready to be used within your views
 * Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 

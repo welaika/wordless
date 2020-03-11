@@ -13,7 +13,7 @@ is placed - automatically by Webpack - in
 
 .. seealso::
 
-    :ref:`CoffeeScript and SCSS`
+    :ref:`JS and SCSS`
 
 We offer standard approaches for both environments. They are handled -
 as expected - through ``package.json`` 's scripts [#f1]_:
@@ -57,7 +57,7 @@ Production build will essentially:
     browser and to simplify the shipping of source-maps to error monitoring softwares such
     as Sentry.
 
-    You can easily disable this behaviour setting ``devtool: false`` in ``webpack.env.coffee``
+    You can easily disable this behaviour setting ``devtool: false`` in ``webpack.env.js``
     inside the ``prodOptions`` object.
 
 Release signature

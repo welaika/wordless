@@ -7,7 +7,7 @@ First things first: **using "alternative" languages is not a constraint**.
 Wordless's scaffolded theme uses the following languages by default:
 
 * **PHUG** for views as an alternative to PHP+HTML
-* **CoffeeScript** 2 for JS (ES6 ready)
+* **ES2015** transpiled to JS using Babel
 * **SCSS** for CSS
 
 You could decide to use *plain* languages, just by renaming (and rewriting)
@@ -81,51 +81,45 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 .. _Pug: https://github.com/pugjs/pug
 .. _Phug: https://github.com/pug-php/pug
 
-.. _CoffeeScript and SCSS:
+.. _JS and SCSS:
 
-CoffeeScript and SCSS
-#####################
+JS and SCSS
+###########
 
 Here we are in the **Webpack** domain; from the compilation point of view there
 is nothing Wordless-specific but the file path configuration.
 
-The default webpack configuration file is written itself in Coffeescript,
-because it is `natively supported`_ by Webpack and because it makes the code
-easier to read.
-
-.. _natively supported: https://webpack.js.org/configuration/configuration-languages/
-
 Configuration is pretty standard, so it's up to you to read Webpack's
-documentation. Let's see how paths are configured in ``webpack.config.coffee``.
+documentation. Let's see how paths are configured in ``webpack.config.js``.
 
 Paths
 """""
 
 Paths are based on the Wordless scaffold. Variables are defined at the top:
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :language: coffeescript
-    :caption: webpack.config.coffee
-    :lineno-start: 4
-    :lines: 4-7
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
+    :language: js
+    :caption: webpack.config.js
+    :lineno-start: 2
+    :lines: 2-5
 
 and are used by the ``entry`` and ``output`` configurations:
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :language: coffeescript
-    :caption: webpack.config.coffee
-    :lineno-start: 22
-    :lines: 22-30
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
+    :language: js
+    :caption: webpack.config.js
+    :lineno-start: 18
+    :lines: 18-26
 
 CSS will be extracted from the bundle by the standard mini-css-extract-plugin_
 
 .. _mini-css-extract-plugin: https://webpack.js.org/plugins/extract-text-webpack-plugin/
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :language: coffeescript
-    :caption: webpack.config.coffee
-    :lineno-start: 107
-    :lines: 107-109
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
+    :language: js$
+    :caption: webpack.config.js
+    :lineno-start: 129
+    :lines: 129-131
 
 Inclusion of compiled files
 """""""""""""""""""""""""""
@@ -188,9 +182,9 @@ Add another *entry* and producing new bundles is as easy as
   a piece of JS logic
 * add the *entry* to webpack config
 
-.. code-block:: coffeescript
+.. code-block:: js
 
-    entries = ['main', 'backend']
+    const entries = ['main', 'backend']
 
 * include somewhere in your theme. For example in the WP's asset queue
   in ``default_hooks.php``

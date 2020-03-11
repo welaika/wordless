@@ -68,10 +68,10 @@ The only relevant **Webpack** part in this section is BrowserSync_. It will
 start a web server at address ``127.0.0.1`` on port 3000.
 This is where your browser will automatically go once launched.
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :lines: 95-105
-    :language: coffeescript
-    :caption: webpack.config.coffee
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
+    :lines: 94-108
+    :language: js
+    :caption: webpack.config.js
 
 As you can see from the configuration, web requests will be proxy-ed to the
 underlying ``wp server``.
