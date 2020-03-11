@@ -18,14 +18,15 @@ class Wordless {
         'procfile' => 'Procfile',
         'env' => '.env',
         'package' => 'package.json',
-        'webpack' => 'webpack.config.coffee',
-        'webpack.env' => 'webpack.env.coffee',
+        'webpack' => 'webpack.config.js',
+        'webpack.env' => 'webpack.env.js',
         'main' => 'theme/assets/main.js',
         'yarn' => 'yarn.lock',
         'nvmrc' => '.nvmrc',
         'stylelintignore' => '.stylelintignore',
         'stylelintrc' => '.stylelintrc.json',
-        'release' => 'release.txt'
+        'release' => 'release.txt',
+        'eslintrc' => '.eslintrc.json'
     );
 
     public static function initialize() {
@@ -213,7 +214,8 @@ class Wordless {
             self::theme_yarndotlock_path(),
             self::theme_nvmrc_path(),
             self::theme_stylelintignore_path(),
-            self::theme_stylelintrc_path()
+            self::theme_stylelintrc_path(),
+            self::theme_eslintrc_path()
             );
 
         foreach ($required_files as $file) {
@@ -328,6 +330,10 @@ class Wordless {
 
     public static function theme_release_path() {
         return self::join_paths(self::theme_path(), self::$webpack_files_names['release']);
+    }
+
+    public static function theme_eslintrc_path() {
+        return self::join_paths(self::theme_path(), self::$webpack_files_names['eslintrc']);
     }
 
     public static function join_paths() {
