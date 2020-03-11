@@ -41,8 +41,8 @@ This is a typical `Wordless theme directory structure`_:
   ├── release.txt
   ├── screenshot.png
   ├── style.css
-  ├── webpack.config.coffee
-  ├── webpack.env.coffee
+  ├── webpack.config.js
+  ├── webpack.env.js
   └── yarn.lock
 
 .. _Wordless theme directory structure : https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme
@@ -351,7 +351,7 @@ The Fast Way
 """"""""""""
 
 - write your SCSS in ``src/stylesheets/screen.scss``
-- write your CoffeeScript in ``src/javascripts/application.js.coffee``
+- write your JS in ``src/javascripts/application.js``
 
 and all will automagically work! :)
 
@@ -382,7 +382,7 @@ right folder.
 
 .. _ImageminPlugin: https://www.npmjs.com/package/imagemin-webpack-plugin
 
-Take a look to the default ``screen.scss`` and ``application.js.coffee`` to see
+Take a look to the default ``screen.scss`` and ``application.js`` to see
 usage examples.
 
 .. seealso::
@@ -390,7 +390,6 @@ usage examples.
 
 .. seealso::
     * `Official SCSS guide <https://sass-lang.com/guide>`_
-    * `Official CoffeeScritp guide <https://coffeescript.org/>`_
 
 node_modules
 ^^^^^^^^^^^^
@@ -403,11 +402,17 @@ Add any vendor library through `YARN`_ with
 
     yarn add slick-carousel
 
-Then in your CoffeeScritp/Javascript you can do
+Then in your Javascript you can do
 
-.. code-block:: coffeescript
+.. code-block:: js
 
-    require('slick-carousel')
+    require('slick-carousel');
+
+or if the library exports ES6 modules you can do
+
+.. code-block:: js
+
+    import { export1 } from "module-name";
 
 and go on as usual.
 

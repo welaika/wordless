@@ -13,7 +13,7 @@ speeds up and enhances your custom theme creation. Some of its features are:
 * Scaffold a new theme directly within wp-cli
 * Write PHP templates with the Pug templating system
 * Write CSS stylesheets using the awesome SCSS syntax
-* Write Javascript logic in Coffeescript
+* Write Javascript logic in ES2015
 * A growing set of handy and documented PHP helper functions ready to be used
   within your views
 * Development workflow backed by WebPack, BrowserSync (with live reload),
