@@ -16,6 +16,7 @@ speeds up and enhances your custom theme creation. Some of its features are:
 * Write Javascript logic in ES2015
 * A growing set of handy and documented PHP helper functions ready to be used
   within your views
+* Preconfigured support to MailHog mail-catcher.
 * Development workflow backed by WebPack, BrowserSync (with live reload),
   WP-CLI, Yarn. All the standards you already know, all the customizations you
   may need.

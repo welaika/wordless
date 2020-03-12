@@ -100,6 +100,8 @@ template changes too.
 .. _BrowserSync: https://www.browsersync.io/
 .. _browser-sync-webpack-plugin: https://www.npmjs.com/package/browser-sync-webpack-plugin
 
+.. _MailhogRef:
+
 MailHog
 #######
 
@@ -128,3 +130,24 @@ This will trigger the ``smtp.php`` initializer:
     :caption: config/initializers/smtp.php
 
 .. _MailHog: https://github.com/mailhog/MailHog
+
+Debug in VSCode
+###############
+
+We ship a ``.vscode/launch.json`` in theme's root which is preconfigured to
+launch debugger for XDebug and for JS (both Chrome and FireFox). In order to
+use these configuration you'll need to install some plugins in the editor:
+
+* `Debugger for Chrome`_
+* `Debugger for Firefox`_
+* `PHP Debug`_
+
+.. _Debugger for Chrome: https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+.. _Debugger for Firefox: https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+.. _PHP Debug: https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug
+
+.. note::
+    You may need to move ``.vscode/launch.json`` in another location if you
+    are not opening the theme's folder as workspace in VSCode (maybe you prefere to
+    open all the WordPress installation? Don't know...). It's up to you to use it
+    as you need it.

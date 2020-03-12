@@ -214,3 +214,31 @@ Add another *entry* and producing new bundles is as easy as
             = stylesheet_link_tag('backend')
         footer
             = javascript_include_tag('backend')
+
+Browserslist
+""""""""""""
+
+At theme's root you'll find the `.browserlistsrc`_ file.
+
+By default it's used by Babel and Core-js3 to understand how to polifill
+your ES2015 code. You can understand more about our default configuration
+reading Babel docs at https://babeljs.io/docs/en/babel-preset-env#browserslist-integration
+
+.. _.browserlistsrc: https://github.com/browserslist/browserslist
+
+Stylelint
+"""""""""
+
+We use `Stylelint`_ to lint SCSS and to enforce some practices.
+Nothing goes out of a standard setup. By the way some spotlights:
+
+* configuration is in ``.stylelintrc.json`` file
+* you have a blank ``.stylelintignore`` file if you may need
+* ``yarn lint`` will launch the lint process
+* if you use VS Code to write, we ship ``.vscode/settings.json`` in
+  theme's root, which disables the built-in linters as per `stylelint plugin`_
+  instructions. You may need to move those configurations based on the folder
+  from which you start the editor.
+
+.. _Stylelint: https://stylelint.io/
+.. _stylelint plugin: https://marketplace.visualstudio.com/items?itemName=stylelint.vscode-stylelint
