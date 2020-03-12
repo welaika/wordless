@@ -127,6 +127,7 @@ class ModelHelper {
         'hierarchical' => true,
         'labels' => $labels,
         'show_ui' => true,
+        'show_in_rest' => true,
         'query_var' => true,
         'rewrite' => array('slug' => $name["plural"])
       ), $options);
