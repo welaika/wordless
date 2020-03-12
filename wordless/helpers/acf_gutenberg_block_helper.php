@@ -51,7 +51,14 @@ class AcfGutenbergBlockHelper {
     // The filter must return a string, representing a folder relative to `views/`
     $blocks_folder = apply_filters('wordless_acf_gutenberg_blocks_views_path', 'blocks/');
 
-    if ( file_exists( get_theme_file_path("/views/{$blocks_folder}/admin/_{$slug}.pug") ) ) {
+    $admin_partial_filename = Wordless::theme_views_path() . "/{$blocks_folder}/admin/_{$slug}";
+
+    if (
+      file_exists( "{$admin_partial_filename}.html.pug" ) ||
+      file_exists( "{$admin_partial_filename}.pug" ) ||
+      file_exists( "{$admin_partial_filename}.html.php" ) ||
+      file_exists( "{$admin_partial_filename}.php" )
+    ) {
         $admin_partial = "{$blocks_folder}/admin/{$slug}";
     } else {
         $admin_partial = "{$blocks_folder}/{$slug}";
