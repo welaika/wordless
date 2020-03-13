@@ -275,7 +275,7 @@ class Configuration {
                 quand même des résultats différents pour des clefs différentes.
                 Par chance les objets fantaisie ont un système de filtre...
 <php><![CDATA[
-<strong>$config = &new MockConfiguration();
+<strong>$config = new MockConfiguration();
 $config->returns('get', 'primary', array('db_host'));
 $config->returns('get', 'admin', array('db_user'));
 $config->returns('get', 'secret', array('db_password'));</strong>

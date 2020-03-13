@@ -57,7 +57,7 @@ class CoverageUtilsTest extends UnitTestCase {
         CoverageUtils::addItemAsArray($actual, 'bird', 'duck');
         $this->assertEqual(array('bird[]' => array('duck')), $actual);
 
-        CoverageUtils::addItemAsArray(&$actual, 'bird', 'pigeon');
+        CoverageUtils::addItemAsArray($actual, 'bird', 'pigeon');
         $this->assertEqual(array('bird[]' => array('duck', 'pigeon')), $actual);
     }
 

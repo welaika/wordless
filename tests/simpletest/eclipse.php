@@ -54,7 +54,7 @@ class EclipseReporter extends SimpleScorer
      *    @return SimpleSocket      Connection to Eclipse.
      */
     function &createListener($port, $host="127.0.0.1"){
-        $tmplistener = &new SimpleSocket($host, $port, 5);
+        $tmplistener = new SimpleSocket($host, $port, 5);
         return $tmplistener;
     }
 
@@ -65,7 +65,7 @@ class EclipseReporter extends SimpleScorer
      *    @access public
      */
     function &createInvoker(&$invoker){
-        $eclinvoker = &new EclipseInvoker($invoker, $this->listener);
+        $eclinvoker = new EclipseInvoker($invoker, $this->listener);
         return $eclinvoker;
     }
 

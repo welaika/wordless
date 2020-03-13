@@ -13,7 +13,7 @@
 class <strong>MyTestCase</strong> extends UnitTestCase {
     <strong>
     function testLogWroteMessage() {
-        $log = &new Log('my.log');
+        $log = new Log('my.log');
         $log->message('Hello');
         $this->assertTrue(file_exists('my.log'));
     }</strong>

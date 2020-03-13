@@ -54,7 +54,7 @@ class DetachedTestCase
      *    @access public
      */
     function run(&$reporter) {
-        $shell = &new SimpleShell();
+        $shell = new SimpleShell();
         $shell->execute($this->command);
         $parser = &$this->createParser($reporter);
         if (! $parser->parse($shell->getOutput())) {
@@ -71,9 +71,9 @@ class DetachedTestCase
      */
     function getSize() {
         if ($this->size === false) {
-            $shell = &new SimpleShell();
+            $shell = new SimpleShell();
             $shell->execute($this->dry_command);
-            $reporter = &new SimpleReporter();
+            $reporter = new SimpleReporter();
             $parser = &$this->createParser($reporter);
             if (! $parser->parse($shell->getOutput())) {
                 trigger_error('Cannot parse incoming XML from [' . $this->dry_command . ']');

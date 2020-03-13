@@ -23,7 +23,7 @@
 <?php
     require_once('simpletest/browser.php');
     
-    $browser = &new SimpleBrowser();
+    $browser = new SimpleBrowser();
     $browser->get('http://php.net/');
     $browser->clickLink('reporting bugs');
     $browser->clickLink('statistics');
@@ -205,14 +205,14 @@ class TestOfRegistration extends UnitTestCase {
 <php><![CDATA[
 class TestOfSecurity extends UnitTestCase {
     function testNoMultipleLoginsFromSameUser() {
-        $first = &new SimpleBrowser();
+        $first = new SimpleBrowser();
         $first->get('http://my-site.com/login.php');
         $first->setField('name', 'Me');
         $first->setField('password', 'Secret');
         $first->clickSubmit('Enter');
         $this->assertEqual($first->getTitle(), 'Welcome');
         
-        $second = &new SimpleBrowser();
+        $second = new SimpleBrowser();
         $second->get('http://my-site.com/login.php');
         $second->setField('name', 'Me');
         $second->setField('password', 'Secret');

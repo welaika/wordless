@@ -259,7 +259,7 @@ $mock->expectOnce('authenticate',
 <strong>class TestOfNetworking extends UnitTestCase {
     ...
     function testGetValidIp() {
-        $server = &new Server();
+        $server = new Server();
         $this->assert(
                 new ValidIp(),
                 $server->getIp(),
@@ -287,7 +287,7 @@ class TestOfNetworking extends UnitTestCase {
     }</strong>
     
     function testGetValidIp() {
-        $server = &new Server();<strong>
+        $server = new Server();<strong>
         $this->assertValidIp(
                 $server->getIp(),
                 'Server IP address->%s');</strong>

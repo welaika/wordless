@@ -38,7 +38,7 @@ class FileTestCase extends UnitTestCase {
     }
 
     function testCreation() {
-        $writer = &new FileWriter('../temp/test.txt');
+        $writer = new FileWriter('../temp/test.txt');
         $writer->write('Hello');
         $this->assertTrue(file_exists('../temp/test.txt'), 'File created');
     }</strong>
@@ -222,7 +222,7 @@ class FileTestCase extends <strong>FileTester</strong> {
     }
 
     function testCreation() {
-        $writer = &new FileWriter('../temp/test.txt');
+        $writer = new FileWriter('../temp/test.txt');
         $writer->write('Hello');<strong>
         $this->assertFileExists('../temp/test.txt');</strong>
     }

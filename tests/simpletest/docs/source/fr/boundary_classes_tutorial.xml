@@ -110,7 +110,7 @@
         }
 
         function testTimestamps() {
-            $clock = &new MockClock($this);
+            $clock = new MockClock($this);
             $clock->returns('now', 'Timestamp');<strong>
             $log = new Log(new FileWriter('../temp/test.log'));</strong>
             $log->message('Test line', &$clock);

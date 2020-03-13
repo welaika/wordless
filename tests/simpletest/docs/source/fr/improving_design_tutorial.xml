@@ -53,11 +53,11 @@ class TestOfLogging extends UnitTestCase {
         $this->UnitTestCase('Log class test');
     }
     function testWriting() {
-        $clock = &new MockClock($this);
+        $clock = new MockClock($this);
         $clock->setReturnValue('now', 'Timestamp');
-        $writer = &new <strong>MockWriter($this)</strong>;
+        $writer = new <strong>MockWriter($this)</strong>;
         $writer->expectOnce('write', array('[Timestamp] Test line'));
-        $log = &new Log($writer);
+        $log = new Log($writer);
         $log->message('Test line', &$clock);
         $writer->tally();
     }
