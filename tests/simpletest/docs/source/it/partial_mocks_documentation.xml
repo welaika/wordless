@@ -38,7 +38,7 @@ require_once('socket.php');
 class Telnet {
     ...
     function &connect($ip, $port, $username, $password) {
-        $socket = &new Socket($ip, $port);
+        $socket = new Socket($ip, $port);
         $socket->read( ... );
         ...
     }
@@ -78,9 +78,9 @@ class Telnet {
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {<strong>
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $telnet = &new Telnet();
+        $telnet = new Telnet();
         $telnet->connect($socket, 'Me', 'Secret');
         ...</strong>
     }
@@ -103,7 +103,7 @@ class Telnet {
     ...<strong>
     function &connect($ip, $port, $username, $password, $socket = false) {
         if (!$socket) {
-            $socket = &new Socket($ip, $port);
+            $socket = new Socket($ip, $port);
         }
         $socket->read( ... );</strong>
         ...
@@ -119,9 +119,9 @@ class Telnet {
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {<strong>
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $telnet = &new Telnet();
+        $telnet = new Telnet();
         $telnet->connect('127.0.0.1', 21, 'Me', 'Secret', &$socket);
         ...</strong>
     }
@@ -165,11 +165,11 @@ class Telnet {<strong>
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {<strong>
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $network = &new MockNetwork($this);
+        $network = new MockNetwork($this);
         $network->returnsByReference('createSocket', $socket);
-        $telnet = &new Telnet($network);
+        $telnet = new Telnet($network);
         $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
         ...</strong>
     }
@@ -247,9 +247,9 @@ class Telnet {
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {<strong>
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $telnet = &new TelnetTestVersion($socket);
+        $telnet = new TelnetTestVersion($socket);
         $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
         ...</strong>
     }
@@ -282,9 +282,9 @@ class TelnetTest extends UnitTestCase {
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {<strong>
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $telnet = &new TelnetTestVersion($this);
+        $telnet = new TelnetTestVersion($this);
         $telnet->setReturnReference('_createSocket', $socket);
         $telnet->Telnet();
         $telnet->connect('127.0.0.1', 21, 'Me', 'Secret');
@@ -326,9 +326,9 @@ class TelnetTest extends UnitTestCase {
 class TelnetTest extends UnitTestCase {
     ...
     function testConnection() {
-        $socket = &new MockSocket($this);
+        $socket = new MockSocket($this);
         ...
-        $telnet = &new TelnetTestVersion($this);
+        $telnet = new TelnetTestVersion($this);
         $telnet->setReturnReference('_createSocket', $socket);<strong>
         $telnet->expectOnce('_createSocket', array('127.0.0.1', 21));</strong>
         $telnet->Telnet();

@@ -222,7 +222,7 @@ class Configuration {
 				si desiderano valori differenti in corrispondenza di chiavi differenti.
 				Fortunatamente, i mock dispongono di un sistema di filtraggio:
 <php><![CDATA[
-<strong>$config = &new MockConfiguration();
+<strong>$config = new MockConfiguration();
 $config->returns('get', 'primary', array('db_host'));
 $config->returns('get', 'admin', array('db_user'));
 $config->returns('get', 'secret', array('db_password'));</strong>

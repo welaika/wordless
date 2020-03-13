@@ -22,7 +22,7 @@
 <strong><?php
 require_once('simpletest/browser.php');
     
-$browser = &new SimpleBrowser();
+$browser = new SimpleBrowser();
 $browser->get('http://php.net/');
 $browser->click('reporting bugs');
 $browser->click('statistics');

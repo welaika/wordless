@@ -307,7 +307,7 @@ class <strong>TestOfSessionLogging</strong> extends UnitTestCase {
     
     function testLoggingInIsLogged() {
         <strong>$log = new Log('/temp/test.log');
-        $session_pool = &new SessionPool($log);
+        $session_pool = new SessionPool($log);
         $session_pool->logIn('fred');</strong>
         $messages = file('/temp/test.log');
         $this->assertEqual($messages[0], "User fred logged in.<strong>\n</strong>");
@@ -367,9 +367,9 @@ require_once('../classes/session_pool.php');
 class TestOfSessionLogging extends UnitTestCase {
     
     function testLoggingInIsLogged() {<strong>
-        $log = &new MockLog();
+        $log = new MockLog();
         $log->expectOnce('message', array('User fred logged in.'));</strong>
-        $session_pool = &new SessionPool(<strong>$log</strong>);
+        $session_pool = new SessionPool(<strong>$log</strong>);
         $session_pool->logIn('fred');
     }
 }

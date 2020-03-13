@@ -2,7 +2,7 @@
     // $Id$
     
     class TestCaseWithParseError extends UnitTestCase {
-        wibble
+        wibble// @codingStandardsIgnoreLine
     }
     
 ?>

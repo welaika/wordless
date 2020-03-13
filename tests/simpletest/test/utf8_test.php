@@ -10,21 +10,21 @@ Mock::generate('SimplePhpPageBuilder');
 
 class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
     function testWithTextInUTF8() {
-        $regex = &new ParallelRegex(false);
+        $regex = new ParallelRegex(false);
         $regex->addPattern("eé");
         $this->assertTrue($regex->match("eéêè", $match));
         $this->assertEqual($match, "eé");
     }
 
     function testWithTextInLatin1() {
-        $regex = &new ParallelRegex(false);
+        $regex = new ParallelRegex(false);
         $regex->addPattern(utf8_decode("eé"));
         $this->assertTrue($regex->match(utf8_decode("eéêè"), $match));
         $this->assertEqual($match, utf8_decode("eé"));
     }
 
     function &createParser() {
-        $parser = &new MockSimpleHtmlSaxParser();
+        $parser = new MockSimpleHtmlSaxParser();
         $parser->setReturnValue('acceptStartToken', true);
         $parser->setReturnValue('acceptEndToken', true);
         $parser->setReturnValue('acceptAttributeToken', true);
@@ -46,7 +46,7 @@ class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
         $parser->expectAt(2, 'acceptAttributeToken', array('"', '*'));
         $parser->expectCallCount('acceptAttributeToken', 3);
         $parser->expectOnce('acceptEndToken', array('</a>', '*'));
-        $lexer = &new SimpleHtmlLexer($parser);
+        $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse('<a href = "hère.html">label</a>'));
     }
 
@@ -62,7 +62,7 @@ class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
         $parser->expectAt(2, 'acceptAttributeToken', array('"', '*'));
         $parser->expectCallCount('acceptAttributeToken', 3);
         $parser->expectOnce('acceptEndToken', array('</a>', '*'));
-        $lexer = &new SimpleHtmlLexer($parser);
+        $lexer = new SimpleHtmlLexer($parser);
         $this->assertTrue($lexer->parse(utf8_decode('<a href = "hère.html">label</a>')));
     }
 }
