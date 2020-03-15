@@ -154,11 +154,11 @@ class Wordless {
     }
 
   /**
-   * Checks for required directories when initializing theme. If any are missing, it will return false.
-   * If passed `true`, this function will return an array of missing directories.
+   * Checks if required directories exist. If any are missing, it will return false.
+   * If passed `true` as argument, this function will return an array of missing directories.
    *
    * * @param boolean $return_array
-   *   Set true to get a list of missing directories
+   *   Set true to get an array of missing directories
    *
    */
     public static function theme_is_wordless_compatible($return_array = false) {
@@ -184,6 +184,7 @@ class Wordless {
             self::theme_locales_path(),
             self::theme_views_path(),
             self::theme_assets_path(),
+            self::theme_static_assets_path(),
             self::theme_stylesheets_path(),
             self::theme_javascripts_path(),
             self::theme_temp_path()
@@ -198,7 +199,16 @@ class Wordless {
         return $missing;
     }
 
-    public static function theme_is_webpack_ready() {
+    /**
+     * Tells if the theme is potentially automatically upgradable.
+     *
+     * A theme is considered upgradable based on 2 condition:
+     * 1. Folder structure is standard and corresponds to the new Wordless version's one
+     * 2. Theme has a `package.json` and a Procfile.
+     *
+     * @return boolean
+     */
+    public static function theme_is_upgradable() : bool {
         if (self::theme_is_wordless_compatible() === false)
             return false;
 
@@ -206,17 +216,8 @@ class Wordless {
 
         $required_files = array(
             self::theme_procfile_path(),
-            self::theme_dotenv_path(),
-            self::theme_webpackconfig_path(),
-            self::theme_webpackenv_path(),
-            self::theme_packagejson_path(),
-            self::theme_webpackentrypoint_path(),
-            self::theme_yarndotlock_path(),
-            self::theme_nvmrc_path(),
-            self::theme_stylelintignore_path(),
-            self::theme_stylelintrc_path(),
-            self::theme_eslintrc_path()
-            );
+            self::theme_packagejson_path()
+        );
 
         foreach ($required_files as $file) {
             if (!file_exists($file)) {
