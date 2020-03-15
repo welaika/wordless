@@ -38,6 +38,51 @@ class WordlessCommand {
     }
 
     /**
+    * Upgrade current active Wordless theme.
+    *
+    * From the Wordless perspective an _upgrade_ means to upgrade
+    * the build stack and build configurations.
+    * New configurations will be copied from the starter theme shipped
+    * with the Wordless plugin into your current theme.
+    *
+    * This operation may broke your theme build, so be careful: make a
+    * backup of your theme or be sure to have a clean GiT state thus
+    * a simple reset/checkout will eventually save you.
+    *
+    * After the updgrade remember to launch `yarn install` in order
+    * to update `node_modules` based on new pacjage.json.
+    *
+    * Newer configuration may require you to install an updated node
+    * version too.
+    *
+    * @return void
+    */
+    public function upgrade($args, $assoc_args) {
+        if (!Wordless::theme_is_upgradable()) {
+            WP_CLI::error_multi_line([
+                'It seems you are using a theme created with a Wordless verion < 2',
+                'or maybe you have heavily customized the theme folder structure.',
+                'We can\'t afford to make an automatic upgrade for you, sorry'
+            ]);
+
+            WP_CLI::halt(1);
+        }
+
+        WP_CLI::warning('Going to copy following files into your theme: ' . join(array_values(Wordless::$webpack_files_names), ', '));
+
+        WP_CLI::confirm('This is a potentially destructive operation. Do you have a backup and would like to proceed?');
+
+        $builder = new WordlessThemeBuilder(null, null, intval(0664, 8));
+
+        if ( $builder->upgrade_theme_config() ) {
+            WP_CLI::success( 'Theme succesfully upgraded. Now you can getting started with Wordless2 (https://wordless.readthedocs.io)' );
+            WP_CLI::log('Remember to run `yarn install` to update node_modules based on new configuration');
+        } else {
+            WP_CLI::error( 'Sorry, something went wrong during theme upgarde.' );
+        }
+    }
+
+    /**
     * Clear theme's `tmp` folder
     *
     * @return void
