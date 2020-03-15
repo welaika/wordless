@@ -70,6 +70,10 @@ Steps
 
         wp wordless theme create mybrandnewtheme
 
+.. seealso::
+
+    :ref:`WP-CLI plugin` for info about wp-cli integration
+
 #. Enter theme directory
 
     .. code-block:: bash

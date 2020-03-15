@@ -9,7 +9,7 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 */
 class WordlessCommand {
     /**
-    * Create a new Wordless theme
+    * Create and acrivate a new Wordless theme with the given name
     *
     * ## OPTIONS
     *

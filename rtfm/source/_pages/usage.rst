@@ -8,3 +8,4 @@ Usage
     usage/anatomy
     usage/build
     usage/filters
+    usage/cli
