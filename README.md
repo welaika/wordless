@@ -53,6 +53,26 @@ If you are interested in contributing to the documentation:
 - `mv docs/build docs/latest` overwriting the old one
 - `commit` and `push` the branch
 
+## Development
+
+### Deploy
+
+* Merge your feature branch - with passing tests - in `master` with
+  `git checkout master && git merge --no-ff feature` or by pull request
+* On `master` update the plugin version (SEMVER) in `./wordless.php` ("Version")
+  and `readme.txt` ("Stable tag") files and commit the updated files.
+* do `git tag x.y.x` where *x.y.z* equals to the previously written version.
+* `git push origin master --tags` to push both commits and tags
+* update the changelog for the new release at https://github.com/welaika/wordless/releases
+
+Automations will do the leftovers, including to publish updated documentation on ReadTheDocs and
+the plugin on https://wordpress.org/plugins/wordless/
+
+## Changelog
+
+A changelog for each tag/relase is mandatory to be compiled at
+https://github.com/welaika/wordless/releases.
+
 ## Additional recommended plugins and tools
 
 ![](https://raw.githubusercontent.com/welaika/wordmove/master/assets/images/wordmove.png)
