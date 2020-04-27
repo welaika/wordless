@@ -9,183 +9,192 @@
 
 class NumberHelper {
 
-  private static $DEFAULT_CURRENCY_VALUES = array(
-    'format' => "%u%n",
-    'negative_format' => "-%u%n",
-    'unit' => "$",
-    'separator' => ".",
-    'delimiter' => ",",
-    'precision' => 2,
-    'significant' => false,
-    'strip_insignificant_zeros' => false
-  );
+	private static $DEFAULT_CURRENCY_VALUES = array( //@codingStandardsIgnoreLine
+		'format'                    => '%u%n',
+		'negative_format'           => '-%u%n',
+		'unit'                      => '$',
+		'separator'                 => '.',
+		'delimiter'                 => ',',
+		'precision'                 => 2,
+		'significant'               => false,
+		'strip_insignificant_zeros' => false,
+	);
 
-  private function array_delete(&$array, $key) {
-    if (array_key_exists($key, $array)) {
-      $result = $array[$key];
-      unset($array[$key]);
-      return $result;
-    } else {
-      return NULL;
-    }
-  }
+	private function array_delete( &$array, $key ) {
+		if ( array_key_exists( $key, $array ) ) {
+			$result = $array[ $key ];
+			unset( $array[ $key ] );
+			return $result;
+		} else {
+			return null;
+		}
+	}
 
-  /**
-  * Translates number to currency
-  * @param integer $number The number to translate
-  * @param array $options (optional) Associative array. Accepts keys: 'format' (defaults to %u%n), 'unit'.
-  * @ingroup helperfunc
-  */
-  public function number_to_currency($number, $options = array()) {
+	/**
+	* Translates number to currency
+	* @param integer $number The number to translate
+	* @param array $options (optional) Associative array. Accepts keys: 'format' (defaults to %u%n), 'unit'.
+	* @ingroup helperfunc
+	*/
+	public function number_to_currency( $number, $options = array() ) {
 
-    if (isset($options['format']))
-      $options['negative_format'] = "-" . $options['format'];
+		if ( isset( $options['format'] ) ) {
+			$options['negative_format'] = '-' . $options['format'];
+		}
 
-    $options = array_merge(self::$DEFAULT_CURRENCY_VALUES, $options);
+	  $options = array_merge( self::$DEFAULT_CURRENCY_VALUES, $options ); //@codingStandardsIgnoreLine
 
-    $unit = $this->array_delete($options, 'unit');
-    $format = $this->array_delete($options, 'format');
+		$unit   = $this->array_delete( $options, 'unit' );
+		$format = $this->array_delete( $options, 'format' );
 
-    if ($number < 0) {
-      $format = $this->array_delete($options, 'negative_format');
-      $number = preg_replace('/^-/', '', $number);
-    }
+		if ( $number < 0 ) {
+			$format = $this->array_delete( $options, 'negative_format' );
+			$number = preg_replace( '/^-/', '', $number );
+		}
 
-    try {
-      $value = number_with_precision($number, array_merge($options, array('raise' => true)));
-      return preg_replace(array('/%n/', '/%u/'), array($value, $unit), $format);
-    } catch (Exception $e) {
-      if (array_key_exists('raise', $options) && $options['raise'] == true) {
-        throw $e;
-      } else {
-        return preg_replace(array('/%n/', '/%u/'), array($number, $unit), $format);
-      }
-    }
-  }
+		try {
+			$value = number_with_precision( $number, array_merge( $options, array( 'raise' => true ) ) );
+			return preg_replace( array( '/%n/', '/%u/' ), array( $value, $unit ), $format );
+		} catch ( Exception $e ) {
+			if ( array_key_exists( 'raise', $options ) && true == $options['raise'] ) {
+				throw $e;
+			} else {
+				return preg_replace( array( '/%n/', '/%u/' ), array( $number, $unit ), $format );
+			}
+		}
+	}
 
-  /**
-  * Translates numbers to percantage
-  * @param integer $number The number to be converted in percentage
-  * @param array $options (optional) Accepts the options expressed in the $DEFAULT_CURRENCY_VALUES property of NumberHelper, whom will be overwritten.
-  */
-  public function number_to_percentage($number, $options = array()) {
-    if (empty($number))
-      return;
+	/**
+	* Translates numbers to percantage
+	* @param integer $number The number to be converted in percentage
+	* @param array $options (optional) Accepts the options expressed in the $DEFAULT_CURRENCY_VALUES property of NumberHelper, whom will be overwritten.
+	*/
+	public function number_to_percentage( $number, $options = array() ) {
+		if ( empty( $number ) ) {
+			return;
+		}
 
-    $options = array_merge(self::$DEFAULT_CURRENCY_VALUES, $options);
+		$options = array_merge( self::$DEFAULT_CURRENCY_VALUES, $options ); //@codingStandardsIgnoreLine
 
-    try {
-      $value = number_with_precision($number, array_merge($options, array('raise' => true)));
-      return "{$value}%";
-    } catch (Exception $e) {
-      if (array_key_exists('raise', $options) && $options['raise'] == true) {
-        throw $e;
-      } else {
-        return "{$number}%";
-      }
-    }
-  }
+		try {
+			$value = number_with_precision( $number, array_merge( $options, array( 'raise' => true ) ) );
+			return "{$value}%";
+		} catch ( Exception $e ) {
+			if ( array_key_exists( 'raise', $options ) && true == $options['raise'] ) {
+				throw $e;
+			} else {
+				return "{$number}%";
+			}
+		}
+	}
 
-  /**
-  * Translates numbers to phone numbers
-  * @param integer $number Returns a telephone number formatted number
-  * @param array $options (optional) Associative array. Accepts keys: 'area_code', 'delimiter', 'extension', 'country_code'
-  */
-  public function number_to_phone($number, $options = array()) {
-    if (empty($number))
-      return;
+	/**
+	* Translates numbers to phone numbers
+	* @param integer $number Returns a telephone number formatted number
+	* @param array $options (optional) Associative array. Accepts keys: 'area_code', 'delimiter', 'extension', 'country_code'
+	*/
+	public function number_to_phone( $number, $options = array() ) {
+		if ( empty( $number ) ) {
+			return;
+		}
 
-    if (is_numeric($number))
-      $number = (float) $number;
-    elseif (array_key_exists('raise', $options) && $options['raise'] == true)
-      throw new InvalidArgumentException('number_to_phone function only accepts numbers. Input was: '.$number);
+		if ( is_numeric( $number ) ) {
+			$number = (float) $number;
+		} elseif ( array_key_exists( 'raise', $options ) && true == $options['raise'] ) {
+			throw new InvalidArgumentException( 'number_to_phone function only accepts numbers. Input was: ' . $number );
+		}
 
-    $area_code    = $this->array_delete($options, 'area_code');
-    $delimiter    = $this->array_delete($options, 'delimiter');
-    if (empty($delimiter))
-      $delimiter = "-";
-    $extension    = $this->array_delete($options, 'extension');
-    $country_code = $this->array_delete($options, 'country_code');
+		$area_code = $this->array_delete( $options, 'area_code' );
+		$delimiter = $this->array_delete( $options, 'delimiter' );
+		if ( empty( $delimiter ) ) {
+			$delimiter = '-';
+		}
+		$extension    = $this->array_delete( $options, 'extension' );
+		$country_code = $this->array_delete( $options, 'country_code' );
 
-    if (!empty($area_code)) {
-      $number = preg_replace('/(\d{1,3})(\d{3})(\d{4}$)/', "(\\1) \\2{$delimiter}\\3", $number);
-    } else {
-      $number = preg_replace('/(\d{0,3})(\d{3})(\d{4})$/', "\\1{$delimiter}\\2{$delimiter}\\3", $number);
-      if (!empty($delimiter) && $number[0] == $delimiter)
-        $number = substr($number, 1);
-    }
+		if ( ! empty( $area_code ) ) {
+			$number = preg_replace( '/(\d{1,3})(\d{3})(\d{4}$)/', "(\\1) \\2{$delimiter}\\3", $number );
+		} else {
+			$number = preg_replace( '/(\d{0,3})(\d{3})(\d{4})$/', "\\1{$delimiter}\\2{$delimiter}\\3", $number );
+			if ( ! empty( $delimiter ) && $number[0] == $delimiter ) {
+				$number = substr( $number, 1 );
+			}
+		}
 
-    $result = array();
-    if (!empty($country_code))
-      array_push($result, "+{$country_code}{$delimiter}");
-    array_push($result, $number);
-    if (!empty($extension))
-      array_push($result, " x {$extension}");
+		$result = array();
+		if ( ! empty( $country_code ) ) {
+			array_push( $result, "+{$country_code}{$delimiter}" );
+		}
+		array_push( $result, $number );
+		if ( ! empty( $extension ) ) {
+			array_push( $result, " x {$extension}" );
+		}
 
-    return implode($result);
-  }
+		return implode( $result );
+	}
 
-  /**
-  * Formats numbers with given delimiter
-  * @param integer $number The number to be formatted
-  * @param array $options (optional) Associative array. Accepts keys: 'delimiter', 'separator'
-  */
-  public function number_with_delimiter($number, $options = array()) {
-    if (!is_numeric($number) && array_key_exists('raise', $options) && $options['raise'] == true)
-      throw new InvalidArgumentException('number_with_delimiter function only accepts numbers. Input was: '.$number);
+	/**
+	* Formats numbers with given delimiter
+	* @param integer $number The number to be formatted
+	* @param array $options (optional) Associative array. Accepts keys: 'delimiter', 'separator'
+	*/
+	public function number_with_delimiter( $number, $options = array() ) {
+		if ( ! is_numeric( $number ) && array_key_exists( 'raise', $options ) && true == $options['raise'] ) {
+			throw new InvalidArgumentException( 'number_with_delimiter function only accepts numbers. Input was: ' . $number );
+		}
 
-    $options = array_merge(self::$DEFAULT_CURRENCY_VALUES, $options);
+		$options = array_merge( self::$DEFAULT_CURRENCY_VALUES, $options ); //@codingStandardsIgnoreLine
 
-    $parts = explode(".", (string) $number);
-    $parts[0] = preg_replace('/(\d)(?=(\d\d\d)+(?!\d))/', "\\1{$options['delimiter']}", $parts[0]);
-    return implode($options['separator'], $parts);
-  }
+		$parts    = explode( '.', (string) $number );
+		$parts[0] = preg_replace( '/(\d)(?=(\d\d\d)+(?!\d))/', "\\1{$options['delimiter']}", $parts[0] );
+		return implode( $options['separator'], $parts );
+	}
 
-  /**
-  * Rounds number to the given decimal precision
-  *
-  * @param integer $number The number to be rounded
-  * @param array $options (optional) Associative array. Accepts keys: 'precision', 'significant', 'strip_significant_zeros', 'separator'
-  */
-  public function number_with_precision($number, $options = array()) {
-    if (is_numeric($number))
-      $number = (float) $number;
-    elseif (array_key_exists('raise', $options) && $options['raise'] == true)
-      throw new InvalidArgumentException('number_with_precision function only accepts numbers. Input was: '.$number);
+	/**
+	* Rounds number to the given decimal precision
+	*
+	* @param integer $number The number to be rounded
+	* @param array $options (optional) Associative array. Accepts keys: 'precision', 'significant', 'strip_significant_zeros', 'separator'
+	*/
+	public function number_with_precision( $number, $options = array() ) {
+		if ( is_numeric( $number ) ) {
+			$number = (float) $number;
+		} elseif ( array_key_exists( 'raise', $options ) && true == $options['raise'] ) {
+			throw new InvalidArgumentException( 'number_with_precision function only accepts numbers. Input was: ' . $number );
+		}
 
-    $options = array_merge(self::$DEFAULT_CURRENCY_VALUES, $options);
+		$options = array_merge( self::$DEFAULT_CURRENCY_VALUES, $options ); //@codingStandardsIgnoreLine
 
-    $precision = $this->array_delete($options, 'precision');
-    $significant = $this->array_delete($options, 'significant');
-    $strip_insignificant_zeros = $this->array_delete($options, 'strip_insignificant_zeros');
+		$precision                 = $this->array_delete( $options, 'precision' );
+		$significant               = $this->array_delete( $options, 'significant' );
+		$strip_insignificant_zeros = $this->array_delete( $options, 'strip_insignificant_zeros' );
 
-    if ($significant && $precision > 0) {
-      if ($number == 0) {
-        $digits = 1;
-        $rounded_number = 0;
-      } else {
-        $digits = floor(log10(abs($number)) + 1);
-        $rounded_number = ((float) round($number / ((float) pow(10, $digits - $precision)))) * pow(10, $digits - $precision);
-        $digits = floor(log10(abs($rounded_number)) + 1);
-      }
+		if ( $significant && $precision > 0 ) {
+			if ( 0 == $number ) {
+				$digits         = 1;
+				$rounded_number = 0;
+			} else {
+				$digits         = floor( log10( abs( $number ) ) + 1 );
+				$rounded_number = ( (float) round( $number / ( (float) pow( 10, $digits - $precision ) ) ) ) * pow( 10, $digits - $precision );
+				$digits         = floor( log10( abs( $rounded_number ) ) + 1 );
+			}
 
-      $precision -= $digits;
-      $precision = $precision > 0 ? $precision : 0; // don't let precision be negative
-    } else {
-      $rounded_number = (float) round($number, $precision);
-    }
+			$precision -= $digits;
+			$precision  = $precision > 0 ? $precision : 0; // don't let precision be negative
+		} else {
+			$rounded_number = (float) round( $number, $precision );
+		}
 
-    $formatted_number = number_with_delimiter(sprintf("%01.{$precision}f", $rounded_number), $options);
+		$formatted_number = number_with_delimiter( sprintf( "%01.{$precision}f", $rounded_number ), $options );
 
-    if ($strip_insignificant_zeros) {
-      $escaped_separator = preg_quote($options['separator']);
-      $formatted_number = preg_replace("/({$escaped_separator})(\d*[1-9])?0+\z/", '\1\2', $formatted_number);
-      return preg_replace("/{$escaped_separator}\z/", '', $formatted_number);
-    } else {
-      return $formatted_number;
-    }
-  }
-
+		if ( $strip_insignificant_zeros ) {
+			$escaped_separator = preg_quote( $options['separator'] );
+			$formatted_number  = preg_replace( "/({$escaped_separator})(\d*[1-9])?0+\z/", '\1\2', $formatted_number );
+			return preg_replace( "/{$escaped_separator}\z/", '', $formatted_number );
+		} else {
+			return $formatted_number;
+		}
+	}
 }
 
-Wordless::register_helper("NumberHelper");
+Wordless::register_helper( 'NumberHelper' );
