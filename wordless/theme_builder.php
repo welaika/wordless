@@ -40,14 +40,14 @@ class WordlessThemeBuilder {
 	private function copy( $src, $dst ) {
 		$dir = opendir( $src );
 		$this->make_directory( $dst );
-		while ( false !== ( $file = readdir( $dir ) ) ) {
+		while ( false !== ( $file = readdir( $dir ) ) ) {  //@codingStandardsIgnoreLine
 			if ( ( '.' !== $file ) && ( '..' !== $file ) ) {
 				if ( is_dir( $src . '/' . $file ) ) {
 					$this->copy( $src . '/' . $file, $dst . '/' . $file );
 				} else {
 					$source_content = file_get_contents( $src . '/' . $file );
 					$source_content = str_replace( '%THEME_NAME%', $this->theme_name, $source_content );
-					file_put_contents( $dst . '/' . $file, $source_content );
+					file_put_contents( $dst . '/' . $file, $source_content ); //@codingStandardsIgnoreLine
 					chmod( $dst . '/' . $file, $this->chmod_set ); //@codingStandardsIgnoreLine
 				}
 			}

@@ -221,11 +221,11 @@ class TextHelper {
 
 		if ( ! $options['html'] ) {
 			// if html is false strip all html tags
-			$text = wp_strip_all_tags( $text );
+			$text = strip_tags( $text ); //@codingStandardsIgnoreLine
 		} elseif ( $options['html'] ) {
 			if ( 'all' !== $options['allowed_tags'] ) {
 				// if the allowed_tags are not 'all' remove all tags leaving the allowed
-				$text = wp_strip_all_tags( $text, '<' . implode( '><', $options['allowed_tags'] ) . '>' );
+				$text = strip_tags( $text, '<' . implode( '><', $options['allowed_tags'] ) . '>' ); //@codingStandardsIgnoreLine
 			}
 		}
 

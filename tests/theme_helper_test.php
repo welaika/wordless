@@ -6,7 +6,7 @@ require_once('support/mocked_get_template.php');
 require_once('support/mocked_get_template_directory.php');
 require_once('support/mocked_get_theme_data.php');
 require_once('../wordless/wordless.php');
-require_once('../wordless/helpers.php');
+require_once(__DIR__.'/../wordless/helpers.php');
 
 class ThemeHelperTest extends UnitTestCase {
   function test_mocked_get_bloginfo_template_url() {
