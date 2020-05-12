@@ -3,7 +3,7 @@
 require_once('simpletest/autorun.php');
 require_once('support/mocked___.php');
 require_once('../wordless/wordless.php');
-require_once('../wordless/helpers.php');
+require_once(__DIR__.'/../wordless/helpers.php');
 
 class DateHelperTest extends UnitTestCase {
 

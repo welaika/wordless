@@ -1,112 +1,103 @@
 <?php
 
-require_once "process.php";
+require_once 'process.php';
 
-class ProcessBuilder
-{
-    private static $isWindows;
+class ProcessBuilder {
 
-    private $arguments;
-    private $cwd;
-    private $env;
-    private $stdin;
-    private $timeout = 60;
-    private $options = array();
-    private $inheritEnv = false;
+	private static $isWindows; //@codingStandardsIgnoreLine
 
-    public function __construct(array $arguments = array())
-    {
-        $this->arguments = $arguments;
+	private $arguments;
+	private $cwd;
+	private $env;
+	private $stdin;
+	private $timeout    = 60;
+	private $options    = array();
+	private $inheritEnv = false; //@codingStandardsIgnoreLine
 
-        if (null === self::$isWindows) {
-            self::$isWindows = defined('PHP_WINDOWS_VERSION_MAJOR');
-        }
-    }
+	public function __construct( array $arguments = array() ) {
+		$this->arguments = $arguments;
 
-    /**
-     * Adds an unescaped argument to the command string.
-     *
-     * @param string $argument A command argument
-     */
-    public function add($argument)
-    {
-        $this->arguments[] = $argument;
+		if ( null === self::$isWindows ) { //@codingStandardsIgnoreLine
+			self::$isWindows = defined( 'PHP_WINDOWS_VERSION_MAJOR' ); //@codingStandardsIgnoreLine
+		}
+	}
 
-        return $this;
-    }
+	/**
+	 * Adds an unescaped argument to the command string.
+	 *
+	 * @param string $argument A command argument
+	 */
+	public function add( $argument ) {
+		$this->arguments[] = $argument;
 
-    public function setWorkingDirectory($cwd)
-    {
-        $this->cwd = $cwd;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setWorkingDirectory( $cwd ) { //@codingStandardsIgnoreLine
+		$this->cwd = $cwd;
 
-    public function inheritEnvironmentVariables($inheritEnv = true)
-    {
-        $this->inheritEnv = $inheritEnv;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function inheritEnvironmentVariables( $inheritEnv = true ) { //@codingStandardsIgnoreLine
+		$this->inheritEnv = $inheritEnv; //@codingStandardsIgnoreLine
 
-    public function setEnv($name, $value)
-    {
-        if (null === $this->env) {
-            $this->env = array();
-        }
+		return $this;
+	}
 
-        $this->env[$name] = $value;
+	public function setEnv( $name, $value ) { //@codingStandardsIgnoreLine
+		if ( null === $this->env ) {
+			$this->env = array();
+		}
 
-        return $this;
-    }
+		$this->env[ $name ] = $value;
 
-    public function setInput($stdin)
-    {
-        $this->stdin = $stdin;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setInput( $stdin ) { //@codingStandardsIgnoreLine
+		$this->stdin = $stdin;
 
-    public function setTimeout($timeout)
-    {
-        $this->timeout = $timeout;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setTimeout( $timeout ) { //@codingStandardsIgnoreLine
+		$this->timeout = $timeout;
 
-    public function setOption($name, $value)
-    {
-        $this->options[$name] = $value;
+		return $this;
+	}
 
-        return $this;
-    }
+	public function setOption( $name, $value ) { //@codingStandardsIgnoreLine
+		$this->options[ $name ] = $value;
 
-    public function getProcess()
-    {
-        if (!count($this->arguments)) {
-            throw new LogicException('You must add() command arguments before calling getProcess().');
-        }
+		return $this;
+	}
 
-        $options = $this->options;
+	public function getProcess() { //@codingStandardsIgnoreLine
+		if ( ! count( $this->arguments ) ) {
+			throw new LogicException( 'You must add() command arguments before calling getProcess().' );
+		}
 
-        if (self::$isWindows) {
-            $options += array('bypass_shell' => true);
+		$options = $this->options;
 
-            $args = $this->arguments;
-            $cmd = array_shift($args);
+		if ( self::$isWindows ) { //@codingStandardsIgnoreLine
+			$options += array( 'bypass_shell' => true );
 
-            $script = '"'.$cmd.'"';
-            if ($args) {
-                $script .= ' '.implode(' ', array_map('escapeshellarg', $args));
-            }
+			$args = $this->arguments;
+			$cmd  = array_shift( $args );
 
-            $script = 'cmd /V:ON /E:ON /C "'.$script.'"';
-        } else {
-          $script = implode(' ', array_map('escapeshellarg', $this->arguments));
-        }
-        $env = $this->inheritEnv && $_ENV ? ($this->env ? $this->env : array()) + $_ENV : $this->env;
+			$script = '"' . $cmd . '"';
+			if ( $args ) {
+				$script .= ' ' . implode( ' ', array_map( 'escapeshellarg', $args ) );
+			}
 
-        return new Process($script, $this->cwd, $env, $this->stdin, $this->timeout, $options);
-    }
+			$script = 'cmd /V:ON /E:ON /C "' . $script . '"';
+		} else {
+			$script = implode( ' ', array_map( 'escapeshellarg', $this->arguments ) );
+		}
+		$env = $this->inheritEnv && $_ENV ? ( $this->env ? $this->env : array() ) + $_ENV : $this->env; //@codingStandardsIgnoreLine
+
+		return new Process( $script, $this->cwd, $env, $this->stdin, $this->timeout, $options );
+	}
 }
 
