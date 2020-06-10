@@ -40,13 +40,14 @@ class ModelHelper {
 			);
 		}
 
-	  $uc_plural = __( ucwords( preg_replace( "/_/", " ", $name["plural"] ) ), "wl"); //@codingStandardsIgnoreLine
-	  $uc_singular = __( ucwords( preg_replace( "/_/", " ", $name["singular"] ) ), "wl"); //@codingStandardsIgnoreLine
+		$uc_plural   = ucwords( preg_replace( '/_/', ' ', $name['plural'] ) );
+		$uc_singular = ucwords( preg_replace( '/_/', ' ', $name['singular'] ) );
 
 		$labels = array(
 			'name'               => $uc_plural,
 			'singular_name'      => $uc_singular,
 			'add_new_item'       => sprintf( __( 'Add new %s', 'wl' ), $uc_singular ),
+			'add_new'            => sprintf( __( 'Add new %s', 'wl' ), $uc_singular ),
 			'edit_item'          => sprintf( __( 'Edit %s', 'wl' ), $uc_singular ),
 			'new_item'           => sprintf( __( 'New %s', 'wl' ), $uc_singular ),
 			'view_item'          => sprintf( __( 'View %s', 'wl' ), $uc_singular ),
@@ -107,8 +108,8 @@ class ModelHelper {
 			);
 		}
 
-		$uc_plural   = __( ucwords( preg_replace( '/_/', ' ', $name['plural'] ) ), 'wl' ); //@codingStandardsIgnoreLine
-		$uc_singular = __( ucwords( preg_replace( '/_/', ' ', $name['singular'] ) ), 'wl' ); //@codingStandardsIgnoreLine
+		$uc_plural   = ucwords( preg_replace( '/_/', ' ', $name['plural'] ) );
+		$uc_singular = ucwords( preg_replace( '/_/', ' ', $name['singular'] ) );
 
 		$labels = array(
 			'name'              => $uc_singular,
@@ -129,6 +130,7 @@ class ModelHelper {
 				'hierarchical' => true,
 				'labels'       => $labels,
 				'show_ui'      => true,
+				'show_in_rest' => true,
 				'query_var'    => true,
 				'rewrite'      => array( 'slug' => $name['plural'] ),
 			),

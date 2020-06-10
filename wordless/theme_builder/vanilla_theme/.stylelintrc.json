@@ -1,0 +1,39 @@
+{
+  "extends": [
+    "stylelint-config-strict-scss"
+  ],
+  "plugins": [
+    "stylelint-order"
+  ],
+  "rules": {
+    "max-nesting-depth": 2,
+    "max-line-length": 100,
+    "selector-class-pattern": "^[a-z0-9]+(?:(?:-{1,2}|__)[a-z0-9]+)*$",
+    "scss/percent-placeholder-pattern": "^[a-z0-9]+(?:(?:-{1,2}|__)[a-z0-9]+)*$",
+    "declaration-no-important": true,
+    "scss/at-function-named-arguments": [
+      "always",
+      {
+        "ignoreFunctions": [
+          "transparentize",
+          "findColorInvert",
+          "map-merge"
+        ]
+      }
+    ],
+    "color-format/format": null,
+    "function-name-case": null,
+    "scale-unlimited/declaration-strict-value": [
+      [
+        "color"
+      ],
+      {
+        "ignoreKeywords": {
+          "color": "currentColor"
+        }
+      }
+    ],
+    "scss/at-mixin-argumentless-call-parentheses": "never",
+    "order/properties-alphabetical-order": true
+  }
+}

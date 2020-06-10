@@ -3,8 +3,7 @@
 *.sublime-*
 rtfm/build
 .phptidy*
-.ruby-gemset
-.ruby-version
 tests/fixtures/wordpress/wp-content/themes/mocked_theme/tmp
 !tests/fixtures/wordpress/wp-content/themes/mocked_theme/tmp/.keep
 node_modules
+.vscode

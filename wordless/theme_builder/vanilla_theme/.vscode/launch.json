@@ -1,0 +1,38 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Launch Chrome",
+      "url": "http://localhost:3000",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "firefox",
+      "request": "launch",
+      "reAttach": true,
+      "name": "Launch FireFox",
+      "url": "http://localhost:3000/",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "firefox",
+      "request": "attach",
+      "name": "Attach to FireFox"
+    },
+    {
+      "type": "chrome",
+      "request": "attach",
+      "name": "Attach to Chrome",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "name": "Listen for XDebug",
+      "type": "php",
+      "request": "launch",
+      "port": 9000
+    }
+  ]
+}

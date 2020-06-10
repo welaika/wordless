@@ -12,10 +12,11 @@ speeds up and enhances your custom theme creation. Some of its features are:
 * A structured, organized and clean theme organization
 * Scaffold a new theme directly within wp-cli
 * Write PHP templates with the Pug templating system
-* Write CSS stylesheets using the awesome Sass syntax
-* Write Javascript logic in Coffeescript
+* Write CSS stylesheets using the awesome SCSS syntax
+* Write Javascript logic in ES2015
 * A growing set of handy and documented PHP helper functions ready to be used
   within your views
+* Preconfigured support to MailHog mail-catcher.
 * Development workflow backed by WebPack, BrowserSync (with live reload),
   WP-CLI, Yarn. All the standards you already know, all the customizations you
   may need.

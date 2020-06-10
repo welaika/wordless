@@ -2,8 +2,8 @@
 /*
 Plugin Name: Wordless
 Plugin URI: https://github.com/welaika/wordless
-Description: Wordless is framework which dramatically speeds up and enhances your custom themes creation, thanks to Sass, Pug, Coffeescript, and Webpack.
-Version: 2.7.0
+Description: Wordless is framework which dramatically speeds up and enhances your custom themes creation, thanks to Sass, Pug, Coffeescript, ES6, Babel and Webpack.
+Version: 4.0.0
 Author: weLaika
 Author URI: http://welaika.com/
 License: The MIT License

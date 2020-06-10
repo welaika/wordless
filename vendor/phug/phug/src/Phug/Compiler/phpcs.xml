@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<ruleset name="PSR-2">
+    <rule ref="PSR2">
+        <include-pattern>*.php</include-pattern>
+    </rule>
+    <file>.</file>
+</ruleset>

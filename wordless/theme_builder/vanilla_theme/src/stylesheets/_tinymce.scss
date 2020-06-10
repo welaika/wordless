@@ -1,0 +1,54 @@
+.aligncenter {
+  clear: both;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.alignleft {
+  float: left;
+}
+
+.alignright {
+  float: right;
+}
+
+.wp-caption {
+  background-color: #f3f3f3;
+  border: 1px solid #ddd;
+  margin: 10px 0;
+  padding-top: 4px;
+  text-align: center;
+}
+
+.wp-caption img {
+  border: 0 none;
+  margin: 0;
+  padding: 0;
+}
+
+.wp-caption-dd {
+  font-size: 11px;
+  line-height: 17px;
+  margin: 0;
+  padding: 0 4px 5px;
+}
+
+pre {
+  font: 12px/18px Consolas, Monaco, monospace;
+}
+
+td {
+  color: rgb(0, 0, 0);
+  font-size: 11px;
+  margin: 8px;
+}
+
+strong {
+  font-weight: 700;
+}
+
+em,
+i {
+  font-style: italic;
+}

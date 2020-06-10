@@ -181,7 +181,7 @@ class QueryHelper {
 	 * @ingroup helperfunc
 	 */
 	function get_page_id_by_title( $title ) {
-		$page = get_page_by_title( $title );
+		$page = wpcom_vip_get_page_by_title( $title );
 		return $page->ID;
 	}
 

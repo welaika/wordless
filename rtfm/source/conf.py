@@ -20,13 +20,13 @@
 # -- Project information -----------------------------------------------------
 
 project = u'Wordless'
-copyright = u'2018, weLaika'
+copyright = u'2020, weLaika'
 author = u'weLaika'
 
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'2.3.0'
+release = u'4.0.0'
 
 
 # -- General configuration ---------------------------------------------------

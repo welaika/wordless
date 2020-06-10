@@ -12,14 +12,15 @@
   "require": {
     "php": ">=7.0",
     "js-phpize/js-phpize": "^2.0.0",
-    "phug/compiler": "^0.5.0",
-    "phug/formatter": "^0.5.42"
+    "phug/compiler": "^0.5.0 || ^1.0@dev",
+    "phug/formatter": "^0.5.43 || ^1.0@dev"
   },
   "require-dev": {
     "phpunit/phpunit": ">=4.8.35 <6.0",
     "codeclimate/php-test-reporter": "dev-master"
   },
-  "minimum-stability": "stable",
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-0": {
       "JsPhpize": "src/"

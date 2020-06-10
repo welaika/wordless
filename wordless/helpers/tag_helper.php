@@ -65,7 +65,7 @@ class TagHelper {
 				$html_content .= ' ' . $attrs;
 			}
 			$html_content .= '>';
-			$html_content .= ( (bool) $escape ) ? htmlentities( $content ) : $content;
+			$html_content .= ( (bool) $escape ) ? esc_html( $content ) : $content;
 			$html_content .= '</' . $name . '>';
 		}
 
@@ -106,7 +106,7 @@ class TagHelper {
 			$link = '#';
 		}
 
-		$options = array( 'href' => $link );
+		$options = array( 'href' => esc_url( $link ) );
 		if ( is_array( $attributes ) ) {
 			$options = array_merge( $options, $attributes );
 		}
@@ -149,7 +149,7 @@ class TagHelper {
 	 */
 	function pingback_link_tag( $url = null ) {
 		$url        = $url ? $url : get_bloginfo( 'pingback_url' );
-		$attributes = array( 'href' => $url );
+		$attributes = array( 'href' => esc_url( $url ) );
 		return content_tag( 'link', null, $attributes );
 	}
 }

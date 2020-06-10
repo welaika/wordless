@@ -40,27 +40,38 @@ class AcfGutenbergBlockHelper {
 		acf_register_block( $params );
 	}
 
-	/**
-	 * NO_DOC: This function is not meant to be used in a theme.
-	 * It needs to be public because of the implementation
-	 * of ACF function acf_register_block.
-	 * If set as private, ACF loses the context and is not able to call it.
-	 */
-	function _acf_block_render_callback( $block ) {
-		$slug = str_replace( 'acf/', '', $block['name'] );
+	
+  /**
+   * NO_DOC: This function is not meant to be used in a theme.
+   * It needs to be public because of the implementation
+   * of ACF function acf_register_block.
+   * If set as private, ACF loses the context and is not able to call it.
+   */
+  function _acf_block_render_callback( $block ) {
+    $slug = str_replace('acf/', '', $block['name']);
 
-		if ( file_exists( get_theme_file_path( "/theme/views/blocks/admin/_{$slug}.pug" ) ) ) {
-			$admin_partial = "blocks/admin/{$slug}";
-		} else {
-			$admin_partial = "blocks/{$slug}";
-		}
+    // The filter must return a string, representing a folder relative to `views/`
+    $blocks_folder = apply_filters('wordless_acf_gutenberg_blocks_views_path', 'blocks/');
 
-		if ( is_admin() ) {
-			render_partial( $admin_partial );
-		} else {
-			render_partial( "blocks/{$slug}" );
-		}
-	}
+    $admin_partial_filename = Wordless::theme_views_path() . "/{$blocks_folder}/admin/_{$slug}";
+
+    if (
+      file_exists( "{$admin_partial_filename}.html.pug" ) ||
+      file_exists( "{$admin_partial_filename}.pug" ) ||
+      file_exists( "{$admin_partial_filename}.html.php" ) ||
+      file_exists( "{$admin_partial_filename}.php" )
+    ) {
+        $admin_partial = "{$blocks_folder}/admin/{$slug}";
+    } else {
+        $admin_partial = "{$blocks_folder}/{$slug}";
+    }
+
+    if ( is_admin() ) {
+        render_partial($admin_partial);
+    } else {
+        render_partial("{$blocks_folder}/{$slug}");
+    }
+  }
 }
 
 Wordless::register_helper( 'AcfGutenbergBlockHelper' );

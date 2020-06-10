@@ -61,37 +61,65 @@ abstract class OptionsHandler extends PugJsEngine
         }
     }
 
-    protected function handleNamespace($output)
+    protected function shiftNamespaceOffsets($token, $afterNamespace, &$start, &$end)
     {
-        $namespace = null;
-        $tokens = array_slice(token_get_all('?>' . $output), 1);
+        $length = mb_strlen($token);
+        if (!$afterNamespace) {
+            $start += $length;
+        }
+        $end += $length;
+    }
+
+    protected function filterNamespaceStringTokens($tokens, &$afterNamespace, &$start, &$end)
+    {
         $afterNamespace = false;
         $start = 0;
         $end = 0;
         foreach ($tokens as $token) {
             if (is_string($token)) {
-                $length = mb_strlen($token);
-                if (!$afterNamespace) {
-                    $start += $length;
-                }
-                $end += $length;
+                $this->shiftNamespaceOffsets($token, $afterNamespace, $start, $end);
 
                 continue;
             }
-            if ($token[0] === T_NAMESPACE) {
-                $afterNamespace = true;
-            }
-            $length = mb_strlen($token[1]);
-            if (!$afterNamespace) {
-                $start += $length;
-            }
-            $end += $length;
-            if ($afterNamespace && $token[0] === T_STRING) {
-                $namespace = $token[1];
-                break;
+
+            yield $token;
+        }
+    }
+
+    protected function getNamespaceOffsets($token, &$afterNamespace, &$start, &$end)
+    {
+        if ($token[0] === T_NAMESPACE) {
+            $afterNamespace = true;
+        }
+        $length = mb_strlen($token[1]);
+        if (!$afterNamespace) {
+            $start += $length;
+        }
+        $end += $length;
+        if ($afterNamespace && $token[0] === T_STRING) {
+            return [$token[1], $start, $end];
+        }
+
+        return false;
+    }
+
+    protected function extractNamespace($tokens)
+    {
+        foreach ($this->filterNamespaceStringTokens($tokens, $afterNamespace, $start, $end) as $token) {
+            if ($this->getNamespaceOffsets($token, $afterNamespace, $start, $end)) {
+                return [$token[1], $start, $end];
             }
         }
+
+        return false;
+    }
+
+    protected function handleNamespace($output)
+    {
+        $namespace = $this->extractNamespace(array_slice(token_get_all('?>' . $output), 1));
+
         if ($namespace) {
+            list($namespace, $start, $end) = $namespace;
             $output = "<?php\n\nnamespace $namespace;\n\n?>" .
                 mb_substr($output, 0, $start) .
                 ltrim(mb_substr($output, $end), ' ;');

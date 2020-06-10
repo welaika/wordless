@@ -24,4 +24,14 @@
             <property name="maximum" value="80" />
         </properties>
     </rule>
+
+    <rule ref="rulesets/design.xml">
+        <exclude name="EvalExpression"/>
+    </rule>
+
+    <rule ref="rulesets/cleancode.xml" />
+    <rule ref="rulesets/controversial.xml" />
+    <rule ref="rulesets/design.xml" />
+    <rule ref="rulesets/naming.xml" />
+    <rule ref="rulesets/unusedcode.xml" />
 </ruleset>

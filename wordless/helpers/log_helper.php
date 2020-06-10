@@ -14,9 +14,11 @@ class DebugHelper {
 	 * @ingroup helperfunc
 	 */
 	function dump( $var ) {
-		echo "<pre style='font-family: Monaco, monospaced;'>";
-		print_r( $var );
-		echo '</pre>';
+		if ( true === WP_DEBUG ) {
+			echo "<pre style='font-family: Monaco, monospaced;'>";
+			print_r( $var );
+			echo '</pre>';
+		}
 	}
 }
 

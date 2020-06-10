@@ -20,7 +20,7 @@ use JsPhpize\Nodes\Variable;
 
 class Compiler
 {
-    use DependenciesTrait;
+    use DyiadeTrait;
 
     /**
      * @const string
@@ -29,7 +29,8 @@ class Compiler
         callable,case,catch,class,clone,const,continue,declare,default,die,do,echo,else,elseif,empty,enddeclare,
         endfor,endforeach,endif,endswitch,endwhile,eval,exit,extends,final,for,foreach,function,global,goto,if,
         implements,include,include_once,instanceof,insteadof,interface,isset,list,namespace,new,or,print,private,
-        protected,public,require,require_once,return,static,switch,throw,trait,try,unset,use,var,while,xor';
+        protected,public,require,require_once,return,static,switch,throw,trait,try,typeof,unset,use,var,while,
+        xor';
 
     /**
      * @var JsPhpize
@@ -82,19 +83,32 @@ class Compiler
             ' ' . $rightHand;
     }
 
-    protected function visitBlock(Block $block, $indent)
+    protected function getBlockHead(Block $block, $indent)
     {
-        $head = $block->type . ($block->value
+        if ($block->type === 'for' && $block->value instanceof Parenthesis && $block->value->separator === 'in' && count($block->value->nodes) >= 2) {
+            return 'foreach (' .
+                $this->visitNode($block->value->nodes[1], $indent) .
+                ' as ' . $this->visitNode($block->value->nodes[0], $indent) .
+                ' => $__current_value)';
+        }
+
+        return $block->type . ($block->value
             ? ' ' . $this->visitNode($block->value, $indent)
             : ''
         );
+    }
+
+    protected function visitBlock(Block $block, $indent)
+    {
+        $head = $this->getBlockHead($block, $indent);
 
         if (!$block->handleInstructions()) {
             return $head;
         }
 
         if ($block->type === 'function' && count($readVariables = $block->getReadVariables())) {
-            $head .= ' use (&$' . implode(', &$', $readVariables) . ')';
+            $readVariables = array_map('strval', $readVariables);
+            $head .= ' use (&$' . implode(', &$', array_unique($readVariables)) . ')';
         }
 
         $letVariables = $this->visitNodesArray($block->getLetVariables(), $indent, '', $indent . "unset(%s);\n");
@@ -139,20 +153,32 @@ class Compiler
     {
         $leftHand = $this->visitNode($dyiade->leftHand, $indent);
         $rightHand = $this->visitNode($dyiade->rightHand, $indent);
-        if ($dyiade->operator === '+') {
-            $arguments = [$leftHand, $rightHand];
-            while (
-                ($dyiade = $dyiade->rightHand) instanceof Dyiade &&
-                $dyiade->operator === '+'
-            ) {
-                array_pop($arguments);
-                $arguments[] = $this->visitNode($dyiade->leftHand, $indent);
-                $arguments[] = $this->visitNode($dyiade->rightHand, $indent);
-            }
+        switch ($dyiade->operator) {
+            case '||':
+                if ($this->engine->getOption('booleanLogicalOperators')) {
+                    break;
+                }
 
-            $plus = $this->engine->getHelperName('plus');
+                return $this->compileLazyDyiade($this->engine->getHelperName('or'), $leftHand, $rightHand);
+            case '&&':
+                if ($this->engine->getOption('booleanLogicalOperators')) {
+                    break;
+                }
 
-            return $this->helperWrap($plus, $arguments);
+                return $this->compileLazyDyiade($this->engine->getHelperName('and'), $leftHand, $rightHand);
+            case '+':
+                $arguments = [$leftHand, $rightHand];
+                while (
+                    ($dyiade = $dyiade->rightHand) instanceof Dyiade &&
+                    $dyiade->operator === '+'
+                ) {
+                    /* @var Dyiade $dyiade */
+                    array_pop($arguments);
+                    $arguments[] = $this->visitNode($dyiade->leftHand, $indent);
+                    $arguments[] = $this->visitNode($dyiade->rightHand, $indent);
+                }
+
+                return $this->helperWrap($this->engine->getHelperName('plus'), $arguments);
         }
 
         return $leftHand . ' ' . $dyiade->operator . ' ' . $rightHand;
@@ -195,7 +221,7 @@ class Compiler
                 return $staticCall;
             }
 
-            return '(function_exists(' . var_export($name, true) . ') ? ' .
+            $dynamicCall = '(function_exists(' . var_export($name, true) . ') ? ' .
                 $staticCall . ' : ' .
                 $dynamicCall . ')';
         }
@@ -255,10 +281,10 @@ class Compiler
             ' : ' . $this->visitNode($ternary->falseValue, $indent);
     }
 
-    protected function handleVariableChildren(DynamicValue $variable, $indent, $php)
+    protected function handleVariableChildren(DynamicValue $dynamicValue, $indent, $php)
     {
-        if (count($variable->children)) {
-            $arguments = $this->mapNodesArray($variable->children, $indent);
+        if (count($dynamicValue->children)) {
+            $arguments = $this->mapNodesArray($dynamicValue->children, $indent);
             array_unshift($arguments, $php);
             $dot = $this->engine->getHelperName('dot');
             $php = $this->helperWrap($dot, $arguments);
@@ -270,6 +296,9 @@ class Compiler
     protected function visitVariable(Variable $variable, $indent)
     {
         $name = $variable->name;
+        if (in_array($name, ['Math', 'RegExp'])) {
+            $this->requireHelper(lcfirst($name) . 'Class');
+        }
         if ($variable->scope) {
             $name = '__let_' . spl_object_hash($variable->scope) . $name;
         }
