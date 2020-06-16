@@ -197,9 +197,9 @@ class WordlessPreprocessor {
 	public function serve_compiled_file( $file_path_without_extension, $cache_path ) {
 		header( 'Content-Type: ' . $this->content_type() );
 		try {
-			echo $this->process_file_with_caching( $file_path_without_extension, $cache_path );
+			echo esc_html( $this->process_file_with_caching( $file_path_without_extension, $cache_path ) );
 		} catch ( WordlessCompileException $e ) {
-			echo $this->error( $e->__toString() );
+			echo esc_html( $this->error( $e->__toString() ) );
 		}
 		die();
 	}
@@ -294,7 +294,7 @@ class WordlessPreprocessor {
 		if ( ! is_executable( $path ) ) {
 			throw new WordlessCompileException(
 				sprintf(
-					__( "The path %s doesn't seem to be an executable!", 'wl' ),
+					esc_html_e( "The path %s doesn't seem to be an executable!", 'wl' ),
 					$path
 				)
 			);

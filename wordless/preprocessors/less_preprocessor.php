@@ -1,6 +1,6 @@
 <?php
 
-require_once 'wordless_preprocessor.php';
+require_once plugin_dir_path(__FILE__) .'wordless_preprocessor.php';
 
 /**
  * Compile LESS files using the `lessc` executable.
@@ -30,7 +30,6 @@ class LessPreprocessor extends WordlessPreprocessor {
 	 * $file_path asset file.
 	 */
 	protected function asset_hash( $file_path ) {
-		$hash      = array( parent::asset_hash( $file_path ) );
 		$base_path = dirname( $file_path );
 		$files     = Wordless::recursive_glob( dirname( $base_path ), '*.less' );
 		sort( $files );
@@ -47,7 +46,7 @@ class LessPreprocessor extends WordlessPreprocessor {
 	 * Overrides WordlessPreprocessor::comment_line()
 	 */
 	protected function comment_line( $line ) {
-		return "/* $line */\n";
+		return '/* ' . esc_html( $line ) . '*/\n';
 	}
 
 	/**
@@ -63,11 +62,11 @@ class LessPreprocessor extends WordlessPreprocessor {
 	protected function error( $description ) {
 		$error = '';
 		$error = $error . "/************************\n";
-		$error = $error . $description;
+		$error = $error . esc_html( $description );
 		$error = $error . "************************/\n\n";
 		$error = $error . sprintf(
 			'body::before { content: "%s"; font-family: monospace; white-space: pre; display: block; background: #eee; padding: 20px; }',
-			'Damn, we\'re having problems compiling the Sass. Check the CSS source code for more infos!'
+			'Having problems compiling the Sass. Check the CSS source code for more infos!'
 		);
 		return $error;
 	}

@@ -50,11 +50,19 @@ class Wordless {
 	}
 
 	public static function register_helper( $class_name ) {
+		$global_function_definition = '';
+		$filename                   = __DIR__ . '/helpers/callback/';
+
 		foreach ( get_class_methods( $class_name ) as $method ) {
 			if ( ! function_exists( $method ) ) {
-				$global_function_definition = "function $method() { \$helper = Wordless::helper('$class_name'); \$args = func_get_args(); return call_user_func_array(array(\$helper, '$method'), \$args); }";
-                eval( $global_function_definition );
+				$global_function_definition = "function $method()\n { \$helper = Wordless::helper('$class_name');\n \$args = func_get_args();\n return call_user_func_array(array(\$helper, '$method'), \$args); }\n\n";
 			}
+
+			if ( ! file_exists( $filename . $method . '.php' ) ) {
+				file_put_contents( $filename . $method . '.php', "<?php\n" . $global_function_definition );
+			}
+
+			include_once $filename . $method . '.php';
 		}
 	}
 

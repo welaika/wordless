@@ -1,6 +1,6 @@
 <?php
 
-require_once 'wordless_preprocessor.php';
+require_once plugin_dir_path(__FILE__) .'wordless_preprocessor.php';
 
 /**
  * Compile Coffeescript files using the Sprockets gem.
@@ -31,7 +31,6 @@ class SprocketsPreprocessor extends WordlessPreprocessor {
 	 * $file_path asset file.
 	 */
 	protected function asset_hash( $file_path ) {
-		$hash      = array( parent::asset_hash( $file_path ) );
 		$base_path = dirname( $file_path );
 		$files     = Wordless::recursive_glob( dirname( $base_path ), '*.coffee' );
 		sort( $files );

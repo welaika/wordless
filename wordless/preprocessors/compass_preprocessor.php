@@ -1,6 +1,6 @@
 <?php
 
-require_once 'wordless_preprocessor.php';
+require_once plugin_dir_path( __FILE__ ) . 'wordless_preprocessor.php';
 
 /**
  * Compile Sass files using the `compass` executable.
@@ -125,7 +125,7 @@ class CompassPreprocessor extends WordlessPreprocessor {
 			}
 		}
 
-		$config_path = tempnam( $temp_path, 'compass_config' );
+		$config_path = wp_tempnam( $temp_path, 'compass_config' );
 		file_put_contents( $config_path, implode( "\n", $ruby_config ) . "\n" );
 
 		$pb->add( '--config' )->add( $config_path );
