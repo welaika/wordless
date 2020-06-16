@@ -50,20 +50,24 @@ class Wordless {
 	}
 
 	public static function register_helper( $class_name ) {
-		$global_function_definition = '';
-		$filename                   = __DIR__ . '/helpers/callback/';
+        $global_function_definition = '';
+        $call_back_path             = __DIR__ . '/helpers/callback/';
 
-		foreach ( get_class_methods( $class_name ) as $method ) {
-			if ( ! function_exists( $method ) ) {
-				$global_function_definition = "function $method()\n { \$helper = Wordless::helper('$class_name');\n \$args = func_get_args();\n return call_user_func_array(array(\$helper, '$method'), \$args); }\n\n";
-			}
+        if ( ! file_exists( $call_back_path ) ) {
+            mkdir( $call_back_path, 0755, true );
+        }
 
-			if ( ! file_exists( $filename . $method . '.php' ) ) {
-				file_put_contents( $filename . $method . '.php', "<?php\n" . $global_function_definition );
-			}
+        foreach ( get_class_methods( $class_name ) as $method ) {
+            if ( ! function_exists( $method ) ) {
+                $global_function_definition = "function $method()\n { \$helper = Wordless::helper('$class_name');\n \$args = func_get_args();\n return call_user_func_array(array(\$helper, '$method'), \$args); }\n\n";
+            }
 
-			include_once $filename . $method . '.php';
-		}
+            if ( ! file_exists( $call_back_path . $method . '.php' ) ) {
+                file_put_contents( $call_back_path . $method . '.php', "<?php\n" . $global_function_definition );
+            }
+
+            include_once $call_back_path . $method . '.php';
+        }
 	}
 
 	public static function register_activation() {
