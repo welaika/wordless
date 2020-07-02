@@ -9,28 +9,28 @@ class UrlHelperTest extends UnitTestCase {
 
   function test_asset_url() {
     $this->assertEqual(
-      'mocked_stylesheet_directory/assets/coconuts',
+      'mocked_stylesheet_directory/dist/coconuts',
       asset_url("coconuts")
     );
   }
 
   function test_image_url() {
     $this->assertEqual(
-      'mocked_stylesheet_directory/assets/images/cat.gif',
+      'mocked_stylesheet_directory/dist/images/cat.gif',
       image_url("cat.gif")
     );
   }
 
   function test_stylesheet_url() {
     $this->assertEqual(
-      'mocked_stylesheet_directory/assets/stylesheets/screen.css',
+      'mocked_stylesheet_directory/dist/stylesheets/screen.css',
       stylesheet_url("screen.css")
     );
   }
 
   function test_javascript_url() {
     $this->assertEqual(
-      'mocked_stylesheet_directory/assets/javascripts/jquery.js',
+      'mocked_stylesheet_directory/dist/javascripts/jquery.js',
       javascript_url("jquery.js")
     );
   }

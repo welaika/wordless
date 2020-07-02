@@ -1,0 +1,36 @@
+{
+    "name": "phug/compiler",
+    "type": "library",
+    "keywords": ["phug", "compiler", "template", "dialect", "html", "views", "render", "presentation", "jade", "pug", "html", "php", "phtml"],
+    "description": "Pug (ex-Jade) compiler for PHP, HTML template engine structured by indentation",
+    "license": "MIT",
+    "homepage": "http://phug-lang.com",
+    "authors": [
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
+        }
+    ],
+    "support": {
+        "email": "support@phug-lang.com",
+        "issues": "https://github.com/phug-php/compiler/issues",
+        "source": "https://github.com/phug-php/compiler",
+        "docs": "http://phug-lang.com/docs"
+    },
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=5.5.0",
+        "phug/util": "^0.4.0 || ^1.0",
+        "phug/formatter": "^0.5.50 || ^1.0",
+        "phug/dependency-injection": "^1.1.2",
+        "phug/parser": "^0.5.0 || ^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phug\\": ""
+        }
+    },
+    "bin": [],
+    "suggest": {}
+}

@@ -5,12 +5,12 @@ namespace JsPhpize\Nodes;
 /**
  * Class Constant.
  *
- * @property-read Node   $value                block parenthesis or inline content
- * @property-read array  $instructions         block body (list of instructions)
- * @property-read string $type                 block type
- * @property-read bool   $inInstruction        true if the block is in an Instruction instance
- * @property-read bool   $multipleInstructions true if the block contains more than one instruction
- * @property-read array  $letVariables         true if the block contains more than one instruction
+ * @property-read Node          $value                block parenthesis or inline content
+ * @property-read Instruction[] $instructions         block body (list of instructions)
+ * @property-read string        $type                 block type
+ * @property-read bool          $inInstruction        true if the block is in an Instruction instance
+ * @property-read bool          $multipleInstructions true if the block contains more than one instruction
+ * @property-read array         $letVariables         true if the block contains more than one instruction
  */
 class Block extends Node
 {
@@ -125,7 +125,7 @@ class Block extends Node
 
     public function setValue(Node $value)
     {
-        if ($this->type === 'for') {
+        if ($this->type === 'for' && $value instanceof Parenthesis && $value->separator !== 'in') {
             $value->setSeparator(';');
         }
 

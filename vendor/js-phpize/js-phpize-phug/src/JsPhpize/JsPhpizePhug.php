@@ -3,18 +3,24 @@
 namespace JsPhpize;
 
 use Exception;
-use JsPhpize\Compiler\Exception as CompilerException;
-use JsPhpize\Lexer\Exception as LexerException;
-use JsPhpize\Parser\Exception as ParserException;
+use JsPhpize\Traits\Compilation;
 use Phug\AbstractCompilerModule;
 use Phug\Compiler;
+use Phug\Compiler\Event\NodeEvent;
 use Phug\CompilerEvent;
-use Phug\CompilerInterface;
+use Phug\Formatter\Element\KeywordElement;
+use Phug\Parser\Node\CommentNode;
+use Phug\Parser\Node\KeywordNode;
+use Phug\Parser\Node\TextNode;
 use Phug\Renderer;
 use Phug\Util\ModuleContainerInterface;
 
 class JsPhpizePhug extends AbstractCompilerModule
 {
+    use Compilation;
+
+    protected $languages = ['js', 'php'];
+
     public function __construct(ModuleContainerInterface $container)
     {
         parent::__construct($container);
@@ -35,6 +41,7 @@ class JsPhpizePhug extends AbstractCompilerModule
 
         //Set default options
         $this->setOptionsRecursive([
+            'language' => 'js',
             'allowTruncatedParentheses' => true,
             'catchDependencies' => true,
             'ignoreDollarVariable' => true,
@@ -46,111 +53,122 @@ class JsPhpizePhug extends AbstractCompilerModule
         //Apply options from container
         $this->setOptionsRecursive($compiler->getOption(['module_options', 'jsphpize']));
 
+        $compiler->attach(CompilerEvent::NODE, [$this, 'handleNodeEvent']);
+
         $compiler->setOptionsRecursive([
+            'keywords' => [
+                'language' => [$this, 'handleLanguageKeyword'],
+                'node-language' => [$this, 'handleNodeLanguageKeyword'],
+            ],
             'patterns' => [
-                'transform_expression' => function ($jsCode) use ($compiler) {
-                    $jsPhpize = $this->getJsPhpizeEngine($compiler);
-                    $compilation = $this->compile($jsPhpize, $jsCode, $compiler->getPath());
-
-                    if (!($compilation instanceof Exception)) {
-                        return $compilation;
-                    }
-
-                    return $jsCode;
+                'transform_expression' => function ($code) use ($compiler) {
+                    return $this->transformExpression($this->getJsPhpizeEngine($compiler), $code, $compiler->getPath());
                 },
             ],
             'checked_variable_exceptions' => [
-                'js-phpize' => function ($variable, $index, $tokens) {
-                    return $index > 2 &&
-                        $tokens[$index - 1] === '(' &&
-                        $tokens[$index - 2] === ']' &&
-                        is_array($tokens[$index - 3]) &&
-                        $tokens[$index - 3][0] === T_CONSTANT_ENCAPSED_STRING &&
-                        preg_match('/_with_ref\'$/', $tokens[$index - 3][1]);
-                },
+                'js-phpize' => [static::class, 'checkedVariableExceptions'],
             ],
         ]);
     }
 
-    /**
-     * @return JsPhpize
-     */
-    public function getJsPhpizeEngine(CompilerInterface $compiler)
+    public function handleNodeEvent(NodeEvent $event)
     {
-        if (!$compiler->hasOption('jsphpize_engine')) {
-            $compiler->setOption('jsphpize_engine', new JsPhpize($this->getOptions()));
+        /* @var CommentNode $node */
+        if (($node = $event->getNode()) instanceof CommentNode &&
+            !$node->isVisible() &&
+            $node->hasChildAt(0) &&
+            ($firstChild = $node->getChildAt(0)) instanceof TextNode &&
+            preg_match(
+                '/^@((?:node-)?lang(?:uage)?)([\s(].*)$/',
+                trim($firstChild->getValue()),
+                $match
+            )
+        ) {
+            $keyword = new KeywordNode(
+                $node->getToken(),
+                $node->getSourceLocation(),
+                $node->getLevel(),
+                $node->getParent()
+            );
+            $keyword->setName($match[1]);
+            $keyword->setValue($match[2]);
+            $event->setNode($keyword);
         }
-
-        return $compiler->getOption('jsphpize_engine');
     }
 
-    /**
-     * @param JsPhpize $jsPhpize
-     * @param int      $code
-     * @param string   $fileName
-     *
-     * @throws Exception
-     *
-     * @return Exception|string
-     */
-    public function compile(JsPhpize $jsPhpize, $code, $fileName)
+    protected function getLanguageKeywordValue($value, KeywordElement $keyword, $name)
     {
-        try {
-            $phpCode = trim($jsPhpize->compile($code, $fileName ?: 'raw string'));
-            $phpCode = preg_replace('/\{\s*\}$/', '', $phpCode);
-            $phpCode = preg_replace(
-                '/^(?<!\$)\$+(\$[a-zA-Z\\\\\\x7f-\\xff][a-zA-Z0-9\\\\_\\x7f-\\xff]*\s*[=;])/',
-                '$1',
-                $phpCode
-            );
+        $value = trim($value, "()\"' \t\n\r\0\x0B");
 
-            return rtrim(trim($phpCode), ';');
-        } catch (Exception $exception) {
-            if (
-                $exception instanceof LexerException ||
-                $exception instanceof ParserException ||
-                $exception instanceof CompilerException
-            ) {
-                return $exception;
+        if (!in_array($value, $this->languages)) {
+            $file = 'unknown';
+            $line = 'unknown';
+            $offset = 'unknown';
+            $node = $keyword->getOriginNode();
+            if ($node && ($location = $node->getSourceLocation())) {
+                $file = $location->getPath();
+                $line = $location->getLine();
+                $offset = $location->getOffset();
             }
 
-            throw $exception;
+            throw new \InvalidArgumentException(sprintf(
+                "Invalid argument for %s keyword: %s. Possible values are: %s\nFile: %s\nLine: %s\nOffset:%s",
+                $name,
+                $value,
+                implode(', ', $this->languages),
+                $file,
+                $line,
+                $offset
+            ));
         }
+
+        return $value;
     }
 
-    /**
-     * @return array
-     */
-    public function getEventListeners()
+    public function handleNodeLanguageKeyword($value, KeywordElement $keyword, $name)
     {
-        return [
-            CompilerEvent::OUTPUT => function (Compiler\Event\OutputEvent $event) {
-                /** @var CompilerInterface $compiler */
-                $compiler = $event->getTarget();
-                $jsPhpize = $this->getJsPhpizeEngine($compiler);
-                $output = preg_replace(
-                    '/\{\s*\?><\?(?:php)?\s*\}/',
-                    '{}',
-                    $event->getOutput()
-                );
-                $output = preg_replace(
-                    '/\}\s*\?><\?(?:php)?\s*(' .
-                    'else(if)?|for|while|switch|function' .
-                    ')(?![a-zA-Z0-9_])/',
-                    '} $1',
-                    $output
-                );
+        $value = $this->getLanguageKeywordValue($value, $keyword, $name);
 
-                $dependencies = $jsPhpize->compileDependencies();
-                if ($dependencies !== '') {
-                    $output = $compiler->getFormatter()->handleCode($dependencies) . $output;
-                }
+        if ($next = $keyword->getNextSibling()) {
+            $next->prependChild(new KeywordElement('language', $value, $keyword->getOriginNode()));
+            $next->appendChild(new KeywordElement('language', $this->getOption('language'), $keyword->getOriginNode()));
+        }
 
-                $event->setOutput($output);
+        return '';
+    }
 
-                $jsPhpize->flushDependencies();
-                $compiler->unsetOption('jsphpize_engine');
-            },
-        ];
+    public function handleLanguageKeyword($value, KeywordElement $keyword, $name)
+    {
+        $value = $this->getLanguageKeywordValue($value, $keyword, $name);
+
+        $this->setOption('language', $value);
+
+        return '';
+    }
+
+    protected function transformExpression(JsPhpize $jsPhpize, $code, $fileName)
+    {
+        if ($this->getOption('language') === 'php') {
+            return $code;
+        }
+
+        $compilation = $this->compile($jsPhpize, $code, $fileName);
+
+        if (!($compilation instanceof Exception)) {
+            return $compilation;
+        }
+
+        return $code;
+    }
+
+    public static function checkedVariableExceptions($variable, $index, $tokens)
+    {
+        return $index > 2 &&
+            $tokens[$index - 1] === '(' &&
+            $tokens[$index - 2] === ']' &&
+            !preg_match('/^__?pug_/', $variable) &&
+            is_array($tokens[$index - 3]) &&
+            $tokens[$index - 3][0] === T_CONSTANT_ENCAPSED_STRING &&
+            preg_match('/_with_ref\'$/', $tokens[$index - 3][1]);
     }
 }

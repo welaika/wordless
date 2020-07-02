@@ -34,7 +34,7 @@ class JsPhpize extends JsPhpizeOptions
     protected $sharedVariables = [];
 
     /**
-     * Compile file or code (detect if $input is an exisisting file, else use it as content).
+     * Compile file or code (detect if $input is an existing file, else use it as content).
      *
      * @param string $input    file or content
      * @param string $filename if specified, input is used as content and filename as its name
@@ -155,7 +155,16 @@ class JsPhpize extends JsPhpizeOptions
         extract(array_merge($this->sharedVariables, $variables));
 
         try {
-            return include $this->stream . '://data;<?php ' . $this->compile($input, $filename);
+            $code = '<?php ' . $this->compile($input, $filename);
+            if (strlen($code) < 4096) {
+                return include $this->stream . '://data;' . $code;
+            }
+            $file = tempnam(sys_get_temp_dir(), 'jsph');
+            file_put_contents($file, $code);
+            $result = include $file;
+            unlink($file);
+
+            return $result;
         } catch (\JsPhpize\Compiler\Exception $exception) {
             throw $exception;
         } catch (\JsPhpize\Lexer\Exception $exception) {

@@ -21,10 +21,10 @@ YARN
 section inside your ``package.json`` file and will execute the matched script.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/package.json
-    :lines: 9-17
+    :lines: 13-20
     :language: javascript
     :caption: package.json
-    :emphasize-lines: 2
+
 
 ``yarn server`` will run ``nf start``, where ``nf`` is the Node Foreman
 executable.
@@ -32,7 +32,7 @@ executable.
 Foreman
 #######
 
-`Node Foreman`_ (``nf``) could do complex things, but Wordless uses it just
+`Node Foreman`_ (``nf``) could do complex things, but Wordless uses it only
 to be able to launch multiple processes when ``server`` is fired.
 
 .. _Node Foreman: https://www.npmjs.com/package/foreman
@@ -68,10 +68,10 @@ The only relevant **Webpack** part in this section is BrowserSync_. It will
 start a web server at address ``127.0.0.1`` on port 3000.
 This is where your browser will automatically go once launched.
 
-.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.coffee
-    :lines: 70-76
-    :language: coffeescript
-    :caption: webpack.config.coffee
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
+    :lines: 94-108
+    :language: js
+    :caption: webpack.config.js
 
 As you can see from the configuration, web requests will be proxy-ed to the
 underlying ``wp server``.
@@ -100,10 +100,12 @@ template changes too.
 .. _BrowserSync: https://www.browsersync.io/
 .. _browser-sync-webpack-plugin: https://www.npmjs.com/package/browser-sync-webpack-plugin
 
+.. _MailhogRef:
+
 MailHog
 #######
 
-MailHog is an email testing tool for developers:
+`MailHog`_ is an email testing tool for developers:
 
 * Configure your application to use MailHog for SMTP delivery
 * View messages in the web UI, or retrieve them with the JSON API
@@ -126,3 +128,26 @@ This will trigger the ``smtp.php`` initializer:
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/smtp.php
     :language: php
     :caption: config/initializers/smtp.php
+
+.. _MailHog: https://github.com/mailhog/MailHog
+
+Debug in VSCode
+###############
+
+We ship a ``.vscode/launch.json`` in theme's root which is preconfigured to
+launch debugger for XDebug and for JS (both Chrome and FireFox). In order to
+use these configuration you'll need to install some plugins in the editor:
+
+* `Debugger for Chrome`_
+* `Debugger for Firefox`_
+* `PHP Debug`_
+
+.. _Debugger for Chrome: https://marketplace.visualstudio.com/items?itemName=msjsdiag.debugger-for-chrome
+.. _Debugger for Firefox: https://marketplace.visualstudio.com/items?itemName=firefox-devtools.vscode-firefox-debug
+.. _PHP Debug: https://marketplace.visualstudio.com/items?itemName=felixfbecker.php-debug
+
+.. note::
+    You may need to move ``.vscode/launch.json`` in another location if you
+    are not opening the theme's folder as workspace in VSCode (maybe you prefere to
+    open all the WordPress installation? Don't know...). It's up to you to use it
+    as you need it.

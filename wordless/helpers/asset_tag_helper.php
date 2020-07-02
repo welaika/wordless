@@ -55,7 +55,7 @@ class AssetTagHelper {
 	function audio_tag( $source, $attributes = array() ) {
 		$options = array_merge( array( 'src' => $source ), $attributes );
 
-		return content_tag( 'audio', null, $options );
+		return content_tag( 'audio', null, esc_url( $options ) );
 	}
 
 	/**
@@ -104,10 +104,10 @@ class AssetTagHelper {
 		switch ( $model_or_url ) {
 			case 'posts':
 			case 'comments':
-				$options['href'] = get_feed_url( $model_or_url, $type );
+				$options['href'] = esc_url( get_feed_url( $model_or_url, $type ) );
 				break;
 			default:
-				$options['href'] = $model_or_url;
+				$options['href'] = esc_url( $model_or_url );
 		}
 
 		if ( is_array( $additional_options ) ) {
@@ -148,7 +148,7 @@ class AssetTagHelper {
 
 		$options = array(
 			'rel'  => 'icon',
-			'href' => $source,
+			'href' => esc_url( $source ),
 			'type' => $mime_types[ strtolower( $info['extension'] ) ],
 		);
 
@@ -180,7 +180,7 @@ class AssetTagHelper {
 	* @see https://codex.wordpress.org/Function_Reference/bloginfo
 	*/
 	public function get_feed_url( $model, $type = 'rss' ) {
-		if ( 'posts' == $model ) {
+		if ( 'posts' === $model ) {
 			switch ( $type ) {
 				case 'rdf':
 					return get_bloginfo( 'rdf_url' );
@@ -194,7 +194,7 @@ class AssetTagHelper {
 				default:
 					return get_bloginfo( 'rss2_url' );
 			}
-		} elseif ( 'comments' == $model ) {
+		} elseif ( 'comments' === $model ) {
 			return get_bloginfo( 'comments_rss2_url' );
 		}
 
@@ -227,7 +227,7 @@ class AssetTagHelper {
 		$extension = isset( $info['extension'] ) ? $info['extension'] : '';
 
 		$options = array(
-			'src' => $this->asset_version( $source ),
+			'src' => esc_url( $this->asset_version( $source ) ),
 			'alt' => capitalize( basename( $source, '.' . $extension ) ),
 		);
 
@@ -261,7 +261,7 @@ class AssetTagHelper {
 
 			foreach ( $sources as $source ) {
 				if ( is_string( $source ) ) {
-					$html_content .= content_tag( 'source', null, array( 'src' => $source ) );
+					$html_content .= content_tag( 'source', null, array( 'src' => esc_url( $source ) ) );
 				} else {
 					$html_content .= content_tag( 'source', null, $source );
 				}
@@ -269,7 +269,7 @@ class AssetTagHelper {
 
 			return content_tag( 'video', $html_content, $attributes );
 		} else {
-			$options = array( 'src' => $sources );
+			$options = array( 'src' => esc_url( $sources ) );
 			if ( is_array( $attributes ) ) {
 				$options = array_merge( $options, $attributes );
 			}
@@ -309,7 +309,7 @@ class AssetTagHelper {
 				$source = $this->asset_version( $source );
 			}
 			$options = array(
-				'href'  => $source,
+				'href'  => esc_url( $source ),
 				'media' => 'all',
 				'rel'   => 'stylesheet',
 				'type'  => 'text/css',
@@ -359,7 +359,7 @@ class AssetTagHelper {
 				$source = $this->asset_version( $source );
 			}
 			$options = array(
-				'src'  => $source,
+				'src'  => esc_url( $source ),
 				'type' => 'text/javascript',
 			);
 			if ( is_array( $attributes ) ) {

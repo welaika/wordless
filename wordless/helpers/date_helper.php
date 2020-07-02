@@ -114,6 +114,7 @@ class DateHelper {
 	public function get_the_time_ago( $granularity = 1 ) {
 		$date       = current_time( 'timestamp' );
 		$difference = time() - $date;
+		$retval     = '';
 		$periods    = array(
 			315360000 => array( __( 'decade', 'wl' ), __( 'decades', 'wl' ) ),
 			31536000  => array( __( 'year', 'wl' ), __( 'years', 'wl' ) ),

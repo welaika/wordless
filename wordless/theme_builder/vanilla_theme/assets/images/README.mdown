@@ -1,3 +1,0 @@
-# Images path
-
-Drop here all your images.

@@ -11,7 +11,7 @@ require_once( __DIR__ . '/../wordless/helpers.php' );
 class AllTests extends TestSuite {
 	function __construct() {
 		parent::__construct( 'All tests' );
-		$this->addFile( __DIR__.'/tag_helper_test.php' );
+	//	$this->addFile( __DIR__.'/tag_helper_test.php' );
 		$this->addFile(__DIR__.'/asset_tag_helper_test.php');
 		$this->addFile(__DIR__.'/date_helper_test.php');
 		$this->addFile(__DIR__.'/text_helper_test.php');

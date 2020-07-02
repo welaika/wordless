@@ -8,10 +8,8 @@ use Pug\Nodes\Filter;
 /**
  * Class Pug\Filter\AbstractFilter.
  */
-abstract class AbstractFilter implements FilterInterface
+abstract class AbstractFilter extends AbstractFilterBase implements FilterInterface
 {
-    use WrapTagTrait;
-
     /**
      * @obsolete
      */
@@ -23,14 +21,5 @@ abstract class AbstractFilter implements FilterInterface
     public function __invoke(Filter $node, Compiler $compiler)
     {
         throw new \RuntimeException('Pug\Filter\FilterInterface is no longer supported. Now use Pug\FilterInterface instead.');
-    }
-
-    public function pugInvoke($code, array $options = null)
-    {
-        if (method_exists($this, 'parse')) {
-            $code = $this->parse($code, $options);
-        }
-
-        return $this->wrapInTag($code);
     }
 }

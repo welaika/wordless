@@ -11,8 +11,11 @@
 
 namespace Symfony\Component\VarDumper;
 
+use Symfony\Component\VarDumper\Caster\ReflectionCaster;
 use Symfony\Component\VarDumper\Cloner\VarCloner;
 use Symfony\Component\VarDumper\Dumper\CliDumper;
+use Symfony\Component\VarDumper\Dumper\ContextProvider\SourceContextProvider;
+use Symfony\Component\VarDumper\Dumper\ContextualizedDumper;
 use Symfony\Component\VarDumper\Dumper\HtmlDumper;
 
 // Load the global dump() function
@@ -29,13 +32,22 @@ class VarDumper
     {
         if (null === self::$handler) {
             $cloner = new VarCloner();
-            $dumper = \in_array(\PHP_SAPI, array('cli', 'phpdbg'), true) ? new CliDumper() : new HtmlDumper();
+            $cloner->addCasters(ReflectionCaster::UNSET_CLOSURE_FILE_INFO);
+
+            if (isset($_SERVER['VAR_DUMPER_FORMAT'])) {
+                $dumper = 'html' === $_SERVER['VAR_DUMPER_FORMAT'] ? new HtmlDumper() : new CliDumper();
+            } else {
+                $dumper = \in_array(\PHP_SAPI, ['cli', 'phpdbg']) ? new CliDumper() : new HtmlDumper();
+            }
+
+            $dumper = new ContextualizedDumper($dumper, [new SourceContextProvider()]);
+
             self::$handler = function ($var) use ($cloner, $dumper) {
                 $dumper->dump($cloner->cloneVar($var));
             };
         }
 
-        return \call_user_func(self::$handler, $var);
+        return (self::$handler)($var);
     }
 
     public static function setHandler(callable $callable = null)

@@ -2,7 +2,6 @@
 
 require_once Wordless::join_paths( dirname( __FILE__ ), '../vendor/autoload.php' );
 require_once Wordless::join_paths( dirname( __FILE__ ), 'theme_builder.php' );
-require_once Wordless::join_paths( dirname( __FILE__ ), 'preprocessors.php' );
 require_once Wordless::join_paths( dirname( __FILE__ ), 'wp-cli-wordless', 'command.php' );
 
 
@@ -16,13 +15,18 @@ class Wordless {
 	private static $helpers            = array();
 	public static $webpack_files_names = array(
 		// handler => path relative to theme root
-		'procfile'    => 'Procfile',
-		'env'         => '.env',
-		'package'     => 'package.json',
-		'webpack'     => 'webpack.config.coffee',
-		'webpack.env' => 'webpack.env.coffee',
-		'main'        => 'theme/assets/main.js',
-		'yarn'        => 'yarn.lock',
+		'procfile'        => 'Procfile',
+		'env'             => '.env',
+		'package'         => 'package.json',
+		'webpack'         => 'webpack.config.js',
+		'webpack.env'     => 'webpack.env.js',
+		'main'            => 'src/main.js',
+		'yarn'            => 'yarn.lock',
+		'nvmrc'           => '.nvmrc',
+		'stylelintignore' => '.stylelintignore',
+		'stylelintrc'     => '.stylelintrc.json',
+		'release'         => 'release.txt',
+		'eslintrc'        => '.eslintrc.json',
 	);
 
 	public static function initialize() {
@@ -32,12 +36,8 @@ class Wordless {
 			self::require_helpers();
 			self::require_theme_initializers();
 			self::register_activation();
-			if ( defined( 'WORDLESS_LEGACY' ) && true === WORDLESS_LEGACY ) {
-				self::register_preprocessors();
-				self::register_preprocessor_actions();
-			}
 		} else {
-			trigger_error( 'Missing directories: theme is missing following directories: ' . join( array_map( 'basename', $missing_directories ), ', ' ) . '. Fix theme or deactivate wordless plugin', E_USER_WARNING ); //@codingStandardsIgnoreLine
+			trigger_error( esc_html( 'Missing directories: theme is missing following directories: ' . join( array_map( 'basename', $missing_directories ), ', ' ) . '. Fix theme or deactivate wordless plugin' ), E_USER_WARNING );
 		}
 		self::register_plugin_i18n();
 	}
@@ -50,19 +50,24 @@ class Wordless {
 	}
 
 	public static function register_helper( $class_name ) {
-		foreach ( get_class_methods( $class_name ) as $method ) {
-			if ( ! function_exists( $method ) ) {
-				$global_function_definition = "function $method() { \$helper = Wordless::helper('$class_name'); \$args = func_get_args(); return call_user_func_array(array(\$helper, '$method'), \$args); }";
-				eval( $global_function_definition ); //@codingStandardsIgnoreLine
-			}
-		}
-	}
+        $global_function_definition = '';
+        $call_back_path             = __DIR__ . '/helpers/callback/';
 
-	public static function register_preprocessors() {
-		$preprocessors = array_filter( self::preference( 'assets.preprocessors', array( 'SprocketsPreprocessor', 'CompassPreprocessor' ) ) );
-		foreach ( $preprocessors as $preprocessor_class ) {
-			self::$preprocessors[] = new $preprocessor_class();
-		}
+        if ( ! file_exists( $call_back_path ) ) {
+            mkdir( $call_back_path, 0755, true );
+        }
+
+        foreach ( get_class_methods( $class_name ) as $method ) {
+            if ( ! function_exists( $method ) ) {
+                $global_function_definition = "function $method()\n { \$helper = Wordless::helper('$class_name');\n \$args = func_get_args();\n return call_user_func_array(array(\$helper, '$method'), \$args); }\n\n";
+            }
+
+            if ( ! file_exists( $call_back_path . $method . '.php' ) ) {
+                file_put_contents( $call_back_path . $method . '.php', "<?php\n" . $global_function_definition );
+            }
+
+            include_once $call_back_path . $method . '.php';
+        }
 	}
 
 	public static function register_activation() {
@@ -71,88 +76,11 @@ class Wordless {
 
 	public static function install() {
 		self::assets_rewrite_rules();
-		flush_rewrite_rules(); //@codingStandardsIgnoreLine
+		flush_rewrite_rules();
 	}
 
 	public static function register_plugin_i18n() {
 		add_action( 'init', array( __CLASS__, 'plugin_i18n' ) );
-	}
-
-	/**
-	 * Register all the actions we need to setup custom rewrite rules
-	 */
-	public static function register_preprocessor_actions() {
-		add_action( 'init', array( __CLASS__, 'assets_rewrite_rules' ) );
-		add_action( 'query_vars', array( __CLASS__, 'query_vars' ) );
-		add_action( 'parse_request', array( __CLASS__, 'parse_request' ) );
-	}
-
-	/**
-	* Register some custom query vars we need to handle multiplexing of file preprocessors
-	*/
-	public static function query_vars( $query_vars ) {
-		foreach ( self::$preprocessors as $preprocessor ) {
-			/* this query_var will be set to true when the requested URL needs this preprocessor */
-			array_push( $query_vars, $preprocessor->query_var_name() );
-			/* this query_var will be set to the url of the file preprocess */
-			array_push( $query_vars, $preprocessor->query_var_name( 'original_url' ) );
-		}
-		return $query_vars;
-	}
-
-	/**
-	* For each preprocessor, it creates a new rewrite rule.
-	*/
-	public static function assets_rewrite_rules() {
-		foreach ( self::$preprocessors as $preprocessor ) {
-			add_rewrite_rule( '^(.*\.' . $preprocessor->to_extension() . ')$', 'index.php?' . $preprocessor->query_var_name() . '=true&' . $preprocessor->query_var_name( 'original_url' ) . '=$matches[1]', 'top' );
-		}
-	}
-
-	/**
-	* If we get back our custom query vars, then redirect the request to the preprocessor.
-	*/
-	public static function parse_request( &$wp ) {
-		foreach ( self::$preprocessors as $preprocessor ) {
-			if ( array_key_exists( $preprocessor->query_var_name(), $wp->query_vars ) ) {
-				$original_url         = $wp->query_vars[ $preprocessor->query_var_name( 'original_url' ) ];
-				$relative_path        = str_replace( preg_replace( '/^\//', '', self::theme_url() ), '', $original_url );
-				$relative_path        = preg_replace( '/^.*\/assets\//', '', $relative_path );
-				$to_process_file_path = Wordless::join_paths( self::theme_assets_path(), $relative_path );
-				$to_process_file_path = preg_replace( '/\.' . $preprocessor->to_extension() . '$/', '', $to_process_file_path );
-				$preprocessor->serve_compiled_file( $to_process_file_path, Wordless::theme_temp_path() );
-				return;
-			}
-		}
-	}
-
-	public static function compile_assets() {
-		foreach ( self::$preprocessors as $preprocessor ) {
-			foreach ( $preprocessor->supported_extensions() as $extension ) {
-				$list_files = self::recursive_glob( self::theme_assets_path(), "*.$extension" );
-				foreach ( $list_files as $file_path ) {
-					// Ignore partials
-					if ( ! preg_match( '/^_/', basename( $file_path ) ) ) {
-						$compiled_file_path = str_replace( Wordless::theme_assets_path(), '', $file_path );
-						$compiled_file_path = Wordless::join_paths( Wordless::theme_static_assets_path(), $compiled_file_path );
-						$compiled_file_path = preg_replace( '/\.' . $extension . '$/', '.' . $preprocessor->to_extension(), $compiled_file_path );
-
-						try {
-							$to_process_file_path = preg_replace( '/\.' . $extension . '$/', '', $file_path );
-							$compiled_content     = $preprocessor->process_file_with_caching( $to_process_file_path, Wordless::theme_temp_path() );
-						} catch ( WordlessCompileException $e ) {
-							echo esc_html( 'Problems compiling ' . sanitize_file_name( $file_path ) . ' to ' . sanitize_file_name( $compiled_file_path ) . "\n\n" );
-							echo esc_html( $e );
-							echo esc_html( "\n\n" );
-						}
-
-						if ( file_put_contents( $compiled_file_path, $compiled_content ) === false ) {
-							error_log( "WARNING: Cannot write to {$compiled_file_path}." ); //@codingStandardsIgnoreLine
-						}
-					}
-				}
-			}
-		}
 	}
 
 	/**
@@ -238,11 +166,11 @@ class Wordless {
 	}
 
 	/**
-	 * Checks for required directories when initializing theme. If any are missing, it will return false.
-	 * If passed `true`, this function will return an array of missing directories.
+	 * Checks if required directories exist. If any are missing, it will return false.
+	 * If passed `true` as argument, this function will return an array of missing directories.
 	 *
 	 * * @param boolean $return_array
-	 *   Set true to get a list of missing directories
+	 *   Set true to get an array of missing directories
 	 *
 	 */
 	public static function theme_is_wordless_compatible( $return_array = false ) {
@@ -268,6 +196,7 @@ class Wordless {
 			self::theme_locales_path(),
 			self::theme_views_path(),
 			self::theme_assets_path(),
+			self::theme_static_assets_path(),
 			self::theme_stylesheets_path(),
 			self::theme_javascripts_path(),
 			self::theme_temp_path(),
@@ -282,7 +211,16 @@ class Wordless {
 		return $missing;
 	}
 
-	public static function theme_is_webpack_ready() {
+	/**
+	 * Tells if the theme is potentially automatically upgradable.
+	 *
+	 * A theme is considered upgradable based on 2 condition:
+	 * 1. Folder structure is standard and corresponds to the new Wordless version's one
+	 * 2. Theme has a `package.json` and a Procfile.
+	 *
+	 * @return boolean
+	 */
+	public static function theme_is_upgradable() : bool {
 		if ( self::theme_is_wordless_compatible() === false ) {
 			return false;
 		}
@@ -291,12 +229,7 @@ class Wordless {
 
 		$required_files = array(
 			self::theme_procfile_path(),
-			self::theme_dotenv_path(),
-			self::theme_webpackconfig_path(),
-			self::theme_webpackenv_path(),
 			self::theme_packagejson_path(),
-			self::theme_webpackentrypoint_path(),
-			self::theme_yarndotlock_path(),
 		);
 
 		foreach ( $required_files as $file ) {
@@ -327,7 +260,7 @@ class Wordless {
 	}
 
 	public static function theme_helpers_path() {
-		return self::join_paths( self::theme_path(), 'theme/helpers' );
+		return self::join_paths( self::theme_path(), 'helpers' );
 	}
 
 	public static function theme_initializers_path() {
@@ -339,27 +272,27 @@ class Wordless {
 	}
 
 	public static function theme_views_path() {
-		return self::join_paths( self::theme_path(), 'theme/views' );
+		return self::join_paths( self::theme_path(), 'views' );
 	}
 
 	public static function theme_assets_path() {
-		return self::join_paths( self::theme_path(), 'theme/assets' );
+		return self::join_paths( self::theme_path(), 'src' );
 	}
 
 	public static function theme_stylesheets_path() {
-		return self::join_paths( self::theme_path(), 'theme/assets/stylesheets' );
+		return self::join_paths( self::theme_path(), 'src/stylesheets' );
 	}
 
 	public static function theme_javascripts_path() {
-		return self::join_paths( self::theme_path(), 'theme/assets/javascripts' );
+		return self::join_paths( self::theme_path(), 'src/javascripts' );
 	}
 
 	public static function theme_static_assets_path() {
-		return self::join_paths( self::theme_path(), 'assets' );
+		return self::join_paths( self::theme_path(), 'dist' );
 	}
 
 	public static function theme_static_javascripts_path() {
-		return self::join_paths( self::theme_path(), 'assets/javascripts' );
+		return self::join_paths( self::theme_path(), 'dist/javascripts' );
 	}
 
 	public static function theme_temp_path() {
@@ -367,7 +300,7 @@ class Wordless {
 	}
 
 	public static function theme_url() {
-		return wp_parse_url( get_bloginfo( 'template_url' ), PHP_URL_PATH );
+		return parse_url( get_bloginfo( 'template_url' ), PHP_URL_PATH );
 	}
 
 	public static function theme_procfile_path() {
@@ -398,6 +331,26 @@ class Wordless {
 		return self::join_paths( self::theme_path(), self::$webpack_files_names['yarn'] );
 	}
 
+	public static function theme_nvmrc_path() {
+		return self::join_paths( self::theme_path(), self::$webpack_files_names['nvmrc'] );
+	}
+
+	public static function theme_stylelintignore_path() {
+		return self::join_paths( self::theme_path(), self::$webpack_files_names['stylelintignore'] );
+	}
+
+	public static function theme_stylelintrc_path() {
+		return self::join_paths( self::theme_path(), self::$webpack_files_names['stylelintrc'] );
+	}
+
+	public static function theme_release_path() {
+		return self::join_paths( self::theme_path(), self::$webpack_files_names['release'] );
+	}
+
+	public static function theme_eslintrc_path() {
+		return self::join_paths( self::theme_path(), self::$webpack_files_names['eslintrc'] );
+	}
+
 	public static function join_paths() {
 		$args  = func_get_args();
 		$paths = array();
@@ -410,7 +363,7 @@ class Wordless {
 			$path = trim( $path, '/' );
 		}
 
-		if ( substr( $args[0], 0, 1 ) === '/' ) {
+		if ( substr( $args[0], 0, 1 ) == '/' ) {
 			$paths[0] = '/' . $paths[0];
 		}
 

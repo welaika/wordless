@@ -41,10 +41,11 @@ class MediaHelper {
 	 */
 	function get_post_attachments( $post_id ) {
 		$args = array(
-			'post_type'   => 'attachment',
-			'numberposts' => -1,
-			'post_status' => null,
-			'post_parent' => $post_id,
+			'post_type'        => 'attachment',
+			'numberposts'      => -1,
+			'post_status'      => null,
+			'post_parent'      => $post_id,
+			'suppress_filters' => false,
 		);
 
 		return get_posts( $args );

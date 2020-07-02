@@ -28,6 +28,8 @@ abstract class Value extends Node
     public function prepend($before)
     {
         array_unshift($this->before, $before);
+
+        return $this;
     }
 
     public function getAfter()
@@ -38,5 +40,7 @@ abstract class Value extends Node
     public function append($after)
     {
         $this->after[] = $after;
+
+        return $this;
     }
 }

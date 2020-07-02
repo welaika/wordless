@@ -63,7 +63,7 @@ class PugJsEngine extends Keywords
         return $html;
     }
 
-    protected function parsePugJsResult($result, $path, $toDelete, array $options)
+    protected function parsePugJsResult($result, $path, array $options)
     {
         $result = explode('rendered ', $result);
         if (count($result) < 2) {
@@ -74,7 +74,7 @@ class PugJsEngine extends Keywords
         $file = trim($result[1]);
         $html = $this->getHtml($file, $options);
 
-        if ($toDelete) {
+        if ($options['delete']) {
             unlink($path);
         }
 
@@ -125,24 +125,43 @@ class PugJsEngine extends Keywords
         );
     }
 
-    protected function callPugCli($input, $filename, $options, $toDelete, $fallback)
+    protected function getCachedHtml($input, $filename, $options)
+    {
+        $renderFile = $options['out'] . '/' . preg_replace('/\.[^.]+$/', '', basename($filename)) . '.js';
+        $cacheCheck = $this->getDefaultOption('pugjs_cache_check', [static::class, 'pugJsCacheCheck']);
+
+        if (call_user_func($cacheCheck, $renderFile, $filename, $this)) {
+            $mTime = filemtime($renderFile);
+            if (!$input) {
+                $input = file_get_contents($filename);
+            }
+            $html = $this->parsePugJsResult('rendered ' . $renderFile, $input, $options);
+            touch($renderFile, $mTime);
+
+            return $html;
+        }
+
+        return false;
+    }
+
+    protected function checkCachedHtml($input, $filename, $options, &$args)
+    {
+        if (empty($this->getDefaultOption('cache_dir'))) {
+            return false;
+        }
+
+        $args[] = '--client';
+
+        return $this->getCachedHtml($input, $filename, $options);
+    }
+
+    protected function callPugCli($input, $filename, $options, $fallback)
     {
         $args = $this->getPugCliArguments($options);
+        $html = $this->checkCachedHtml($input, $filename, $options, $args);
 
-        if (!empty($this->getDefaultOption('cache_dir'))) {
-            $args[] = '--client';
-            $renderFile = $options['out'] . '/' . preg_replace('/\.[^.]+$/', '', basename($filename)) . '.js';
-            $cacheCheck = $this->getDefaultOption('pugjs_cache_check', [static::class, 'pugJsCacheCheck']);
-            if (call_user_func($cacheCheck, $renderFile, $filename, $this)) {
-                $mTime = filemtime($renderFile);
-                if (!$input) {
-                    $input = file_get_contents($filename);
-                }
-                $html = $this->parsePugJsResult('rendered ' . $renderFile, $input, $toDelete, $options);
-                touch($renderFile, $mTime);
-
-                return $html;
-            }
+        if ($html) {
+            return $html;
         }
 
         $directory = dirname($filename);
@@ -160,7 +179,7 @@ class PugJsEngine extends Keywords
         );
         chdir($currentDirectory);
 
-        return $this->parsePugJsResult($result, $filename, $toDelete, $options);
+        return $this->parsePugJsResult($result, $filename, $options);
     }
 
     /**
@@ -199,6 +218,7 @@ class PugJsEngine extends Keywords
             'basedir' => $this->getDefaultOption('basedir'),
             'pretty'  => $this->getDefaultOption('prettyprint'),
             'out'     => $workDirectory,
+            'delete'  => $toDelete,
         ];
 
         $optionsFile = $workDirectory . '/options-' . mt_rand(0, 999999999) . '.js';
@@ -210,7 +230,7 @@ class PugJsEngine extends Keywords
         );
         $options['obj'] = $optionsFile;
 
-        return $this->callPugCli($input, $filename, $options, $toDelete, $fallback);
+        return $this->callPugCli($input, $filename, $options, $fallback);
     }
 
     /**

@@ -11,23 +11,28 @@ No prerequisites. Just joy.
 Navigate to https://github.com/welaika/wordless_gem to discover the tool and
 set up all you need for local development. In less than 2 minutes ;)
 
+If you already have a WordPress installation and just want to add
+Wordless to it, read the following paragraph.
+
 (Not so) Manual
 ###############
 
 At the end of the installation process you will have
 
 * a plugin - almost invisible: no backend page, just ``wp-cli`` commands
-* a theme - where we will do all of the work
+* a theme - where you will do all of the work
 
 Prerequisites
 """""""""""""
 
-#. Install WP-CLI http://wp-cli.org/#installing
-#. Install global packages from NPM: ``npm install -g foreman yarn`` [1]_ [2]_
-   (you already have node on your development machine, haven't you?)
+#. Node. Depending on the Wordless version you'll need a specific Node version.
+   Read more at :ref:`Node` page.
+#. WP-CLI http://wp-cli.org/#installing
+#. Global packages from NPM: ``npm install -g foreman yarn`` [1]_ [2]_
 #. WordPress installed and configured as per `official documentation`_
-#. Install MailHog_. On MacOS this is as simple
-   as ``brew install mailhog``. Wordless will do the rest.
+#. If you'd like to enable the mail-catcher while developing, install MailHog_.
+   On MacOS this is as simple as ``brew install mailhog``. Wordless
+   will do the rest.
 
 .. _official documentation: https://codex.wordpress.org/Installing_WordPress
 .. _MailHog: https://github.com/mailhog/MailHog
@@ -42,6 +47,9 @@ Prerequisites
 
 .. seealso::
     :ref:`Server`
+
+.. seealso::
+    :ref:`MailhogRef`
 
 Steps
 """""
@@ -61,6 +69,10 @@ Steps
     .. code-block:: bash
 
         wp wordless theme create mybrandnewtheme
+
+.. seealso::
+
+    :ref:`WP-CLI plugin` for info about wp-cli integration
 
 #. Enter theme directory
 
@@ -84,7 +96,7 @@ Webpack, php server and your browser will automatically come up and serve
 your needs :)
 
 .. seealso::
-    :ref:`Server`
+    :ref:`Server` to understand how the magic works
 
 .. note::
     It is possible that your OS asks you to allow connections on server
