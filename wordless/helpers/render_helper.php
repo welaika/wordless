@@ -168,15 +168,7 @@ class RenderHelper {
 
 	private function ensure_dir( $dir ) {
 
-		if ( ! file_exists( $dir ) ) {
-			mkdir( $dir, 0770 ); //@codingStandardsIgnoreLine
-		}
-
-		if ( ! is_writable( $dir ) ) { //@codingStandardsIgnoreLine
-			chmod( $dir, 0770 ); //@codingStandardsIgnoreLine
-		}
-
-		if ( is_writable( $dir ) ) { //@codingStandardsIgnoreLine
+		if ( file_exists( $dir ) ) {
 			return true;
 		} else {
 			return false;
