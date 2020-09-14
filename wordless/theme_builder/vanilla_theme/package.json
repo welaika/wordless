@@ -20,7 +20,13 @@
     "clean:dist": "yarn clean:js && yarn clean:css && yarn clean:images",
     "sign-release": "git rev-parse HEAD | cut -c 1-8 > release.txt",
     "lint": "yarn lint:sass",
-    "lint:sass": "npx stylelint 'src/stylesheets/**/*.scss'"
+    "lint:sass": "npx stylelint 'src/stylesheets/**/*.scss'",
+    "test:db:create": "WP_ENV=test wp db create",
+    "test:db:snapshot": "wp db export tests/_data/dump.sql",
+    "test:setup": "wp wordless theme install_testing_wpconfig && composer install && yarn test:db:create && php ./vendor/bin/codecept build",
+    "test:server": "npx nf start --procfile Procfile.testing --env .env.testing",
+    "test": "vendor/bin/codecept run acceptance",
+    "setup": "yarn install && yarn test:setup"
   },
   "dependencies": {},
   "devDependencies": {

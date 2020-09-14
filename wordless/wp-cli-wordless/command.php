@@ -100,6 +100,20 @@ class WordlessCommand {
     }
 
     /**
+    * Install a wp-config.php dedicated to codeception test suites
+    *
+    * @return void
+    */
+    public function install_testing_wpconfig() {
+        WordlessWpConfigTesting::install();
+
+        WP_CLI::success('New `wp-config.php` installed');
+
+        // NOTE: We're not managing error cases
+        return true;
+    }
+
+    /**
     * Return the list of files in theme's `tmp` directory
     *
     * @return Array

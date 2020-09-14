@@ -2,6 +2,7 @@
 
 require_once Wordless::join_paths(dirname(__FILE__), '../vendor/autoload.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'theme_builder.php');
+require_once Wordless::join_paths(dirname(__FILE__), 'wordless_wp_config_testing.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'wp-cli-wordless', 'command.php');
 
 

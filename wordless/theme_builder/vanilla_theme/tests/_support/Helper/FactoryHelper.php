@@ -22,12 +22,4 @@ class FactoryHelper extends \Codeception\Module
             'post_status' => 'publish'
         ]);
     }
-
-    public function haveOnePostWithCustomFiled(string $text)
-    {
-        $postId = $this->haveOnePost();
-        update_field('ACF_custom_field', $text, $postId);
-
-        return $postId;
-    }
 }
