@@ -1,0 +1,60 @@
+# Codeception Test Suite Configuration
+#
+# Suite for acceptance tests.
+# Perform tests in browser using the WPWebDriver or WPBrowser.
+# Use WPDb to set up your initial database fixture.
+# If you need both WPWebDriver and WPBrowser tests - create a separate suite.
+
+actor: AcceptanceTester
+modules:
+    enabled:
+        - WPDb
+        # - WPBrowser
+        - WPWebDriver
+        - WPLoader
+        - \Helper\Acceptance
+        - \Helper\FactoryHelper
+    config:
+        WPDb:
+            dsn: '%TEST_SITE_DB_DSN%'
+            user: '%TEST_SITE_DB_USER%'
+            password: '%TEST_SITE_DB_PASSWORD%'
+            dump: 'tests/_data/dump.sql'
+            #import the dump before the tests; this means the test site database will be repopulated before the tests.
+            populate: true
+            # re-import the dump between tests; this means the test site database will be repopulated between the tests.
+            cleanup: true
+            waitlock: 10
+            url: '%TEST_SITE_WP_URL%'
+            urlReplacement: true #replace the hardcoded dump URL with the one above
+            tablePrefix: '%TEST_SITE_TABLE_PREFIX%'
+        WPLoader:
+            loadOnly: true
+            wpRootFolder: '%WP_ROOT_FOLDER%'
+            dbName: '%TEST_DB_NAME%'
+            dbHost: '%TEST_DB_HOST%'
+            dbUser: '%TEST_DB_USER%'
+            dbPassword: '%TEST_DB_PASSWORD%'
+        # WPBrowser:
+        #     url: '%TEST_SITE_WP_URL%'
+        #     adminUsername: '%TEST_SITE_ADMIN_USERNAME%'
+        #     adminPassword: '%TEST_SITE_ADMIN_PASSWORD%'
+        #     adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
+        #     browser: firefox
+        #     headers:
+        #         X_TESTING: 'wp-browser'
+        WPWebDriver:
+            url: '%TEST_SITE_WP_URL%'
+            adminUsername: '%TEST_SITE_ADMIN_USERNAME%'
+            adminPassword: '%TEST_SITE_ADMIN_PASSWORD%'
+            adminPath: '%TEST_SITE_WP_ADMIN_PATH%'
+            host: '%SELENIUM_HOST%'
+            # browser: firefox
+            browser: chrome
+            capabilities:
+                "goog:chromeOptions":
+                    args: ["--no-sandbox", "--disable-gpu", "--user-agent=wp-browser"] # aggiungi "--headless" all'array per non aprire l'interfaccia del browser
+                # Queste impostazioni che seguono dovrebbero avere senso, ma non funzionano e
+                # trovare della documentazione non è uno scherzo.
+                # "moz:firefoxOptions":
+                    # args: { "prefs": { "general.useragent.override": "wp-browser" }}

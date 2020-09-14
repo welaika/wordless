@@ -1,0 +1,26 @@
+# Codeception Test Suite Configuration
+#
+# Suite for unit or integration tests that require WordPress functions and classes.
+
+actor: WpunitTester
+modules:
+    enabled:
+        - WPLoader
+        - \Helper\Wpunit
+    config:
+        WPLoader:
+            wpRootFolder: "%WP_ROOT_FOLDER%"
+            dbName: "%TEST_DB_NAME%"
+            dbHost: "%TEST_DB_HOST%"
+            dbUser: "%TEST_DB_USER%"
+            dbPassword: "%TEST_DB_PASSWORD%"
+            tablePrefix: "%TEST_TABLE_PREFIX%"
+            domain: "%TEST_SITE_WP_DOMAIN%"
+            adminEmail: "%TEST_SITE_ADMIN_EMAIL%"
+            title: "Test"
+            theme: wordpress_codeception
+            plugins: ['wordless/wordless.php']
+            activatePlugins: ['wordless/wordless.php']
+            # You'll have to add other plugins to these lists, e.g.:
+            # plugins: ['wordless/wordless.php', 'advanced-custom-fields/acf.php']
+            # activatePlugins: ['wordless/wordless.php', 'advanced-custom-fields/acf.php']
