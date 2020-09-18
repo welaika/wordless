@@ -31,6 +31,8 @@ class QueryHelper {
 				'post_type'      => $type,
 				'orderby'        => $order,
 				'order'          => $ord,
+                'ignore_sticky_posts' => true,
+                'no_found_rows' => true,
 			)
 		);
 		return $wp_query;

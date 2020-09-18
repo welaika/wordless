@@ -154,8 +154,6 @@ class Optimizer
      */
     public function isExpired($file, &$cachePath = null)
     {
-<<<<<<< HEAD:vendor/phug/phug/src/Phug/Optimizer.php
-=======
         if (isset($this->options['up_to_date_check']) && !$this->options['up_to_date_check']) {
             if (func_num_args() > 1) {
                 list(, $cachePath) = $this->getSourceAndCachePaths($file);
@@ -164,16 +162,11 @@ class Optimizer
             return false;
         }
 
->>>>>>> 3b6ef66f65cad0c6c2b986aa1dedca78b49e7670:vendor/phug/phug/src/Phug/Phug/Phug/Optimizer.php
         if (!$this->cacheDirectory) {
             return true;
         }
 
         list($sourcePath, $cachePath) = $this->getSourceAndCachePaths($file);
-
-        if (isset($this->options['up_to_date_check']) && !$this->options['up_to_date_check']) {
-            return false;
-        }
 
         if (!file_exists($cachePath)) {
             return true;
