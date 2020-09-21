@@ -2,6 +2,7 @@
 
 require_once Wordless::join_paths(dirname(__FILE__), '../vendor/autoload.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'theme_builder.php');
+require_once Wordless::join_paths(dirname(__FILE__), 'wordless_test_configurations.php');
 require_once Wordless::join_paths(dirname(__FILE__), 'wp-cli-wordless', 'command.php');
 
 
@@ -37,8 +38,21 @@ class Wordless {
             self::require_theme_initializers();
             self::register_activation();
         } else {
-            trigger_error("Missing directories: theme is missing following directories: " . join(array_map('basename', $missing_directories), ", ") . ". Fix theme or deactivate wordless plugin", E_USER_WARNING);
+            $dirlist = join(array_map('basename', $missing_directories), ', ');
+            $error_text = <<<"ERRORTEXT"
+
+Missing directories: theme is missing following directories: $dirlist.
+You could try following actions:
+
+* ignore this WARNING if you're creating the starter theme
+* `wp wordless theme create THEMENAME` if you have not created the starter theme yet
+* manually fix the theme if you have deleted something and if you know what are you doing :)
+* disable Wordless plugin if you activated it by error
+
+ERRORTEXT;
+            trigger_error($error_text, E_USER_WARNING);
         }
+
         self::register_plugin_i18n();
     }
 

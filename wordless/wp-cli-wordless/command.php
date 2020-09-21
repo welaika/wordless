@@ -100,6 +100,21 @@ class WordlessCommand {
     }
 
     /**
+    * Update wp-config.php to support test suite and .gitlab-ci.yml for CI into project root.
+    *
+    * @return void
+    */
+    public function setup_test_suite() {
+        $testConfigs = new WordlessTestConfigurations();
+        $testConfigs->install();
+
+        WP_CLI::success('Test configuration installed');
+
+        // NOTE: We're not managing error cases
+        return true;
+    }
+
+    /**
     * Return the list of files in theme's `tmp` directory
     *
     * @return Array

@@ -5,3 +5,4 @@ dist/*/*
 !dist/fonts
 .DS_Store
 node_modules
+vendor/
