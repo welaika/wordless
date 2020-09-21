@@ -23,7 +23,7 @@
     "lint:sass": "npx stylelint 'src/stylesheets/**/*.scss'",
     "test:db:create": "WP_ENV=test wp db create",
     "test:db:snapshot": "wp db export tests/_data/dump.sql",
-    "test:setup": "wp wordless theme install_testing_wpconfig && composer install && yarn test:db:create && php ./vendor/bin/codecept build",
+    "test:setup": "wp wordless theme setup_test_suite && composer install && yarn test:db:create && php ./vendor/bin/codecept build",
     "test:server": "npx nf start --procfile Procfile.testing --env .env.testing",
     "test": "vendor/bin/codecept run acceptance",
     "setup": "yarn install && yarn test:setup"

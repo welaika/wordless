@@ -100,14 +100,15 @@ class WordlessCommand {
     }
 
     /**
-    * Install a wp-config.php dedicated to codeception test suites
+    * Update wp-config.php to support test suite and .gitlab-ci.yml for CI into project root.
     *
     * @return void
     */
-    public function install_testing_wpconfig() {
-        WordlessWpConfigTesting::install();
+    public function setup_test_suite() {
+        $testConfigs = new WordlessTestConfigurations();
+        $testConfigs->install();
 
-        WP_CLI::success('New `wp-config.php` installed');
+        WP_CLI::success('Test configuration installed');
 
         // NOTE: We're not managing error cases
         return true;
