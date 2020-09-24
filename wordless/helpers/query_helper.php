@@ -27,12 +27,13 @@ class QueryHelper {
 	function latest_posts_of_type( $type, $limit = -1, $order = 'date', $ord = 'DESC' ) {
 		$wp_query = new WP_Query(
 			array(
-				'posts_per_page' => $limit,
-				'post_type'      => $type,
-				'orderby'        => $order,
-				'order'          => $ord,
-                'ignore_sticky_posts' => true,
-                'no_found_rows' => true,
+				'posts_per_page'      => $limit,
+				'post_type'           => $type,
+				'post_status'         => 'publish',
+				'orderby'             => $order,
+				'order'               => $ord,
+				'ignore_sticky_posts' => true,
+				'no_found_rows'       => true,
 			)
 		);
 		return $wp_query;
@@ -83,18 +84,20 @@ class QueryHelper {
 	function latest_posts_of_category( $category, $limit, $offset = 0, $post_type = 'post', $taxonomy = 'category', $order = 'date', $ord = 'DESC' ) {
 		$wp_query = new WP_Query(
 			array(
-				'posts_per_page' => $limit,
-				'tax_query'      => array(
+				'posts_per_page'      => $limit,
+				'post_status'         => 'publish',
+				'tax_query'           => array(
 					array(
 						'taxonomy' => $taxonomy,
 						'field'    => 'slug',
 						'terms'    => $category,
 					),
 				),
-				'offset'         => $offset,
-				'post_type'      => $post_type,
-				'orderby'        => $order,
-				'order'          => $ord,
+				'offset'              => $offset,
+				'post_type'           => $post_type,
+				'orderby'             => $order,
+				'order'               => $ord,
+				'ignore_sticky_posts' => true,
 			)
 		);
 		return $wp_query;
