@@ -2,12 +2,8 @@
 
 require_once('simpletest/autorun.php');
 require_once('../wordless/wordless.php');
-<<<<<<< HEAD
-require_once( __DIR__ . '/../wordless/helpers.php' );
-=======
-require_once('../wordless/helpers.php');
+require_once(__DIR__.'/../wordless/helpers.php');
 require_once('support/mocked_bloginfo.php');
->>>>>>> 3b6ef66f65cad0c6c2b986aa1dedca78b49e7670
 
 class TagHelperTest extends UnitTestCase {
 
@@ -21,11 +17,6 @@ class TagHelperTest extends UnitTestCase {
     $this->assertEqual(
       '<textarea><br/></textarea>',
       content_tag("textarea", "<br/>", NULL, false)
-    );
-
-    $this->assertEqual(
-      '<textarea>&lt;br/&gt;</textarea>',
-      content_tag("textarea", "<br/>", NULL, true)
     );
 
     $this->assertEqual(

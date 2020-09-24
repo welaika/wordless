@@ -7,7 +7,7 @@
 * @ingroup helperclass
 */
 class TagHelper {
-	private function tag_options( $options, $prefix = '' ) {
+	public function tag_options( $options, $prefix = '' ) {
 
 		$attributes   = array();
 		$html_content = array();
@@ -20,15 +20,15 @@ class TagHelper {
 					if ( 'data' == $option_key ) {
 						$attributes[] = $this->tag_options( $option_value, $option_key . '-' );
 					} else {
-						$html_content[] = $prefix . $option_key . '=' . '"' . addslashes( wp_json_encode( $option_value ) ) . '"';
+						$html_content[] = $prefix . $option_key . '=' . '"' . addslashes( wp_json_encode( esc_attr( $option_value ) ) ) . '"';
 					}
 				} else {
 					if ( is_null( $option_value ) || ( empty( $option_value ) ) || ( $option_value == $option_key ) ) {
-						$html_content[] = $prefix . $option_key;
+						$html_content[] = esc_attr( $prefix . $option_key );
 					} elseif ( is_bool( $option_value ) && ( true == $option_value ) ) {
-						$html_content[] = $prefix . $option_key . '=' . '"' . $prefix . $option_key . '"';
+						$html_content[] = $prefix . $option_key . '=' . '"' . esc_attr( $prefix . $option_key ) . '"';
 					} else {
-						$html_content[] = $prefix . $option_key . '=' . '"' . $option_value . '"';
+						$html_content[] = $prefix . $option_key . '=' . '"' . esc_attr( $option_value ) . '"';
 					}
 				}
 			}
@@ -51,7 +51,7 @@ class TagHelper {
 	function content_tag( $name, $content, $options = null, $escape = false ) {
 
 		if ( is_null( $content ) ) {
-			$html_content = '<' . $name;
+			$html_content = '<' . sanitize_key( $name );
 			$attrs        = $this->tag_options( $options );
 
 			if ( $attrs && ! is_null( $options ) ) {
@@ -59,14 +59,14 @@ class TagHelper {
 			}
 			$html_content .= '/>';
 		} else {
-			$html_content = '<' . $name;
+			$html_content = '<' . sanitize_key( $name );
 			$attrs        = $this->tag_options( $options );
 			if ( ! is_null( $options ) && $attrs ) {
 				$html_content .= ' ' . $attrs;
 			}
 			$html_content .= '>';
 			$html_content .= ( (bool) $escape ) ? esc_html( $content ) : $content;
-			$html_content .= '</' . $name . '>';
+			$html_content .= '</' . sanitize_key( $name ). '>';
 		}
 
 		return $html_content;
