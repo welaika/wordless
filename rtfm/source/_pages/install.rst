@@ -1,15 +1,44 @@
 Installation
 ============
 
+Prerequisites
+#############
+
+#. Node. Depending on the Wordless version you'll need a specific Node version.
+   Using NVM is recommended: read more at :ref:`Node` page.
+#. `WP-CLI`_ ``brew install wp-cli``
+#. Global packages from NPM: ``npm install -g yarn`` [1]_
+#. Test-related requirements
+    #. `Composer`_ ``brew install composer``
+    #. Selenium ``brew install selenium-server-standalone``
+    #. Chrome Driver ``brew install chromedriver``
+#. If you'd like to enable the mail-catcher while developing, install MailHog_.
+   On MacOS this is as simple as ``brew install mailhog``. Wordless
+   will do the rest.
+
+.. _official documentation: https://codex.wordpress.org/Installing_WordPress
+.. _MailHog: https://github.com/mailhog/MailHog
+.. _Composer: https://getcomposer.org/
+.. _WP-CLI: http://wp-cli.org/#installing
+
+.. seealso::
+    :ref:`MailhogRef`
+
 Wordless GEM (favourite)
 ########################
 
 The quickest CLI tool to setup a new WordPress locally. Wordless ready.
 
-No prerequisites. Just joy.
-
 Navigate to https://github.com/welaika/wordless_gem to discover the tool and
 set up all you need for local development. In less than 2 minutes ;)
+
+The quickstart, given the prerequisites, is:
+
+    .. code-block:: bash
+
+        gem install wordless
+        cd MY_DEV_FOLDER
+        wordless new THEME_NAME
 
 If you already have a WordPress installation and just want to add
 Wordless to it, read the following paragraph.
@@ -19,25 +48,15 @@ Wordless to it, read the following paragraph.
 
 At the end of the installation process you will have
 
-* a plugin - almost invisible: no backend page, just ``wp-cli`` commands
+* a plugin - almost invisible: no backend page, just custom ``wp-cli`` commands
 * a theme - where you will do all of the work
 
-Prerequisites
-"""""""""""""
+Additional prerequisites
+""""""""""""""""""""""""
 
-#. Node. Depending on the Wordless version you'll need a specific Node version.
-   Read more at :ref:`Node` page.
-#. WP-CLI http://wp-cli.org/#installing
-#. Global packages from NPM: ``npm install -g foreman yarn`` [1]_ [2]_
 #. WordPress installed and configured as per `official documentation`_
-#. `Composer`_ ``brew install composer``
-#. If you'd like to enable the mail-catcher while developing, install MailHog_.
-   On MacOS this is as simple as ``brew install mailhog``. Wordless
-   will do the rest.
 
 .. _official documentation: https://codex.wordpress.org/Installing_WordPress
-.. _MailHog: https://github.com/mailhog/MailHog
-.. _Composer: https://getcomposer.org/
 
 .. note::
     We don't know if you have a local apache {M,L,W}AMPP instance or whatever
@@ -49,9 +68,6 @@ Prerequisites
 
 .. seealso::
     :ref:`Server`
-
-.. seealso::
-    :ref:`MailhogRef`
 
 Steps
 """""
@@ -121,4 +137,3 @@ and in another terminal let's actually run tests:
     ports (3000 and/or 8080). It's just ok to do it.
 
 .. [1] https://www.npmjs.com/package/yarn
-.. [2] https://www.npmjs.com/package/foreman
