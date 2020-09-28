@@ -22,8 +22,10 @@
     "lint": "yarn lint:sass",
     "lint:sass": "npx stylelint 'src/stylesheets/**/*.scss'",
     "test:db:create": "WP_ENV=test wp db create",
-    "test:db:snapshot": "wp db export tests/_data/dump.sql",
-    "test:setup": "wp wordless theme setup_test_suite && composer install && yarn test:db:create && php ./vendor/bin/codecept build",
+    "test:db:drop": "WP_ENV=test wp db drop",
+    "test:db:snapshot": "mv tests/_data/dump.sql tests/_data/dump_$(date +%s).sql; wp db export tests/_data/dump.sql",
+    "test:db:setup": "WP_ENV=test yarn test:db:drop; WP_ENV=test yarn test:db:create; WP_ENV=test yarn test:db:snapshot",
+    "test:setup": "wp wordless theme setup_test_suite && yarn test:db:setup && composer install && php ./vendor/bin/codecept build",
     "test:server": "npx nf start --procfile Procfile.testing --env .env.testing",
     "test": "vendor/bin/codecept run acceptance",
     "setup": "yarn install && yarn test:setup"
