@@ -10,7 +10,9 @@ class WordlessPugOptions {
             'strict' => true,
             'debug' => $wp_debug,
             'enable_profiler' => false,
-            'error_reporting' => E_ERROR | E_USER_ERROR
+            'error_reporting' => E_ERROR | E_USER_ERROR,
+            'keep_base_name' => true,
+            'paths' => [Wordless::theme_views_path()]
         ]);
     }
 }
