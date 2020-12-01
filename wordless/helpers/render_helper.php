@@ -96,7 +96,7 @@ class RenderHelper {
                     }
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
-                        if (true === $static && false == $bypass_static) {
+                        if (true === $static && 'false' == $bypass_static) {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
