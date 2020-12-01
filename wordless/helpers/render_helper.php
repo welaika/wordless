@@ -112,7 +112,7 @@ class RenderHelper {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
-                                $res = $pug->renderAndWriteFile($template_path, $staticPath, $locals);;
+                                $res = $pug->renderAndWriteFile($template_path, $staticPath, $locals);
                                 include $staticPath;
                             }
                         } else {
