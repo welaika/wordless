@@ -1,4 +1,5 @@
 extends /layouts/default.pug
+include /components/post.pug
 
 block yield
   h2 Archive
@@ -8,4 +9,5 @@ block yield
       - the_post()
 
       li
-        include /partials/post.pug
+        - $component = new ComponentPost(['post' => get_post()])
+        +post($component)
