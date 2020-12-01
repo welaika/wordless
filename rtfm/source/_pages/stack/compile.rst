@@ -38,6 +38,8 @@ more pleasant to read and to write**.
 Add the fact that wordless will take care of all compilation tasks, giving you
 focus on writing: we think this is a win-win scenario.
 
+.. _CompilePug:
+
 PHUG
 ####
 
