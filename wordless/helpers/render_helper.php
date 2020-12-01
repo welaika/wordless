@@ -1,6 +1,4 @@
 <?php
-use Pug\Pug;
-
 /**
 * Handles rendering of views, templates, partials
 *
@@ -100,16 +98,16 @@ class RenderHelper {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
-                                \Pug\Optimizer::call('renderAndWriteFile', [$template_path, $staticPath, $locals], WordlessPugOptions::get_options());
+                                \Phug\Optimizer::call('renderAndWriteFile', [$template_path, $staticPath, $locals], WordlessPugOptions::get_options());
                                 include $staticPath;
                             }
                         } else {
-                            \Pug\Optimizer::call(
+                            \Phug\Optimizer::call(
                                 'displayFile', [$template_path, $locals], WordlessPugOptions::get_options()
                             );
                         }
                     } else {
-                        $pug = new Pug(WordlessPugOptions::get_options());
+                        $pug = new \Phug\Renderer(WordlessPugOptions::get_options());
                         if (true === $static && 'false' == $bypass_static) {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
