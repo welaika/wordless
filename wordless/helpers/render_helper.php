@@ -135,11 +135,17 @@ class RenderHelper {
     /**
      * Wraps render_template() function activating the static rendering strategy
      *
-     * @param [type] $name
-     * @param array $locals
+     * @param string $name Template path relative to +views+ directory
+     * @param array $locals Associative array of variable that will be scoped into the template
      * @return void
      */
     function render_static($name, $locals = array()) {
+        $fileInfo = new SplFileInfo($name);
+        $extension = $fileInfo->getExtension();
+        if ('pug' !== $extension) {
+            render_error("Static rendering only available for PUG templates", "<strong>Ouch!!</strong> It seems you required a <code>render_static</code> for a PHP template, but this render method is supported only for PUG. Use <code>render_partial</code> or <code>render_template</code> instead.");
+        }
+
         render_template($name, $locals = array(), $static = true);
     }
 
