@@ -35,9 +35,9 @@ class RenderHelper {
     */
     function render_template($name, $locals = array(), $static = false) {
         $valid_filenames = array(
-            "$name.html.pug",
+            "$name.html.pug", // TODO: Plan to deprecate the double extension
             "$name.pug",
-            "$name.html.php",
+            "$name.html.php", // TODO: Plan to deprecate the double extension
             "$name.php",
         );
 
@@ -53,7 +53,7 @@ class RenderHelper {
         }
 
         if (!isset($template_path)) {
-          render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.html.pug</code> or <code>$name.html.php</code> doesn't exist!");
+          render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.pug</code> or <code>$name.php</code> doesn't exist!");
         }
 
         $tmp_dir = Wordless::theme_temp_path();
