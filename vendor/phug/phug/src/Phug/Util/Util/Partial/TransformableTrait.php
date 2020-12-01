@@ -1,6 +1,6 @@
 <?php
 
-namespace Phug\Formatter\Partial;
+namespace Phug\Util\Partial;
 
 trait TransformableTrait
 {

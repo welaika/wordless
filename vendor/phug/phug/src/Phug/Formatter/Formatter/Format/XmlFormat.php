@@ -15,6 +15,7 @@ use Phug\Formatter\Element\TextElement;
 use Phug\Formatter\ElementInterface;
 use Phug\Formatter\MarkupInterface;
 use Phug\Formatter\Partial\AssignmentHelpersTrait;
+use Phug\FormatterException;
 use Phug\Util\Joiner;
 use SplObjectStorage;
 
@@ -248,14 +249,15 @@ class XmlFormat extends AbstractFormat
     /**
      * @param AssignmentElement $element
      *
-     * @throws \Phug\FormatterException
+     * @throws FormatterException
      *
-     * @return \Generator
+     * @return iterable
      */
     protected function yieldAssignmentElement(AssignmentElement $element)
     {
         foreach ($this->getOption('assignment_handlers') as $handler) {
             $iterator = $handler($element) ?: [];
+
             foreach ($iterator as $newElement) {
                 yield $newElement;
             }
@@ -265,25 +267,31 @@ class XmlFormat extends AbstractFormat
         $markup = $element->getContainer();
 
         $arguments = [];
+
         foreach ($markup->getAssignmentsByName('attributes') as $attributesAssignment) {
             /* @var AssignmentElement $attributesAssignment */
             foreach ($attributesAssignment->getAttributes() as $attribute) {
                 /* @var AbstractValueElement $attribute */
                 $value = $attribute;
                 $checked = method_exists($value, 'isChecked') && $value->isChecked();
+
                 while (method_exists($value, 'getValue')) {
                     $value = $value->getValue();
                 }
+
                 $arguments[] = $this->formatCode($value, $checked);
             }
+
             $markup->removedAssignment($attributesAssignment);
         }
 
         $attributes = $markup->getAttributes();
+
         foreach ($attributes as $attribute) {
             /* @var AttributeElement $attribute */
             $arguments[] = $this->formatAttributeAsArrayItem($attribute);
         }
+
         $attributes->removeAll($attributes);
 
         foreach ($markup->getAssignments() as $assignment) {
@@ -302,7 +310,7 @@ class XmlFormat extends AbstractFormat
     /**
      * @param AssignmentElement $element
      *
-     * @throws \Phug\FormatterException
+     * @throws FormatterException
      *
      * @return string
      */

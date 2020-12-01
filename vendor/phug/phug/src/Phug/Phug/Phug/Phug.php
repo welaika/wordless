@@ -10,13 +10,16 @@ class Phug
     use ExtensionsTrait;
     use FacadeOptionsTrait;
 
-    // @codeCoverageIgnoreStart
-
+    /**
+     * @internal
+     *
+     * Phug constructor.
+     *
+     * @codeCoverageIgnore
+     */
     private function __construct()
     {
     }
-
-    // @codeCoverageIgnoreEnd
 
     /**
      * List of global filters stored as array where keys are filter names, and values the action callback.
@@ -46,19 +49,10 @@ class Phug
      */
     private static $rendererClassName = Renderer::class;
 
-    private static function normalizeFilterName($name)
-    {
-        return str_replace(' ', '-', strtolower($name));
-    }
-
-    private static function normalizeKeywordName($name)
-    {
-        return str_replace(' ', '-', strtolower($name));
-    }
-
     private static function getOptions(array $options = [])
     {
         $extras = static::getFacadeOptions();
+
         foreach (['filters', 'keywords'] as $option) {
             $method = 'get'.ucfirst($option);
             $extras[$option] = static::$method();
@@ -162,6 +156,16 @@ class Phug
         }
 
         return self::$renderer;
+    }
+
+    /**
+     * Return true if the facade already created a Renderer instance.
+     *
+     * @return bool
+     */
+    public static function isRendererInitialized()
+    {
+        return self::$renderer !== null;
     }
 
     /**
@@ -461,10 +465,10 @@ class Phug
     /**
      * Cache a whole directory and return an array with [$successCount, $errorCount, $errorDetails].
      *
-     * @param string      $source      input directories containing pug files
-     * @param string|null $destination output for compiled PHP files
-     *                                 (if array given, will be used as options array)
-     * @param array|null  $options     optional options
+     * @param string|array $source      input directories containing pug files
+     * @param string|null  $destination output for compiled PHP files
+     *                                  (if array given, will be used as options array)
+     * @param array|null   $options     optional options
      *
      * @throws RendererException
      *
@@ -479,8 +483,8 @@ class Phug
         }
 
         return static::getRenderer(array_merge(
-            $options ?: [], // @codeCoverageIgnore
-            $destination ?: [] // @codeCoverageIgnore
+            $options ?: [],
+            $destination ?: []
         ))->cacheDirectory($source);
     }
 

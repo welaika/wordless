@@ -18,10 +18,11 @@ class Dump
 
     private function dumpArray($object, $deep, $maxDeep = 3)
     {
-        $result = ($object instanceof Traversable
+        $result = (
+            $object instanceof Traversable
                 ? get_class($object)
                 : 'array'
-            ).' ';
+        ).' ';
         $count = 0;
         $content = '';
         foreach ($object as $key => $value) {
@@ -63,9 +64,10 @@ class Dump
 
                 $result .= str_repeat(' ', ($deep + 1) * 2).
                     mb_substr($method, 3).' => '.
-                    ($value instanceof Event
-                        ? $value->getName().' event'
-                        : $this->dumpValue($value, $deep + 1)
+                    (
+                        $value instanceof Event
+                            ? $value->getName().' event'
+                            : $this->dumpValue($value, $deep + 1)
                     ).
                     "\n";
             }
@@ -80,7 +82,7 @@ class Dump
             $deep <= $maxDeep
                 ? $this->getExposedProperties($object, $deep)
                 : '...'
-            ).'}';
+        ).'}';
 
         if (mb_strlen($result) > 0x80000) {
             $result = mb_substr($result, 0, 0x80000 - 3).'...';

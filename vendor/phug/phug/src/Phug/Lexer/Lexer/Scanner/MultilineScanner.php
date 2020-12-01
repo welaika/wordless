@@ -37,6 +37,7 @@ class MultilineScanner implements ScannerInterface
 
                 return;
             }
+
             $buffer .= $value;
 
             return;
@@ -63,10 +64,12 @@ class MultilineScanner implements ScannerInterface
     {
         $buffer = '';
         $interpolationLevel = 0;
+
         foreach ($lines as $number => $lineValues) {
             if ($number) {
                 $buffer .= "\n";
             }
+
             foreach ($lineValues as $value) {
                 foreach ($this->getUnescapedLineValue($state, $value, $interpolationLevel, $buffer) as $token) {
                     yield $token;
@@ -85,6 +88,7 @@ class MultilineScanner implements ScannerInterface
         yield $state->createToken(IndentToken::class);
 
         $maxIndent = $analyzer->getMaxIndent();
+
         if ($maxIndent > 0 && $maxIndent < INF) {
             foreach ($lines as &$line) {
                 if (count($line) && is_string($line[0])) {

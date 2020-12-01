@@ -104,7 +104,7 @@ trait AssignmentHelpersTrait
                 'pattern.attribute_pattern',
                 'pattern.boolean_attribute_pattern',
                 function ($attrMapping, $mergeAttr, $pattern, $escape, $attr, $bool) {
-                    return function () use ($attrMapping, $mergeAttr, $pattern, $escape, $attr, $bool) {
+                    return function () use ($attrMapping, $mergeAttr, $pattern, $attr, $bool) {
                         $attributes = call_user_func_array($mergeAttr, func_get_args());
                         $code = '';
                         foreach ($attributes as $originalName => $value) {

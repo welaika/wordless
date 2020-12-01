@@ -52,12 +52,13 @@ class JsPhpize extends JsPhpizeOptions
 
         $start = '';
         $end = '';
+
         if (preg_match('/^([)}\]\s]*)(.*?)([({\[\s]*)$/', trim($input), $match)) {
             list(, $start, $input, $end) = $match;
         }
 
         $parser = new Parser($this, $input, $filename);
-        $compiler = new Compiler($this);
+        $compiler = new Compiler($this, $filename);
         $block = $parser->parse();
         $php = $compiler->compile($block);
 
@@ -70,6 +71,7 @@ class JsPhpize extends JsPhpizeOptions
         }
 
         $dependencies = $compiler->getDependencies();
+
         if ($this->getOption('catchDependencies')) {
             $this->dependencies = array_unique(array_merge($this->dependencies, $dependencies));
             $dependencies = [];

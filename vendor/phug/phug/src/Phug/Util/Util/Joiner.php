@@ -20,11 +20,14 @@ class Joiner
     {
         $result = '';
         $first = true;
+
         foreach ($this->traversable as $value) {
             if (!$first) {
                 $result .= $glue;
             }
+
             $result .= $value;
+
             if ($first) {
                 $first = false;
             }
@@ -37,11 +40,14 @@ class Joiner
     {
         $result = '';
         $first = true;
+
         foreach ($this->traversable as $value) {
             if (!$first) {
                 $result .= $glue;
             }
+
             $result .= $callee($value);
+
             if ($first) {
                 $first = false;
             }

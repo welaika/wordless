@@ -22,7 +22,8 @@ class PugJsEngine extends Keywords
     public function getNodeEngine()
     {
         if (!$this->nodeEngine) {
-            $this->nodeEngine = new NodejsPhpFallback($this->hasOption('node_path')
+            $this->nodeEngine = new NodejsPhpFallback(
+                $this->hasOption('node_path')
                 ? $this->getDefaultOption('node_path')
                 : 'node'
             );
@@ -50,7 +51,8 @@ class PugJsEngine extends Keywords
         $directory = dirname($file);
         $renderFile = './render.' . time() . mt_rand(0, 999999999) . '.js';
         chdir($directory);
-        file_put_contents($renderFile,
+        file_put_contents(
+            $renderFile,
             'console.log(require(' . json_encode($realPath) . ')' .
             '(require(' . json_encode($options['obj']) . ')));'
         );
@@ -92,16 +94,9 @@ class PugJsEngine extends Keywords
             unset($options['pretty']);
         }
 
-        // options that need be encoded by json_encode
-        $jsonOptions = ['pretty'];
-
         foreach ($options as $option => $value) {
             if (!empty($value)) {
-                $function = in_array($option, $jsonOptions)
-                    ? 'json_encode'
-                    : 'escapeshellarg';
-                $value = call_user_func($function, $value);
-                $args[] = '--' . $option . ' ' . $value;
+                $args[] = '--' . $option . ' ' . escapeshellarg($value);
             }
         }
 
@@ -222,7 +217,9 @@ class PugJsEngine extends Keywords
         ];
 
         $optionsFile = $workDirectory . '/options-' . mt_rand(0, 999999999) . '.js';
-        file_put_contents($optionsFile, 'module.exports = require(' .
+        file_put_contents(
+            $optionsFile,
+            'module.exports = require(' .
                 json_encode(realpath(NodejsPhpFallback::getPrefixPath() . '/require.js')) .
             ').appendRequireMethod(' .
                 (empty($vars) ? '{}' : json_encode($vars, JSON_UNESCAPED_SLASHES)) .

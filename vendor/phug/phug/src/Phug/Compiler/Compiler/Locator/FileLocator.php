@@ -3,17 +3,43 @@
 namespace Phug\Compiler\Locator;
 
 use Phug\Compiler\LocatorInterface;
+use Phug\Compiler\NormalizerInterface;
 
-class FileLocator implements LocatorInterface
+class FileLocator implements LocatorInterface, NormalizerInterface
 {
-    private function normalize($path)
+    public function normalize($path)
     {
-        return rtrim(str_replace('\\', '/', $path), '/');
+        $path = implode('/', func_get_args());
+        $paths = explode('/', rtrim(preg_replace('`[\\\\/]+`', '/', $path), '/'));
+        $chunks = [];
+
+        foreach ($this->getConsistentPaths($paths) as $path) {
+            if ($path === '..' && ($count = count($chunks)) && $chunks[$count - 1] !== '..') {
+                array_pop($chunks);
+
+                continue;
+            }
+
+            $chunks[] = $path;
+        }
+
+        return implode('/', $chunks);
+    }
+
+    private function getConsistentPaths($paths)
+    {
+        foreach ($paths as $path) {
+            if ($path === '.') {
+                continue;
+            }
+
+            yield $path;
+        }
     }
 
     private function getFullPath($location, $path, $extension)
     {
-        $fullPath = "$location/$path$extension";
+        $fullPath = $this->normalize($location, $path.$extension);
 
         if (@is_file($fullPath) && is_readable($fullPath)) {
             return realpath($fullPath);
@@ -22,7 +48,7 @@ class FileLocator implements LocatorInterface
         $length = strlen($extension);
 
         if ($length && substr($path, -$length) === $extension &&
-            @is_file($fullPath = "$location/$path") && is_readable($fullPath)
+            @is_file($fullPath = $this->normalize($location, $path)) && is_readable($fullPath)
         ) {
             return realpath($fullPath);
         }

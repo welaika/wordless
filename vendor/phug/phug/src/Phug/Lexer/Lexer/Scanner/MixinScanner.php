@@ -16,7 +16,7 @@ class MixinScanner implements ScannerInterface
     {
         foreach ($state->scanToken(
             MixinToken::class,
-            "mixin[\t ]+(?<name>[a-zA-Z_][a-zA-Z0-9\-_]*)"
+            $state->getOption('mixin_keyword')."[\t ]+(?<name>[a-zA-Z_][a-zA-Z0-9\-_]*)"
         ) as $token) {
             yield $token;
 

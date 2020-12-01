@@ -2,6 +2,8 @@
 
 namespace Phug\Util\Partial;
 
+use Phug\Util\PhpTokenizer;
+
 trait StaticMemberTrait
 {
     /**
@@ -12,12 +14,12 @@ trait StaticMemberTrait
     public function hasStaticMember($member)
     {
         if (is_string($this->$member)) {
-            $tokens = token_get_all('<?php '.$this->$member);
+            $tokens = PhpTokenizer::getTokens($this->$member);
 
             return
-                count($tokens) === 2 &&
-                is_array($tokens[1]) &&
-                in_array($tokens[1][0], [T_CONSTANT_ENCAPSED_STRING, T_DNUMBER, T_LNUMBER]);
+                count($tokens) === 1 &&
+                is_array($tokens[0]) &&
+                in_array($tokens[0][0], [T_CONSTANT_ENCAPSED_STRING, T_DNUMBER, T_LNUMBER]);
         }
 
         return false;

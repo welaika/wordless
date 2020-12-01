@@ -17,8 +17,6 @@ class AttributeListNodeCompiler extends AbstractNodeCompiler
             $node
         );
 
-        // @codeCoverageIgnoreStart
         return null;
-        // @codeCoverageIgnoreEnd
     }
 }

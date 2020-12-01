@@ -20,7 +20,12 @@ class CodeNodeCompiler extends AbstractNodeCompiler
             $node
         );
 
-        $children = array_filter($node->getChildren(), function (NodeInterface $node) {
+        /**
+         * @var CodeNode $codeNode
+         */
+        $codeNode = $node;
+
+        $children = array_filter($codeNode->getChildren(), function (NodeInterface $node) {
             return !($node instanceof CommentNode);
         });
 
@@ -28,15 +33,28 @@ class CodeNodeCompiler extends AbstractNodeCompiler
             return $node instanceof TextNode;
         });
 
+        $code = $this->getCodeElement($codeNode, $texts, $children, $parent);
+
+        if (!$codeNode->isTransformationAllowed()) {
+            $code->preventFromTransformation();
+        }
+
+        return $code;
+    }
+
+    private function getCodeElement(CodeNode $node, array $texts, array $children, ElementInterface $parent = null)
+    {
         if (count($texts) === count($children)) {
             return new CodeElement($this->getTextChildren($node), $node);
         }
 
         $code = new CodeElement(null, $node);
+
         if ($children[0] instanceof TextNode) {
             $code->setValue($children[0]->getValue());
             $children = array_slice($children, 1);
         }
+
         $code->setChildren($this->getCompiledNodeList($children, $parent));
 
         return $code;

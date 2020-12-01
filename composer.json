@@ -1,7 +1,8 @@
 {
     "require": {
         "pug-php/pug": "^3.0",
-        "mobiledetect/mobiledetectlib": "^2.8"
+        "mobiledetect/mobiledetectlib": "^2.8",
+        "symfony/validator": "^5.0"
     },
     "config": {
         "classmap-authoritative": true
