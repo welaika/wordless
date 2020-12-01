@@ -180,17 +180,6 @@ class RenderHelper {
     }
 
     /**
-     * Wraps the render_partial() function setting $static to true
-     *
-     * @param [type] $name
-     * @param array $locals
-     * @return void
-     */
-    function render_static_partial($name, $locals = array()) {
-        render_partial($name, $locals = array(), $static = true);
-    }
-
-    /**
     * Renders a view. Views are rendered based on the routing.
     *   They will show a template and a yielded content based
     *   on the user requested page.
