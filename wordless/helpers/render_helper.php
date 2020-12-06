@@ -22,8 +22,7 @@ class RenderHelper {
     * a list of locals variables which will be available inside
     * the code of the template
     *
-    * @param  string $name   The template filenames (those not starting
-    *                        with an underscore by convention)
+    * @param  string $name   The template filenames
     *
     * @param  array  $locals An associative array. Keys will be variables'
     *                        names and values will be variable values inside
