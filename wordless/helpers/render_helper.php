@@ -207,6 +207,21 @@ class RenderHelper {
         ob_flush();
     }
 
+    /**
+    * Yield is almost inside every good templates. Based on the
+    *   rendering view yield() will insert inside the template the
+    *   specific required content (usually called partials)
+    *
+    * @see render_view()
+    * @see render_template()
+    *
+    *
+    */
+    function wl_yield() {
+        global $current_view, $current_locals;
+        render_template($current_view, $current_locals);
+    }
+
     private function ensure_dir($dir) {
 
         if (!file_exists($dir)) {
