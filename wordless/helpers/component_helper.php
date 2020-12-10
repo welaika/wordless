@@ -4,6 +4,7 @@ namespace Wordless;
 
 use \Symfony\Component\Validator\Validation;
 use \Symfony\Component\Validator\Mapping\ClassMetadata;
+use \Symfony\Component\Validator\Constraints as Assert;
 
 class ComponentValidationException extends \Exception {}
 

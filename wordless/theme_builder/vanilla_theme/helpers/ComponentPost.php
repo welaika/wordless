@@ -1,6 +1,5 @@
 <?php
 
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 class ComponentPost extends \Wordless\Component {
