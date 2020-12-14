@@ -19,11 +19,11 @@ if (!class_exists("Wordless")) {
  */
 
 if (is_single()) {
-  render_template("posts/single");
+  render_template("templates/single");
 } else if (is_front_page()){
-  render_static("posts/static");
+  render_static("templates/static");
 }else if (is_archive()) {
-  render_template("posts/archive");
+  render_template("templates/archive");
 } else {
-  render_template("posts/404");
+  render_template("templates/404");
 }

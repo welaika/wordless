@@ -18,6 +18,47 @@ class RenderHelper {
     }
 
     /**
+     * Retrive the actual template file path (searched in the views folder). It's possible to filter for an extension
+     * passing in the argument $force_extension_match the nane ex. "pug"
+     *
+     * @param  string $name                     The template filenames
+     * @param  array  $force_extension_match    The extension by which to filter the template file search
+     */
+    private function template_info($name, $force_extension_match = '') {
+        $template = new stdClass;
+        $template->path = null;
+        $template->format = null;
+
+        $valid_filenames = array(
+            "$name.html.pug", // TODO: Plan to deprecate the double extension
+            "$name.pug",
+            "$name.html.php", // TODO: Plan to deprecate the double extension
+            "$name.php",
+        );
+
+        if (!empty($force_extension_match)) {
+            foreach($valid_filenames as $key => $filename) {
+                $splitted_filename = explode('.', $filename);
+                if (end($splitted_filename) != $force_extension_match) {
+                    unset($valid_filenames[$key]);
+                }
+            }
+        }
+
+        foreach ($valid_filenames as $filename) {
+            $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
+
+            if (is_file($path)) {
+                $template->path = $path;
+                $arr = explode('.', $path);
+                $template->format = array_pop($arr);
+                break;
+            }
+        }
+        return $template;
+    }
+
+    /**
     * Renders a template and its contained plartials. Accepts
     * a list of locals variables which will be available inside
     * the code of the template
@@ -33,23 +74,9 @@ class RenderHelper {
     *
     */
     function render_template($name, $locals = array(), $static = false) {
-        $valid_filenames = array(
-            "$name.html.pug", // TODO: Plan to deprecate the double extension
-            "$name.pug",
-            "$name.html.php", // TODO: Plan to deprecate the double extension
-            "$name.php",
-        );
-
-        foreach ($valid_filenames as $filename) {
-            $path = Wordless::join_paths(Wordless::theme_views_path(), $filename);
-
-            if (is_file($path)) {
-                $template_path = $path;
-                $arr = explode('.', $path);
-                $format = array_pop($arr);
-                break;
-            }
-        }
+        $template_found = $this->template_info($name);
+        $template_path = $template_found->path;
+        $format = $template_found->format;
 
         if (!isset($template_path)) {
           render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.pug</code> or <code>$name.php</code> doesn't exist!");
@@ -127,8 +154,10 @@ class RenderHelper {
             case 'php':
                 include $template_path;
                 break;
-        }
 
+            default:
+                render_error("Template missing", "<strong>Ouch!!</strong> It seems that <code>$name.pug</code> or <code>$name.php</code> doesn't exist!");
+        }
     }
 
     /**
@@ -139,9 +168,12 @@ class RenderHelper {
      * @return void
      */
     function render_static($name, $locals = array()) {
-        $fileInfo = new SplFileInfo($name);
-        $extension = $fileInfo->getExtension();
-        if ('pug' !== $extension) {
+        $template_found = $this->template_info($name, 'pug');
+        if (isset($template_found->path)) {
+            $fileInfo = new SplFileInfo($template_found->path);
+            $extension = $fileInfo->getExtension();
+        }
+        if (!isset($extension) || 'pug' !== $extension) {
             render_error("Static rendering only available for PUG templates", "<strong>Ouch!!</strong> It seems you required a <code>render_static</code> for a PHP template, but this render method is supported only for PUG. Use <code>render_partial</code> or <code>render_template</code> instead.");
         }
 
