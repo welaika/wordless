@@ -71,13 +71,13 @@ but starting from the basics shuold be affordable and the reward is high.
 Who compiles PUG?
 """""""""""""""""
 
-When a ``.html.pug`` template is loaded, the wordless plugin will automatically
+When a ``.pug`` template is loaded, the wordless plugin will automatically
 compile (and cache) it. As far as you have the plugin activated you are ok.
 
 .. important::
 
     By default, you have nothing to do to deploy in production, but if performance is
-    crucial in your project, then you can optimize. See :ref:`PHUG optimizer` for more informations.
+    crucial in your project, then you can optimize. See :ref:`PHUGoptimizer` for more informations.
 
 
 .. _Pug: https://github.com/pugjs/pug

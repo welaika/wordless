@@ -37,7 +37,8 @@ You can easily disable this behaviour if you'd like to.
 in production and to integrate external services that should requires release
 versioning (for us in Sentry).
 
-.. _PHUG optimizer:
+.. _PHUGoptimizer:
+
 PHUG optimizer
 ##############
 
@@ -54,7 +55,7 @@ constant to be defined in ``wp-config.php``. Let's see this Wordless
 internal code snippet:
 
 .. literalinclude:: /../../wordless/helpers/render_helper.php
-    :lines: 66-82
+    :lines: 104-111
     :language: php
     :caption: render_helper.php
 

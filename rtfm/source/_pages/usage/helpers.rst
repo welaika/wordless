@@ -25,8 +25,9 @@ Our favourite convention for writing custom helpers is to write 1 file per
 function and naming both the same way. It will be easier to find with ```cmd+p``
 😉
 
-.. todo::
-    [:ref:`Helpers`] compare our ``helpers/`` folder with Wordpress' ``functions.php`` file
+**Where is my** ``functions.php`` **?**
 
-.. todo::
-    [:ref:`Helpers`] separate project helpers from Wordless builtin helpers
+In a Wordless theme the isn't a ``functions.php`` file. It was too ugly to us to support it.
+You have simply to consider ``helpers/*.php`` files as the explosion of your old messy
+``functions.php`` into smaller chunks. And since all the helpers you'll write will be autorequired,
+defined functions will work exactly the same way you are used to.

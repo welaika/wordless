@@ -1,18 +1,68 @@
+.. _PlainPhp:
+
+Using plain PHP templates
+=========================
+
+Let's take the unaltered default theme as an example. In ``views/layouts`` we
+have the ``default`` template which calls a ``include`` for the
+``header.pug`` partial.
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/views/layouts/default.pug
+    :language: slim
+    :caption: views/layouts/default.pug
+    :emphasize-lines: 8
+
+.. literalinclude:: /../../wordless/theme_builder/vanilla_theme/views/layouts/header.pug
+    :language: slim
+    :caption: views/layouts/header.pug
+
+Let's suppose we need to change ``header.pug`` in a PHP template because we don't
+like PUG or we need to write complex code there.
+
+.. warning::
+    If you have to write complex code in a view you are on the wrong path :)
+
+#. Rename ``header.pug`` in ``_header.php``
+
+#. Update its content, e.g.:
+
+    .. code-block:: php
+        :caption: views/layouts/_header.php
+
+        <h1> <?php echo link_to(get_bloginfo('name'), get_bloginfo('url')); ?> </h1>
+        <h2> <?php echo htmlentities(get_bloginfo('description')) ?> </h2>
+
+#. In ``default.pug`` substitute the line ``include /layouts/header.pug`` with the appropriate
+   Wordless' PHP render helper
+
+    .. code-block:: pug
+        :caption: views/layouts/default.pug
+
+        = render_partial('layouts/header')
+
+#. Done
+
+When ``render_partial("layouts/header")`` doesn't find ``_header.pug`` it
+will automatically search for ``_header.php`` and will use it *as is*,
+directly including the PHP file.
+
+.. note::
+    ``render_partial`` function expects that partials are named with a leading underscore (``_``).
+    This is due to backward compatibility and we have to stuck and deal with it.
+
+.. note::
+    PUG (and thus PHUG) has some builtin function to compose templates: ``include``, ``extends``, ``mixin``.
+    Such functions work only within and for PUG files. That's why in order to load a plain PHP template
+    we need to use plain PHP functions.
+
 .. _RenderingPhp:
-
-Rendering plain PHP
-===================
-
-.. todo::
-    This is considered a fallback/second/legacy way of rendering. Move this chapter
-    outside the **Usage** to some sort of "Extra" section. This should lighten the
-    main doc section.
-    There is also a :ref:`PlainPHP` section already...take a look
+PHP render helpers
+##################
 
 render_view()
 """""""""""""
 
-The main helper function used to render a view is - fantasy name - ``render_view()``. Here is its signature:
+The main helper function used to render a view is ``render_view()``. Here is its signature:
 
 .. code-block:: php
 
@@ -32,14 +82,8 @@ The main helper function used to render a view is - fantasy name - ``render_view
           /* [...] */
         }
 
-Thanks to this helper, Wordless will always intercept **PUG** files and
-automatically translate them to HTML.
-
 .. note::
     Extension for ``$name`` can always be omitted.
-
-.. seealso::
-    PHUG section @ :ref:`CompileStack`
 
 Inside the ``views`` folder you can scaffold as you wish, but you'll have
 to always pass the relative path to the render function:
@@ -49,6 +93,8 @@ to always pass the relative path to the render function:
     <?php
     render_view('folder1/folder2/myview')
 
+.. note::
+    By the way vanilla theme ships with a proposed scaffold.
 
 The ``$locals`` array will be auto-``extract()``-ed inside the required view, so you can do
 
@@ -62,6 +108,8 @@ and inside ``views/folder1/folder2/myview.pug``
 .. code-block:: jade
 
     h1= $title
+
+and ``$title`` variable will be set.
 
 
 render_partial()
@@ -85,20 +133,13 @@ not accept a layout as argument. Here is its signature:
     *                        the partial
     */
     function render_partial($name, $locals = array()) {
-        $parts = preg_split("/\//", $name);
-        if (!preg_match("/^_/", $parts[sizeof($parts)-1])) {
-            $parts[sizeof($parts)-1] = "_" . $parts[sizeof($parts)-1];
-        }
-        render_template(implode($parts, "/"), $locals);
-    }
 
 Partial templates – usually just called **“partials”** – are another device for
 breaking the rendering process into more manageable chunks.
 
 .. note::
     Partials files are **named with a leading underscore** to distinguish them
-    from regular views, even though they are
-    **referred to without the underscore**.
+    from regular views, even though they are **referred to without the underscore**.
 
 Layouts
 """""""
@@ -119,11 +160,12 @@ will be the same as calling
 
     render_view('folder1/folder2/myview', 'default', array())
 
-so that the ``default.html.phug`` layout will be rendered. Within the layout,
+so that the ``default.pug`` (or ``.php`` if you'll update it too) layout will be rendered.
+Within the layout,
 you have access to the ``wl_yield()`` helper, which will combine the required
 view inside the layout when it is called:
 
-.. code-block:: jade
+.. code-block:: pug
 
     doctype html
     html
@@ -138,56 +180,3 @@ view inside the layout when it is called:
 .. note::
     For content that is shared among all pages in your application that use the
     same layout, you can use partials directly inside layouts.
-
-Views
-"""""
-
-  ``views/**/*.pug`` or ``views/**/*.php``
-
-This is the directory where you'll find yourself coding most of the time.
-Here you can create a view for each main page of your theme, using Pug syntax
-or plain HTML.
-
-Feel free to create subdirectories to group together the files. Here's what
-could be an example for the typical `WordPress loop`_ in an archive page:
-
-.. _WordPress loop: http://codex.wordpress.org/The_Loop
-
-.. code-block:: jade
-
-    // views/posts/archive.html.pug
-    h2 Blog archive
-    ul.blog_archive
-      while have_posts()
-        - the_post()
-        li.post= render_partial("posts/single")
-
-.. code-block:: jade
-
-    // views/posts/_single.html.pug
-    h3!= link_to(get_the_title(), get_permalink())
-    .content= get_the_filtered_content()
-
-Wordless uses `Pug.php`_ - formerly called Jade.php - for your Pug views, a
-great PHP port of the `PugJS`_ templating language. In this little snippet,
-please note the following:
-
-* The view is delegating some rendering work to a partial called
-  ``_single.html.pug``
-
-* There's no layout here, just content: the layout of the page is stored in a
-  secondary file, placed in the ``views/layouts`` directory, as mentioned
-  in the paragraph above
-
-* We are already using two of the 40+ Wordless helper functions, ``link_to()``
-  and ``get_the_filtered_content()``, to DRY up this view
-
-* Because the ``link_to`` helper will return html code, we used
-  `unescaped buffered code`_ to print PUG's function: ``!=``. Otherwise we'd
-  have obtained escaped html tags.
-
-It looks awesome, right?
-
-.. _Pug.php: https://github.com/pug-php/pug
-.. _PugJS: https://pugjs.org/api/getting-started.html
-.. _unescaped buffered code: https://pugjs.org/language/code.html#unescaped-buffered-code

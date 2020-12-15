@@ -39,3 +39,7 @@ one with a specific target:
 
 These are just some file name examples: you can organize them the way you
 prefer. Each file in this directory will be automatically required by Wordless.
+
+Moreover: each of these files comes already packed with interesting, often used functions and
+configurations. They are ready to be uncommented. Take youself a tour directly in the code
+@ https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme/config/initializers

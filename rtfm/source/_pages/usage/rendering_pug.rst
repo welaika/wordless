@@ -3,9 +3,6 @@
 Rendering PUG
 =============
 
-.. todo::
-    This a a copy of the PHP strategy. Differentiating the two methods is the main WIP
-
 In Wordless templates are written in PUG. The plugin incorporates and loads for you the
 excellent ``pug-php/pug`` library, that's a complete `PHP rewrite`_ of the `original javascript`_
 PUG.
@@ -230,8 +227,8 @@ By using ``include /components/post.pug`` we're now able to invoke the mixin usi
     in PUG templates. This is much more expressive. The counter-effect is that your syntax
     highligter won't appreciate it that much :)
 
-.. TODO::
-    Add a link to ``mixin`` PHUG docs
+.. seealso::
+    PHUG ``mixin`` documentation @ https://www.phug-lang.com/#mixins
 
 Arguments validation
 ####################
@@ -295,17 +292,18 @@ This is how's intended to be used inside Wordless:
 
 
 * define a class extending ``\Wordless\Component``
-* declare as many public attributes as you component needs
-* do instance the object passing arguments as an associative array ``$component = new ComponentPost(['post' => get_post()])``
+* declare as many public attributes as your component needs
+* instance the object passing arguments as an associative array ``$component = new ComponentPost(['post' => get_post()])``
 * each key will be automatically cheked to be declared as an attribute into the component
-  and the corresponding attribute will be set to the corresponding value. You can pass only arguments if they are declared into the component class.
+  and the corresponding attribute will be set to the corresponding value. You can pass
+  arguments only if they are declared into the component class.
 * into the component is mandatory to implement a ``loadValidatorMetadata`` public static
   function. Inside of it you will write your actual validations. This name was chosen in
   order to stick with official documentation's naming.
 * ``Assert`` is already in place by default
 * ``ClassMetadata`` is already in place by default; it's not mandatory, but you'll find it
   into the documentation, so you're free to use it into your components.
-* ``$component`` will be validated at instanciation time, so you will have an error or a valid
+* ``$component`` will be validated at instantiation time, so you will have an error or a valid
   object. No doubts.
 * passing ``$component`` as your mixin's argument, inside the mixin you will be able to get
   its properties as expected: ``$component->attribute``.

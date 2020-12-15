@@ -45,7 +45,6 @@ Table of Contents
     _pages/usage/anatomy
     _pages/usage/routing
     _pages/usage/rendering_pug
-    _pages/usage/rendering_php
     _pages/usage/css_js
     _pages/usage/helpers
     _pages/usage/initializers
@@ -69,7 +68,11 @@ Table of Contents
     _pages/stack/node
     _pages/stack/server
     _pages/stack/compile
-    _pages/stack/plainphp
+
+.. toctree::
+    :caption: Appendix
+
+    _pages/appendix/plainphp
 
 TODOs
 #####
