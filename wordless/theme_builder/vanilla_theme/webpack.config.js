@@ -115,13 +115,15 @@ module.exports = (env) => {
         test: /\.(jpe?g|png|gif|svg)$/i
       }),
 
-      new CopyWebpackPlugin([
-        {
-          from: path.join(srcDir, '/images'),
-          to: path.join(dstDir, '/images', '[path][name].[ext]'),
-          toType: 'template'
-        }
-      ])
+      new CopyWebpackPlugin({
+        patterns: [
+          {
+            from: path.join(srcDir, '/images'),
+            to: path.join(dstDir, '/images', '[path][name].[ext]'),
+            toType: 'template'
+          }
+        ],
+      }),
     ].concat(envOptions.plugins),
 
     optimization: {
