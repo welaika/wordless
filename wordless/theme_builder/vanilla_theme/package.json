@@ -1,6 +1,6 @@
 {
   "name": "wordless",
-  "version": "3.0.0",
+  "version": "5.0.0",
   "description": "Wordless asset compiler",
   "main": "index.js",
   "repository": "git@github.com:welaika/wordless.git",
@@ -12,8 +12,8 @@
   },
   "scripts": {
     "server": "npx nf start",
-    "build:dev": "webpack --debug --env.NODE_ENV=development",
-    "build:prod": "yarn sign-release && webpack -p --bail --env.NODE_ENV=production",
+    "build:dev": "webpack --env NODE_ENV=development",
+    "build:prod": "yarn sign-release && webpack --env NODE_ENV=production",
     "clean:js": "rimraf dist/javascripts/*",
     "clean:css": "rimraf dist/stylesheets/*",
     "clean:images": "rimraf dist/images/*",
@@ -53,8 +53,8 @@
     "stylelint-config-strict-scss": "^0.5.0",
     "stylelint-order": "^4.1.0",
     "url-loader": "^4.1.1",
-    "webpack": "^4.42.0",
-    "webpack-cli": "^3.3.11"
+    "webpack": "^5.11.0",
+    "webpack-cli": "^4.2.0"
   },
   "peerDependencies": {}
 }
