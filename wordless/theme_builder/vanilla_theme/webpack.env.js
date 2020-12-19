@@ -5,9 +5,9 @@ devOptions = {
   styleLoaders: [
     {
       loader: MiniCssExtractPlugin.loader,
-      // options: {
-      //   sourceMap: true
-      // }
+      options: {
+        publicPath: '',
+      }
     },
     {
       loader: 'css-loader',
@@ -31,9 +31,9 @@ prodOptions = {
   styleLoaders: [
     {
       loader: MiniCssExtractPlugin.loader,
-      // options: {
-      //   sourceMap: false
-      // }
+      options: {
+        publicPath: '',
+      }
     },
     {
       loader: 'css-loader',

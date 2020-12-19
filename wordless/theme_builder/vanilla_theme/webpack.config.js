@@ -5,7 +5,7 @@ const javascriptsDstPath = path.join(dstDir, '/javascripts');
 const _stylesheetsDstPath = path.join(dstDir, '/stylesheets');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ImageminPlugin = require("imagemin-webpack-plugin").default;
+const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const entries = ['main'];
 
@@ -59,25 +59,10 @@ module.exports = (env) => {
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
-          use: [
-            {
-              loader: 'file-loader',
-              options: {
-                publicPath: (_url, resourcePath, context) => {
-                  let relative = path.relative(context, resourcePath).split('/');
-                  relative.shift();
-
-                  return path.join(
-                    '/wp-content/themes',
-                    path.basename(__dirname),
-                    'dist',
-                    ...relative
-                  );
-                },
-                name: '[name].[ext]'
-              }
-            }
-          ]
+          loader: 'file-loader',
+          options: {
+            name: '[path][name].[ext]',
+          },
         },
         {
           test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
@@ -111,8 +96,26 @@ module.exports = (env) => {
         filename: '../stylesheets/[name].css'
       }),
 
-      new ImageminPlugin({
-        test: /\.(jpe?g|png|gif|svg)$/i
+      new ImageminWebpack({
+        test: /\.(jpe?g|png|gif|svg)$/i,
+        severityError: 'warning',
+        minimizerOptions: {
+          plugins: [
+            ['gifsicle', { interlaced: true }],
+            ['jpegtran', { progressive: true }],
+            ['optipng', { optimizationLevel: 5 }],
+            [
+              'svgo',
+              {
+                plugins: [
+                  {
+                    removeViewBox: false,
+                  },
+                ],
+              },
+            ],
+          ],
+        },
       }),
 
       new CopyWebpackPlugin({
