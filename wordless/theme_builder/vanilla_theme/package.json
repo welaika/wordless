@@ -8,7 +8,7 @@
   "license": "MIT",
   "private": true,
   "engines": {
-    "node": "12.13.1"
+    "node": "14.15.3"
   },
   "scripts": {
     "server": "npx nf start",
@@ -36,7 +36,7 @@
     "@babel/preset-env": "^7.11.5",
     "babel-loader": "^8.1.0",
     "browser-sync": "^2.26.12",
-    "browser-sync-webpack-plugin": "^2.2.2",
+    "browser-sync-webpack-plugin": "^2.3.0",
     "copy-webpack-plugin": "^6.2.1",
     "core-js": "^3.6.5",
     "css-loader": "^4.3.0",
