@@ -8,7 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const imageFolder = 'images'
+const imageFolderName = 'images'
 const entries = ['main'];
 
 module.exports = (env) => {
@@ -25,7 +25,7 @@ module.exports = (env) => {
     output: {
       filename: "[name].js",
       path: javascriptsDstPath,
-      publicPath: path.join('/wp-content/themes', path.basename(__dirname), 'dist/')
+      publicPath: dstDir
     },
 
     devtool: envOptions.devtool,
@@ -64,11 +64,11 @@ module.exports = (env) => {
           test: /\.(jpe?g|png|gif|svg)$/i,
           loader: 'file-loader',
           options: {
-            name (resourcePath) {
-              resourcePath = resourcePath.replace(path.join(srcDir, `/${imageFolder}/`), '');
-              return resourcePath;
-            },
-            outputPath: imageFolder
+            name: '[name].[ext]',
+            context: path.join(srcDir),
+            outputPath: (_url, resourcePath, context) => {
+              return resourcePath.replace(context, '')
+            }
           },
         },
         {
@@ -128,9 +128,10 @@ module.exports = (env) => {
       new CopyWebpackPlugin({
         patterns: [
           {
-            from: path.join(srcDir, `/${imageFolder}`),
-            to: path.join(dstDir, `/${imageFolder}`, '[path][name].[ext]'),
-            toType: 'template'
+            from: path.join('**/*'),
+            to: path.join(dstDir, imageFolderName, '[folder]', '[name].[ext]'),
+            toType: 'template',
+            context: path.join(srcDir, imageFolderName)
           }
         ],
       }),
