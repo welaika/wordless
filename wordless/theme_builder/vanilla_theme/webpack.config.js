@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageminWebpack = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
+const wordpressDir = path.resolve('../../../');
 const imageFolderName = 'images'
 const entries = ['main'];
 
@@ -25,7 +26,13 @@ module.exports = (env) => {
     output: {
       filename: "[name].js",
       path: javascriptsDstPath,
-      publicPath: dstDir
+      publicPath: () => {
+        return path.join(
+          '/', // prepend slash to make an absolute web path
+          path.relative(wordpressDir, dstDir) // dist folder relative to wordpress folder. Will be
+                                              // something like `wp-content/theme/themeName/dist`
+        )
+      }
     },
 
     devtool: envOptions.devtool,
