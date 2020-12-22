@@ -18,6 +18,8 @@ module.exports = (env) => {
   return {
     mode: envOptions.mode,
 
+    bail: envOptions.mode == 'production' ? true : false,
+
     entry: entries.reduce((object, current) => {
       object[current] = path.join(srcDir, `${current}.js`);
       return object;
