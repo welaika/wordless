@@ -32,6 +32,7 @@ one with a specific target:
   place to be
 - **default_hooks**: these are used by wordless's default behaviours; tweak them
   only if you know what are you doing
+- **login template**: utilities to customize the default WP login screen
 - **hooks**: this is intended to be your custom hooks collector
 - **menus**: register new WP nav_menus from here
 - **shortcodes**: as it says

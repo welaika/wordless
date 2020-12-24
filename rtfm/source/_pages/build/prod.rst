@@ -14,13 +14,10 @@ Production build will essentially:
 * do minimize assets
 
 .. note::
-    By default the production build **will** produce source-maps for JS; this is done to
-    lower the debugging effort, to respect the readability of the source code in users'
-    browser and to simplify the shipping of source-maps to error monitoring softwares such
-    as Sentry.
+    By default the production build won't produce source-maps for JS.
 
-    You can easily disable this behaviour setting ``devtool: false`` in ``webpack.env.js``
-    inside the ``prodOptions`` object.
+    You can easily change this behaviour updating ``const needSourceMap = (env.DEBUG == 'true');``
+    to ``const needSourceMap = true;`` in ``webpack.env.js``
 
 .. _production mode: https://webpack.js.org/concepts/mode/
 

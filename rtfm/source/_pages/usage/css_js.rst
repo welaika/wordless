@@ -32,11 +32,11 @@ They will be compiled and resulting compilation files will be moved in the corre
 
 Compilation, naming and other logic is fully handled by webpack.
 
-Images will be optimized by `ImageminPlugin`_. The default setup already translates
+Images will be optimized by `image-minimizer-webpack-plugin`_. The default setup already translates
 ``url`` s inside css/scss files in order to point to images in the
 right folder.
 
-.. _ImageminPlugin: https://www.npmjs.com/package/imagemin-webpack-plugin
+.. _image-minimizer-webpack-plugin: https://github.com/webpack-contrib/image-minimizer-webpack-plugin
 
 Take a look to the default ``screen.scss`` and ``application.js`` to see
 usage examples.
