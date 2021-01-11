@@ -78,6 +78,6 @@ Table of Contents
 TODOs
 #####
 
-A list of known bugs, wip and improvements this documentation needs
+A list of known bugs, wip and improvements this documentation needs, hoping it will be kept empty ;)
 
 .. todolist::
