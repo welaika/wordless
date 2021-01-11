@@ -80,3 +80,30 @@ CI
 We ship default configuration for GitLab by putting a ``.gitlab-ci.yml`` file in you project's root folder.
 
 That is configured to run out-of-the-box. And if you use other CI's products you can use it as a starting point for your own configuration and then delete it without any regard :)
+
+TROUBLESHOOTING
+###############
+
+* **Cannot finish the 5-minutes installation**
+  
+  Maybe you have different default username & password on your MySQL instance. Try to use options like ``—db-user=DB_USER —db-password=DB_PASSWORD`` in your wordless new command, like this ``wordless new [new_site_name] —db-user=[your_db_username] —db-password=[your_user_db_password]``
+
+  .. note:: If you don’t insert —db-password, the default is empty.
+
+  Then, remember to edit ``wp-config.php`` as you need. Anyway, typing ``wordless help new`` can be useful to see other options!
+
+* **yarn setup -> Error: Error establishing a database connection.**
+  
+  Check your db’s username & password in the ``wp-config.php`` 
+
+* **yarn test -> Db: SQLSTATE[HY000] [2054] The server requested authentication method unknown to the client while creating PDO connection**
+  
+  Check your db’s username & password in ``.env.testing``, inside the theme’s folder
+
+* **yarn test -> Could not find, or could not parse, the original site URL; you can set the "originalUrl" parameter in the module configuration to skip this step and fix this error.**
+  
+  The command ``yarn test:db:snapshot`` can be useful.
+  
+* **yarn test -> [ConnectionException] Can't connect to Webdriver at http://localhost:4444/wd/hub. Please make sure that Selenium Server or PhantomJS is running.**
+  
+  Check if you are running ``yarn test:server`` in another terminal ☺️. 
