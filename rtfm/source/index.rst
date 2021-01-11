@@ -73,6 +73,7 @@ Table of Contents
     :caption: Appendix
 
     _pages/appendix/plainphp
+    _pages/appendix/acf_gutenberg_blocks
 
 TODOs
 #####

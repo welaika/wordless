@@ -29,6 +29,8 @@ wordless_pug_configuration
         return $options;
     }
 
+.. _wordless_acf_gutenberg_blocks_views_path:
+
 wordless_acf_gutenberg_blocks_views_path
 ########################################
 
