@@ -22,7 +22,7 @@
         "source": "https://github.com/phug-php/util",
         "docs": "http://phug-lang.com/docs"
     },
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "require": {
         "phug/util": "^0.4.0 || ^1.0"
     },
@@ -31,6 +31,9 @@
             "Phug\\": ""
         }
     },
-    "bin": [],
-    "suggest": {}
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
 }

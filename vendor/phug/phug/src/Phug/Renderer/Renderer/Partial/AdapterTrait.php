@@ -3,6 +3,8 @@
 namespace Phug\Renderer\Partial;
 
 use ErrorException;
+use Phug\Compiler\LocatorInterface;
+use Phug\Compiler\WithUpperLocatorInterface;
 use Phug\Renderer\Adapter\FileAdapter;
 use Phug\Renderer\AdapterInterface;
 use Phug\Renderer\CacheInterface;
@@ -50,10 +52,25 @@ trait AdapterTrait
                     'not a valid '.AdapterInterface::class
                 );
             }
+
             $this->adapter = new $adapterClassName($this, $this->getOptions());
+            $this->initAdapterLinkToCompiler();
         }
 
         return $this;
+    }
+
+    public function initAdapterLinkToCompiler()
+    {
+        $compiler = $this->getCompiler();
+
+        if ($compiler &&
+            $this->adapter &&
+            $this->adapter instanceof LocatorInterface &&
+            $compiler instanceof WithUpperLocatorInterface
+        ) {
+            $compiler->setUpperLocator($this->adapter);
+        }
     }
 
     /**

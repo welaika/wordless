@@ -41,6 +41,113 @@ class Cli
         $this->methods = $methods;
     }
 
+    /**
+     * Get list of user-defined commands.
+     *
+     * @return array
+     */
+    public function getCustomMethods()
+    {
+        $facade = $this->facade;
+        $options = is_callable([$facade, 'getOptions']) ? call_user_func([$facade, 'getOptions']) : [];
+
+        if (isset($options['commands'])) {
+            return $options['commands'];
+        }
+
+        if (!is_callable([$facade, 'hasOption']) ||
+            !call_user_func([$facade, 'hasOption'], 'commands') ||
+            !is_callable([$facade, 'getOption'])
+        ) {
+            return [];
+        }
+
+        return call_user_func([$facade, 'getOption'], 'commands') ?: [];
+    }
+
+    /**
+     * Run the CLI applications with arguments list, return true for a success status, false for an error status.
+     *
+     * @param $arguments
+     *
+     * @return bool
+     */
+    public function run($arguments)
+    {
+        $outputFile = $this->getNamedArgument($arguments, ['--output-file', '-o']);
+        $bootstrapFile = $this->getNamedArgument($arguments, ['--bootstrap', '-b']);
+        if ($bootstrapFile) {
+            include $bootstrapFile;
+        } elseif (file_exists('phugBootstrap.php')) {
+            include 'phugBootstrap.php';
+        }
+        list(, $action) = array_pad($arguments, 2, null);
+        $arguments = array_slice($arguments, 2);
+        $facade = $this->facade;
+        $method = $this->convertToCamelCase($action);
+        $customMethods = $this->getCustomMethods();
+
+        if (!$action) {
+            echo "You must provide a method.\n";
+            $this->listAvailableMethods($customMethods);
+
+            return false;
+        }
+
+        if (!in_array($method, iterator_to_array($this->getAvailableMethods($customMethods)))) {
+            echo "The method $action is not available as CLI command in the $facade facade.\n";
+            $this->listAvailableMethods($customMethods);
+
+            return false;
+        }
+
+        return $this->execute($facade, $method, $arguments, $outputFile);
+    }
+
+    /**
+     * Yield all available methods.
+     *
+     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
+     *
+     * @return iterable
+     */
+    public function getAvailableMethods($customMethods = null)
+    {
+        foreach ([$this->methods, $customMethods ?: $this->getCustomMethods()] as $methods) {
+            foreach ($methods as $method => $action) {
+                $method = is_int($method) ? $action : $method;
+
+                if (substr($method, 0, 2) !== '__') {
+                    yield $method;
+                }
+            }
+        }
+    }
+
+    /**
+     * Dump the list of available methods as textual output.
+     *
+     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
+     */
+    public function listAvailableMethods($customMethods = null)
+    {
+        echo "Available methods are:\n";
+        foreach ($this->getAvailableMethods($customMethods ?: $this->getCustomMethods()) as $method) {
+            $action = $this->convertToKebabCase($method);
+            $target = isset($this->methods[$method]) ? $this->methods[$method] : $method;
+            $key = array_search($target, $this->methods);
+            if (is_int($key)) {
+                $key = $this->methods[$key];
+            }
+
+            echo ' - '.$action.(
+                $key && $key !== $method
+                    ? ' ('.$this->convertToKebabCase($key).' alias)'
+                    : ''
+            )."\n";
+        }
+    }
+
     protected function convertToKebabCase($string)
     {
         return preg_replace_callback('/[A-Z]/', function ($match) {
@@ -121,105 +228,5 @@ class Cli
         }
 
         return false;
-    }
-
-    public function getCustomMethods()
-    {
-        $facade = $this->facade;
-        $options = is_callable([$facade, 'getOptions']) ? call_user_func([$facade, 'getOptions']) : [];
-
-        if (isset($options['commands'])) {
-            return $options['commands'];
-        }
-
-        if (!is_callable([$facade, 'hasOption']) ||
-            !call_user_func([$facade, 'hasOption'], 'commands') ||
-            !is_callable([$facade, 'getOption'])
-        ) {
-            return [];
-        }
-
-        return call_user_func([$facade, 'getOption'], 'commands') ?: [];
-    }
-
-    /**
-     * Run the CLI applications with arguments list, return true for a success status, false for an error status.
-     *
-     * @param $arguments
-     *
-     * @return bool
-     */
-    public function run($arguments)
-    {
-        $outputFile = $this->getNamedArgument($arguments, ['--output-file', '-o']);
-        $bootstrapFile = $this->getNamedArgument($arguments, ['--bootstrap', '-b']);
-        if ($bootstrapFile) {
-            include $bootstrapFile;
-        } elseif (file_exists('phugBootstrap.php')) {
-            include 'phugBootstrap.php';
-        }
-        list(, $action) = array_pad($arguments, 2, null);
-        $arguments = array_slice($arguments, 2);
-        $facade = $this->facade;
-        $method = $this->convertToCamelCase($action);
-        $customMethods = $this->getCustomMethods();
-
-        if (!$action) {
-            echo "You must provide a method.\n";
-            $this->listAvailableMethods($customMethods);
-
-            return false;
-        }
-
-        if (!in_array($method, iterator_to_array($this->getAvailableMethods($customMethods)))) {
-            echo "The method $action is not available as CLI command in the $facade facade.\n";
-            $this->listAvailableMethods($customMethods);
-
-            return false;
-        }
-
-        return $this->execute($facade, $method, $arguments, $outputFile);
-    }
-
-    /**
-     * Yield all available methods.
-     *
-     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
-     *
-     * @return \Generator
-     */
-    public function getAvailableMethods($customMethods = null)
-    {
-        foreach ([$this->methods, $customMethods ?: $this->getCustomMethods()] as $methods) {
-            foreach ($methods as $method => $action) {
-                $method = is_int($method) ? $action : $method;
-                if (substr($method, 0, 2) !== '__') {
-                    yield $method;
-                }
-            }
-        }
-    }
-
-    /**
-     * Dump the list of available methods as textual output.
-     *
-     * @param array|null $customMethods pass custom methods list (calculated from the facade if missing)
-     */
-    public function listAvailableMethods($customMethods = null)
-    {
-        echo "Available methods are:\n";
-        foreach ($this->getAvailableMethods($customMethods ?: $this->getCustomMethods()) as $method) {
-            $action = $this->convertToKebabCase($method);
-            $target = isset($this->methods[$method]) ? $this->methods[$method] : $method;
-            $key = array_search($target, $this->methods);
-            if (is_int($key)) {
-                $key = $this->methods[$key];
-            }
-
-            echo ' - '.$action.($key && $key !== $method
-                    ? ' ('.$this->convertToKebabCase($key).' alias)'
-                    : ''
-                )."\n";
-        }
     }
 }

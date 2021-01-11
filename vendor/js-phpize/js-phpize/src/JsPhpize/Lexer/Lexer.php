@@ -2,7 +2,9 @@
 
 namespace JsPhpize\Lexer;
 
+use Generator;
 use JsPhpize\JsPhpize;
+use JsPhpize\Parser\Parser;
 
 class Lexer extends Scanner
 {
@@ -36,6 +38,11 @@ class Lexer extends Scanner
      */
     protected $consumed = '';
 
+    /**
+     * @var Generator
+     */
+    protected $tokenGenerator = null;
+
     public function __construct(JsPhpize $engine, $input, $filename)
     {
         $this->engine = $engine;
@@ -61,7 +68,27 @@ class Lexer extends Scanner
             ' near from ' . trim($this->consumed);
     }
 
-    protected function consume($consumed)
+    public function rest()
+    {
+        return $this->input;
+    }
+
+    public function consumeStringToken($string)
+    {
+        return $this->valueToken('string', [$string]);
+    }
+
+    public function getNextParseLength($input = null)
+    {
+        $input = $input ?? $this->input;
+        $length = mb_strlen($input);
+        $parser = new Parser(clone $this->engine, $input, $this->filename);
+        $parser->parse();
+
+        return $length - mb_strlen($parser->rest());
+    }
+
+    public function consume($consumed)
     {
         $consumed = is_int($consumed) ? mb_substr($this->input, 0, $consumed) : $consumed;
         $this->consumed = mb_strlen(trim($consumed)) > 1 ? $consumed : $this->consumed . $consumed;
@@ -90,7 +117,7 @@ class Lexer extends Scanner
         return $this->token($type, trim($matches[0]));
     }
 
-    protected function scan($pattern, $method)
+    public function scan($pattern, $method)
     {
         if (preg_match('/^\s*(' . $pattern . ')/', $this->input, $matches)) {
             return $this->{'scan' . ucfirst($method)}($matches);
@@ -122,8 +149,14 @@ class Lexer extends Scanner
             return false;
         }
 
+        if ($token = $this->pullFromCurrentTokenGenerator()) {
+            return $token;
+        }
+
         foreach ($this->engine->getPatterns() as $pattern) {
-            if ($token = $this->scan($pattern->regex, $pattern->type)) {
+            $this->tokenGenerator = $pattern->lexWith($this);
+
+            if ($token = $this->pullFromCurrentTokenGenerator()) {
                 if (in_array($pattern->type, $this->disallow)) {
                     throw new Exception($pattern->type . ' is disallowed.', 3);
                 }
@@ -133,5 +166,21 @@ class Lexer extends Scanner
         }
 
         throw new Exception('Unknow pattern found at: ' . mb_substr($this->input, 0, 100), 12);
+    }
+
+    protected function pullFromCurrentTokenGenerator()
+    {
+        $token = null;
+
+        if ($this->tokenGenerator) {
+            $token = $this->tokenGenerator->current();
+            $this->tokenGenerator->next();
+
+            if (!$this->tokenGenerator->valid()) {
+                $this->tokenGenerator = null;
+            }
+        }
+
+        return $token;
     }
 }

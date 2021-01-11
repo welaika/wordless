@@ -24,7 +24,8 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
         }
 
         $node = $state->getCurrentNode();
-        if (!$node) {
+
+        if (!$node && !($state->getPreviousToken() instanceof InterpolationEndToken)) {
             /** @var ElementNode $element */
             $element = $state->createNode(ElementNode::class, $token);
             $state->setCurrentNode($element);
@@ -48,6 +49,7 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
 
             return;
         }
+
         if ($state->currentNodeIs([
             TextNode::class,
             CodeNode::class,
@@ -55,10 +57,12 @@ class InterpolationStartTokenHandler implements TokenHandlerInterface
         ])) {
             $node = $node->getParent();
         }
+
         $state->getInterpolationStack()->attach($token->getEnd(), (object) [
             'currentNode' => $node,
             'parentNode'  => $state->getParentNode(),
         ]);
+
         $state->store();
     }
 }

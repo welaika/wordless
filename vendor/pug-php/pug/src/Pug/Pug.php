@@ -23,7 +23,7 @@ class Pug extends Renderer
         $this->extractExtensionsFromKeywords($options);
         $this->copyNormalizedOptions($options);
         $this->setUpFilterAutoload($options);
-        $this->setUpOptionsAliases($options);
+        $this->setUpOptionNameHandlers();
         $this->setUpFormats($options);
         $this->setUpCache($options);
         $this->setUpMixins($options);

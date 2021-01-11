@@ -42,11 +42,17 @@ class Parser extends TokenExtractor
         $this->lexer = new Lexer($engine, $input, $filename);
     }
 
+    public function rest()
+    {
+        return $this->lexer->rest();
+    }
+
     protected function parseLambda(Value $parameters)
     {
         $lambda = new Block('function');
         $lambda->setValue($parameters);
         $next = $this->next();
+
         if ($next) {
             if ($next->is('{')) {
                 $this->parseBlock($lambda);
@@ -54,6 +60,7 @@ class Parser extends TokenExtractor
 
                 return $lambda;
             }
+
             $return = new Block('return');
             $return->setValue($this->expectValue($next));
             $lambda->addInstruction($return);
@@ -71,6 +78,7 @@ class Parser extends TokenExtractor
         while ($token = $this->next()) {
             if ($token->is(')')) {
                 $next = $this->get(0);
+
                 if ($next && $next->type === 'lambda') {
                     $this->skip();
 
@@ -204,6 +212,7 @@ class Parser extends TokenExtractor
                 $children[] = $value;
 
                 $next = $this->get(0);
+
                 if ($next && $next->is('(')) {
                     $this->skip();
 
@@ -225,6 +234,7 @@ class Parser extends TokenExtractor
     {
         $children = [];
         $variable = null;
+
         while ($next = $this->get(0)) {
             if ($next->type === 'lambda') {
                 $this->skip();
@@ -238,6 +248,7 @@ class Parser extends TokenExtractor
                 $children[] = $value;
 
                 $next = $this->get(0);
+
                 if ($next && $next->is('(')) {
                     $this->skip();
 
@@ -257,6 +268,7 @@ class Parser extends TokenExtractor
 
             for ($i = count($this->stack) - 1; $i >= 0; $i--) {
                 $block = $this->stack[$i];
+
                 if ($block->isLet($name)) {
                     $variable->setScope($block);
 
@@ -272,6 +284,7 @@ class Parser extends TokenExtractor
     {
         $trueValue = $this->expectValue($this->next());
         $next = $this->next();
+
         if (!$next) {
             throw new Exception("Ternary expression not properly closed after '?' " . $this->exceptionInfos(), 14);
         }
@@ -281,6 +294,7 @@ class Parser extends TokenExtractor
         }
 
         $next = $this->next();
+
         if (!$next) {
             throw new Exception("Ternary expression not properly closed after ':' " . $this->exceptionInfos(), 16);
         }
@@ -294,6 +308,7 @@ class Parser extends TokenExtractor
     protected function jsonMethodToPhpFunction($method)
     {
         $function = null;
+
         switch ($method) {
             case 'stringify':
                 $function = 'json_encode';
@@ -310,6 +325,7 @@ class Parser extends TokenExtractor
     {
         if ($method->type === 'variable' && ($function = $this->jsonMethodToPhpFunction($method->value))) {
             $this->skip(2);
+
             if (($next = $this->get(0)) && $next->is('(')) {
                 $this->skip();
 
@@ -344,6 +360,7 @@ class Parser extends TokenExtractor
         $function = new Block('function');
         $function->enableMultipleInstructions();
         $token = $this->get(0);
+
         if ($token && $token->type === 'variable') {
             $this->skip();
             $token = $this->get(0);
@@ -356,6 +373,7 @@ class Parser extends TokenExtractor
         $this->skip();
         $function->setValue($this->parseParentheses());
         $token = $this->get(0);
+
         if ($token && !$token->is('{')) {
             throw $this->unexpected($token);
         }
@@ -370,9 +388,12 @@ class Parser extends TokenExtractor
     {
         $name = $token->value;
         $keyword = new Block($name);
+
         switch ($name) {
             case 'typeof':
+                // @codeCoverageIgnoreStart
                 throw new Exception('typeof keyword not supported', 26);
+                // @codeCoverageIgnoreEnd
                 break;
             case 'new':
             case 'clone':
@@ -384,9 +405,11 @@ class Parser extends TokenExtractor
                     'clone' => 'Object',
                 ];
                 $value = $this->get(0);
+
                 if (isset($expects[$name]) && !$value) {
                     throw new Exception($expects[$name] . " expected after '" . $name . "'", 25);
                 }
+
                 $this->handleOptionalValue($keyword, $value, $name);
                 break;
             case 'case':
@@ -407,6 +430,7 @@ class Parser extends TokenExtractor
     protected function parseKeyword($token)
     {
         $keyword = $this->parseKeywordStatement($token);
+
         if ($keyword->handleInstructions()) {
             $this->parseBlock($keyword);
         }
@@ -417,6 +441,7 @@ class Parser extends TokenExtractor
     protected function parseLet()
     {
         $letVariable = $this->get(0);
+
         if ($letVariable->type !== 'variable') {
             throw $this->unexpected($letVariable);
         }
@@ -445,6 +470,7 @@ class Parser extends TokenExtractor
             if ($initNext && $instruction instanceof Variable) {
                 $instruction = new Assignation('=', $instruction, new Constant('constant', 'null'));
             }
+
             $initNext = false;
             $block->addInstruction($instruction);
 
@@ -486,15 +512,19 @@ class Parser extends TokenExtractor
     public function parseBlock($block)
     {
         $this->stack[] = $block;
+
         if (!$block->multipleInstructions) {
             $next = $this->get(0);
+
             if ($next && $next->is('{')) {
                 $block->enableMultipleInstructions();
             }
+
             if ($block->multipleInstructions) {
                 $this->skip();
             }
         }
+
         $this->parseInstructions($block);
         array_pop($this->stack);
     }

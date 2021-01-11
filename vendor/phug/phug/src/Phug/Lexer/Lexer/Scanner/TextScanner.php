@@ -8,9 +8,7 @@ namespace Phug\Lexer\Scanner;
 
 use Phug\Lexer\ScannerInterface;
 use Phug\Lexer\State;
-use Phug\Lexer\Token\InterpolationEndToken;
 use Phug\Lexer\Token\InterpolationStartToken;
-use Phug\Lexer\Token\TagInterpolationEndToken;
 use Phug\Lexer\Token\TagInterpolationStartToken;
 use Phug\Lexer\Token\TextToken;
 use Phug\Lexer\TokenInterface;
@@ -19,17 +17,17 @@ class TextScanner implements ScannerInterface
 {
     const INTERPOLATION_ENABLED = true;
 
+    private function isTextStartToTrim(State $state, $text)
+    {
+        return in_array(mb_substr($text, 0, 1), [' ', "\t"]) && !$state->isAfterInterpolation();
+    }
+
     private function leftTrimValueIfNotAfterInterpolation(State $state, TextToken $token)
     {
         $text = $token->getValue();
-        if (in_array(mb_substr($text, 0, 1), [' ', "\t"])) {
-            $previous = $state->getLastToken();
-            if (!(
-                $previous instanceof TagInterpolationEndToken ||
-                $previous instanceof InterpolationEndToken
-            )) {
-                $token->setValue(mb_substr($text, 1) ?: '');
-            }
+
+        if ($this->isTextStartToTrim($state, $text)) {
+            $token->setValue(mb_substr($text, 1) ?: '');
         }
     }
 
@@ -44,6 +42,7 @@ class TextScanner implements ScannerInterface
 
             yield $token;
         }
+
         if ($subToken instanceof TextToken) {
             $this->leftTrimValueIfNotAfterInterpolation($state, $subToken);
         }
@@ -55,6 +54,7 @@ class TextScanner implements ScannerInterface
             foreach ($state->scan(InterpolationScanner::class) as $subToken) {
                 if ($firstToken) {
                     $firstToken = false;
+
                     foreach ($this->scanInterpolationToken($state, $subToken) as $token) {
                         yield $token;
                     }
@@ -83,14 +83,8 @@ class TextScanner implements ScannerInterface
         }
 
         //Always omit the very first space in basically every text (if there is one)
-        if ($firstToken && in_array(mb_substr($text, 0, 1), [' ', "\t"])) {
-            $previous = $state->getLastToken();
-            if (!(
-                $previous instanceof TagInterpolationEndToken ||
-                $previous instanceof InterpolationEndToken
-            )) {
-                $text = mb_substr($text, 1);
-            }
+        if ($firstToken && $this->isTextStartToTrim($state, $text)) {
+            $text = mb_substr($text, 1);
         }
 
         $text = preg_replace('/\\\\([#!]\\[|#\\{)/', '$1', $text);

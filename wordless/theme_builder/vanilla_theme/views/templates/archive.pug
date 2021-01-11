@@ -1,0 +1,13 @@
+extends /layouts/default.pug
+include /components/post.pug
+
+block yield
+  h2 Archive
+
+  ul.archive
+    while (have_posts())
+      - the_post()
+
+      li
+        - $component = new ComponentPost(['post' => get_post()])
+        +post($component)

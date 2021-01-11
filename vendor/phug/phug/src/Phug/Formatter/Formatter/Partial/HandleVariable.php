@@ -121,6 +121,19 @@ trait HandleVariable
         return isset($tokens[$index - 1]) && is_array($tokens[$index - 1]) && $tokens[$index - 1][0] === T_CURLY_OPEN;
     }
 
+    private function wrapVariableContext($expression, $tokens, $index)
+    {
+        if (isset($tokens[$index - 1]) && $tokens[$index - 1] === '$') {
+            return '{'.$expression.'}';
+        }
+
+        if ($this->isInInterpolation($tokens, $index)) {
+            return '".'.$expression.'."';
+        }
+
+        return $expression;
+    }
+
     public function handleVariable($variable, $index, &$tokens, $checked)
     {
         if (!$checked ||
@@ -140,11 +153,6 @@ trait HandleVariable
             }
         }
 
-        $checkedVariable = '(isset('.$variable.') ? '.$variable.' : null)';
-        if ($this->isInInterpolation($tokens, $index)) {
-            $checkedVariable = '".'.$checkedVariable.'."';
-        }
-
-        return $checkedVariable;
+        return $this->wrapVariableContext('(isset('.$variable.') ? '.$variable.' : null)', $tokens, $index);
     }
 }

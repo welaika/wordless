@@ -36,15 +36,19 @@ trait EventManagerTrait
 
         foreach (((array) $eventListeners) as $eventName => $listeners) {
             $queue = [];
+
             if (isset($this->eventListeners[$eventName])) {
                 $innerListeners = clone $this->eventListeners[$eventName];
                 $innerListeners->setExtractFlags(ListenerQueue::EXTR_DATA);
+
                 foreach ($innerListeners as $callback) {
                     $queue[] = $callback;
                 }
             }
+
             $listeners = clone $listeners;
             $listeners->setExtractFlags(ListenerQueue::EXTR_BOTH);
+
             foreach ($listeners as $listener) {
                 if (!in_array($listener['data'], $queue)) {
                     $this->attach($eventName, $listener['data'], $listener['priority']);
@@ -94,6 +98,7 @@ trait EventManagerTrait
         $newListeners = new ListenerQueue();
 
         $listeners->setExtractFlags(ListenerQueue::EXTR_BOTH);
+
         foreach ($listeners as $item) {
             if ($item['data'] === $callback) {
                 $removed = true;
@@ -102,6 +107,7 @@ trait EventManagerTrait
 
             $newListeners->insert($item['data'], $item['priority']);
         }
+
         $listeners->setExtractFlags(ListenerQueue::EXTR_DATA);
 
         $this->eventListeners[$event] = $newListeners;
@@ -150,6 +156,7 @@ trait EventManagerTrait
         $listeners = clone $this->eventListeners[$eventName];
         $listeners->setExtractFlags(ListenerQueue::EXTR_DATA);
         $result = null;
+
         foreach ($listeners as $callback) {
             $result = call_user_func($callback, $event);
 

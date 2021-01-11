@@ -65,14 +65,24 @@ if ($index === false) {
 $prerelease = null;
 
 if (isset($argv[2])) {
-    $preIndex = array_search(strtolower($argv[2]), array_map('strtolower', $preTypes));
+    $prereleaseInput = strtolower($argv[2]);
 
-    if ($preIndex === false) {
-        echo 'Please choose one of the following type (or none): '.implode(', ', $preTypes);
-        exit(1);
+    if ($prereleaseInput !== 'stable') {
+        $preIndex = array_search($prereleaseInput, array_map('strtolower', $preTypes));
+
+        if ($preIndex === false) {
+            echo 'Please choose one of the following type (or none): '.implode(', ', $preTypes);
+            exit(1);
+        }
+
+        $prerelease = $preTypes[$preIndex];
     }
+}
 
-    $prerelease = $preTypes[$preIndex];
+$description = null;
+
+if (isset($argv[3])) {
+    $description = @file_get_contents($argv[3]);
 }
 
 $json = json('releases');
@@ -116,14 +126,18 @@ $projects = [
     'compiler',
     'dependency-injection',
     'event',
+    'facade',
     'formatter',
+    'invoker',
     'lexer',
     'parser',
     'reader',
     'util',
 ];
 
-$description = readline('Description: ');
+if (empty($description)) {
+    $description = readline('Description: ');
+}
 
 foreach ($projects as $project) {
     echo "Tagging $project\n";

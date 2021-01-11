@@ -55,9 +55,10 @@ class Hasher
     {
         return substr($hashAlgorithm, 0, 2) === 'md'
             ? 2
-            : (substr($hashAlgorithm, 0, 3) === 'sha'
-                ? 3
-                : 0
+            : (
+                substr($hashAlgorithm, 0, 3) === 'sha'
+                    ? 3
+                    : 0
             );
     }
 }

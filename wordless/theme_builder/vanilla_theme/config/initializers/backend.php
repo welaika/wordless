@@ -46,9 +46,9 @@ function remove_update_message() {
 function remove_dashboard_widgets() {
   // Globalize the metaboxes array, this holds all the widgets for wp-admin
   global $wp_meta_boxes;
-  
+
   // Remove the incoming links widget
-  unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']); 
+  unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_incoming_links']);
 
   // Remove Right Now widget
   unset($wp_meta_boxes['dashboard']['normal']['core']['dashboard_right_now']);
@@ -57,7 +57,7 @@ function remove_dashboard_widgets() {
 }
 
 /*
- * Remove some links in Admin bar uncommenting line below and setting $elements array in 
+ * Remove some links in Admin bar uncommenting line below and setting $elements array in
  * remove_admin_bar_links function.
  */
 // add_action( 'wp_before_admin_bar_render', 'remove_admin_bar_links' );
@@ -67,7 +67,7 @@ function remove_admin_bar_links() {
     global $wp_admin_bar;
     $elements = array('wp-logo', 'about', 'wporg', 'documentation', 'support-forums', 'feedback', 'updates', 'comments', 'new-content');
     foreach ($elements as $element) {
-      $wp_admin_bar->remove_menu($element);  
+      $wp_admin_bar->remove_menu($element);
     }
 }
 
@@ -80,4 +80,16 @@ function slt_lock_theme() {
   global $submenu;
   unset($submenu['themes.php'][5]);
   unset($submenu['themes.php'][15]);
+}
+
+/*
+ * Create Cache management menu & render cache management page
+ *
+ * A default page is rendered, but you can make your own function and replace it instead of Wordless::render_static_cache_menu
+ * Enable cache management by uncommenting line below.
+ */
+// add_action('admin_menu', 'cache_management');
+
+function cache_management() {
+  add_menu_page(__('Gestione cache'), __('Gestione cache'), 'edit_posts', 'cache-management', 'Wordless::render_static_cache_menu', 'dashicons-html', 75 );
 }

@@ -253,7 +253,7 @@ interface NodeInterface extends IteratorAggregate, Countable, ArrayAccess
      * @param int      $depth
      * @param int      $level
      *
-     * @return \Generator
+     * @return iterable
      */
     public function findChildren(callable $callback, $depth = null, $level = null);
 
@@ -278,7 +278,7 @@ interface NodeInterface extends IteratorAggregate, Countable, ArrayAccess
      * @param callable $callback
      * @param int      $depth
      *
-     * @return \Generator
+     * @return iterable
      */
     public function find(callable $callback, $depth = null);
 

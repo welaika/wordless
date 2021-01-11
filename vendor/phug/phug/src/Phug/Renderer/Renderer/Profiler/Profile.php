@@ -102,7 +102,7 @@ class Profile
                 'link'     => $name,
                 'duration' => $time,
                 'style'    => $style,
-            ]; // @codeCoverageIgnore
+            ];
         }
     }
 
@@ -163,11 +163,11 @@ class Profile
                             'width'       => '3%',
                             'top'         => (($index + 1) * $lineHeight).'px',
                         ],
-                    ]; // @codeCoverageIgnore
+                    ];
 
                     continue;
                 }
-            } // @codeCoverageIgnore
+            }
             $generator = $this->getProcesses($list, $link, $index, $duration, $maxSpace, $lineHeight, $timePrecision);
             foreach ($generator as $process) {
                 $processes[] = $process;

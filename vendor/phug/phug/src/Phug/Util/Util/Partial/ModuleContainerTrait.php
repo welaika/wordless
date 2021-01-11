@@ -12,8 +12,8 @@ use Phug\Util\ModuleInterface;
  */
 trait ModuleContainerTrait
 {
-    use EventManagerTrait, OptionTrait;
-
+    use EventManagerTrait;
+    use OptionTrait;
     /**
      * @var array<ModuleInterface>
      */

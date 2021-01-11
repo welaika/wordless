@@ -1,0 +1,17 @@
+doctype html
+html
+  head
+    include /layouts/head.pug
+  body
+    .page-wrapper
+      header.site-header
+        include /layouts/header.pug
+
+      section.site-content
+        block yield
+
+      footer.site-footer
+        include /layouts/footer.pug
+
+    // jQuery and application.js is loaded by default with wp_footer() function. See config/initializers/default_hooks.php for details
+    - wp_footer()

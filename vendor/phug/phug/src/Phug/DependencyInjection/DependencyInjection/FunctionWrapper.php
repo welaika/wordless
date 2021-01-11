@@ -3,6 +3,7 @@
 namespace Phug\DependencyInjection;
 
 use ReflectionFunction;
+use ReflectionParameter;
 
 class FunctionWrapper extends ReflectionFunction
 {
@@ -16,18 +17,22 @@ class FunctionWrapper extends ReflectionFunction
         $parameters = [];
         foreach ($this->getParameters() as $parameter) {
             $string = '';
-            if ($parameter->isArray()) {
-                $string .= 'array ';
-            } elseif ($parameter->getClass()) {
-                $string .= $parameter->getClass()->name.' ';
+            $type = $this->getTypeAsString($parameter);
+
+            if ($type) {
+                $string .= "$type ";
             }
+
             if ($parameter->isPassedByReference()) {
                 $string .= '&';
             }
+
             $string .= '$'.$parameter->name;
+
             if ($parameter->isOptional()) {
                 $string .= ' = '.var_export($parameter->getDefaultValue(), true);
             }
+
             $parameters[] = $string;
         }
 
@@ -58,5 +63,31 @@ class FunctionWrapper extends ReflectionFunction
         }
 
         return $code;
+    }
+
+    /**
+     * Return the type as a string in a way compatible from PHP 5.5 to 8.0.
+     *
+     * @codeCoverageIgnore
+     *
+     * @param ReflectionParameter $parameter
+     *
+     * @return string|null
+     */
+    protected function getTypeAsString(ReflectionParameter $parameter)
+    {
+        if (version_compare(PHP_VERSION, '8.0.0-dev', '<')) {
+            if ($parameter->isArray()) {
+                return 'array';
+            }
+
+            $class = $parameter->getClass();
+
+            return $class ? $class->name : null;
+        }
+
+        /** @var mixed $parameter ReflectionParameter has hasType and getType methods since PHP 7.0. */
+
+        return $parameter->hasType() ? strval($parameter->getType()) : null;
     }
 }

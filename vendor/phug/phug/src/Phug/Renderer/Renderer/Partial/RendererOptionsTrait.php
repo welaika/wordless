@@ -130,20 +130,8 @@ trait RendererOptionsTrait
      */
     public function initCompiler()
     {
-        /** @var ModuleContainerInterface $this */
-        if ($onRender = $this->getOption('on_render')) {
-            if (isset($this->optionEvents['on_render'])) {
-                $this->detach(RendererEvent::RENDER, $this->optionEvents['on_render']);
-            }
-            $this->attach(RendererEvent::RENDER, $onRender);
-        }
-
-        if ($onHtml = $this->getOption('on_html')) {
-            if (isset($this->optionEvents['on_html'])) {
-                $this->detach(RendererEvent::HTML, $this->optionEvents['on_html']);
-            }
-            $this->attach(RendererEvent::HTML, $onHtml);
-        }
+        $onRender = $this->synchronizeEvent(RendererEvent::RENDER, 'on_render');
+        $onHtml = $this->synchronizeEvent(RendererEvent::HTML, 'on_html');
 
         $this->optionEvents = [
             'on_render' => $onRender,
@@ -161,6 +149,28 @@ trait RendererOptionsTrait
             );
         }
 
+        $this->createCompiler($compilerClassName);
+    }
+
+    private function synchronizeEvent($event, $key)
+    {
+        /** @var ModuleContainerInterface $this */
+        $callback = $this->getOption($key);
+
+        if ($callback) {
+            if (isset($this->optionEvents[$key])) {
+                $this->detach($event, $this->optionEvents[$key]);
+            }
+
+            $this->attach($event, $callback);
+        }
+
+        return $callback;
+    }
+
+    private function createCompiler($compilerClassName)
+    {
         $this->compiler = new $compilerClassName($this->getOptions());
+        $this->initAdapterLinkToCompiler();
     }
 }

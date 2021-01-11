@@ -74,6 +74,7 @@ class Scanner
     public function scanVariable($matches)
     {
         $varPrefix = $this->engine->getOption('varPrefix', JsPhpize::VAR_PREFIX);
+
         if (mb_strpos($matches[1], $varPrefix) === 0) {
             throw new Exception('Variables cannot start with ' . $varPrefix . ', this prefix is reserved for JsPhpize' . $this->exceptionInfos(), 4);
         }

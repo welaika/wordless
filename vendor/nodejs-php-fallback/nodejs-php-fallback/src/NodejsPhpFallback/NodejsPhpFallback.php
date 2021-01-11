@@ -3,9 +3,11 @@
 namespace NodejsPhpFallback;
 
 use Composer\Composer;
+use Composer\EventDispatcher\Event;
 use Composer\IO\IOInterface;
 use Composer\Json\JsonFile;
-use Composer\Script\Event;
+use Exception;
+use Throwable;
 
 class NodejsPhpFallback
 {
@@ -236,9 +238,23 @@ class NodejsPhpFallback
 
     protected static function getGlobalInstallChoice(IOInterface $io, $message)
     {
+        $answer = getenv('NODEJS_PHP_FALLBACK_ANSWER');
+
+        if (is_string($answer) && $answer !== '') {
+            return $answer;
+        }
+
         $remindedChoice = static::getConfirmRemindedChoiceFile();
+
         if (!file_exists($remindedChoice) || !is_readable($remindedChoice)) {
-            $manual = strtolower($io->ask($message));
+            try {
+                $manual = strtolower($io->ask($message));
+            } catch (Exception $e) {
+                return 'y';
+            } catch (Throwable $e) {
+                return 'y';
+            }
+
             @file_put_contents($remindedChoice, $manual);
 
             return $manual;
@@ -257,7 +273,8 @@ class NodejsPhpFallback
 
         $count = count($npmConfirm);
         $packageWord = $count > 1 ? 'packages' : 'package';
-        $manual = static::getGlobalInstallChoice($io,
+        $manual = static::getGlobalInstallChoice(
+            $io,
             "$count node $packageWord can be optionally installed/updated.\n" .
             "  - Enter Y to install/update them automatically on composer install/update.\n" .
             "  - Enter N to ignore them and not asking again.\n" .
@@ -294,9 +311,10 @@ class NodejsPhpFallback
         $io = $event->getIO();
 
         if (!count($npm)) {
-            $io->write(isset($config['npm'])
-                ? 'No packages found.'
-                : "Warning: in order to use NodejsPhpFallback, you should add a 'npm' setting in your composer.json"
+            $io->write(
+                isset($config['npm'])
+                    ? 'No packages found.'
+                    : "Warning: in order to use NodejsPhpFallback, you should add a 'npm' setting in your composer.json"
             );
 
             return;

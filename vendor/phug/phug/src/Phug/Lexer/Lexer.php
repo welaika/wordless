@@ -5,12 +5,14 @@ namespace Phug;
 use Phug\Lexer\Event\EndLexEvent;
 use Phug\Lexer\Event\LexEvent;
 use Phug\Lexer\Event\TokenEvent;
+use Phug\Lexer\HandleTokenInterface;
 use Phug\Lexer\Partial\DumpTokenTrait;
 use Phug\Lexer\Partial\StateTrait;
 use Phug\Lexer\Scanner\TextScanner;
 use Phug\Lexer\ScannerInterface;
 use Phug\Lexer\State;
 use Phug\Lexer\TokenInterface;
+use Phug\Util\Collection;
 use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
 
@@ -55,6 +57,11 @@ class Lexer implements LexerInterface, ModuleContainerInterface
     private $lastToken;
 
     /**
+     * @var TokenInterface|null
+     */
+    private $previousToken;
+
+    /**
      * Creates a new lexer instance.
      *
      * The options should be an associative array
@@ -83,11 +90,14 @@ class Lexer implements LexerInterface, ModuleContainerInterface
             'indent_style'             => null,
             'indent_width'             => null,
             'allow_mixed_indent'       => true,
+            'multiline_interpolation'  => true,
             'multiline_markup_enabled' => true,
             'encoding'                 => null,
             'lexer_modules'            => [],
             'keywords'                 => [],
             'scanners'                 => Scanners::getList(),
+            'mixin_keyword'            => 'mixin',
+            'mixin_call_keyword'       => '\\+',
 
             //Events
             'on_lex'                   => null,
@@ -98,6 +108,14 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         $this->state = null;
 
         $this->updateOptions();
+    }
+
+    /**
+     * @return TokenInterface|null
+     */
+    public function getPreviousToken()
+    {
+        return $this->previousToken;
     }
 
     /**
@@ -189,7 +207,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
      * @param string $input the pug-string to lex into tokens.
      * @param null   $path
      *
-     * @return \Generator a generator that can be iterated sequentially
+     * @return iterable a generator that can be iterated sequentially
      */
     public function lex($input, $path = null)
     {
@@ -199,8 +217,11 @@ class Lexer implements LexerInterface, ModuleContainerInterface
             'indent_style'             => $this->getOption('indent_style'),
             'indent_width'             => $this->getOption('indent_width'),
             'allow_mixed_indent'       => $this->getOption('allow_mixed_indent'),
+            'multiline_interpolation'  => $this->getOption('multiline_interpolation'),
             'multiline_markup_enabled' => $this->getOption('multiline_markup_enabled'),
             'level'                    => $this->getOption('level'),
+            'mixin_keyword'            => $this->getRegExpOption('mixin_keyword'),
+            'mixin_call_keyword'       => $this->getRegExpOption('mixin_call_keyword'),
         ]);
 
         $this->trigger($lexEvent);
@@ -229,8 +250,9 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         $scanners['final_plain_text'] = TextScanner::class;
 
         //Scan for tokens
-        //N> yield from $this->handleTokens($this->>state->loopScan($scanners));
+        //N> yield from $this->handleTokens($this->state->loopScan($scanners));
         $tokens = $this->state->loopScan($scanners);
+
         foreach ($this->handleTokens($tokens) as $token) {
             yield $token;
         }
@@ -239,19 +261,51 @@ class Lexer implements LexerInterface, ModuleContainerInterface
 
         //Free state
         $this->state = null;
+        $this->previousToken = null;
         $this->lastToken = null;
+    }
+
+    /**
+     * @param TokenInterface $lastToken
+     */
+    private function setLastToken($lastToken)
+    {
+        $this->previousToken = $this->lastToken;
+        $this->lastToken = $lastToken;
+    }
+
+    private function getRegExpOption($name)
+    {
+        $value = $this->getOption($name);
+
+        return is_array($value) ? '(?:'.implode('|', $value).')' : $value;
+    }
+
+    private function proceedTokenEvent($token)
+    {
+        $event = new TokenEvent($token);
+
+        if (!($token instanceof HandleTokenInterface) || !$token->isHandled()) {
+            $this->trigger($event);
+
+            if ($token instanceof HandleTokenInterface) {
+                $token->markAsHandled();
+            }
+        }
+
+        return $event;
     }
 
     private function handleToken($token)
     {
-        $event = new TokenEvent($token);
-        $this->trigger($event);
-
+        $event = $this->proceedTokenEvent($token);
         $tokens = $event->getTokenGenerator();
 
         if ($tokens) {
             //N> yield from $this->handleTokens($tokens)
             foreach ($this->handleTokens($tokens) as $tok) {
+                $this->setLastToken($tok);
+
                 yield $tok;
             }
 
@@ -259,12 +313,17 @@ class Lexer implements LexerInterface, ModuleContainerInterface
         }
 
         $token = $event->getToken();
-        $this->lastToken = $token;
+        $this->setLastToken($token);
 
         yield $token;
     }
 
-    private function handleTokens(\Iterator $tokens)
+    /**
+     * @param iterable $tokens
+     *
+     * @return iterable
+     */
+    private function handleTokens($tokens)
     {
         foreach ($tokens as $rawToken) {
             foreach ($this->handleToken($rawToken) as $token) {
@@ -287,7 +346,7 @@ class Lexer implements LexerInterface, ModuleContainerInterface
             return $this->dumpToken($input);
         }
 
-        if (!($input instanceof \Iterator) && !is_array($input)) {
+        if (!Collection::isIterable($input)) {
             $input = $this->lex((string) $input);
         }
 

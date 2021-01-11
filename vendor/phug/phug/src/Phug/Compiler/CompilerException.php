@@ -9,4 +9,8 @@ use Phug\Util\Exception\LocatedException;
  */
 class CompilerException extends LocatedException
 {
+    public static function message($message, array $details = [])
+    {
+        return static::getFailureMessage('compile', $message, $details);
+    }
 }

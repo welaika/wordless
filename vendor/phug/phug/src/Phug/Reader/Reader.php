@@ -916,15 +916,13 @@ class Reader
         $path = $this->getPath();
         $exception = new ReaderException(
             new SourceLocation(null, $this->line, $this->offset),
-            sprintf(
-                "Failed to read: %s \nNear: %s%s\nLine: %s \nOffset: %s \nPosition: %s",
-                $message,
-                $this->peek(20),
-                $path ? "\nFile: $path" : '',
-                $this->line,
-                $this->offset,
-                $this->position
-            )
+            ReaderException::message($message, [
+                'near'     => $this->peek(20),
+                'path'     => $path,
+                'line'     => $this->line,
+                'offset'   => $this->offset,
+                'position' => $this->position,
+            ])
         );
 
         throw $exception;

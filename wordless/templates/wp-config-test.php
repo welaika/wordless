@@ -45,6 +45,9 @@ define( 'LOGGED_IN_SALT',    'OGE#-QvpF53=1BI95V+;j&bFk_3XWmZ8uQ>O->[N#2Ig]-rn:9
 define( 'NONCE_SALT',        '@qWE4FyOft160*aM98D.$bT@Md9z(*(agJ2nfZcbY:f!P3=g-]tkycQvk2&oN(]~' );
 define( 'WP_CACHE_KEY_SALT', 'Y)@uzFCw4v:QS^pknF1w0:zvv`f?,Y~IlY]&PB?NyrSQRAP[VC@r[h)?=G^@^BJl' );
 
+define('ENVIRONMENT', 'development');
+define('BYPASS_STATIC', false);
+
 $table_prefix = 'wp_';
 
 /* That's all, stop editing! Happy publishing. */

@@ -17,8 +17,6 @@ class AssignmentListNodeCompiler extends AbstractNodeCompiler
             $node
         );
 
-        // @codeCoverageIgnoreStart
         return null;
-        // @codeCoverageIgnoreEnd
     }
 }

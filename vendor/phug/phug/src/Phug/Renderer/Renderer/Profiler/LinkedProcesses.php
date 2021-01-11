@@ -22,14 +22,17 @@ class LinkedProcesses extends SplObjectStorage
             foreach ($events as $event) {
                 /* @var Event $event */
                 $link = $this->getEventLink($event);
-                if (!($link instanceof TokenInterface) && !method_exists($link, 'getName')) {
+
+                if (!($link instanceof TokenInterface) && !(is_object($link) && method_exists($link, 'getName'))) {
                     $link = $link instanceof DocumentNode
                         ? $this->getProfilerEvent('document', $link)
                         : $event;
                 }
+
                 if (!isset($this[$link])) {
                     $this[$link] = [];
                 }
+
                 $list = $this[$link];
                 $list[] = $event;
                 $this[$link] = $list;

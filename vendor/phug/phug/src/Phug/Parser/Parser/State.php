@@ -362,12 +362,13 @@ class State implements OptionInterface, EventManagerInterface
      *
      * @param array $types the token types that are allowed
      *
-     * @return \Generator
+     * @return iterable
      */
     public function lookUp(array $types)
     {
         while ($this->hasTokens()) {
             $token = $this->getToken();
+
             if (!in_array(get_class($token), $types, true)) {
                 break;
             }
@@ -386,15 +387,11 @@ class State implements OptionInterface, EventManagerInterface
      *
      * @param array $types the types that are allowed
      *
-     * @return \Generator
+     * @return iterable
      */
     public function lookUpNext(array $types)
     {
-        if ($this->hasTokens()) {
-            foreach ($this->nextToken()->lookUp($types) as $token) {
-                yield $token;
-            }
-        }
+        return $this->hasTokens() ? $this->nextToken()->lookUp($types) : [];
     }
 
     /**
@@ -465,11 +462,21 @@ class State implements OptionInterface, EventManagerInterface
      *
      * @see \Generator->current
      *
-     * @return array the token array (always _one_ token, as an array)
+     * @return TokenInterface|null
      */
     public function getToken()
     {
         return $this->tokens->current();
+    }
+
+    /**
+     * Return the token parsed just before the current one (->getToken()).
+     *
+     * @return TokenInterface|null
+     */
+    public function getPreviousToken()
+    {
+        return $this->parser->getLexer()->getPreviousToken();
     }
 
     public function is(Node $node, array $classNames)
@@ -625,8 +632,6 @@ class State implements OptionInterface, EventManagerInterface
      */
     public function throwException($message, $code = 0, TokenInterface $relatedToken = null, $previous = null)
     {
-        $pattern = "Failed to parse: %s \nNear: %s \nLine: %s \nOffset: %s";
-
         $lexer = $this->parser->getLexer();
         //This will basically check for a source location for this Node. The process is like:
         //- If there's a related token, we use the cloned token's source location
@@ -635,29 +640,21 @@ class State implements OptionInterface, EventManagerInterface
         //- If none is found, we create an empty source location
         $location = $relatedToken && $relatedToken->getSourceLocation()
             ? clone $relatedToken->getSourceLocation()
-            : ($lexer->hasState()
-                ? $lexer->getState()->createCurrentSourceLocation()
-                : new SourceLocation(null, 0, 0)
+            : (
+                $lexer->hasState()
+                    ? $lexer->getState()->createCurrentSourceLocation()
+                    : new SourceLocation(null, 0, 0)
             );
-
-        $near = $lexer->hasState()
-            ? $lexer->getState()->getReader()->peek(20)
-            : '[No clue]';
-
-        //We know where it occured!
-        $path = $location->getPath();
-
-        if ($path) {
-            $pattern .= "\nPath: $path";
-        }
 
         throw new ParserException(
             $location,
-            vsprintf($pattern, [
-                $message,
-                $near,
-                $location->getLine(),
-                $location->getOffset(),
+            ParserException::message($message, [
+                'path'   => $location->getPath(),
+                'near'   => $lexer->hasState()
+                    ? $lexer->getState()->getReader()->peek(20)
+                    : '[No clue]',
+                'line'   => $location->getLine(),
+                'offset' => $location->getOffset(),
             ]),
             $code,
             $relatedToken,
