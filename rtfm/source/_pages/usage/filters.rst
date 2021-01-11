@@ -63,5 +63,25 @@ The default path is ``blocks/``.
 
     The path will be always relative to ``views/`` folder
 
-.. todo::
-    ``wordless_component_validation_exception``
+Actions
+=======
+
+wordless_component_validation_exception
+#######################################
+
+.. literalinclude:: /../../wordless/helpers/component_helper.php
+    :emphasize-lines: 6
+    :language: php
+    :caption: wordless/helpers/component_helper.php
+    :lineno-start: 52
+    :lines: 52-70
+
+When an object of class ``Wordless\Component`` fails its validation, it will throw an exception
+only if ``ENVIRONMENT`` **is not** ``production``. When in ``production`` nothing will happen, in
+order to be unobstrusive and not breaking the site to your users. The developer will still see
+specific excpetion happening.
+
+You can customize the behaviour by adding your action as documented in the code.
+
+What we like to do is to add here a notification to our Sentry account (thanks to
+https://github.com/stayallive/wp-sentry/ plugin)
