@@ -408,19 +408,19 @@ ERRORTEXT;
         }
 
         if ( isset($_POST['clear-single-cache']) && !empty($_POST['clear-single-cache']) ) {
-            $path = self::join_paths(self::theme_temp_path(), $_POST['clear-single-cache']);
-            unlink($path);
-            $cached_files = self::recursive_glob(self::theme_temp_path());
+        $path = self::join_paths(self::theme_temp_path(), $_POST['clear-single-cache']);
+        unlink($path);
+        $cached_files = self::recursive_glob(self::theme_temp_path());
 
-            if (in_array($path, $cached_files)) {
-                $notice_class = 'notice-error';
-                $notice_message = __('Impossibile eliminare la cache della singola pagina selezionata');
-            } else {
-                $notice_class = 'notice-success';
-                $notice_message = __('Cache della singola pagina eliminata correttamente');
-            }
+        if (in_array($path, $cached_files)) {
+            $notice_class = 'notice-error';
+            $notice_message = __('Impossibile eliminare la cache della singola pagina selezionata');
+        } else {
+            $notice_class = 'notice-success';
+            $notice_message = __('Cache della singola pagina eliminata correttamente');
+        }
 
-            $notice = "
+        $notice = "
             <div class='notice $notice_class is-dismissible' style='margin-left: 2px;'>
                 <p>$notice_message</p>
             </div>";
@@ -446,7 +446,7 @@ ERRORTEXT;
             <table id='cached_list'>";
 
         if (count($cached_files) == 0) {
-            echo "
+        echo "
             <tr>
             <td colspan=3 class='cached_list__file__empty'>Nessun file nella cache</td>
             </tr>
@@ -457,10 +457,10 @@ ERRORTEXT;
             $file_parts = explode('/', $static);
             $file = end($file_parts);
             if (substr($file, -5) == '.html') {
-                $line = fgets(fopen($static, 'r'));
-                preg_match('~<title>([^{]*)</title>~i', $line, $match);
-                $title = isset($match[1]) && !empty($match[1]) ? $match[1] : '<i>-- Nessun titolo --</i>';
-                echo "
+            $line = fgets(fopen($static, 'r'));
+            preg_match('~<title>([^{]*)</title>~i', $line, $match);
+            $title = isset($match[1]) && !empty($match[1]) ? $match[1] : '<i>-- Nessun titolo --</i>';
+            echo "
                 <tr>
                 <td class='cached_list__file__title'>$title</td>
                 <td class='cached_list__file__path'>$file</td>
