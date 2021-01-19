@@ -37,7 +37,7 @@ class Wordless {
         if ( ! file_exists( $call_back_path ) ) {
             self::require_helpers();
         }
-        
+
         $missing_directories = Wordless::theme_is_wordless_compatible(true);
         if (empty($missing_directories)){
             self::load_i18n();

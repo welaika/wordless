@@ -1,8 +1,8 @@
 <?php
-// $Id$
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../url.php');
-require_once(dirname(__FILE__) . '/../socket.php');
+
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../url.php';
+require_once __DIR__ . '/../socket.php';
 
 Mock::generate('SimpleSocket');
 
@@ -13,7 +13,7 @@ class TestOfEncodedParts extends UnitTestCase
         $pair = new SimpleEncodedPair('a', 'A');
         $this->assertEqual($pair->asRequest(), 'a=A');
     }
-    
+
     public function testMimeEncodedAsHeadersAndContent()
     {
         $pair = new SimpleEncodedPair('a', 'A');
@@ -21,7 +21,7 @@ class TestOfEncodedParts extends UnitTestCase
                 $pair->asMime(),
                 "Content-Disposition: form-data; name=\"a\"\r\n\r\nA");
     }
-    
+
     public function testAttachmentEncodedAsHeadersWithDispositionAndContent()
     {
         $part = new SimpleAttachment('a', 'A', 'aaa.txt');
@@ -35,75 +35,75 @@ class TestOfEncodedParts extends UnitTestCase
 class TestOfEncoding extends UnitTestCase
 {
     private $content_so_far;
-    
+
     public function write($content)
     {
         $this->content_so_far .= $content;
     }
-    
+
     public function clear()
     {
         $this->content_so_far = '';
     }
-    
+
     public function assertWritten($encoding, $content, $message = '%s')
     {
         $this->clear();
         $encoding->writeTo($this);
         $this->assertIdentical($this->content_so_far, $content, $message);
     }
-    
+
     public function testGetEmpty()
     {
         $encoding = new SimpleGetEncoding();
         $this->assertIdentical($encoding->getValue('a'), false);
         $this->assertIdentical($encoding->asUrlRequest(), '');
     }
-    
+
     public function testPostEmpty()
     {
         $encoding = new SimplePostEncoding();
         $this->assertIdentical($encoding->getValue('a'), false);
         $this->assertWritten($encoding, '');
     }
-    
+
     public function testPrefilled()
     {
         $encoding = new SimplePostEncoding(array('a' => 'aaa'));
         $this->assertIdentical($encoding->getValue('a'), 'aaa');
         $this->assertWritten($encoding, 'a=aaa');
     }
-    
+
     public function testPrefilledWithTwoLevels()
     {
-        $query = array('a' => array('aa' => 'aaa'));
+        $query    = array('a' => array('aa' => 'aaa'));
         $encoding = new SimplePostEncoding($query);
         $this->assertTrue($encoding->hasMoreThanOneLevel($query));
         $this->assertEqual($encoding->rewriteArrayWithMultipleLevels($query), array('a[aa]' => 'aaa'));
         $this->assertIdentical($encoding->getValue('a[aa]'), 'aaa');
         $this->assertWritten($encoding, 'a%5Baa%5D=aaa');
     }
-    
+
     public function testPrefilledWithThreeLevels()
     {
-        $query = array('a' => array('aa' => array('aaa' => 'aaaa')));
+        $query    = array('a' => array('aa' => array('aaa' => 'aaaa')));
         $encoding = new SimplePostEncoding($query);
         $this->assertTrue($encoding->hasMoreThanOneLevel($query));
         $this->assertEqual($encoding->rewriteArrayWithMultipleLevels($query), array('a[aa][aaa]' => 'aaaa'));
         $this->assertIdentical($encoding->getValue('a[aa][aaa]'), 'aaaa');
         $this->assertWritten($encoding, 'a%5Baa%5D%5Baaa%5D=aaaa');
     }
-    
+
     public function testPrefilledWithObject()
     {
         $encoding = new SimplePostEncoding(new SimpleEncoding(array('a' => 'aaa')));
         $this->assertIdentical($encoding->getValue('a'), 'aaa');
         $this->assertWritten($encoding, 'a=aaa');
     }
-    
+
     public function testMultiplePrefilled()
     {
-        $query = array('a' => array('a1', 'a2'));
+        $query    = array('a' => array('a1', 'a2'));
         $encoding = new SimplePostEncoding($query);
         $this->assertTrue($encoding->hasMoreThanOneLevel($query));
         $this->assertEqual($encoding->rewriteArrayWithMultipleLevels($query), array('a[0]' => 'a1', 'a[1]' => 'a2'));
@@ -111,7 +111,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertIdentical($encoding->getValue('a[1]'), 'a2');
         $this->assertWritten($encoding, 'a%5B0%5D=a1&a%5B1%5D=a2');
     }
-    
+
     public function testSingleParameter()
     {
         $encoding = new SimplePostEncoding();
@@ -119,7 +119,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertEqual($encoding->getValue('a'), 'Hello');
         $this->assertWritten($encoding, 'a=Hello');
     }
-    
+
     public function testFalseParameter()
     {
         $encoding = new SimplePostEncoding();
@@ -127,21 +127,21 @@ class TestOfEncoding extends UnitTestCase
         $this->assertEqual($encoding->getValue('a'), false);
         $this->assertWritten($encoding, '');
     }
-    
+
     public function testUrlEncoding()
     {
         $encoding = new SimplePostEncoding();
         $encoding->add('a', 'Hello there!');
         $this->assertWritten($encoding, 'a=Hello+there%21');
     }
-    
+
     public function testUrlEncodingOfKey()
     {
         $encoding = new SimplePostEncoding();
         $encoding->add('a!', 'Hello');
         $this->assertWritten($encoding, 'a%21=Hello');
     }
-    
+
     public function testMultipleParameter()
     {
         $encoding = new SimplePostEncoding();
@@ -149,7 +149,7 @@ class TestOfEncoding extends UnitTestCase
         $encoding->add('b', 'Goodbye');
         $this->assertWritten($encoding, 'a=Hello&b=Goodbye');
     }
-    
+
     public function testEmptyParameters()
     {
         $encoding = new SimplePostEncoding();
@@ -157,7 +157,7 @@ class TestOfEncoding extends UnitTestCase
         $encoding->add('b', '');
         $this->assertWritten($encoding, 'a=&b=');
     }
-    
+
     public function testRepeatedParameter()
     {
         $encoding = new SimplePostEncoding();
@@ -166,7 +166,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertIdentical($encoding->getValue('a'), array('Hello', 'Goodbye'));
         $this->assertWritten($encoding, 'a=Hello&a=Goodbye');
     }
-    
+
     public function testAddingLists()
     {
         $encoding = new SimplePostEncoding();
@@ -174,7 +174,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertIdentical($encoding->getValue('a'), array('Hello', 'Goodbye'));
         $this->assertWritten($encoding, 'a=Hello&a=Goodbye');
     }
-    
+
     public function testMergeInHash()
     {
         $encoding = new SimpleGetEncoding(array('a' => 'A1', 'b' => 'B'));
@@ -182,7 +182,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertIdentical($encoding->getValue('a'), array('A1', 'A2'));
         $this->assertIdentical($encoding->getValue('b'), 'B');
     }
-    
+
     public function testMergeInObject()
     {
         $encoding = new SimpleGetEncoding(array('a' => 'A1', 'b' => 'B'));
@@ -190,7 +190,7 @@ class TestOfEncoding extends UnitTestCase
         $this->assertIdentical($encoding->getValue('a'), array('A1', 'A2'));
         $this->assertIdentical($encoding->getValue('b'), 'B');
     }
-    
+
     public function testPrefilledMultipart()
     {
         $encoding = new SimpleMultipartEncoding(array('a' => 'aaa'), 'boundary');
@@ -202,7 +202,7 @@ class TestOfEncoding extends UnitTestCase
                 "aaa\r\n" .
                 "--boundary--\r\n");
     }
-    
+
     public function testAttachment()
     {
         $encoding = new SimpleMultipartEncoding(array(), 'boundary');
@@ -216,21 +216,21 @@ class TestOfEncoding extends UnitTestCase
                 "aaa\r\n" .
                 "--boundary--\r\n");
     }
-    
+
     public function testEntityEncodingDefaultContentType()
     {
         $encoding = new SimpleEntityEncoding();
         $this->assertIdentical($encoding->getContentType(), 'application/x-www-form-urlencoded');
         $this->assertWritten($encoding, '');
     }
-    
+
     public function testEntityEncodingTextBody()
     {
         $encoding = new SimpleEntityEncoding('plain text');
         $this->assertIdentical($encoding->getContentType(), 'text/plain');
         $this->assertWritten($encoding, 'plain text');
     }
-    
+
     public function testEntityEncodingXmlBody()
     {
         $encoding = new SimpleEntityEncoding('<p><a>xml</b><b>text</b></p>', 'text/xml');
@@ -249,7 +249,7 @@ class TestOfEncodingHeaders extends UnitTestCase
         $encoding = new SimpleEntityEncoding();
         $encoding->writeHeadersTo($socket);
     }
-    
+
     public function testTextEncodingWritesDefaultContentType()
     {
         $socket = new MockSimpleSocket();
@@ -258,7 +258,7 @@ class TestOfEncodingHeaders extends UnitTestCase
         $encoding = new SimpleEntityEncoding('one two three four');
         $encoding->writeHeadersTo($socket);
     }
-    
+
     public function testEmptyMultipartEncodingWritesEndBoundaryContentLength()
     {
         $socket = new MockSimpleSocket();

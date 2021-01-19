@@ -1,7 +1,7 @@
 <?php
-// $Id$
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../shell_tester.php');
+
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../shell_tester.php';
 
 class TestOfShell extends UnitTestCase
 {
@@ -11,7 +11,7 @@ class TestOfShell extends UnitTestCase
         $this->assertIdentical($shell->execute('echo Hello'), 0);
         $this->assertPattern('/Hello/', $shell->getOutput());
     }
-    
+
     public function testBadCommand()
     {
         $shell = new SimpleShell();
@@ -27,16 +27,16 @@ class TestOfShellTesterAndShell extends ShellTestCase
         $this->assertExitCode(0);
         $this->assertoutput('Hello');
     }
-    
+
     public function testFileExistence()
     {
-        $this->assertFileExists(dirname(__FILE__) . '/all_tests.php');
+        $this->assertFileExists(__DIR__ . '/all_tests.php');
         $this->assertFileNotExists('wibble');
     }
-    
+
     public function testFilePatterns()
     {
-        $this->assertFilePattern('/all[_ ]tests/i', dirname(__FILE__) . '/all_tests.php');
-        $this->assertNoFilePattern('/sputnik/i', dirname(__FILE__) . '/all_tests.php');
+        $this->assertFilePattern('/all[_ ]tests/i', __DIR__ . '/all_tests.php');
+        $this->assertNoFilePattern('/sputnik/i', __DIR__ . '/all_tests.php');
     }
 }

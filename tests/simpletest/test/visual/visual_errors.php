@@ -1,8 +1,9 @@
 <?php
-require_once(dirname(__FILE__) . '/../../shell_tester.php');
-require_once(dirname(__FILE__) . '/../../mock_objects.php');
-require_once(dirname(__FILE__) . '/../../xml.php');
-require_once(dirname(__FILE__) . '/../../autorun.php');
+
+require_once __DIR__ . '/../../shell_tester.php';
+require_once __DIR__ . '/../../mock_objects.php';
+require_once __DIR__ . '/../../xml.php';
+require_once __DIR__ . '/../../autorun.php';
 
 class VisualTestOfErrors extends UnitTestCase
 {
@@ -21,7 +22,7 @@ class VisualTestOfErrors extends UnitTestCase
         $this->expectError();
         trigger_error('Error');
     }
-    
+
     public function testUnusedErrorExpectationsCauseFailures()
     {
         $this->dump('Two failures...');

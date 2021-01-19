@@ -1,7 +1,7 @@
 <?php
-// $Id$
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../xml.php');
+
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../xml.php';
 Mock::generate('SimpleScorer');
 
 if (! function_exists('xml_parser_create')) {
@@ -13,7 +13,7 @@ class TestOfNestingTags extends UnitTestCase
 {
     public function testGroupSize()
     {
-        $nesting = new NestingGroupTag(array('SIZE' => 2));
+        $nesting = new NestedGroupTag(array('SIZE' => 2));
         $this->assertEqual($nesting->getSize(), 2);
     }
 }
@@ -170,14 +170,14 @@ class TestOfXmlResultsParsing extends UnitTestCase
 
     public function testSignal()
     {
-        $signal = new AnyOldSignal();
-        $signal->stuff = "Hello";
-        $listener = new MockSimpleScorer();
+        $signal        = new AnyOldSignal();
+        $signal->stuff = 'Hello';
+        $listener      = new MockSimpleScorer();
         $listener->expectOnce('paintSignal', array('a_signal', $signal));
         $parser = new SimpleTestXmlParser($listener);
         $this->sendValidStart($parser);
         $this->assertTrue($parser->parse(
-                "<signal type=\"a_signal\"><![CDATA[" .
+                '<signal type="a_signal"><![CDATA[' .
                 serialize($signal) . "]]></signal>\n"));
         $this->sendValidEnd($parser);
     }

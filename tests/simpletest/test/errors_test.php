@@ -1,8 +1,10 @@
 <?php
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../errors.php');
-require_once(dirname(__FILE__) . '/../expectation.php');
-require_once(dirname(__FILE__) . '/../test_case.php');
+
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../errors.php';
+require_once __DIR__ . '/../expectation.php';
+require_once __DIR__ . '/../test_case.php';
+
 Mock::generate('SimpleTestCase');
 Mock::generate('SimpleExpectation');
 SimpleTest::ignore('MockSimpleTestCase');
@@ -12,14 +14,14 @@ class TestOfErrorQueue extends UnitTestCase
     public function setUp()
     {
         $context = SimpleTest::getContext();
-        $queue = $context->get('SimpleErrorQueue');
+        $queue   = $context->get('SimpleErrorQueue');
         $queue->clear();
     }
 
     public function tearDown()
     {
         $context = SimpleTest::getContext();
-        $queue = $context->get('SimpleErrorQueue');
+        $queue   = $context->get('SimpleErrorQueue');
         $queue->clear();
     }
 
@@ -30,7 +32,7 @@ class TestOfErrorQueue extends UnitTestCase
                 new IdenticalExpectation(new AnythingExpectation()),
                 'B',
                 'a message'));
-        $test->setReturnValue('assert', true);
+        $test->returnsByValue('assert', true);
         $test->expectNever('error');
         $queue = new SimpleErrorQueue();
         $queue->setTestCase($test);
@@ -58,7 +60,7 @@ class TestOfErrorTrap extends UnitTestCase
     public function testQueueStartsEmpty()
     {
         $context = SimpleTest::getContext();
-        $queue = $context->get('SimpleErrorQueue');
+        $queue   = $context->get('SimpleErrorQueue');
         $this->assertFalse($queue->extract());
     }
 
@@ -90,7 +92,7 @@ class TestOfErrorTrap extends UnitTestCase
 
     public function testErrorWithPercentsPassesWithNoSprintfError()
     {
-        $this->expectError("%");
+        $this->expectError('%');
         trigger_error('%');
     }
 }
@@ -217,5 +219,4 @@ class TestRunnerForLeftOverAndNotEnoughErrors extends UnitTestCase
     }
 }
 
-// TODO: Add stacked error handler test
-;
+// @todo add stacked error handler test

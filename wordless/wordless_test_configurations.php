@@ -21,7 +21,7 @@ class WordlessTestConfigurations {
         $this->files['gitlabci']['destination_path'] = Wordless::join_paths(ABSPATH, '.gitlab-ci.yml');
     }
 
-    public function install() : void {
+    public function install() {
         foreach ($this->files as $file => $props) {
             $source_content = file_get_contents($props['template_path']);
             $source_content = str_replace("%THEME_NAME%", $this->currentTheme, $source_content);

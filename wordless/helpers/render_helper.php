@@ -213,7 +213,7 @@ class RenderHelper {
         if (!preg_match("/^_/", $parts[sizeof($parts)-1])) {
             $parts[sizeof($parts)-1] = "_" . $parts[sizeof($parts)-1];
         }
-        render_template(implode($parts, "/"), $locals, $static);
+        render_template(implode("/", $parts), $locals, $static);
     }
 
     /**

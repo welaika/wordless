@@ -1,13 +1,13 @@
 <?php
-// $Id$
-require_once('../remote.php');
-require_once('../reporter.php');
+
+require_once '../remote.php';
+require_once '../reporter.php';
 
 // The following URL will depend on your own installation.
 if (isset($_SERVER['SCRIPT_URI'])) {
     $base_uri = $_SERVER['SCRIPT_URI'];
 } elseif (isset($_SERVER['HTTP_HOST']) && isset($_SERVER['PHP_SELF'])) {
-    $base_uri = 'http://'. $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
+    $base_uri = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['PHP_SELF'];
 };
 $test_url = str_replace('remote_test.php', 'visual_test.php', $base_uri);
 

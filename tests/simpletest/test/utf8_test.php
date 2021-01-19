@@ -1,41 +1,47 @@
 <?php
-// $Id: parser_test.php 1608 2007-12-27 09:03:07Z pp11 $
 // Handle with care : this file is UTF8.
 
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../php_parser.php');
-require_once(dirname(__FILE__) . '/../url.php');
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../php_parser.php';
+require_once __DIR__ . '/../url.php';
+
 Mock::generate('SimpleHtmlSaxParser');
 Mock::generate('SimplePhpPageBuilder');
 
-class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
-    function testWithTextInUTF8() {
+class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase
+{
+    public function testWithTextInUTF8()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern("eé");
-        $this->assertTrue($regex->match("eéêè", $match));
-        $this->assertEqual($match, "eé");
+        $regex->addPattern('eé');
+        $this->assertTrue($regex->match('eéêè', $match));
+        $this->assertEqual($match, 'eé');
     }
 
-    function testWithTextInLatin1() {
+    public function testWithTextInLatin1()
+    {
         $regex = new ParallelRegex(false);
-        $regex->addPattern(utf8_decode("eé"));
-        $this->assertTrue($regex->match(utf8_decode("eéêè"), $match));
-        $this->assertEqual($match, utf8_decode("eé"));
+        $regex->addPattern(utf8_decode('eé'));
+        $this->assertTrue($regex->match(utf8_decode('eéêè'), $match));
+        $this->assertEqual($match, utf8_decode('eé'));
     }
 
-    function &createParser() {
+    public function createParser()
+    {
         $parser = new MockSimpleHtmlSaxParser();
-        $parser->setReturnValue('acceptStartToken', true);
-        $parser->setReturnValue('acceptEndToken', true);
-        $parser->setReturnValue('acceptAttributeToken', true);
-        $parser->setReturnValue('acceptEntityToken', true);
-        $parser->setReturnValue('acceptTextToken', true);
-        $parser->setReturnValue('ignore', true);
+        $parser->returnsByValue('acceptStartToken', true);
+        $parser->returnsByValue('acceptEndToken', true);
+        $parser->returnsByValue('acceptAttributeToken', true);
+        $parser->returnsByValue('acceptEntityToken', true);
+        $parser->returnsByValue('acceptTextToken', true);
+        $parser->returnsByValue('ignore', true);
+
         return $parser;
     }
 
-    function testTagWithAttributesInUTF8() {
-        $parser = &$this->createParser();
+    public function testTagWithAttributesInUTF8()
+    {
+        $parser = $this->createParser();
         $parser->expectOnce('acceptTextToken', array('label', '*'));
         $parser->expectAt(0, 'acceptStartToken', array('<a', '*'));
         $parser->expectAt(1, 'acceptStartToken', array('href', '*'));
@@ -50,8 +56,9 @@ class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
         $this->assertTrue($lexer->parse('<a href = "hère.html">label</a>'));
     }
 
-    function testTagWithAttributesInLatin1() {
-        $parser = &$this->createParser();
+    public function testTagWithAttributesInLatin1()
+    {
+        $parser = $this->createParser();
         $parser->expectOnce('acceptTextToken', array('label', '*'));
         $parser->expectAt(0, 'acceptStartToken', array('<a', '*'));
         $parser->expectAt(1, 'acceptStartToken', array('href', '*'));
@@ -67,12 +74,12 @@ class TestOfHtmlSaxParserWithDifferentCharset extends UnitTestCase {
     }
 }
 
-class TestOfUrlithDifferentCharset extends UnitTestCase {
-    function testUsernameAndPasswordInUTF8() {
+class TestOfUrlithDifferentCharset extends UnitTestCase
+{
+    public function testUsernameAndPasswordInUTF8()
+    {
         $url = new SimpleUrl('http://pÈrick:penËt@www.lastcraft.com');
         $this->assertEqual($url->getUsername(), 'pÈrick');
         $this->assertEqual($url->getPassword(), 'penËt');
     }
 }
-
-?>
