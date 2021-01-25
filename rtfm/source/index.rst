@@ -72,8 +72,9 @@ Table of Contents
 .. toctree::
     :caption: Appendix
 
-    _pages/appendix/plainphp
+    _pages/appendix/render_static
     _pages/appendix/acf_gutenberg_blocks
+    _pages/appendix/plainphp
 
 TODOs
 #####
