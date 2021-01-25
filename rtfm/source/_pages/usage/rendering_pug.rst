@@ -70,8 +70,8 @@ used mainly into ``index.php`` file. Here is its signature:
 .. literalinclude:: /../../wordless/helpers/render_helper.php
     :language: php
     :caption: render_helper.php
-    :lineno-start: 20
-    :lines: 20-36
+    :lineno-start: 61
+    :lines: 61-76
 
 For example:
 
