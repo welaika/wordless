@@ -1,0 +1,40 @@
+{
+    "name": "phug/invoker",
+    "type": "library",
+    "keywords": ["phug", "invoke", "invoker"],
+    "description": "Typing-based invoker",
+    "license": "MIT",
+    "homepage": "http://phug-lang.com",
+    "authors": [
+        {
+            "name": "KyleKatarn",
+            "email": "jade-php@selfbuild.fr",
+            "homepage": "http://github.com/kylekatarnls"
+        }
+    ],
+    "support": {
+        "email": "support@phug-lang.com",
+        "issues": "https://github.com/phug-php/event/issues",
+        "source": "https://github.com/phug-php/event",
+        "docs": "http://phug-lang.com/docs"
+    },
+    "minimum-stability": "dev",
+    "require": {
+        "php": ">=5.5.0",
+        "phug/event": "^1.4"
+    },
+    "require-dev": {
+        "phug/compiler": "^1.4",
+        "phug/parser": "^1.4"
+    },
+    "autoload": {
+        "psr-4": {
+            "Phug\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
+}

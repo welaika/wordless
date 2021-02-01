@@ -1,0 +1,63 @@
+# Test
+test:
+  image:
+    name: codeception/codeception
+    # clear image entrypoint to make bash being available
+    entrypoint: [""]
+
+  # run selenium chrome as a local service (put "host: 'selenium__standalone-chrome'" in environment configuration)
+  services:
+    - selenium/standalone-chrome:latest
+    - mysql
+
+  variables:
+    # Configure mysql service (https://hub.docker.com/_/mysql/)
+    MYSQL_DATABASE: %THEME_NAME%_test
+    MYSQL_ROOT_PASSWORD: mysql
+    WP_VERSION: latest
+    WP_MULTISITE: "0"
+
+  cache:
+    key:
+      files:
+        - wp-content/themes/%THEME_NAME%/composer.lock
+    paths:
+      - wp-content/themes/%THEME_NAME%/vendor/
+
+  before_script:
+    - cd wp-content/themes/%THEME_NAME%
+    # This is the only trick to know the current instance IP I've found.
+    - LOCAL_IP=$(hostname -I | cut -d ' ' -f 1)
+    - sed -i "s/localhost:8080/$LOCAL_IP:8080/" .env.ci
+    - composer install
+    - curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+    - php wp-cli.phar server --host=0.0.0.0 --allow-root &>/dev/null &
+
+  script:
+    - vendor/bin/codecept run -c codeception.ci.yml acceptance --xml --html
+
+  artifacts:
+    when: always
+    expire_in: 1 week
+    paths:
+      - wp-content/themes/%THEME_NAME%/tests/_output
+    # make the report available in Gitlab UI. see https://docs.gitlab.com/ee/ci/unit_test_reports.html
+    reports:
+      junit: wp-content/themes/%THEME_NAME%/tests/_output/report.xml
+
+lint:
+  image: welaika/wordless
+
+  cache:
+    key:
+      files:
+        - wp-content/themes/%THEME_NAME%/yarn.lock
+    paths:
+      - wp-content/themes/%THEME_NAME%/node_modules/
+
+  before_script:
+    - cd wp-content/themes/%THEME_NAME%
+    - yarn install --frozen-lockfile --ignore-optional
+
+  script:
+    - yarn lint

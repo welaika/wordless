@@ -60,3 +60,6 @@ The default path is ``blocks/``.
 .. note::
 
     The path will be always relative to ``views/`` folder
+
+.. todo::
+    ``wordless_component_validation_exception``

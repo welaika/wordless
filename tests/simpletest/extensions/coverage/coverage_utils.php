@@ -1,36 +1,27 @@
 <?php
-/**
- * @package        SimpleTest
- * @subpackage     Extensions
- */
-/**
- * @package        SimpleTest
- * @subpackage     Extensions
- */
+
 class CoverageUtils
 {
+    public static function reportFilename($file)
+    {
+        return preg_replace('|[:/\\\\]|i', '_', $file) . '.html';
+    }
+
     public static function mkdir($dir)
     {
         if (!file_exists($dir)) {
             mkdir($dir, 0777, true);
         } else {
             if (!is_dir($dir)) {
-                throw new Exception($dir .' exists as a file, not a directory');
+                throw new Exception($dir . ' exists as a file, not a directory');
             }
         }
     }
 
-    public static function requireSqlite()
+    public static function isPackageClassAvailable($file, $class)
     {
-        if (!self::isPackageClassAvailable('DB/sqlite.php', 'SQLiteDatabase')) {
-            echo "sqlite library is required to be installed and available in include_path";
-            exit(1);
-        }
-    }
+        @include_once($file);
 
-    public static function isPackageClassAvailable($includeFile, $class)
-    {
-        @include_once($includeFile);
         return class_exists($class);
     }
 
@@ -59,21 +50,22 @@ class CoverageUtils
      *
      * @param unknown_type $argv
      * @param supportMutliValue - will store 2nd copy of value in an array with key "foo[]"
+     *
      * @return unknown
      */
     public static function parseArguments($argv, $mutliValueMode = false)
     {
-        $args = array();
+        $args                   = array();
         $args['extraArguments'] = array();
         array_shift($argv); // scriptname
         foreach ($argv as $arg) {
-            if (ereg('^--([^=]+)=(.*)', $arg, $reg)) {
+            if (preg_match('#^--([^=]+)=(.*)#', $arg, $reg)) {
                 $args[$reg[1]] = $reg[2];
                 if ($mutliValueMode) {
                     self::addItemAsArray($args, $reg[1], $reg[2]);
                 }
-            } elseif (ereg('^[-]{1,2}([^[:blank:]]+)', $arg, $reg)) {
-                $nonnull = '';
+            } elseif (preg_match('#^[-]{1,2}([^[:blank:]]+)#', $arg, $reg)) {
+                $nonnull       = '';
                 $args[$reg[1]] = $nonnull;
                 if ($mutliValueMode) {
                     self::addItemAsArray($args, $reg[1], $nonnull);
@@ -94,7 +86,7 @@ class CoverageUtils
      */
     public static function addItemAsArray(&$array, $key, $item)
     {
-        $array_key = $key .'[]';
+        $array_key = $key . '[]';
         if (array_key_exists($array_key, $array)) {
             $array[$array_key][] = $item;
         } else {
@@ -109,9 +101,10 @@ class CoverageUtils
      *
      * @param unknown_type $val
      * @param unknown_type $default
+     *
      * @return first value unless value is not set then returns 2nd arg or null if no 2nd arg
      */
-    public static function issetOr(&$val, $default = null)
+    public static function issetOrDefault(&$val, $default = null)
     {
         return isset($val) ? $val : $default;
     }

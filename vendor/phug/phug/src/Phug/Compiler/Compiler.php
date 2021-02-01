@@ -3,6 +3,7 @@
 namespace Phug;
 
 // Node compilers
+use Closure;
 use Phug\Compiler\Element\BlockElement;
 use Phug\Compiler\Event\CompileEvent;
 use Phug\Compiler\Event\ElementEvent;
@@ -39,7 +40,9 @@ use Phug\Compiler\NodeCompiler\WhileNodeCompiler;
 // Nodes
 use Phug\Compiler\NodeCompiler\YieldNodeCompiler;
 use Phug\Compiler\NodeCompilerInterface;
+use Phug\Compiler\NormalizerInterface;
 use Phug\Compiler\Util\YieldHandlerTrait;
+use Phug\Compiler\WithUpperLocatorInterface;
 use Phug\Formatter\AbstractElement;
 use Phug\Formatter\Element\TextElement;
 use Phug\Formatter\ElementInterface;
@@ -75,7 +78,7 @@ use Phug\Util\ModuleContainerInterface;
 use Phug\Util\Partial\ModuleContainerTrait;
 use Phug\Util\SourceLocation;
 
-class Compiler implements ModuleContainerInterface, CompilerInterface
+class Compiler implements ModuleContainerInterface, CompilerInterface, WithUpperLocatorInterface
 {
     use ModuleContainerTrait;
     use YieldHandlerTrait;
@@ -94,6 +97,11 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
      * @var LocatorInterface
      */
     private $locator;
+
+    /**
+     * @var LocatorInterface|null
+     */
+    private $upperLocator;
 
     /**
      * @var string
@@ -243,23 +251,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         $this->addModules($this->getOption('compiler_modules'));
     }
 
-    private function initializeFormatter()
-    {
-        $formatterClassName = $this->getOption('formatter_class_name');
-
-        if (!is_a($formatterClassName, Formatter::class, true)) {
-            throw new \InvalidArgumentException(
-                "Passed formatter class $formatterClassName is ".
-                'not a valid '.Formatter::class
-            );
-        }
-
-        $debug = $this->getOption('debug');
-        $this->formatters[$debug] = new $formatterClassName($this->getOptions());
-
-        return $this->formatters[$debug];
-    }
-
     /**
      * Reset layout and compilers cache on clone.
      */
@@ -281,16 +272,40 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         $this->reset();
     }
 
+    /**
+     * Get parent compiler (compiler of the file that included/extended the current file)
+     * or null if the file is not compiled via an import.
+     *
+     * @return CompilerInterface|null
+     */
     public function getParentCompiler()
     {
         return $this->parentCompiler;
     }
 
+    /**
+     * Set the parent compiler (should be used to declare an import relation such as
+     * include/extend).
+     *
+     * @param CompilerInterface $compiler
+     *
+     * @return $this
+     */
     public function setParentCompiler(CompilerInterface $compiler)
     {
         $this->parentCompiler = $compiler;
 
         return $this;
+    }
+
+    /**
+     * Set a master locator to use before the internal one.
+     *
+     * @param LocatorInterface|null $upperLocator
+     */
+    public function setUpperLocator($upperLocator)
+    {
+        $this->upperLocator = $upperLocator;
     }
 
     /**
@@ -305,12 +320,13 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
     public function locate($path, $paths = null)
     {
         $paths = $paths ?: $this->getOption('paths');
+        $extensions = $this->getOption('extensions');
 
-        return $this->locator->locate(
-            $path,
-            $paths,
-            $this->getOption('extensions')
-        );
+        $upperPath = $this->upperLocator
+            ? $this->upperLocator->locate($path, $paths, $extensions)
+            : null;
+
+        return $upperPath ?: $this->locator->locate($path, $paths, $extensions);
     }
 
     /**
@@ -330,15 +346,33 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
 
         $this->assert(
             $resolvePath || $this->hasOption('not_found_template'),
-            sprintf(
-                "Source file %s not found \nPaths: %s \nExtensions: %s",
-                $path,
-                implode(', ', $this->getOption('paths')),
-                implode(', ', $this->getOption('extensions'))
-            )
+            function () use ($path) {
+                return sprintf(
+                    "Source file %s not found \nPaths: %s \nExtensions: %s",
+                    $path,
+                    implode(', ', $this->getOption('paths')),
+                    implode(', ', $this->getOption('extensions'))
+                );
+            }
         );
 
         return $resolvePath;
+    }
+
+    /**
+     * Normalize the string of a relative or absolute path.
+     *
+     * @param string $path the path to normalize.
+     *
+     * @return string
+     */
+    public function normalizePath($path)
+    {
+        if ($this->locator instanceof NormalizerInterface) {
+            return $this->locator->normalize($path);
+        }
+
+        return $path;
     }
 
     /**
@@ -427,23 +461,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         $this->nodeCompilers[$className] = $handler;
 
         return $this;
-    }
-
-    /**
-     * Create a new compiler instance by name or return the previous
-     * instance with the same name.
-     *
-     * @param string $compiler name
-     *
-     * @return NodeCompilerInterface
-     */
-    private function getNamedCompiler($compiler)
-    {
-        if (!isset($this->namedCompilers[$compiler])) {
-            $this->namedCompilers[$compiler] = new $compiler($this);
-        }
-
-        return $this->namedCompilers[$compiler];
     }
 
     /**
@@ -606,6 +623,8 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
     }
 
     /**
+     * The the paths imported (stored in local memory) by a given path.
+     *
      * @param string|null $path
      *
      * @return array
@@ -622,6 +641,8 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
     }
 
     /**
+     * The the paths imported (stored in local memory) for the current path.
+     *
      * @return array
      */
     public function getCurrentImportPaths()
@@ -761,7 +782,7 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
                 (is_object($element) ? get_class($element) : gettype($element)),
                 $node
             );
-        } // @codeCoverageIgnore
+        }
 
         return $element;
     }
@@ -781,6 +802,8 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
     }
 
     /**
+     * Get the current file path compiling.
+     *
      * @return string
      */
     public function getPath()
@@ -788,16 +811,39 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         return $this->path ?: $this->getOption('filename');
     }
 
+    /**
+     * Get the class the compiler expects for its modules.
+     *
+     * @return string
+     */
     public function getModuleBaseClassName()
     {
         return CompilerModuleInterface::class;
     }
 
+    /**
+     * Check if a filter is in use in the compiler.
+     *
+     * @see https://en.phug-lang.com/#filters
+     *
+     * @param string $name
+     *
+     * @return bool
+     */
     public function hasFilter($name)
     {
         return $this->getFilter($name) !== null;
     }
 
+    /**
+     * Get a filter by name.
+     *
+     * @see https://en.phug-lang.com/#filters
+     *
+     * @param string $name
+     *
+     * @return callable|mixed|null
+     */
     public function getFilter($name)
     {
         $filters = $this->getOption('filters');
@@ -816,11 +862,30 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         return null;
     }
 
+    /**
+     * Set a filter for the current compiler.
+     *
+     * @see https://en.phug-lang.com/#filters
+     *
+     * @param string   $name
+     * @param callable $filter
+     *
+     * @return Compiler|CompilerInterface
+     */
     public function setFilter($name, $filter)
     {
         return $this->setOption(['filters', $name], $filter);
     }
 
+    /**
+     * Remove a filter from the compiler.
+     *
+     * @see https://en.phug-lang.com/#filters
+     *
+     * @param string $name
+     *
+     * @return Compiler|CompilerInterface
+     */
     public function unsetFilter($name)
     {
         return $this->unsetOption(['filters', $name]);
@@ -841,8 +906,6 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
      */
     public function throwException($message, $node = null, $code = 0, $previous = null)
     {
-        $pattern = "Failed to compile: %s \nLine: %s \nOffset: %s";
-
         $location = $node ? $node->getSourceLocation() : null;
 
         $path = $location ? $location->getPath() : $this->getPath();
@@ -850,26 +913,72 @@ class Compiler implements ModuleContainerInterface, CompilerInterface
         $offset = $location ? $location->getOffset() : 0;
         $offsetLength = $location ? $location->getOffsetLength() : 0;
 
-        if ($path) {
-            $pattern .= "\nPath: $path";
-        }
-
         throw new CompilerException(
             new SourceLocation($path, $line, $offset, $offsetLength),
-            vsprintf($pattern, [
-                $message,
-                $line,
-                $offset,
+            CompilerException::message($message, [
+                'path'   => $path,
+                'line'   => $line,
+                'offset' => $offset,
             ]),
             $code,
             $previous
         );
     }
 
+    /**
+     * Throw an exception if given condition is false.
+     *
+     * @param bool           $condition condition to validate
+     * @param string|Closure $message   message to throw if condition isn't validated or a closure that returns it
+     * @param null           $node      optional node to get code position in error details
+     * @param int            $code      optional error code
+     * @param null           $previous  optional link to previous exception
+     *
+     * @throws CompilerException
+     */
     public function assert($condition, $message, $node = null, $code = 0, $previous = null)
     {
         if (!$condition) {
-            $this->throwException($message, $node, $code, $previous);
-        } // @codeCoverageIgnore
+            $this->throwException($message instanceof Closure ? $message() : $message, $node, $code, $previous);
+        }
+    }
+
+    /**
+     * Create a new compiler instance by name or return the previous
+     * instance with the same name.
+     *
+     * @param string $compiler name
+     *
+     * @return NodeCompilerInterface
+     */
+    private function getNamedCompiler($compiler)
+    {
+        if (!isset($this->namedCompilers[$compiler])) {
+            $this->namedCompilers[$compiler] = new $compiler($this);
+        }
+
+        return $this->namedCompilers[$compiler];
+    }
+
+    /**
+     * Create the instance of formatter.
+     *
+     * @return Formatter
+     */
+    private function initializeFormatter()
+    {
+        $formatterClassName = $this->getOption('formatter_class_name');
+
+        if (!is_a($formatterClassName, Formatter::class, true)) {
+            throw new \InvalidArgumentException(
+                "Passed formatter class $formatterClassName is ".
+                'not a valid '.Formatter::class
+            );
+        }
+
+        $debug = $this->getOption('debug');
+        $this->formatters[$debug] = new $formatterClassName($this->getOptions());
+
+        return $this->formatters[$debug];
     }
 }

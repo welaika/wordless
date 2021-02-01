@@ -1,106 +1,112 @@
 <?php
-/**
-* @package        SimpleTest
-* @subpackage     Extensions
-*/
-/**
-* @package        SimpleTest
-* @subpackage     Extensions
-*/
+
+require_once __DIR__ . '/coverage_utils.php';
+
 class CoverageCalculator
 {
     public function coverageByFileVariables($file, $coverage)
     {
         $hnd = fopen($file, 'r');
-        if ($hnd == null) {
+        if (!$hnd) {
             throw new Exception("File $file is missing");
         }
-        $lines = array();
+        $lines = [];
         for ($i = 1; !feof($hnd); $i++) {
-            $line = fgets($hnd);
+            $line         = fgets($hnd);
             $lineCoverage = $this->lineCoverageCodeToStyleClass($coverage, $i);
-            $lines[$i] = array('lineCoverage' => $lineCoverage, 'code' => $line);
+            $lines[$i]    = ['lineCoverage' => $lineCoverage, 'code' => $line];
         }
 
         fclose($hnd);
 
-        $var = compact('file', 'lines', 'coverage');
-        return $var;
+        return ['file' => $file, 'lines' => $lines, 'coverage' => $coverage];
     }
 
     public function lineCoverageCodeToStyleClass($coverage, $line)
     {
         if (!array_key_exists($line, $coverage)) {
-            return "comment";
+            return 'comment';
         }
         $code = $coverage[$line];
         if (empty($code)) {
-            return "comment";
+            return 'comment';
         }
         switch ($code) {
             case -1:
-                return "missed";
+                return 'missed';
             case -2:
-                return "dead";
+                return 'dead';
         }
 
-        return "covered";
+        return 'covered';
     }
 
-    public function totalLoc($total, $coverage)
+    public function totalLinesOfCode($total, $coverage)
     {
-        return $total + sizeof($coverage);
+        return $total + count($coverage);
     }
 
+    /**
+     *
+     * https://xdebug.org/docs/code_coverage
+     *
+     * 1: this line was executed
+     * -1: this line was not executed
+     * -2: this line did not have executable code on it
+     *
+     * @param type $total
+     * @param type $line
+     * @return type
+     */
     public function lineCoverage($total, $line)
     {
-        # NOTE: counting dead code as covered, as it's almost always an executable line
-        # strange artifact of xdebug or underlying system
         return $total + ($line > 0 || $line == -2 ? 1 : 0);
     }
 
     public function totalCoverage($total, $coverage)
     {
-        return $total + array_reduce($coverage, array(&$this, "lineCoverage"));
+        return $total + array_reduce($coverage, array($this, 'lineCoverage'));
     }
 
-    public static function reportFilename($filename)
+    public function percentCoverageForFile($file, $coverage)
     {
-        return preg_replace('|[/\\\\]|', '_', $filename) . '.html';
-    }
+        $fileReport = CoverageUtils::reportFilename($file);
 
-    public function percentCoverageByFile($coverage, $file, &$results)
-    {
-        $byFileReport = self::reportFilename($file);
-
-        $loc = sizeof($coverage);
+        $loc = count($coverage);
         if ($loc == 0) {
             return 0;
         }
-        $lineCoverage = array_reduce($coverage, array(&$this, "lineCoverage"));
-        $percentage = 100 * ($lineCoverage / $loc);
-        $results[0][$file] = array('byFileReport' => $byFileReport, 'percentage' => $percentage);
+        $lineCoverage      = array_reduce($coverage, array($this, 'lineCoverage'));
+        $percentage        = 100 * ($lineCoverage / $loc);
+        return ['fileReport' => $fileReport, 'percentage' => $percentage];
     }
 
     public function variables($coverage, $untouched)
     {
-        $coverageByFile = array();
-        array_walk($coverage, array(&$this, "percentCoverageByFile"), array(&$coverageByFile));
-
-        $totalLoc = array_reduce($coverage, array(&$this, "totalLoc"));
-
-        if ($totalLoc > 0) {
-            $totalLinesOfCoverage = array_reduce($coverage, array(&$this, "totalCoverage"));
-            $totalPercentCoverage = 100 * ($totalLinesOfCoverage / $totalLoc);
+        $coverageByFile = [];
+        foreach($coverage as $file => $lineCoverageData) {
+            $coverageByFile[$file] = $this->percentCoverageForFile($file, $lineCoverageData);
         }
 
-        $untouchedPercentageDenominator = sizeof($coverage) + sizeof($untouched);
+        $totalLinesOfCode = array_reduce($coverage, [$this, 'totalLinesOfCode']);
+
+        if ($totalLinesOfCode > 0) {
+            $totalLinesOfCoverage = array_reduce($coverage, array($this, 'totalCoverage'));
+            $totalPercentCoverage = 100 * ($totalLinesOfCoverage / $totalLinesOfCode);
+        }
+
+        $untouchedPercentageDenominator = count($coverage) + count($untouched);
         if ($untouchedPercentageDenominator > 0) {
-            $filesTouchedPercentage = 100 * sizeof($coverage) / $untouchedPercentageDenominator;
+            $filesTouchedPercentage = 100 * count($coverage) / $untouchedPercentageDenominator;
         }
 
-        $var = compact('coverageByFile', 'totalPercentCoverage', 'totalLoc', 'totalLinesOfCoverage', 'filesTouchedPercentage');
-        $var['untouched'] = $untouched;
-        return $var;
+        return [
+            'coverageByFile'         => $coverageByFile,
+            'totalPercentCoverage'   => $totalPercentCoverage,
+            'totalLinesOfCode'       => $totalLinesOfCode,
+            'totalLinesOfCoverage'   => $totalLinesOfCoverage,
+            'filesTouchedPercentage' => $filesTouchedPercentage,
+            'untouched'              => $untouched
+        ];
     }
 }

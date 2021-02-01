@@ -26,7 +26,7 @@
     "require": {
         "php": ">=5.5.0",
         "phug/lexer": "^0.5.6 || ^1.0",
-        "phug/util": "^0.4.0 || ^1.0",
+        "phug/util": "^1.6",
         "phug/ast": "^0.1.0 || ^1.0"
     },
     "autoload": {
@@ -34,6 +34,9 @@
             "Phug\\": ""
         }
     },
-    "bin": [],
-    "suggest": {}
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.x-dev"
+        }
+    }
 }

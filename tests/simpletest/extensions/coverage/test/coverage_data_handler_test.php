@@ -1,18 +1,20 @@
 <?php
-require_once(dirname(__FILE__) . '/../../../autorun.php');
+
+require_once __DIR__ . '/../../../autorun.php';
 
 class CoverageDataHandlerTest extends UnitTestCase
 {
     public function skip()
     {
         $this->skipIf(
-                !file_exists('DB/sqlite.php'),
-                'The Coverage extension needs to have PEAR installed');
+            !extension_loaded('sqlite3'),
+            'The Coverage extension requires the PHP extension "php_sqlite3".'
+        );
     }
-    
+
     public function setUp()
     {
-        require_once dirname(__FILE__) .'/../coverage_data_handler.php';
+        require_once __DIR__ . '/../coverage_data_handler.php';
     }
 
     public function testAggregateCoverageCode()
@@ -34,7 +36,7 @@ class CoverageDataHandlerTest extends UnitTestCase
         $coverage = array(10 => -2, 20 => -1, 30 => 0, 40 => 1);
         $handler->write(array('file' => $coverage));
 
-        $actual = $handler->readFile('file');
+        $actual   = $handler->readFile('file');
         $expected = array(10 => -2, 20 => -1, 30 => 0, 40 => 1);
         $this->assertEqual($expected, $actual);
     }

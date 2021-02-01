@@ -1,15 +1,15 @@
 <?php
-// $Id$
-require_once(dirname(__FILE__) . '/../autorun.php');
-require_once(dirname(__FILE__) . '/../collector.php');
+
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../collector.php';
 
 class ExtensionsTests extends TestSuite
 {
-    public function ExtensionsTests()
+    public function __construct()
     {
-        $this->TestSuite('Extension tests for SimpleTest ' . SimpleTest::getVersion());
+        parent::__construct('Extension tests for SimpleTest ' . SimpleTest::getVersion());
 
-        $nodes = new RecursiveDirectoryIterator(dirname(__FILE__).'/../extensions/');
+        $nodes = new RecursiveDirectoryIterator(__DIR__ . '/../extensions/');
         foreach (new RecursiveIteratorIterator($nodes) as $node) {
             if (preg_match('/test\.php$/', $node->getFilename())) {
                 $this->addFile($node->getPathname());

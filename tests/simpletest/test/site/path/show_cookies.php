@@ -1,8 +1,4 @@
-<?php
-    if (count($HTTP_COOKIE_VARS) > 0) {
-        $_COOKIE = $HTTP_COOKIE_VARS;
-    }
-?><html>
+<html>
     <head><title>Simple test target file</title></head>
     <body>
         A target for the SimpleTest test suite that displays cookies.
@@ -10,7 +6,7 @@
         <?php
             if (count($_COOKIE) > 0) {
                 foreach ($_COOKIE as $key => $value) {
-                    print $key . "=" . $value . ";";
+                    print $key . '=' . $value . ';';
                 }
             }
         ?>

@@ -1,0 +1,5 @@
+mixin post($component)
+  post
+    header
+      h3!= link_to($component->post->post_title, get_permalink($component->post))
+    content!= get_the_excerpt($component->post)

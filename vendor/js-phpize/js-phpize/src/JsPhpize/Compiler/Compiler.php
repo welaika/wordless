@@ -20,7 +20,10 @@ use JsPhpize\Nodes\Variable;
 
 class Compiler
 {
+    const DOT_DISABLED = 1;
+
     use DyiadeTrait;
+    use InterpolationTrait;
 
     /**
      * @const string
@@ -42,9 +45,15 @@ class Compiler
      */
     protected $arrayShortSyntax;
 
-    public function __construct(JsPhpize $engine)
+    /**
+     * @var string
+     */
+    protected $filename;
+
+    public function __construct(JsPhpize $engine, $filename = null)
     {
         $this->engine = $engine;
+        $this->filename = $filename;
         $this->setPrefixes($engine->getVarPrefix(), $engine->getConstPrefix());
         $this->arrayShortSyntax = $engine->getOption('arrayShortSyntax', false);
     }
@@ -92,7 +101,8 @@ class Compiler
                 ' => $__current_value)';
         }
 
-        return $block->type . ($block->value
+        return $block->type . (
+            $block->value
             ? ' ' . $this->visitNode($block->value, $indent)
             : ''
         );
@@ -138,12 +148,25 @@ class Compiler
     protected function visitConstant(Constant $constant)
     {
         $value = $constant->value;
-        if ($constant->type === 'string' && mb_substr($constant->value, 0, 1) === '"') {
-            $value = str_replace('$', '\\$', $value);
+
+        if ($constant->type === 'string') {
+            if (substr($value, 0, 1) === '`') {
+                return implode(
+                    ' . ',
+                    iterator_to_array($this->readInterpolation(substr($value, 1, -1)))
+                );
+            }
+
+            if (mb_substr($constant->value, 0, 1) === '"') {
+                return str_replace('$', '\\$', $value);
+            }
         }
+
         if ($constant->type === 'regexp') {
-            $regExp = $this->engine->getHelperName('regExp');
-            $value = $this->helperWrap($regExp, [var_export($value, true)]);
+            return $this->helperWrap(
+                $this->engine->getHelperName('regExp'),
+                [var_export($value, true)]
+            );
         }
 
         return $value;
@@ -184,12 +207,12 @@ class Compiler
         return $leftHand . ' ' . $dyiade->operator . ' ' . $rightHand;
     }
 
-    protected function mapNodesArray($array, $indent, $pattern = null)
+    protected function mapNodesArray($array, $indent, $pattern = null, $options = 0)
     {
         $visitNode = [$this, 'visitNode'];
 
-        return array_map(function ($value) use ($visitNode, $indent, $pattern) {
-            $value = $visitNode($value, $indent);
+        return array_map(function ($value) use ($visitNode, $indent, $pattern, $options) {
+            $value = $visitNode($value, $indent, $options);
 
             if ($pattern) {
                 $value = sprintf($pattern, $value);
@@ -199,9 +222,9 @@ class Compiler
         }, $array);
     }
 
-    protected function visitNodesArray($array, $indent, $glue = '', $pattern = null)
+    protected function visitNodesArray($array, $indent, $glue = '', $pattern = null, $options = 0)
     {
-        return implode($glue, $this->mapNodesArray($array, $indent, $pattern));
+        return implode($glue, $this->mapNodesArray($array, $indent, $pattern, $options));
     }
 
     protected function visitFunctionCall(FunctionCall $functionCall, $indent)
@@ -209,7 +232,13 @@ class Compiler
         $function = $functionCall->function;
         $arguments = $functionCall->arguments;
         $applicant = $functionCall->applicant;
-        $arguments = $this->visitNodesArray($arguments, $indent, ', ');
+        $arguments = $this->visitNodesArray(
+            $arguments,
+            $indent,
+            ', ',
+            null,
+            $function instanceof Variable && $function->name === 'isset' ? static::DOT_DISABLED : 0
+        );
         $dynamicCall = $this->visitNode($function, $indent) . '(' . $arguments . ')';
 
         if ($function instanceof Variable && count($function->children) === 0) {
@@ -217,6 +246,7 @@ class Compiler
             $staticCall = $name . '(' . $arguments . ')';
 
             $functions = str_replace(["\n", "\t", "\r", ' '], '', static::STATIC_CALL_FUNCTIONS);
+
             if ($applicant === 'new' || in_array($name, explode(',', $functions))) {
                 return $staticCall;
             }
@@ -224,6 +254,14 @@ class Compiler
             $dynamicCall = '(function_exists(' . var_export($name, true) . ') ? ' .
                 $staticCall . ' : ' .
                 $dynamicCall . ')';
+
+            $functionNamespace = $this->engine->getOption('functionsNamespace');
+
+            if ($functionNamespace) {
+                $dynamicCall = '(function_exists(' . var_export($functionNamespace . '\\' . $name, true) . ') ? ' .
+                    '\\' . $functionNamespace . '\\' . $staticCall . ' : ' .
+                    $dynamicCall . ')';
+            }
         }
 
         return $this->handleVariableChildren($functionCall, $indent, $dynamicCall);
@@ -243,9 +281,11 @@ class Compiler
             $value = $visitNode($instruction, $indent);
 
             return $indent .
-                ($instruction instanceof Block && $instruction->handleInstructions()
+                (
+                    $instruction instanceof Block && $instruction->handleInstructions()
                     ? $value
-                    : ($isReturnPrepended && !preg_match('/^\s*return(?![a-zA-Z0-9_])/', $value)
+                    : (
+                        $isReturnPrepended && !preg_match('/^\s*return(?![a-zA-Z0-9_])/', $value)
                         ? ' return '
                         : ''
                     ) . $value . ';'
@@ -254,14 +294,15 @@ class Compiler
         }, $group->instructions));
     }
 
-    public function visitNode(Node $node, $indent)
+    public function visitNode(Node $node, $indent, $options = 0)
     {
         $method = preg_replace(
             '/^(.+\\\\)?([^\\\\]+)$/',
             'visit$2',
             get_class($node)
         );
-        $php = method_exists($this, $method) ? $this->$method($node, $indent) : '';
+        $php = method_exists($this, $method) ? $this->$method($node, $indent, $options) : '';
+
         if ($node instanceof Value) {
             $php = $node->getBefore() . $php . $node->getAfter();
         }
@@ -281,19 +322,41 @@ class Compiler
             ' : ' . $this->visitNode($ternary->falseValue, $indent);
     }
 
-    protected function handleVariableChildren(DynamicValue $dynamicValue, $indent, $php)
+    protected function handleVariableChildren(DynamicValue $dynamicValue, $indent, $php, $options = 0)
     {
-        if (count($dynamicValue->children)) {
-            $arguments = $this->mapNodesArray($dynamicValue->children, $indent);
-            array_unshift($arguments, $php);
-            $dot = $this->engine->getHelperName('dot');
-            $php = $this->helperWrap($dot, $arguments);
+        $children = $dynamicValue->children;
+
+        if (count($children)) {
+            return $this->wrapVariableChildren($children, $indent, $php, $options);
         }
 
         return $php;
     }
 
-    protected function visitVariable(Variable $variable, $indent)
+    protected function wrapVariableChildren($children, $indent, $php, $options)
+    {
+        $arguments = $this->mapNodesArray($children, $indent);
+        array_unshift($arguments, $php);
+        $dot = $this->engine->getHelperName('dot');
+        $dotDisabled = $options & static::DOT_DISABLED;
+
+        if ($dotDisabled) {
+            $lastChild = end($children);
+            $dotChild = $lastChild instanceof Constant && $lastChild->dotChild;
+            $lastChild = array_pop($arguments);
+        }
+
+        $php = $this->helperWrap($dot, $arguments);
+
+        if ($dotDisabled) {
+            $pattern = $dotChild ? '%s->{%s}' : '%s[%s]';
+            $php = sprintf($pattern, $php, $lastChild);
+        }
+
+        return $php;
+    }
+
+    protected function visitVariable(Variable $variable, $indent, $options = 0)
     {
         $name = $variable->name;
         if (in_array($name, ['Math', 'RegExp'])) {
@@ -302,8 +365,11 @@ class Compiler
         if ($variable->scope) {
             $name = '__let_' . spl_object_hash($variable->scope) . $name;
         }
+        if (!$this->engine->getOption('ignoreDollarVariable') || mb_substr($name, 0, 1) !== '$') {
+            $name = '$' . $name;
+        }
 
-        return $this->handleVariableChildren($variable, $indent, '$' . $name);
+        return $this->handleVariableChildren($variable, $indent, $name, $options);
     }
 
     public function compile(Block $block, $indent = '')

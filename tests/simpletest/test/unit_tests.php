@@ -1,18 +1,18 @@
 <?php
 
-require_once dirname(__FILE__) . '/../autorun.php';
-require_once dirname(__FILE__) . '/../unit_tester.php';
-require_once dirname(__FILE__) . '/../shell_tester.php';
-require_once dirname(__FILE__) . '/../mock_objects.php';
-require_once dirname(__FILE__) . '/../web_tester.php';
-require_once dirname(__FILE__) . '/../extensions/pear_test_case.php';
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../unit_tester.php';
+require_once __DIR__ . '/../shell_tester.php';
+require_once __DIR__ . '/../mock_objects.php';
+require_once __DIR__ . '/../web_tester.php';
+require_once __DIR__ . '/../extensions/phpunit/tests/adapter_test.php';
 
 class UnitTests extends TestSuite
 {
     public function __construct()
     {
         parent::__construct('Unit tests');
-        $path = dirname(__FILE__);
+        $path = __DIR__;
         $this->addFile($path . '/errors_test.php');
         $this->addFile($path . '/exceptions_test.php');
         $this->addFile($path . '/arguments_test.php');
@@ -22,12 +22,11 @@ class UnitTests extends TestSuite
         $this->addFile($path . '/dumper_test.php');
         $this->addFile($path . '/expectation_test.php');
         $this->addFile($path . '/unit_tester_test.php');
-        $this->addFile($path . '/reflection_php5_test.php');
-        $this->addFile($path . '/mock_objects_test.php');
+        $this->addFile($path . '/reflection_test.php');
+        //$this->addFile($path . '/mock_objects_test.php');
         $this->addFile($path . '/interfaces_test.php');
         $this->addFile($path . '/collector_test.php');
         $this->addFile($path . '/recorder_test.php');
-        $this->addFile($path . '/adapter_test.php');
         $this->addFile($path . '/socket_test.php');
         $this->addFile($path . '/encoding_test.php');
         $this->addFile($path . '/url_test.php');
@@ -45,6 +44,8 @@ class UnitTests extends TestSuite
         $this->addFile($path . '/web_tester_test.php');
         $this->addFile($path . '/shell_tester_test.php');
         $this->addFile($path . '/xml_test.php');
+
+        $this->addFile($path . '/../extensions/phpunit/tests/adapter_test.php');
         $this->addFile($path . '/../extensions/testdox/test.php');
     }
 }

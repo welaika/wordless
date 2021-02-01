@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . '/../autorun.php';
-require_once dirname(__FILE__) . '/../compatibility.php';
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../compatibility.php';
 
 class ComparisonClass
 {
@@ -20,34 +20,34 @@ class TestOfCompatibility extends UnitTestCase
 {
     public function testIdentityOfNumericStrings()
     {
-        $numericString1 = "123";
-        $numericString2 = "00123";
+        $numericString1 = '123';
+        $numericString2 = '00123';
         $this->assertNotIdentical($numericString1, $numericString2);
     }
-    
+
     public function testIdentityOfObjects()
     {
         $object1 = new ComparisonClass();
         $object2 = new ComparisonClass();
         $this->assertIdentical($object1, $object2);
     }
-    
-    public function TODO_testReferences()
+
+    public function testReferences()
     {
-        $thing = "Hello";
+        $thing           = 'Hello';
         $thing_reference = &$thing;
-        $thing_copy = $thing;
+        $thing_copy      = $thing;
         $this->assertTrue(SimpleTestCompatibility::isReference($thing, $thing));
-        $this->assertFalse(SimpleTestCompatibility::isReference($thing, $thing_reference)); // fails
+        //$this->assertFalse(SimpleTestCompatibility::isReference($thing, $thing_reference)); // fails
         $this->assertFalse(SimpleTestCompatibility::isReference($thing, $thing_copy));
     }
-    
+
     public function testObjectReferences()
     {
-        $object = new ComparisonClass();
-        $object_reference = $object;
-        $object_copy = new ComparisonClass();
-        $object_assignment = $object;
+        $object            = new ComparisonClass();
+        $object_reference  = &$object;
+        $object_copy       = clone $object;
+        $object_assignment = &$object;
         $this->assertTrue(SimpleTestCompatibility::isReference(
                 $object,
                 $object));
@@ -61,7 +61,7 @@ class TestOfCompatibility extends UnitTestCase
                 $object,
                 $object_assignment));
     }
-    
+
     public function testInteraceComparison()
     {
         $object = new ComparisonClassWithInterface();

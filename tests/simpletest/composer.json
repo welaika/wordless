@@ -43,14 +43,13 @@
         {
             "name": "Lars Vierbergen",
             "email": "vierbergenlars@gmail.com"
+        },
+        {
+            "name": "Jens A. Koch"
         }
     ],
     "require": {
-        "php": ">=5.0.5"
-    },
-    "replace": {
-        "vierbergenlars/simpletest": "self.version",
-        "lastcraft/simpletest": "self.version"
+        "php": "^7.1"
     },
     "autoload": {
         "classmap": ["."]

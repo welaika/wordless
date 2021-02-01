@@ -1,7 +1,7 @@
 <?php
 
-require_once dirname(__FILE__) . '/../autorun.php';
-require_once dirname(__FILE__) . '/../expectation.php';
+require_once __DIR__ . '/../autorun.php';
+require_once __DIR__ . '/../expectation.php';
 
 class TestOfEquality extends UnitTestCase
 {
@@ -14,9 +14,9 @@ class TestOfEquality extends UnitTestCase
 
     public function testStringMatch()
     {
-        $hello = new EqualExpectation("Hello");
-        $this->assertTrue($hello->test("Hello"));
-        $this->assertFalse($hello->test("Goodbye"));
+        $hello = new EqualExpectation('Hello');
+        $this->assertTrue($hello->test('Hello'));
+        $this->assertFalse($hello->test('Goodbye'));
     }
 
     public function testInteger()
@@ -35,16 +35,16 @@ class TestOfEquality extends UnitTestCase
 
     public function testArray()
     {
-        $colours = new EqualExpectation(array("r", "g", "b"));
-        $this->assertTrue($colours->test(array("r", "g", "b")));
-        $this->assertFalse($colours->test(array("g", "b", "r")));
+        $colours = new EqualExpectation(array('r', 'g', 'b'));
+        $this->assertTrue($colours->test(array('r', 'g', 'b')));
+        $this->assertFalse($colours->test(array('g', 'b', 'r')));
     }
 
     public function testHash()
     {
-        $is_blue = new EqualExpectation(array("r" => 0, "g" => 0, "b" => 255));
-        $this->assertTrue($is_blue->test(array("r" => 0, "g" => 0, "b" => 255)));
-        $this->assertFalse($is_blue->test(array("r" => 0, "g" => 255, "b" => 0)));
+        $is_blue = new EqualExpectation(array('r' => 0, 'g' => 0, 'b' => 255));
+        $this->assertTrue($is_blue->test(array('r' => 0, 'g' => 0, 'b' => 255)));
+        $this->assertFalse($is_blue->test(array('r' => 0, 'g' => 255, 'b' => 0)));
     }
 
     public function testHashWithOutOfOrderKeysShouldStillMatch()
@@ -81,9 +81,9 @@ class TestOfInequality extends UnitTestCase
 {
     public function testStringMismatch()
     {
-        $not_hello = new NotEqualExpectation("Hello");
-        $this->assertTrue($not_hello->test("Goodbye"));
-        $this->assertFalse($not_hello->test("Hello"));
+        $not_hello = new NotEqualExpectation('Hello');
+        $this->assertTrue($not_hello->test('Goodbye'));
+        $this->assertFalse($not_hello->test('Hello'));
     }
 }
 
@@ -129,10 +129,10 @@ class TestOfIdentity extends UnitTestCase
 {
     public function testType()
     {
-        $string = new IdenticalExpectation("37");
-        $this->assertTrue($string->test("37"));
+        $string = new IdenticalExpectation('37');
+        $this->assertTrue($string->test('37'));
         $this->assertFalse($string->test(37));
-        $this->assertFalse($string->test("38"));
+        $this->assertFalse($string->test('38'));
     }
 
     public function _testNastyPhp5Bug()
@@ -214,10 +214,10 @@ class TestOfReference extends UnitTestCase
 {
     public function testReference()
     {
-        $foo = "foo";
-        $ref = &$foo;
+        $foo     = 'foo';
+        $ref     = &$foo;
         $not_ref = $foo;
-        $bar = "bar";
+        $bar     = 'bar';
 
         $expect = new ReferenceExpectation($foo);
         $this->assertTrue($expect->test($ref));
@@ -230,10 +230,10 @@ class TestOfNonIdentity extends UnitTestCase
 {
     public function testType()
     {
-        $string = new NotIdenticalExpectation("37");
-        $this->assertTrue($string->test("38"));
+        $string = new NotIdenticalExpectation('37');
+        $this->assertTrue($string->test('38'));
         $this->assertTrue($string->test(37));
-        $this->assertFalse($string->test("37"));
+        $this->assertFalse($string->test('37'));
     }
 }
 
@@ -242,15 +242,15 @@ class TestOfPatterns extends UnitTestCase
     public function testWanted()
     {
         $pattern = new PatternExpectation('/hello/i');
-        $this->assertTrue($pattern->test("Hello world"));
-        $this->assertFalse($pattern->test("Goodbye world"));
+        $this->assertTrue($pattern->test('Hello world'));
+        $this->assertFalse($pattern->test('Goodbye world'));
     }
 
     public function testUnwanted()
     {
         $pattern = new NoPatternExpectation('/hello/i');
-        $this->assertFalse($pattern->test("Hello world"));
-        $this->assertTrue($pattern->test("Goodbye world"));
+        $this->assertFalse($pattern->test('Hello world'));
+        $this->assertTrue($pattern->test('Goodbye world'));
     }
 }
 
@@ -265,7 +265,7 @@ class TestOfMethodExistence extends UnitTestCase
 {
     public function testHasMethod()
     {
-        $instance = new ExpectedMethodTarget();
+        $instance    = new ExpectedMethodTarget();
         $expectation = new MethodExistsExpectation('hasThisMethod');
         $this->assertTrue($expectation->test($instance));
         $expectation = new MethodExistsExpectation('doesNotHaveThisMethod');

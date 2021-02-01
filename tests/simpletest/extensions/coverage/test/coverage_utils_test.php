@@ -1,58 +1,78 @@
 <?php
-require_once dirname(__FILE__) . '/../../../autorun.php';
 
-class CoverageUtilsTest extends UnitTestCase {
-    function skip() {
+require_once __DIR__ . '/../../../autorun.php';
+
+class CoverageUtilsTest extends UnitTestCase
+{
+    public function skip()
+    {
         $this->skipIf(
-        		!file_exists('DB/sqlite.php'),
-                'The Coverage extension needs to have PEAR installed');
+            !extension_loaded('sqlite3'),
+            'The Coverage extension requires the PHP extension "php_sqlite3".'
+        );
     }
-	
-	function setUp() {
-    	require_once dirname(__FILE__) .'/../coverage_utils.php';
-	}
-	
-    function testMkdir() {
-        CoverageUtils::mkdir(dirname(__FILE__));
+
+    public function setUp()
+    {
+        require_once __DIR__ . '/../coverage_utils.php';
+    }
+
+    public function testReportFilename()
+    {
+        $this->assertEqual('C__Oh_No_parula.php.html', CoverageUtils::reportFilename('C:\Oh\No\parula.php'));
+        $this->assertEqual('parula.php.html', CoverageUtils::reportFilename('parula.php'));
+        $this->assertEqual('warbler_parula.php.html', CoverageUtils::reportFilename('warbler/parula.php'));
+        $this->assertEqual('warbler_parula.php.html', CoverageUtils::reportFilename('warbler\\parula.php'));
+    }
+
+    public function testMkdir()
+    {
+        CoverageUtils::mkdir(__DIR__);
         try {
             CoverageUtils::mkdir(__FILE__);
-            $this->fail("Should give error about cannot create dir of a file");
+            $this->fail('Should give error about cannot create dir of a file');
         } catch (Exception $expected) {
         }
     }
 
-    function testIsPackageClassAvailable() {
-        $coverageSource = dirname(__FILE__) .'/../coverage_calculator.php';
+    public function testIsPackageClassAvailable()
+    {
+        $coverageSource = __DIR__ . '/../coverage_calculator.php';
         $this->assertTrue(CoverageUtils::isPackageClassAvailable($coverageSource, 'CoverageCalculator'));
         $this->assertFalse(CoverageUtils::isPackageClassAvailable($coverageSource, 'BogusCoverage'));
         $this->assertFalse(CoverageUtils::isPackageClassAvailable('bogus-file', 'BogusCoverage'));
         $this->assertTrue(CoverageUtils::isPackageClassAvailable('bogus-file', 'CoverageUtils'));
     }
 
-    function testParseArgumentsMultiValue() {
-        $actual = CoverageUtils::parseArguments(array('scriptname', '--a=b', '--a=c'), True);
+    public function testParseArgumentsMultiValue()
+    {
+        $actual   = CoverageUtils::parseArguments(array('scriptname', '--a=b', '--a=c'), true);
         $expected = array('extraArguments' => array(), 'a' => 'c', 'a[]' => array('b', 'c'));
         $this->assertEqual($expected, $actual);
     }
 
-    function testParseArguments() {
-        $actual = CoverageUtils::parseArguments(array('scriptname', '--a=b', '-c', 'xxx'));
+    public function testParseArguments()
+    {
+        $actual   = CoverageUtils::parseArguments(array('scriptname', '--a=b', '-c', 'xxx'));
         $expected = array('a' => 'b', 'c' => '', 'extraArguments' => array('xxx'));
         $this->assertEqual($expected, $actual);
     }
 
-    function testParseDoubleDashNoArguments() {
+    public function testParseDoubleDashNoArguments()
+    {
         $actual = CoverageUtils::parseArguments(array('scriptname', '--aa'));
         $this->assertTrue(isset($actual['aa']));
     }
 
-    function testParseHyphenedExtraArguments() {
-        $actual = CoverageUtils::parseArguments(array('scriptname', '--alpha-beta=b', 'gamma-lambda'));
+    public function testParseHyphenedExtraArguments()
+    {
+        $actual   = CoverageUtils::parseArguments(array('scriptname', '--alpha-beta=b', 'gamma-lambda'));
         $expected = array('alpha-beta' => 'b', 'extraArguments' => array('gamma-lambda'));
         $this->assertEqual($expected, $actual);
     }
 
-    function testAddItemAsArray() {
+    public function testAddItemAsArray()
+    {
         $actual = array();
         CoverageUtils::addItemAsArray($actual, 'bird', 'duck');
         $this->assertEqual(array('bird[]' => array('duck')), $actual);
@@ -61,10 +81,10 @@ class CoverageUtilsTest extends UnitTestCase {
         $this->assertEqual(array('bird[]' => array('duck', 'pigeon')), $actual);
     }
 
-    function testIssetOr() {
+    public function testIssetOrDefault()
+    {
         $data = array('bird' => 'gull');
-        $this->assertEqual('lab', CoverageUtils::issetOr($data['dog'], 'lab'));
-        $this->assertEqual('gull', CoverageUtils::issetOr($data['bird'], 'sparrow'));
+        $this->assertEqual('lab', CoverageUtils::issetOrDefault($data['dog'], 'lab'));
+        $this->assertEqual('gull', CoverageUtils::issetOrDefault($data['bird'], 'sparrow'));
     }
 }
-?>

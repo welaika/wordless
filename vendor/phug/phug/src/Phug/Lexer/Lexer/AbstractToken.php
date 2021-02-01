@@ -5,12 +5,13 @@ namespace Phug\Lexer;
 use Phug\Util\Partial\LevelGetTrait;
 use Phug\Util\SourceLocationInterface;
 
-abstract class AbstractToken implements TokenInterface
+abstract class AbstractToken implements TokenInterface, HandleTokenInterface
 {
     use LevelGetTrait;
 
     private $sourceLocation;
     private $indentation;
+    private $handled = false;
 
     public function __construct(SourceLocationInterface $sourceLocation = null, $level = null, $indentation = null)
     {
@@ -30,5 +31,20 @@ abstract class AbstractToken implements TokenInterface
     public function getIndentation()
     {
         return $this->indentation;
+    }
+
+    public function isHandled()
+    {
+        return $this->handled;
+    }
+
+    public function markAsHandled()
+    {
+        $this->handled = true;
+    }
+
+    public function __toString()
+    {
+        return '['.get_class($this).']';
     }
 }

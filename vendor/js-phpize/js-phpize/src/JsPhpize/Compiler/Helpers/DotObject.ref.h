@@ -4,17 +4,102 @@ function (&$base) {
             ? $base[$key]
             : null;
     };
+
     $getCallable = function (&$base, $key) use ($getFromArray) {
         if (is_callable(array($base, $key))) {
-            return array($base, $key);
+            return new class(array($base, $key)) extends \ArrayObject
+            {
+                public function getValue()
+                {
+                    if ($this->isArrayAccessible()) {
+                        return $this[0][$this[1]];
+                    }
+
+                    return $this[0]->{$this[1]} ?? null;
+                }
+
+                public function setValue($value)
+                {
+                    if ($this->isArrayAccessible()) {
+                        $this[0][$this[1]] = $value;
+
+                        return;
+                    }
+
+                    $this[0]->{$this[1]} = $value;
+                }
+
+                public function getCallable()
+                {
+                    return $this->getArrayCopy();
+                }
+
+                public function __isset($name)
+                {
+                    $value = $this->getValue();
+
+                    if ((is_array($value) || $value instanceof ArrayAccess) && isset($value[$name])) {
+                        return true;
+                    }
+
+                    return is_object($value) && isset($value->$name);
+                }
+
+                public function __get($name)
+                {
+                    return new self(array($this->getValue(), $name));
+                }
+
+                public function __set($name, $value)
+                {
+                    $value = $this->getValue();
+
+                    if (is_array($value)) {
+                        $value[$name] = $value;
+                        $this->setValue($value);
+
+                        return;
+                    }
+
+                    $value->$name = $value;
+                }
+
+                public function __toString()
+                {
+                    return (string) $this->getValue();
+                }
+
+                public function __toBoolean()
+                {
+                    $value = $this->getValue();
+
+                    if (method_exists($value, '__toBoolean')) {
+                        return $value->__toBoolean();
+                    }
+
+                    return !!$value;
+                }
+
+                public function __invoke(...$arguments)
+                {
+                    return call_user_func_array($this->getCallable(), $arguments);
+                }
+
+                private function isArrayAccessible()
+                {
+                    return is_array($this[0]) || $this[0] instanceof ArrayAccess && !isset($this[0]->{$this[1]});
+                }
+            };
         }
         if ($base instanceof \ArrayAccess) {
             return $getFromArray($base, $key);
         }
     };
+
     $getRegExp = function ($value) {
-        return is_object($value) && isset($value->isRegularExpression) && $value->isRegularExpression ? $value->regExp : null;
+        return is_object($value) && isset($value->isRegularExpression) && $value->isRegularExpression ? $value->regExp . $value->flags : null;
     };
+
     $fallbackDot = function (&$base, $key) use ($getCallable, $getRegExp) {
         if (is_string($base)) {
             if (preg_match('/^[-+]?\d+$/', strval($key))) {
@@ -80,6 +165,7 @@ function (&$base) {
 
         return $getCallable($base, $key);
     };
+
     $crawler = &$base;
     $result = $base;
     foreach (array_slice(func_get_args(), 1) as $key) {
@@ -99,4 +185,4 @@ function (&$base) {
     }
 
     return $result;
-}
+};

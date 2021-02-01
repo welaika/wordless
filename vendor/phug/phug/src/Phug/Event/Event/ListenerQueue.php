@@ -2,7 +2,9 @@
 
 namespace Phug\Event;
 
-class ListenerQueue extends \SplPriorityQueue
+use SplPriorityQueue;
+
+class ListenerQueue extends SplPriorityQueue
 {
     public function compare($priority, $priorityToCompare)
     {

@@ -109,49 +109,6 @@ class ProfilerModule extends AbstractModule
         return !$this->events->isLocked();
     }
 
-    private function appendParam(Event $event, $key, $value)
-    {
-        $event->setParams(array_merge($event->getParams(), [
-            $key => $value,
-        ]));
-    }
-
-    private function appendNode(Event $event, $node)
-    {
-        if ($node instanceof NodeInterface) {
-            $this->appendParam($event, '__location', $node->getSourceLocation());
-            $this->appendParam($event, '__link', $node->getToken() ?: $node);
-        }
-    }
-
-    private function throwException(Event $event, $message)
-    {
-        $params = $event->getParams();
-        $this->kill();
-
-        throw isset($params['__location'])
-            ? new ProfilerLocatedException($params['__location'], $message)
-            : new ProfilerException($message);
-    }
-
-    private function record(Event $event)
-    {
-        $time = microtime(true) - $this->startTime;
-        $container = $this->getContainer();
-        $maxTime = $container->getOption('execution_max_time');
-        if ($maxTime > -1 && $time * 1000 > $maxTime) {
-            $this->throwException($event, 'execution_max_time of '.$maxTime.'ms exceeded.');
-        } // @codeCoverageIgnore
-        $memoryLimit = $container->getOption('memory_limit');
-        if ($memoryLimit > -1 && memory_get_usage() - $this->initialMemoryUsage > $memoryLimit) {
-            $this->throwException($event, 'memory_limit of '.$memoryLimit.'B exceeded.');
-        } // @codeCoverageIgnore
-        $this->appendParam($event, '__time', $time);
-        if ($container->getOption('profiler.display') || $container->getOption('profiler.log')) {
-            $this->events[] = $event;
-        }
-    }
-
     /**
      * @return EventList
      */
@@ -189,6 +146,167 @@ class ProfilerModule extends AbstractModule
         return $dump->dump();
     }
 
+    public function getDebugId($nodeId)
+    {
+        $index = static::$profilersIndex++;
+        static::$profilers[$index] = [$this, $nodeId];
+
+        return $index;
+    }
+
+    /**
+     * @param int|null $nodeId
+     *
+     * @throws ProfilerException
+     * @throws ProfilerLocatedException
+     */
+    public function recordDisplayEvent($nodeId)
+    {
+        if (!$this->isAlive()) {
+            return;
+        }
+
+        /** @var Formatter $formatter */
+        $formatter = $this->getContainer();
+
+        if ($formatter->debugIdExists($nodeId)) {
+            $event = new Event('display');
+            $this->appendNode($event, $formatter->getNodeFromDebugId($nodeId));
+            $this->record($event);
+        }
+    }
+
+    /**
+     * @param int|null $debugId
+     *
+     * @throws ProfilerException
+     * @throws ProfilerLocatedException
+     */
+    public static function recordProfilerDisplayEvent($debugId)
+    {
+        if (isset(static::$profilers[$debugId])) {
+            /** @var ProfilerModule $profiler */
+            list($profiler, $nodeId) = static::$profilers[$debugId];
+            $profiler->recordDisplayEvent($nodeId);
+        }
+    }
+
+    private function cleanupProfilerNodes()
+    {
+        static::$profilers = array_filter(static::$profilers, function ($params) {
+            return $params[0] !== $this;
+        });
+    }
+
+    public function attachEvents()
+    {
+        parent::attachEvents();
+        $formatter = $this->getContainer();
+        if ($formatter instanceof Formatter) {
+            $formatter->setOption('patterns.debug_comment', function ($nodeId) {
+                return "\n".(
+                    $nodeId !== ''
+                        ? '\\'.static::class.'::recordProfilerDisplayEvent('.
+                            var_export($this->getDebugId($nodeId), true).
+                        ");\n"
+                        : ''
+                )."// PUG_DEBUG:$nodeId\n";
+            });
+        }
+    }
+
+    public function getEventListeners()
+    {
+        $eventListeners = array_map(function (callable $eventListener) {
+            return function (Event $event) use ($eventListener) {
+                if ($this->isAlive() && $eventListener($event) !== false) {
+                    $this->record($event);
+                }
+            };
+        }, array_merge(
+            [
+                RendererEvent::RENDER => function (RenderEvent $event) {
+                    $this->appendParam($event, '__link', $event);
+                },
+            ],
+            $this->getCompilerEventListeners(),
+            $this->getFormatterEventListeners(),
+            $this->getParserEventListeners(),
+            $this->getLexerEventListeners()
+        ));
+
+        $eventListeners[RendererEvent::HTML] = function (HtmlEvent $event) {
+            $this->appendParam($event, '__link', $event->getRenderEvent());
+            if ($this->isAlive()) {
+                $this->record($event);
+            }
+
+            if ($event->getBuffer()) {
+                $event->setBuffer($this->renderProfile().$event->getBuffer());
+            }
+
+            if (is_string($event->getResult())) {
+                $event->setResult($this->renderProfile().$event->getResult());
+            }
+        };
+
+        return $eventListeners;
+    }
+
+    private function appendParam(Event $event, $key, $value)
+    {
+        $event->setParams(array_merge($event->getParams(), [
+            $key => $value,
+        ]));
+    }
+
+    private function appendNode(Event $event, $node)
+    {
+        if ($node instanceof NodeInterface) {
+            $this->appendParam($event, '__location', $node->getSourceLocation());
+            $this->appendParam($event, '__link', $node->getToken() ?: $node);
+        }
+    }
+
+    private function getException(Event $event, $message)
+    {
+        $params = $event->getParams();
+        $this->kill();
+
+        return isset($params['__location'])
+            ? new ProfilerLocatedException($params['__location'], $message)
+            : new ProfilerException($message);
+    }
+
+    /**
+     * @param Event $event
+     *
+     * @throws ProfilerException
+     * @throws ProfilerLocatedException
+     */
+    private function record(Event $event)
+    {
+        $time = microtime(true) - $this->startTime;
+        $container = $this->getContainer();
+        $maxTime = $container->getOption('execution_max_time');
+
+        if ($maxTime > -1 && $time * 1000 > $maxTime) {
+            throw $this->getException($event, 'execution_max_time of '.$maxTime.'ms exceeded.');
+        }
+
+        $memoryLimit = $container->getOption('memory_limit');
+
+        if ($memoryLimit > -1 && memory_get_usage() - $this->initialMemoryUsage > $memoryLimit) {
+            throw $this->getException($event, 'memory_limit of '.$memoryLimit.'B exceeded.');
+        }
+
+        $this->appendParam($event, '__time', $time);
+
+        if ($container->getOption('profiler.display') || $container->getOption('profiler.log')) {
+            $this->events[] = $event;
+        }
+    }
+
     private function renderProfile()
     {
         $display = $this->getContainer()->getOption('profiler.display');
@@ -221,60 +339,6 @@ class ProfilerModule extends AbstractModule
         }
 
         return $display ? $render : '';
-    }
-
-    public function getDebugId($nodeId)
-    {
-        $index = static::$profilersIndex++;
-        static::$profilers[$index] = [$this, $nodeId];
-
-        return $index;
-    }
-
-    public function recordDisplayEvent($nodeId)
-    {
-        if (!$this->isAlive()) {
-            return;
-        }
-        /** @var Formatter $formatter */
-        $formatter = $this->getContainer();
-        if ($formatter->debugIdExists($nodeId)) {
-            $event = new Event('display');
-            $this->appendNode($event, $formatter->getNodeFromDebugId($nodeId));
-            $this->record($event);
-        }
-    }
-
-    public static function recordProfilerDisplayEvent($debugId)
-    {
-        if (isset(static::$profilers[$debugId])) {
-            /** @var ProfilerModule $profiler */
-            list($profiler, $nodeId) = static::$profilers[$debugId];
-            $profiler->recordDisplayEvent($nodeId);
-        }
-    }
-
-    private function cleanupProfilerNodes()
-    {
-        static::$profilers = array_filter(static::$profilers, function ($params) {
-            return $params[0] !== $this;
-        });
-    }
-
-    public function attachEvents()
-    {
-        parent::attachEvents();
-        $formatter = $this->getContainer();
-        if ($formatter instanceof Formatter) {
-            $formatter->setOption('patterns.debug_comment', function ($nodeId) use ($formatter) {
-                return "\n".($nodeId !== ''
-                        ? '\\'.static::class.'::recordProfilerDisplayEvent('.
-                            var_export($this->getDebugId($nodeId), true).
-                        ");\n"
-                        : ''
-                    )."// PUG_DEBUG:$nodeId\n";
-            });
-        }
     }
 
     private function getCompilerEventListeners()
@@ -343,43 +407,5 @@ class ProfilerModule extends AbstractModule
                 $this->appendParam($event, '__link', $token);
             },
         ];
-    }
-
-    public function getEventListeners()
-    {
-        $eventListeners = array_map(function (callable $eventListener) {
-            return function (Event $event) use ($eventListener) {
-                if ($this->isAlive() && $eventListener($event) !== false) {
-                    $this->record($event);
-                }
-            };
-        }, array_merge(
-            [
-                RendererEvent::RENDER => function (RenderEvent $event) {
-                    $this->appendParam($event, '__link', $event);
-                },
-            ],
-            $this->getCompilerEventListeners(),
-            $this->getFormatterEventListeners(),
-            $this->getParserEventListeners(),
-            $this->getLexerEventListeners()
-        ));
-
-        $eventListeners[RendererEvent::HTML] = function (HtmlEvent $event) {
-            $this->appendParam($event, '__link', $event->getRenderEvent());
-            if ($this->isAlive()) {
-                $this->record($event);
-            }
-
-            if ($event->getBuffer()) {
-                $event->setBuffer($this->renderProfile().$event->getBuffer());
-            }
-
-            if (is_string($event->getResult())) {
-                $event->setResult($this->renderProfile().$event->getResult());
-            }
-        };
-
-        return $eventListeners;
     }
 }

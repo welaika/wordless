@@ -18,6 +18,7 @@ abstract class TokenExtractor extends TokenCrawler
         if ($typeAndValue->isValid()) {
             list($type, $value) = $typeAndValue->get();
             $token = $this->next();
+
             if (!$token) {
                 throw new Exception('Missing value after ' . $value . $this->exceptionInfos(), 12);
             }
@@ -40,7 +41,7 @@ abstract class TokenExtractor extends TokenCrawler
             $token = $this->next();
 
             if ($token && $token->isValidMember()) {
-                return new Constant('string', var_export($token->value, true));
+                return new Constant('string', var_export($token->value, true), true);
             }
 
             throw $this->unexpected($token);

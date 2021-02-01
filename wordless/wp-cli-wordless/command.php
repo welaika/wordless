@@ -68,7 +68,7 @@ class WordlessCommand {
             WP_CLI::halt(1);
         }
 
-        WP_CLI::warning('Going to copy following files into your theme: ' . join(array_values(Wordless::$webpack_files_names), ', '));
+        WP_CLI::warning('Going to copy following files into your theme: ' . join( array_values( ', ', Wordless::$webpack_files_names)));
 
         WP_CLI::confirm('This is a potentially destructive operation. Do you have a backup and would like to proceed?');
 
@@ -97,6 +97,21 @@ class WordlessCommand {
             WP_CLI::success('`tmp` folder cleared');
             return true;
         }
+    }
+
+    /**
+    * Update wp-config.php to support test suite and .gitlab-ci.yml for CI into project root.
+    *
+    * @return void
+    */
+    public function setup_test_suite() {
+        $testConfigs = new WordlessTestConfigurations();
+        $testConfigs->install();
+
+        WP_CLI::success('Test configuration installed');
+
+        // NOTE: We're not managing error cases
+        return true;
     }
 
     /**

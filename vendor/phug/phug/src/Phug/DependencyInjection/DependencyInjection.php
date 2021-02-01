@@ -12,12 +12,12 @@ use ReflectionParameter;
 class DependencyInjection implements DependencyInjectionInterface
 {
     /**
-     * @var array[Requirement]
+     * @var Requirement[]
      */
     private $dependencies = [];
 
     /**
-     * @var array
+     * @var array[]
      */
     private $dependenciesParams = [];
 
