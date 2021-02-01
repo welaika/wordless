@@ -54,7 +54,6 @@ abstract class Component {
             $this->validate();
         } catch (ComponentValidationException $e) {
             if ( 'production' === ENVIRONMENT ) {
-                // TODO: add this action to Wordless' documentation
                 do_action('wordless_component_validation_exception', $e);
                 // Would be nice to have an exception collector in your callback, e.g. Sentry:
                 //

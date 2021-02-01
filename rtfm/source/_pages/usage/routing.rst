@@ -23,7 +23,3 @@ The next chapter is all about rendering.
 
 .. _WordPress conditional tags : http://codex.wordpress.org/Conditional_Tags
 .. _`Page Template Wordpress' feature`: https://github.com/welaika/wordless/wiki/Use-Page-Template-feature
-
-.. todo::
-    `Page Template Wordpress' feature`_ has to be updated on GitHub in order to reflect new
-    PUG templating practices

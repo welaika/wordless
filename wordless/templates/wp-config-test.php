@@ -1,32 +1,45 @@
 <?php
 
-# This is a wp-config.php ready for codeception test suites
+// This is a wp-config.php ready for codeception test suites
 
+// In this if/else block we switch database configuration by
+// environment: GitLab CI, local test and default.
+// In production you can (could?) simplify this one a lot
+// keeping only what's needed to actually run the site.
 if ( getenv( 'CI' )) {
+    // This section controls constant definition when running inside
+    // Gitlab's CI. The `CI` env variable is setup by GitLab self.
+    // Feel free to update it to fit your needs: following parameters
+    // will work out of the box with the wordless shipped `.gitlab-ci.yml`
     define( 'DB_NAME', '%THEME_NAME%_test' );
     define(' WP_CACHE', false );
     define( 'DB_USER', 'root' );
     define( 'DB_PASSWORD', 'mysql' );
     define( 'DB_HOST', 'mysql' );
 } else {
-    if (
+    if ( // Are we running the test suite locally? We do support 3 ways to deduce it and if we are,
+        // then we'll change the database name
+        //
         // Custom header.
         isset( $_SERVER['HTTP_X_TESTING'] )
         // Custom user agent.
         || ( isset( $_SERVER['HTTP_USER_AGENT'] ) && $_SERVER['HTTP_USER_AGENT'] === 'wp-browser' )
-        // The env var set by the WPClIr or WordPress modules.
+        // The env var set by WPBrowser modules
         || getenv( 'WPBROWSER_HOST_REQUEST' )
+        // The env var set by our npm scripts
         || getenv( 'WP_ENV' ) === 'test'
-        ) {
-            // Use the test database if the request comes from a test.
-            define( 'DB_NAME', '%THEME_NAME%_test' );
-            // Disable cache if you have cache plugins enabled
-            define('WP_CACHE', false);
-        } else {
-        // Else use the default one.
-        define( 'DB_NAME', '%THEME_NAME%' );
-    }
+    ) { // TEST definitions
+        // Use the test database if the request comes from a test.
+        define( 'DB_NAME', '%THEME_NAME%_test' );
+        // Disable cache if you have cache plugins enabled
+        define('WP_CACHE', false);
+    } else { // DEVELOPMENT definitions
+    // Default (development) db name
+    define( 'DB_NAME', '%THEME_NAME%' );
+}
 
+    // We assume user, password and host will be the same in test and development. If it's not
+    // true for your setup, then you can move following definitions into previous if/else block
     define( 'DB_USER', 'root' );
     define( 'DB_PASSWORD', '' );
     define( 'DB_HOST', 'localhost' );
