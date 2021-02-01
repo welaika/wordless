@@ -2,7 +2,7 @@
     
     
     class TestCaseWithParseError extends UnitTestCase {
-        wibble
+        //wibble
     }
-    
+
 ?>
