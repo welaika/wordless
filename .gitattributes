@@ -1,0 +1,7 @@
+# Directories
+/assets export-ignore
+/.github export-ignore
+
+# Files
+/.gitattributes export-ignore
+/.gitignore export-ignore
