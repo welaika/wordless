@@ -4,8 +4,8 @@ Contributors: welaika, stefano.verna
 Donate link: https://github.com/welaika/wordless
 Tags: sass, pug, jade, webpack, scss, npm, yarn, babel, es6
 Requires at least: 3.0
-Tested up to: 5.3.0
-Stable tag: 4.1.0
+Tested up to: 5.6
+Stable tag: 5.0.0-beta
 License: The MIT License
 License URI: http://www.opensource.org/licenses/MIT
 
