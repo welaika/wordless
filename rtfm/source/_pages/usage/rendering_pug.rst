@@ -70,8 +70,8 @@ used mainly into ``index.php`` file. Here is its signature:
 .. literalinclude:: /../../wordless/helpers/render_helper.php
     :language: php
     :caption: render_helper.php
-    :lineno-start: 20
-    :lines: 20-36
+    :lineno-start: 61
+    :lines: 61-76
 
 For example:
 
@@ -275,6 +275,8 @@ Where ``ComponentPost`` is a custom class extending ``\Wordless\Component``:
 
     <?php
 
+    use Symfony\Component\Validator\Constraints as Assert;
+
     class ComponentPost extends \Wordless\Component {
         public $post;
 
@@ -300,9 +302,6 @@ This is how's intended to be used inside Wordless:
 * into the component is mandatory to implement a ``loadValidatorMetadata`` public static
   function. Inside of it you will write your actual validations. This name was chosen in
   order to stick with official documentation's naming.
-* ``Assert`` is already in place by default
-* ``ClassMetadata`` is already in place by default; it's not mandatory, but you'll find it
-  into the documentation, so you're free to use it into your components.
 * ``$component`` will be validated at instantiation time, so you will have an error or a valid
   object. No doubts.
 * passing ``$component`` as your mixin's argument, inside the mixin you will be able to get
@@ -313,6 +312,8 @@ Revisiting our previous exaple:
 .. code-block:: php
 
     <?php
+
+    use Symfony\Component\Validator\Constraints as Assert;
 
     class ComponentPost extends \Wordless\Component {
         public $title;

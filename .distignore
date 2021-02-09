@@ -1,0 +1,6 @@
+/assets
+/.git
+/.github
+
+.distignore
+.gitignore
