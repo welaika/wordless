@@ -72,11 +72,13 @@ Table of Contents
 .. toctree::
     :caption: Appendix
 
+    _pages/appendix/render_static
+    _pages/appendix/acf_gutenberg_blocks
     _pages/appendix/plainphp
 
 TODOs
 #####
 
-A list of known bugs, wip and improvements this documentation needs
+A list of known bugs, wip and improvements this documentation needs, hoping it will be kept empty ;)
 
 .. todolist::

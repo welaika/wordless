@@ -7,13 +7,13 @@ Wordless is a junction between a WordPress plugin and a theme boilerplate that d
 * Write PHP templates with [Pug templating system](https://github.com/pug-php/pug)
 * Write CSS stylesheets using the awesome [SCSS syntax](http://sass-lang.com)
 * Out-of-the-box support to [Stylelint](https://stylelint.io/) configured for SCSS syntax.
-* Write Javascript logic in ES2015 thanks to [Babel](https://babeljs.io/)
+* Write Javascript logic using modern syntax thanks to [Babel](https://babeljs.io/)
 * Automatically polyfill (with [core-js](https://github.com/zloirock/core-js)) and transpile Javascript based on your support inside [`.browserslistrc`](https://github.com/browserslist/browserslist)
 * A growing set of handy and documented PHP helper functions ready to be used within your views
-* Preconfigured support to [MailHog](https://github.com/mailhog/MailHog) mail-catcher.
+* Preconfigured support to [MailHog](https://github.com/mailhog/MailHog) mail-catcher in development.
 * Development workflow backed by [WebPack](https://github.com/webpack/webpack), [BrowserSync](https://www.browsersync.io/) (with live reload), [WP-CLI](http://wp-cli.org/), [Yarn](https://yarnpkg.com/en/). All the standards you already know, all the customizations you may need.
 
-[![Build Status](https://travis-ci.org/welaika/wordless.svg?branch=master)](http://travis-ci.org/welaika/wordless)
+![Helpers tests](https://github.com/welaika/wordless/workflows/Test/badge.svg?branch=master)
 [![Documentation Status](https://readthedocs.org/projects/wordless/badge/?version=latest)](https://wordless.readthedocs.io/en/latest/?badge=latest)
 
 ## Documentation
