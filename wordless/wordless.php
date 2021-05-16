@@ -38,7 +38,7 @@ class Wordless {
             self::require_theme_initializers();
             self::register_activation();
         } else {
-            $dirlist = join(array_map('basename', $missing_directories), ', ');
+            $dirlist = join(', ', array_map('basename', $missing_directories));
             $error_text = <<<"ERRORTEXT"
 
 Missing directories: theme is missing following directories: $dirlist.
