@@ -124,25 +124,25 @@ class RenderHelper {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
-                                \Phug\Optimizer::call('renderAndWriteFile', [$template_path, $staticPath, $locals], WordlessPugOptions::get_options());
+                                \Pug\Optimizer::call('renderAndWriteFile', [$template_path, $staticPath, $locals], WordlessPugOptions::get_options());
                                 include $staticPath;
                             }
                         } else {
-                            \Phug\Optimizer::call(
+                            \Pug\Optimizer::call(
                                 'displayFile', [$template_path, $locals], WordlessPugOptions::get_options()
                             );
                         }
                     } else {
-                        $pug = new \Phug\Renderer(WordlessPugOptions::get_options());
+                        \Pug\Facade::setOptions(WordlessPugOptions::get_options());
                         if (true === $static && 'false' == $bypass_static) {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
-                                $res = $pug->renderAndWriteFile($template_path, $staticPath, $locals);
+                                \Pug\Facade::renderAndWriteFile($template_path, $staticPath, $locals);
                                 include $staticPath;
                             }
                         } else {
-                            $pug->displayFile($template_path, $locals);
+                            \Pug\Facade::displayFile($template_path, $locals);
                         }
                     }
                 } else {
