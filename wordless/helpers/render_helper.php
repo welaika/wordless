@@ -108,7 +108,7 @@ class RenderHelper {
                     }
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
-                        if (true === $static && 'false' == $bypass_static) {
+                        if (true === $static && 'false' == strtolower($bypass_static)) {
                             // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
                             // view's name + the SHA1 of serialized $locals. As it stands the best way
                             // to introduce business logic in the expiration logic is to pass ad hoc extra variables
