@@ -84,18 +84,6 @@ class RenderHelper {
 
         $tmp_dir = Wordless::theme_temp_path();
 
-        // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
-        // view's name + the SHA1 of serialized $locals. As it stands the best way
-        // to introduce business logic in the expiration logic is to pass ad hoc extra variables
-        // into the $locals array. For example having
-        //     render_template('pages/photos', $locals = [ 'cache_key' => customAlgorithm() ], $static = true)
-        // when `customAlgorithm()` will change, it will automatically invalidate the static cache for this
-        // template
-        $staticPath = Wordless::join_paths(
-            $tmp_dir,
-            basename($name) . '.' . sha1(serialize($locals)) . '.html'
-        );
-
         switch ($format) {
             case 'pug':
                 require_once('pug/wordless_pug_options.php');
@@ -120,7 +108,19 @@ class RenderHelper {
                     }
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
-                        if (true === $static && 'false' == $bypass_static) {
+                        if (true === $static && 'false' == strtolower($bypass_static)) {
+                            // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
+                            // view's name + the SHA1 of serialized $locals. As it stands the best way
+                            // to introduce business logic in the expiration logic is to pass ad hoc extra variables
+                            // into the $locals array. For example having
+                            //     render_template('pages/photos', $locals = [ 'cache_key' => customAlgorithm() ], $static = true)
+                            // when `customAlgorithm()` will change, it will automatically invalidate the static cache for this
+                            // template
+                            $staticPath = Wordless::join_paths(
+                                $tmp_dir,
+                                basename($name) . '.' . sha1(serialize($locals)) . '.html'
+                            );
+
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
