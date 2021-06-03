@@ -105,3 +105,25 @@ The "Cache management" menu needs to be activated decommenting this line
     :lineno-start: 85
     :lines: 85-91
     :emphasize-lines: 7
+
+Manually manage cache SHA
+#########################
+
+The cache policy of static generated views is based on the
+view's name + the **SHA1 of serialized $locals**. As it stands the best way
+to introduce business logic in the expiration logic is to pass ad hoc extra variables
+into the $locals array. For example having
+
+    .. code-block:: php
+
+        render_static('pages/photos', $locals = [ 'cache_key' => customAlgorithm() ])
+
+when ``customAlgorithm()`` will change its value, it will invalidate the static cache for this
+template
+
+Known limitations
+#################
+
+``render_static`` creates hashes using the serialized `$locals` array; since it's possible to pass
+a ``Closure`` in ``$locals`` but **it's impossible to serialize closures in PHP** you cannot use
+Wordless's ``render_static`` if you're passing in closures.
