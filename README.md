@@ -24,14 +24,14 @@ Read the complete Wordless documentation at [wordless.readthedocs.io](https://wo
 
 If you want to contribute to the documentation.
 
-- `brew install sphinx-doc`
-- `cd rtfm/`
-- `sphinx-autobuild source/ build/html` and open http://127.0.0.1:8000 to watch the preview
-  - the build server will autoreload your page on modifications
+- Have docker started
+- `docker build -t wordless_docs rtfm`
+- `make documentation`
+- `open rtfm/build/html/index.html`
 - update the doc; documentation about the RST syntax can be found at https://www.sphinx-doc.org/en/master/usage/restructuredtext/basics.html
 - `commit` and `push`; the `rtfm/` folder on master will be auto-deployed on https://wordless.readthedocs.io/
 
-As a side note: [reStructuredText](https://marketplace.visualstudio.com/items?itemName=lextudio.restructuredtext) plugin in VSCode could be of great help linting, highlighting and previewing your texts.
+Every subsequent `make documentation` will refresh your HTML.
 
 ### Built-in helpers documentation
 
