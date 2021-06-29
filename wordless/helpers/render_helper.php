@@ -109,17 +109,7 @@ class RenderHelper {
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
                         if (true === $static && 'false' == strtolower($bypass_static)) {
-                            // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
-                            // view's name + the SHA1 of serialized $locals. As it stands the best way
-                            // to introduce business logic in the expiration logic is to pass ad hoc extra variables
-                            // into the $locals array. For example having
-                            //     render_template('pages/photos', $locals = [ 'cache_key' => customAlgorithm() ], $static = true)
-                            // when `customAlgorithm()` will change, it will automatically invalidate the static cache for this
-                            // template
-                            $staticPath = Wordless::join_paths(
-                                $tmp_dir,
-                                basename($name) . '.' . sha1(serialize($locals)) . '.html'
-                            );
+                            $staticPath = $this->static_path($name, $locals);
 
                             if (file_exists($staticPath)) {
                                 include $staticPath;
@@ -135,6 +125,8 @@ class RenderHelper {
                     } else {
                         \Pug\Facade::setOptions(WordlessPugOptions::get_options());
                         if (true === $static && 'false' == $bypass_static) {
+                            $staticPath = $this->static_path($name, $locals);
+
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
@@ -269,6 +261,22 @@ class RenderHelper {
         } else {
             return false;
         }
+    }
+
+    // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
+    // view's name + the SHA1 of serialized $locals. As it stands the best way
+    // to introduce business logic in the expiration logic is to pass ad hoc extra variables
+    // into the $locals array. For example having
+    //     render_template('pages/photos', $locals = [ 'cache_key' => customAlgorithm() ], $static = true)
+    // when `customAlgorithm()` will change, it will automatically invalidate the static cache for this
+    // template
+    private function static_path(string $name, array $locals): string {
+        $tmp_dir = Wordless::theme_temp_path();
+
+        return Wordless::join_paths(
+            $tmp_dir,
+            basename($name) . '.' . sha1(serialize($locals)) . '.html'
+        );
     }
 
 }
