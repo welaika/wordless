@@ -1,28 +1,57 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-module.exports = function(env) {
-  if (env.NODE_ENV == 'development') { env.DEBUG = 'true' }
-  const needSourceMap = (env.DEBUG == 'true');
-  return {
-    mode: env.NODE_ENV,
-    styleLoaders: [
-      {
-        loader: MiniCssExtractPlugin.loader
-      },
-      {
-        loader: 'css-loader',
-        options: {
-          sourceMap: needSourceMap
-        }
-      },
-      {
-        loader: 'sass-loader',
-        options: {
-          sourceMap: needSourceMap
-        }
+devOptions = {
+  mode: 'development',
+  styleLoaders: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {}
+    },
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: true
       }
-    ],
-    devtool: needSourceMap ? 'source-map' : false,
-    plugins: []
-  };
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        sourceMap: true
+      }
+    }
+  ],
+  devtool: "source-map",
+  plugins: []
+};
+
+prodOptions = {
+  mode: 'production',
+  styleLoaders: [
+    {
+      loader: MiniCssExtractPlugin.loader,
+      options: {}
+    },
+    {
+      loader: 'css-loader',
+      options: {
+        sourceMap: false
+      }
+    },
+    {
+      loader: 'sass-loader',
+      options: {
+        sourceMap: false
+      }
+    }
+  ],
+  devtool: 'source-map',
+  plugins: []
+};
+
+module.exports = function(env) {
+  if (env.NODE_ENV === 'production') {
+    return prodOptions;
+  } else if (env.NODE_ENV === 'development') {
+    return devOptions;
+  }
 };
