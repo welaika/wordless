@@ -114,7 +114,8 @@ class RenderHelper {
                             if (file_exists($staticPath)) {
                                 include $staticPath;
                             } else {
-                                \Pug\Optimizer::call('renderAndWriteFile', [$template_path, $staticPath, $locals], WordlessPugOptions::get_options());
+                                \Pug\Facade::setOptions(WordlessPugOptions::get_options());
+                                \Pug\Facade::renderAndWriteFile($template_path, $staticPath, $locals);
                                 include $staticPath;
                             }
                         } else {
