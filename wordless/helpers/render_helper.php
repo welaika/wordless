@@ -169,7 +169,7 @@ class RenderHelper {
             render_error("Static rendering only available for PUG templates", "<strong>Ouch!!</strong> It seems you required a <code>render_static</code> for a PHP template, but this render method is supported only for PUG. Use <code>render_partial</code> or <code>render_template</code> instead.");
         }
 
-        render_template($name, $locals = array(), $static = true);
+        render_template($name, $locals, $static = true);
     }
 
     /**
