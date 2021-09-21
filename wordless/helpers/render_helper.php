@@ -249,7 +249,11 @@ class RenderHelper {
 
     private function ensure_dir($dir) {
 
-        if (!file_exists($dir)) {
+        $files_count = 0;
+
+        if ( file_exists( $dir ) ) {
+            $files_count = preg_grep('/(.*).(php|txt)$/', scandir( $dir ) );
+        } else {
             mkdir($dir, 0770);
         }
 
@@ -257,7 +261,7 @@ class RenderHelper {
             chmod($dir, 0770);
         }
 
-        if (is_writable($dir)) {
+        if ( is_writable( $dir ) || count ( $files_count ) > 0 ) {
             return true;
         } else {
             return false;
