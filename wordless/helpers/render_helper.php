@@ -107,6 +107,8 @@ class RenderHelper {
                         $bypass_static = 'false'; // default value
                     }
 
+                    $env = apply_filters( 'wordless_environment', $env );
+
                     if ( in_array( $env, array('staging', 'production') ) ) {
                         if (true === $static && 'false' == strtolower($bypass_static)) {
                             $staticPath = $this->static_path($name, $locals);
