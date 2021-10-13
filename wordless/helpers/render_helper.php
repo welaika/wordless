@@ -88,7 +88,7 @@ class RenderHelper {
             case 'pug':
                 require_once('pug/wordless_pug_options.php');
 
-                if ($this->ensure_dir($tmp_dir)) {
+                if ($this->ensure_tmp_dir() ) {
                     // Read the environment from various sources. Note that .env file has precedence
                     if ( getenv('ENVIRONMENT') ) {
                         $env = getenv('ENVIRONMENT');
@@ -106,6 +106,8 @@ class RenderHelper {
                     } else {
                         $bypass_static = 'false'; // default value
                     }
+
+                    $env = apply_filters( 'wordless_environment', $env );
 
                     if ( in_array( $env, array('staging', 'production') ) ) {
                         if (true === $static && 'false' == strtolower($bypass_static)) {
@@ -247,21 +249,30 @@ class RenderHelper {
         render_template($current_view, $current_locals);
     }
 
-    private function ensure_dir($dir) {
+    private function ensure_tmp_dir() {
+        $tmpDir = Wordless::theme_temp_path();
+        $tmp_dir_exists_and_writable = $this->ensure_dir( $tmpDir );
+
+        return apply_filters('wordless_tmp_dir_exists', $tmpDir, $tmp_dir_exists_and_writable );
+    }
+
+    private function ensure_dir( $dir ) {
+
+        $dir_exists_and_writable = false;
 
         if (!file_exists($dir)) {
             mkdir($dir, 0770);
         }
 
         if (!is_writable($dir)) {
-            chmod($dir, 0770);
+            chmod($dir, 770);
         }
 
         if (is_writable($dir)) {
-            return true;
-        } else {
-            return false;
+            $dir_exists_and_writable = true;
         }
+
+        return $dir_exists_and_writable;
     }
 
     // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
