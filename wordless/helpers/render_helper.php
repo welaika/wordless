@@ -88,7 +88,7 @@ class RenderHelper {
             case 'pug':
                 require_once('pug/wordless_pug_options.php');
 
-                if ($this->ensure_dir($tmp_dir)) {
+                if ($this->ensure_tmp_dir() ) {
                     // Read the environment from various sources. Note that .env file has precedence
                     if ( getenv('ENVIRONMENT') ) {
                         $env = getenv('ENVIRONMENT');
@@ -249,25 +249,30 @@ class RenderHelper {
         render_template($current_view, $current_locals);
     }
 
-    private function ensure_dir($dir) {
+    private function ensure_tmp_dir() {
+        $tmpDir = Wordless::theme_temp_path();
+        $tmp_dir_exists_and_writable = $this->ensure_dir( $tmpDir );
 
-        $files_count = 0;
+        return apply_filters('wordless_tmp_dir_exists', $tmpDir, $tmp_dir_exists_and_writable );
+    }
 
-        if ( file_exists( $dir ) ) {
-            $files_count = preg_grep('/(.*).(php|txt)$/', scandir( $dir ) );
-        } else {
+    private function ensure_dir( $dir ) {
+
+        $dir_exists_and_writable = false;
+
+        if (!file_exists($dir)) {
             mkdir($dir, 0770);
         }
 
         if (!is_writable($dir)) {
-            chmod($dir, 0770);
+            chmod($dir, 770);
         }
 
-        if ( is_writable( $dir ) || count ( $files_count ) > 0 ) {
-            return true;
-        } else {
-            return false;
+        if (is_writable($dir)) {
+            $dir_exists_and_writable = true;
         }
+
+        return $dir_exists_and_writable;
     }
 
     // REALLY IMPORTANT NOTE: the cache policy of static generated views is based on the
