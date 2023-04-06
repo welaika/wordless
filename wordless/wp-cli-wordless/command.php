@@ -9,7 +9,7 @@ if ( ! class_exists( 'WP_CLI' ) ) {
 */
 class WordlessCommand {
     /**
-    * Create and acrivate a new Wordless theme with the given name
+    * Create and activate a new Wordless theme with the given name
     *
     * ## OPTIONS
     *
@@ -49,8 +49,8 @@ class WordlessCommand {
     * backup of your theme or be sure to have a clean GiT state thus
     * a simple reset/checkout will eventually save you.
     *
-    * After the updgrade remember to launch `yarn install` in order
-    * to update `node_modules` based on new pacjage.json.
+    * After the upgrade remember to launch `yarn install` in order
+    * to update `node_modules` based on new package.json.
     *
     * Newer configuration may require you to install an updated node
     * version too.
@@ -60,7 +60,7 @@ class WordlessCommand {
     public function upgrade($args, $assoc_args) {
         if (!Wordless::theme_is_upgradable()) {
             WP_CLI::error_multi_line([
-                'It seems you are using a theme created with a Wordless verion < 2',
+                'It seems you are using a theme created with a Wordless version < 2',
                 'or maybe you have heavily customized the theme folder structure.',
                 'We can\'t afford to make an automatic upgrade for you, sorry'
             ]);
@@ -75,10 +75,10 @@ class WordlessCommand {
         $builder = new WordlessThemeBuilder(null, null, intval(0664, 8));
 
         if ( $builder->upgrade_theme_config() ) {
-            WP_CLI::success( 'Theme succesfully upgraded. Now you can getting started with Wordless2 (https://wordless.readthedocs.io)' );
+            WP_CLI::success( 'Theme successfully upgraded. Now you can getting started with Wordless2 (https://wordless.readthedocs.io)' );
             WP_CLI::log('Remember to run `yarn install` to update node_modules based on new configuration');
         } else {
-            WP_CLI::error( 'Sorry, something went wrong during theme upgarde.' );
+            WP_CLI::error( 'Sorry, something went wrong during theme upgrade.' );
         }
     }
 

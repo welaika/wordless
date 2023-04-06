@@ -8,5 +8,11 @@
   },
   "css.validate": false,
   "restructuredtext.languageServer.trace.server": "messages",
-  "restructuredtext.linter.executablePath": "/usr/local/bin/doc8"
+  "restructuredtext.linter.executablePath": "/usr/local/bin/doc8",
+  "cSpell.words": [
+    "endcode",
+    "helperclass",
+    "helperfunc",
+    "runcommand"
+  ]
 }
