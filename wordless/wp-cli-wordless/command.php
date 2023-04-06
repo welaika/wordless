@@ -68,7 +68,7 @@ class WordlessCommand {
             WP_CLI::halt(1);
         }
 
-        WP_CLI::warning('Going to copy following files into your theme: ' . join(array_values(Wordless::$webpack_files_names), ', '));
+        WP_CLI::warning('Going to copy following files into your theme: ' . join(', ', array_values(Wordless::$webpack_files_names)));
 
         WP_CLI::confirm('This is a potentially destructive operation. Do you have a backup and would like to proceed?');
 
