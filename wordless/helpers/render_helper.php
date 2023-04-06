@@ -249,14 +249,14 @@ class RenderHelper {
         render_template($current_view, $current_locals);
     }
 
-    private function ensure_tmp_dir() {
+    private function ensure_tmp_dir() : bool {
         $tmpDir = Wordless::theme_temp_path();
         $tmp_dir_exists_and_writable = $this->ensure_dir( $tmpDir );
 
         return apply_filters('wordless_tmp_dir_exists', $tmpDir, $tmp_dir_exists_and_writable );
     }
 
-    private function ensure_dir( $dir ) {
+    private function ensure_dir( $dir ) : bool {
 
         $dir_exists_and_writable = false;
 
