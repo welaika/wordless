@@ -8,6 +8,6 @@
         "codeception/module-filesystem": "^1.0",
         "codeception/module-cli": "^1.0",
         "codeception/util-universalframework": "^1.0",
-        "fzaninotto/faker": "^1.9"
+        "fakerphp/faker": "^1.21"
     }
 }
