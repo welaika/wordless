@@ -12,7 +12,9 @@
   "restructuredtext.languageServer.trace.server": "messages",
   "restructuredtext.linter.executablePath": "/usr/local/bin/doc8",
   "cSpell.words": [
+    "Cest",
     "classmap",
+    "Codeception",
     "corejs",
     "endcode",
     "gifsicle",
@@ -25,7 +27,9 @@
     "mobiledetectlib",
     "optipng",
     "phpmailer",
+    "Procfile",
     "runcommand",
+    "SQLSTATE",
     "symfony"
   ]
 }
