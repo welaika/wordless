@@ -10,16 +10,14 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         'a4a119a56e50fbb293281d9a48007e0e' => __DIR__ . '/..' . '/symfony/polyfill-php80/bootstrap.php',
         '667aeda72477189d0494fecd327c3641' => __DIR__ . '/..' . '/symfony/var-dumper/Resources/functions/dump.php',
-        '0d59ee240a4cd96ddbb4ff164fccea4d' => __DIR__ . '/..' . '/symfony/polyfill-php73/bootstrap.php',
-        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
         '6e3fae29631ef280660b3cdad06f25a8' => __DIR__ . '/..' . '/symfony/deprecation-contracts/function.php',
+        '320cde22f66dd4f5d3fd621d3e88b98f' => __DIR__ . '/..' . '/symfony/polyfill-ctype/bootstrap.php',
     );
 
     public static $prefixLengthsPsr4 = array (
         'S' => 
         array (
             'Symfony\\Polyfill\\Php80\\' => 23,
-            'Symfony\\Polyfill\\Php73\\' => 23,
             'Symfony\\Polyfill\\Mbstring\\' => 26,
             'Symfony\\Polyfill\\Ctype\\' => 23,
             'Symfony\\Contracts\\Translation\\' => 30,
@@ -30,16 +28,16 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         array (
             'Phug\\' => 5,
         ),
+        'D' => 
+        array (
+            'Detection\\' => 10,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Symfony\\Polyfill\\Php80\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/polyfill-php80',
-        ),
-        'Symfony\\Polyfill\\Php73\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/symfony/polyfill-php73',
         ),
         'Symfony\\Polyfill\\Mbstring\\' => 
         array (
@@ -74,6 +72,10 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
             8 => __DIR__ . '/..' . '/phug/phug/src/Phug/Reader',
             9 => __DIR__ . '/..' . '/phug/phug/src/Phug/Renderer',
             10 => __DIR__ . '/..' . '/phug/phug/src/Phug/Util',
+        ),
+        'Detection\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src',
         ),
     );
 
@@ -113,13 +115,6 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
                 0 => __DIR__ . '/..' . '/pug-php/pug/src',
             ),
         ),
-        'D' => 
-        array (
-            'Detection' => 
-            array (
-                0 => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced',
-            ),
-        ),
     );
 
     public static $fallbackDirsPsr0 = array (
@@ -129,7 +124,7 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
     public static $classMap = array (
         'Attribute' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Attribute.php',
         'Composer\\InstalledVersions' => __DIR__ . '/..' . '/composer/InstalledVersions.php',
-        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/namespaced/Detection/MobileDetect.php',
+        'Detection\\MobileDetect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/src/MobileDetect.php',
         'Jade\\Compiler' => __DIR__ . '/..' . '/pug-php/pug/src/Jade/Compiler.php',
         'Jade\\Filter\\AbstractFilter' => __DIR__ . '/..' . '/pug-php/pug/src/Jade/Filter/AbstractFilter.php',
         'Jade\\Filter\\Cdata' => __DIR__ . '/..' . '/pug-php/pug/src/Jade/Filter/Cdata.php',
@@ -187,8 +182,6 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'JsPhpize\\Traits\\Compilation' => __DIR__ . '/..' . '/js-phpize/js-phpize-phug/src/JsPhpize/Traits/Compilation.php',
         'JsTransformer\\JsTransformer' => __DIR__ . '/..' . '/js-transformer/js-transformer/src/JsTransformer/JsTransformer.php',
         'JsTransformer\\NodeEngine' => __DIR__ . '/..' . '/js-transformer/js-transformer/src/JsTransformer/NodeEngine.php',
-        'JsonException' => __DIR__ . '/..' . '/symfony/polyfill-php73/Resources/stubs/JsonException.php',
-        'Mobile_Detect' => __DIR__ . '/..' . '/mobiledetect/mobiledetectlib/Mobile_Detect.php',
         'NodejsPhpFallback\\ComposerPlugin' => __DIR__ . '/..' . '/nodejs-php-fallback/nodejs-php-fallback/src/NodejsPhpFallback/ComposerPlugin.php',
         'NodejsPhpFallback\\NodejsPhpFallback' => __DIR__ . '/..' . '/nodejs-php-fallback/nodejs-php-fallback/src/NodejsPhpFallback/NodejsPhpFallback.php',
         'NodejsPhpFallback\\Wrapper' => __DIR__ . '/..' . '/nodejs-php-fallback/nodejs-php-fallback/src/NodejsPhpFallback/Wrapper.php',
@@ -599,6 +592,7 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Pug\\Parser' => __DIR__ . '/..' . '/pug-php/pug/src/Pug/Parser.php',
         'Pug\\Pug' => __DIR__ . '/..' . '/pug-php/pug/src/Pug/Pug.php',
         'Stringable' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/Stringable.php',
+        'Symfony\\Component\\Validator\\Attribute\\HasNamedArguments' => __DIR__ . '/..' . '/symfony/validator/Attribute/HasNamedArguments.php',
         'Symfony\\Component\\Validator\\Command\\DebugCommand' => __DIR__ . '/..' . '/symfony/validator/Command/DebugCommand.php',
         'Symfony\\Component\\Validator\\Constraint' => __DIR__ . '/..' . '/symfony/validator/Constraint.php',
         'Symfony\\Component\\Validator\\ConstraintValidator' => __DIR__ . '/..' . '/symfony/validator/ConstraintValidator.php',
@@ -626,6 +620,8 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Component\\Validator\\Constraints\\Cascade' => __DIR__ . '/..' . '/symfony/validator/Constraints/Cascade.php',
         'Symfony\\Component\\Validator\\Constraints\\Choice' => __DIR__ . '/..' . '/symfony/validator/Constraints/Choice.php',
         'Symfony\\Component\\Validator\\Constraints\\ChoiceValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/ChoiceValidator.php',
+        'Symfony\\Component\\Validator\\Constraints\\Cidr' => __DIR__ . '/..' . '/symfony/validator/Constraints/Cidr.php',
+        'Symfony\\Component\\Validator\\Constraints\\CidrValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CidrValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Collection' => __DIR__ . '/..' . '/symfony/validator/Constraints/Collection.php',
         'Symfony\\Component\\Validator\\Constraints\\CollectionValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CollectionValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Composite' => __DIR__ . '/..' . '/symfony/validator/Constraints/Composite.php',
@@ -635,6 +631,8 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Component\\Validator\\Constraints\\CountValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CountValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Country' => __DIR__ . '/..' . '/symfony/validator/Constraints/Country.php',
         'Symfony\\Component\\Validator\\Constraints\\CountryValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CountryValidator.php',
+        'Symfony\\Component\\Validator\\Constraints\\CssColor' => __DIR__ . '/..' . '/symfony/validator/Constraints/CssColor.php',
+        'Symfony\\Component\\Validator\\Constraints\\CssColorValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CssColorValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Currency' => __DIR__ . '/..' . '/symfony/validator/Constraints/Currency.php',
         'Symfony\\Component\\Validator\\Constraints\\CurrencyValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/CurrencyValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Date' => __DIR__ . '/..' . '/symfony/validator/Constraints/Date.php',
@@ -653,6 +651,8 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Component\\Validator\\Constraints\\Expression' => __DIR__ . '/..' . '/symfony/validator/Constraints/Expression.php',
         'Symfony\\Component\\Validator\\Constraints\\ExpressionLanguageSyntax' => __DIR__ . '/..' . '/symfony/validator/Constraints/ExpressionLanguageSyntax.php',
         'Symfony\\Component\\Validator\\Constraints\\ExpressionLanguageSyntaxValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/ExpressionLanguageSyntaxValidator.php',
+        'Symfony\\Component\\Validator\\Constraints\\ExpressionSyntax' => __DIR__ . '/..' . '/symfony/validator/Constraints/ExpressionSyntax.php',
+        'Symfony\\Component\\Validator\\Constraints\\ExpressionSyntaxValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/ExpressionSyntaxValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\ExpressionValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/ExpressionValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\File' => __DIR__ . '/..' . '/symfony/validator/Constraints/File.php',
         'Symfony\\Component\\Validator\\Constraints\\FileValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/FileValidator.php',
@@ -710,7 +710,6 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Component\\Validator\\Constraints\\NotIdenticalToValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/NotIdenticalToValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\NotNull' => __DIR__ . '/..' . '/symfony/validator/Constraints/NotNull.php',
         'Symfony\\Component\\Validator\\Constraints\\NotNullValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/NotNullValidator.php',
-        'Symfony\\Component\\Validator\\Constraints\\NumberConstraintTrait' => __DIR__ . '/..' . '/symfony/validator/Constraints/NumberConstraintTrait.php',
         'Symfony\\Component\\Validator\\Constraints\\Optional' => __DIR__ . '/..' . '/symfony/validator/Constraints/Optional.php',
         'Symfony\\Component\\Validator\\Constraints\\Positive' => __DIR__ . '/..' . '/symfony/validator/Constraints/Positive.php',
         'Symfony\\Component\\Validator\\Constraints\\PositiveOrZero' => __DIR__ . '/..' . '/symfony/validator/Constraints/PositiveOrZero.php',
@@ -738,6 +737,8 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Component\\Validator\\Constraints\\UuidValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/UuidValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\Valid' => __DIR__ . '/..' . '/symfony/validator/Constraints/Valid.php',
         'Symfony\\Component\\Validator\\Constraints\\ValidValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/ValidValidator.php',
+        'Symfony\\Component\\Validator\\Constraints\\When' => __DIR__ . '/..' . '/symfony/validator/Constraints/When.php',
+        'Symfony\\Component\\Validator\\Constraints\\WhenValidator' => __DIR__ . '/..' . '/symfony/validator/Constraints/WhenValidator.php',
         'Symfony\\Component\\Validator\\Constraints\\ZeroComparisonConstraintTrait' => __DIR__ . '/..' . '/symfony/validator/Constraints/ZeroComparisonConstraintTrait.php',
         'Symfony\\Component\\Validator\\ContainerConstraintValidatorFactory' => __DIR__ . '/..' . '/symfony/validator/ContainerConstraintValidatorFactory.php',
         'Symfony\\Component\\Validator\\Context\\ExecutionContext' => __DIR__ . '/..' . '/symfony/validator/Context/ExecutionContext.php',
@@ -874,7 +875,6 @@ class ComposerStaticInit5b87aebe00358f4fc8395376dfb7f686
         'Symfony\\Contracts\\Translation\\TranslatorTrait' => __DIR__ . '/..' . '/symfony/translation-contracts/TranslatorTrait.php',
         'Symfony\\Polyfill\\Ctype\\Ctype' => __DIR__ . '/..' . '/symfony/polyfill-ctype/Ctype.php',
         'Symfony\\Polyfill\\Mbstring\\Mbstring' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/Mbstring.php',
-        'Symfony\\Polyfill\\Php73\\Php73' => __DIR__ . '/..' . '/symfony/polyfill-php73/Php73.php',
         'Symfony\\Polyfill\\Php80\\Php80' => __DIR__ . '/..' . '/symfony/polyfill-php80/Php80.php',
         'UnhandledMatchError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/UnhandledMatchError.php',
         'ValueError' => __DIR__ . '/..' . '/symfony/polyfill-php80/Resources/stubs/ValueError.php',

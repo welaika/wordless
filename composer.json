@@ -1,10 +1,13 @@
 {
     "require": {
         "pug-php/pug": "^3.0",
-        "mobiledetect/mobiledetectlib": "^2.8",
-        "symfony/validator": "^5.0"
+        "mobiledetect/mobiledetectlib": "^3.74",
+        "symfony/validator": "^6"
     },
     "config": {
-        "classmap-authoritative": true
+        "classmap-authoritative": true,
+        "allow-plugins": {
+            "nodejs-php-fallback/nodejs-php-fallback": true
+        }
     }
 }

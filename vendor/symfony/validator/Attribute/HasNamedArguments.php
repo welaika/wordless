@@ -9,6 +9,9 @@
  * file that was distributed with this source code.
  */
 
-class JsonException extends Exception
+namespace Symfony\Component\Validator\Attribute;
+
+#[\Attribute(\Attribute::TARGET_METHOD)]
+final class HasNamedArguments
 {
 }

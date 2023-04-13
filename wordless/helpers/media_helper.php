@@ -25,7 +25,7 @@ class MediaHelper {
    * @ingroup helperfunc
    */
   function detect_user_agent(){
-    $detect = new Mobile_Detect();
+    $detect = new Detection\MobileDetect();
     return $detect;
   }
 

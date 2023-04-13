@@ -1,259 +1,236 @@
-<?php return array (
-  'root' => 
-  array (
-    'pretty_version' => 'dev-master',
-    'version' => 'dev-master',
-    'aliases' => 
-    array (
+<?php return array(
+    'root' => array(
+        'name' => '__root__',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => 'df8f3530977bc032ee490dd747c654566ab49379',
+        'type' => 'library',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
     ),
-    'reference' => '69c6d206b80142774afe096ef34e96e9194991ca',
-    'name' => '__root__',
-  ),
-  'versions' => 
-  array (
-    '__root__' => 
-    array (
-      'pretty_version' => 'dev-master',
-      'version' => 'dev-master',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '69c6d206b80142774afe096ef34e96e9194991ca',
+    'versions' => array(
+        '__root__' => array(
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => 'df8f3530977bc032ee490dd747c654566ab49379',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'js-phpize/js-phpize' => array(
+            'pretty_version' => '2.8.4',
+            'version' => '2.8.4.0',
+            'reference' => '9600d41d454b562646c6aab9aef7318cdc1848a8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../js-phpize/js-phpize',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'js-phpize/js-phpize-phug' => array(
+            'pretty_version' => '2.2.1',
+            'version' => '2.2.1.0',
+            'reference' => 'fcc59b3511d61a403d905624bb959dc1773138b9',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../js-phpize/js-phpize-phug',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'js-transformer/js-transformer' => array(
+            'pretty_version' => '1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => '81730d3ae67824d664615ebb7f721cfa7d77179f',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../js-transformer/js-transformer',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'kylekatarnls/jade-php' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '3.5.0',
+            ),
+        ),
+        'mobiledetect/mobiledetectlib' => array(
+            'pretty_version' => '3.74.0',
+            'version' => '3.74.0.0',
+            'reference' => '812a4aa4605c63fc33d7fe32ca82f29275940b9d',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../mobiledetect/mobiledetectlib',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'nodejs-php-fallback/nodejs-php-fallback' => array(
+            'pretty_version' => '1.5.2',
+            'version' => '1.5.2.0',
+            'reference' => '0acdf44b057868e4a6bc4e28551dbf91e5ce13fe',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../nodejs-php-fallback/nodejs-php-fallback',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phug/ast' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/compiler' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/dependency-injection' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/event' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/facade' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/formatter' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/invoker' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/js-transformer-filter' => array(
+            'pretty_version' => '1.2.0',
+            'version' => '1.2.0.0',
+            'reference' => 'dbadf07950ee552471905001266cdae7793868a8',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phug/js-transformer-filter',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phug/lexer' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/parser' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/phug' => array(
+            'pretty_version' => '1.8.1',
+            'version' => '1.8.1.0',
+            'reference' => 'ee81108f9d7be420b8c57571679168ebd64f1762',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../phug/phug',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'phug/reader' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/renderer' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'phug/util' => array(
+            'dev_requirement' => false,
+            'replaced' => array(
+                0 => '1.8.1',
+            ),
+        ),
+        'pug-php/pug' => array(
+            'pretty_version' => '3.5.0',
+            'version' => '3.5.0.0',
+            'reference' => 'dbf1f2eda24e472cdcd74bfce2466fdb37fee2cd',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../pug-php/pug',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/deprecation-contracts' => array(
+            'pretty_version' => 'v2.2.0',
+            'version' => '2.2.0.0',
+            'reference' => '5fa56b4074d1ae755beb55617ddafe6f5d78f665',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/deprecation-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-ctype' => array(
+            'pretty_version' => 'v1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => 'f4ba089a5b6366e453971d3aad5fe8e897b37f41',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-ctype',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-mbstring' => array(
+            'pretty_version' => 'v1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => '39d483bdf39be819deabf04ec872eb0b2410b531',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-mbstring',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/polyfill-php80' => array(
+            'pretty_version' => 'v1.20.0',
+            'version' => '1.20.0.0',
+            'reference' => 'e70aa8b064c5b72d3df2abd5ab1e90464ad009de',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/polyfill-php80',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/translation-contracts' => array(
+            'pretty_version' => 'v2.3.0',
+            'version' => '2.3.0.0',
+            'reference' => 'e2eaa60b558f26a4b0354e1bbb25636efaaad105',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/translation-contracts',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/validator' => array(
+            'pretty_version' => 'v6.2.8',
+            'version' => '6.2.8.0',
+            'reference' => 'c63584f84edbdba9d2519f888350dd90615abe35',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/validator',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'symfony/var-dumper' => array(
+            'pretty_version' => 'v5.2.0',
+            'version' => '5.2.0.0',
+            'reference' => '173a79c462b1c81e1fa26129f71e41333d846b26',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../symfony/var-dumper',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
     ),
-    'js-phpize/js-phpize' => 
-    array (
-      'pretty_version' => '2.8.4',
-      'version' => '2.8.4.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '9600d41d454b562646c6aab9aef7318cdc1848a8',
-    ),
-    'js-phpize/js-phpize-phug' => 
-    array (
-      'pretty_version' => '2.2.1',
-      'version' => '2.2.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'fcc59b3511d61a403d905624bb959dc1773138b9',
-    ),
-    'js-transformer/js-transformer' => 
-    array (
-      'pretty_version' => '1.0.0',
-      'version' => '1.0.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '81730d3ae67824d664615ebb7f721cfa7d77179f',
-    ),
-    'kylekatarnls/jade-php' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '3.4.1',
-      ),
-    ),
-    'mobiledetect/mobiledetectlib' => 
-    array (
-      'pretty_version' => '2.8.34',
-      'version' => '2.8.34.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '6f8113f57a508494ca36acbcfa2dc2d923c7ed5b',
-    ),
-    'nodejs-php-fallback/nodejs-php-fallback' => 
-    array (
-      'pretty_version' => '1.5.2',
-      'version' => '1.5.2.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '0acdf44b057868e4a6bc4e28551dbf91e5ce13fe',
-    ),
-    'phug/ast' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/compiler' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/dependency-injection' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/event' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/facade' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/formatter' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/invoker' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/js-transformer-filter' => 
-    array (
-      'pretty_version' => '1.2.0',
-      'version' => '1.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'dbadf07950ee552471905001266cdae7793868a8',
-    ),
-    'phug/lexer' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/parser' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/phug' => 
-    array (
-      'pretty_version' => '1.8.1',
-      'version' => '1.8.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'ee81108f9d7be420b8c57571679168ebd64f1762',
-    ),
-    'phug/reader' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/renderer' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'phug/util' => 
-    array (
-      'replaced' => 
-      array (
-        0 => '1.8.1',
-      ),
-    ),
-    'pug-php/pug' => 
-    array (
-      'pretty_version' => '3.4.1',
-      'version' => '3.4.1.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '4f5bb7406dddc482966c607fca00e287347abec8',
-    ),
-    'symfony/deprecation-contracts' => 
-    array (
-      'pretty_version' => 'v2.2.0',
-      'version' => '2.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '5fa56b4074d1ae755beb55617ddafe6f5d78f665',
-    ),
-    'symfony/polyfill-ctype' => 
-    array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'f4ba089a5b6366e453971d3aad5fe8e897b37f41',
-    ),
-    'symfony/polyfill-mbstring' => 
-    array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '39d483bdf39be819deabf04ec872eb0b2410b531',
-    ),
-    'symfony/polyfill-php73' => 
-    array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '8ff431c517be11c78c48a39a66d37431e26a6bed',
-    ),
-    'symfony/polyfill-php80' => 
-    array (
-      'pretty_version' => 'v1.20.0',
-      'version' => '1.20.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'e70aa8b064c5b72d3df2abd5ab1e90464ad009de',
-    ),
-    'symfony/translation-contracts' => 
-    array (
-      'pretty_version' => 'v2.3.0',
-      'version' => '2.3.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => 'e2eaa60b558f26a4b0354e1bbb25636efaaad105',
-    ),
-    'symfony/validator' => 
-    array (
-      'pretty_version' => 'v5.2.0',
-      'version' => '5.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '7b2583e2c4cb82b23fcb37730981c868efefd2c0',
-    ),
-    'symfony/var-dumper' => 
-    array (
-      'pretty_version' => 'v5.2.0',
-      'version' => '5.2.0.0',
-      'aliases' => 
-      array (
-      ),
-      'reference' => '173a79c462b1c81e1fa26129f71e41333d846b26',
-    ),
-  ),
 );
