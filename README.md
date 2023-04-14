@@ -85,6 +85,10 @@ https://github.com/welaika/wordless/releases.
 
 ## Deprecations
 
+### 6.0
+
+Dropped support for PHP <8.1
+
 ### 4.0
 
 Default configuration has dropped support for CoffeeScritp and for SASS indented syntax. Obviously you are free to change Webpack's config once you've created the theme, but now we officially support ES2015 and SCSS instead.

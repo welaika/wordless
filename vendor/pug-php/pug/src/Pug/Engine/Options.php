@@ -153,7 +153,7 @@ abstract class Options extends OptionsHandler
 
     protected function initializeJsPhpize()
     {
-        if (strtolower($this->getDefaultOption('expressionLanguage')) !== 'php') {
+        if (strtolower($this->getDefaultOption('expressionLanguage') ?: '') !== 'php') {
             $compiler = $this->getCompiler();
             $compiler->addModule(new JsPhpizePhug($compiler));
         }

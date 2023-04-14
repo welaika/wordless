@@ -2,7 +2,7 @@
 
 > Motto: "Every business should have a detection script to detect mobile readers."
 
-[![Build Status](https://travis-ci.org/serbanghita/Mobile-Detect.svg?branch=devel)](https://travis-ci.org/serbanghita/Mobile-Detect) 
+![Build status](https://github.com/serbanghita/Mobile-Detect/workflows/Mobile-Detect/badge.svg)
 [![Latest Stable Version](https://poser.pugx.org/mobiledetect/mobiledetectlib/v/stable.svg)](https://packagist.org/packages/mobiledetect/mobiledetectlib) 
 [![Total Downloads](https://poser.pugx.org/mobiledetect/mobiledetectlib/downloads.svg)](https://packagist.org/packages/mobiledetect/mobiledetectlib) 
 [![Daily Downloads](https://poser.pugx.org/mobiledetect/mobiledetectlib/d/daily.png)](https://packagist.org/packages/mobiledetect/mobiledetectlib) 
@@ -45,10 +45,10 @@ The rest of the PRs about TVs, bots or optimizations will be closed and analyzed
 > Use this to quickly test the demo.
 
 * [Download latest release](../../tags)
-* [Mobile_Detect.php](./Mobile_Detect.php)
+* [Mobile_Detect.php](src/MobileDetect.php)
 
 ```php
-require_once "libs/Mobile_Detect.php";
+require_once "libs/MobileDetect.php";
 ```
 
 **Install as a [composer package](https://packagist.org/packages/mobiledetect/mobiledetectlib)**
@@ -68,7 +68,7 @@ or include the dependency in the `composer.json` file:
 
 #### Demo 
 
-* [:iphone: Live demo!](http://demo.mobiledetect.net)
+* [:iphone: Live demo!](https://demo.mobiledetect.net)
 * [Code examples](../../wiki/Code-examples)
 
 #### Contribute
@@ -214,6 +214,8 @@ Appropriate view helper and controller plugin also have different conceptions.
 Made by [Nikola Posa](https://github.com/nikolaposa).
 
 **Symfony**
+
+* [Symfony3 MobileDetectBundle](https://github.com/tattali/MobileDetectBundle) is a Symfony bundle to detect mobile devices, manage mobile view and redirect to the mobile and tablet version. Made by [Théo Attali](https://github.com/tattali).
 
 * [Symfony2 Mobile Detect Bundle](https://github.com/suncat2000/MobileDetectBundle) is a bundle for detecting mobile devices, 
 manage mobile view and redirect to the mobile and tablet version.

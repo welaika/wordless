@@ -3,7 +3,7 @@
 Test Suite
 ==========
 
-The default Wordless theme is shipped with preconfigured test suite.
+The default Wordless theme is shipped with pre-configured test suite.
 
 The test suite is implemented using the awesome `WPBrowser`_ and thus `Codeception`_.
 
@@ -34,13 +34,13 @@ Where are test configurations?
 
 * ``test/`` folder. This is where your test suites lay.
 
-* PHP dependencies declared in ``composer.json`` file shipped within the theme. This will create a ``/vendor`` folder inside the theme whilist ``yarn setup`` task
+* PHP dependencies declared in ``composer.json`` file shipped within the theme. This will create a ``/vendor`` folder inside the theme whilst ``yarn setup`` task
 
-* custom ``wp-config.php``. This will be helpful to autodymagically (automatically, dynamically, magically; just in case you were wondering 🙄) switch from development to test database whilist test suite execution
+* custom ``wp-config.php``. This will be helpful to autodymagically (automatically, dynamically, magically; just in case you were wondering 🙄) switch from development to test database whilst test suite execution
 
 * 2 test related node scripts: ``yarn test:server`` and ``yarn test``. Obviously declared inside ``package.json``
 
-* a test database on your local machine called ``$THEME_NAME_test`` (where ``$THEME_NAME`` is the chosen name during Wordless' installation process) is created whilist ``yarn setup`` task
+* a test database on your local machine called ``$THEME_NAME_test`` (where ``$THEME_NAME`` is the chosen name during Wordless' installation process) is created whilst ``yarn setup`` task
 
 * *ad hoc* ``Procfile.testing``, ``.env.testing`` and ``.env.ci``
 

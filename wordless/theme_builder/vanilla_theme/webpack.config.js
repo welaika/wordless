@@ -5,7 +5,7 @@ const javascriptsDstPath = path.join(dstDir, '/javascripts');
 const _stylesheetsDstPath = path.join(dstDir, '/stylesheets');
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
-const ImageminWebpack = require('image-minimizer-webpack-plugin');
+const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const wordpressDir = path.resolve('../../../');
@@ -71,22 +71,10 @@ module.exports = (env) => {
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            context: path.join(srcDir),
-            outputPath: (_url, resourcePath, context) => {
-              return resourcePath.replace(context, '')
-            }
-          },
-        },
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          use: "url-loader"
-        },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          use: "url-loader"
+          type: 'asset/resource',
+          generator: {
+            filename: 'dist/images/[name][ext]'
+          }
         }
       ]
     },
@@ -112,33 +100,11 @@ module.exports = (env) => {
         filename: '../stylesheets/[name].css'
       }),
 
-      new ImageminWebpack({
-        test: /\.(jpe?g|png|gif|svg)$/i,
-        severityError: 'warning',
-        minimizerOptions: {
-          plugins: [
-            ['gifsicle', { interlaced: true }],
-            ['jpegtran', { progressive: true }],
-            ['optipng', { optimizationLevel: 5 }],
-            [
-              'svgo',
-              {
-                plugins: [
-                  {
-                    removeViewBox: false,
-                  },
-                ],
-              },
-            ],
-          ],
-        },
-      }),
-
       new CopyWebpackPlugin({
         patterns: [
           {
             from: path.join('**/*'),
-            to: path.join(dstDir, imageFolderName, '[path]', '[name].[ext]'),
+            to: path.join(dstDir, imageFolderName, '[path]', '[name][ext]'),
             toType: 'template',
             context: path.join(srcDir, imageFolderName)
           }
@@ -155,7 +121,46 @@ module.exports = (env) => {
             minChunks: 2
           }
         }
-      }
+      },
+      minimizer: [
+        new ImageMinimizerPlugin({
+          minimizer: {
+            implementation: ImageMinimizerPlugin.imageminMinify,
+            options: {
+              // Lossless optimization with custom option
+              // Feel free to experiment with options for better result for you
+              plugins: [
+                ["gifsicle", { interlaced: true }],
+                ["jpegtran", { progressive: true }],
+                ["optipng", { optimizationLevel: 5 }],
+                // Svgo configuration here https://github.com/svg/svgo#configuration
+                [
+                  "svgo",
+                  {
+                    plugins: [
+                      {
+                        name: "preset-default",
+                        params: {
+                          overrides: {
+                            removeViewBox: false,
+                            addAttributesToSVGElement: {
+                              params: {
+                                attributes: [
+                                  { xmlns: "http://www.w3.org/2000/svg" },
+                                ],
+                              },
+                            },
+                          },
+                        },
+                      },
+                    ],
+                  },
+                ],
+              ],
+            },
+          },
+        }),
+      ]
     },
 
     stats: 'normal',

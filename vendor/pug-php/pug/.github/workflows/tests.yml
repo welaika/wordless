@@ -1,0 +1,48 @@
+name: Tests
+
+on:
+  push:
+    branches: [ '**' ]
+  pull_request:
+    branches: [ '**' ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php: ['5.5', '5.6', '7.0', '7.1', '7.2', '7.3', '7.4', '8.0', '8.1']
+        setup: ['lowest', 'stable', 'next']
+
+    name: PHP ${{ matrix.php }} - ${{ matrix.setup }}
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Setup PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: ${{ matrix.php }}
+        tools: composer:v2
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v2
+      with:
+        path: vendor
+        key: ${{ runner.os }}-${{ matrix.setup }}-php-${{ matrix.php }}-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ matrix.setup }}-php-${{ matrix.php }}-
+
+    - name: Install dependencies
+      if: steps.composer-cache.outputs.cache-hit != 'true'
+      run: |
+        composer config version 1.9.0
+        ${{ matrix.php >= 7.2 && matrix.php < 8 && matrix.setup == 'lowest' && 'composer require --no-update "phpunit/phpunit:^5.7.27||^6.5.14||^7.5.20" --no-interaction;' || '' }}
+        ${{ matrix.php >= 8 && 'composer require --no-update phpunit/phpunit:^8.5.14 phug/phug:^1.9.0 --no-interaction;' || '' }}
+        composer update --prefer-dist ${{ matrix.setup != 'next' && format('--prefer-{0}', matrix.setup) || '' }} --no-progress ${{ matrix.php >= 8.1 && '--ignore-platform-req=php' || '' }} --no-interaction
+
+    - name: Run test suite
+      run: vendor/bin/phpunit --no-coverage --verbose
