@@ -1,7 +1,7 @@
 <?php
 
 add_action( 'phpmailer_init', 'wl_phpmailer_init' );
-function wl_phpmailer_init( PHPMailer $phpmailer ) {
+function wl_phpmailer_init( PHPMailer\PHPMailer\PHPMailer $phpmailer ) {
     $mailhog = getenv('MAILHOG');
 
     if ($mailhog !== "true")
