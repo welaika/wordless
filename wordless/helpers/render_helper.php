@@ -265,7 +265,7 @@ class RenderHelper {
         }
 
         if (!is_writable($dir)) {
-            chmod($dir, 770);
+            chmod($dir, 0770);
         }
 
         if (is_writable($dir)) {
