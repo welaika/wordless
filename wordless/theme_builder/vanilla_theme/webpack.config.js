@@ -117,7 +117,7 @@ module.exports = (env) => {
         patterns: [
           {
             from: path.join('**/*'),
-            to: path.join(dstDir, imageFolderName, '[path]', '[name].[ext]'),
+            to: path.join(dstDir, imageFolderName, '[path]', '[name][ext]'),
             toType: 'template',
             context: path.join(srcDir, imageFolderName)
           }
