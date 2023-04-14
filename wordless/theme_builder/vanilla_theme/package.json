@@ -40,7 +40,6 @@
     "copy-webpack-plugin": "^11.0.0",
     "core-js": "^3.30.0",
     "css-loader": "^6.7.3",
-    "file-loader": "^6.2.0",
     "foreman": "^3.0.1",
     "image-minimizer-webpack-plugin": "^3.8.2",
     "image-webpack-loader": "^8.1.0",
@@ -56,7 +55,6 @@
     "style-loader": "^3.3.2",
     "stylelint": "^15.4.0",
     "stylelint-config-sass-guidelines": "^10.0.0",
-    "url-loader": "^4.1.1",
     "webpack": "^5.79.0",
     "webpack-cli": "^5.0.1"
   },

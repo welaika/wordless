@@ -71,23 +71,10 @@ module.exports = (env) => {
         },
         {
           test: /\.(jpe?g|png|gif|svg)$/i,
-          type: 'asset',
-          loader: 'file-loader',
-          options: {
-            name: '[name].[ext]',
-            context: path.join(srcDir),
-            outputPath: (_url, resourcePath, context) => {
-              return resourcePath.replace(context, '')
-            }
-          },
-        },
-        {
-          test: /\.woff(2)?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          use: "url-loader"
-        },
-        {
-          test: /\.(ttf|eot|svg)(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-          use: "url-loader"
+          type: 'asset/resource',
+          generator: {
+            filename: 'dist/images/[name][ext]'
+          }
         }
       ]
     },
