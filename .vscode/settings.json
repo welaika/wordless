@@ -5,6 +5,8 @@
     "**/node_modules": true,
     "**/bower_components": true,
     "rtfm/build": true,
+    "tests/simpletest": true,
+    "vendor": true,
   },
   "css.validate": false,
   "restructuredtext.languageServer.trace.server": "messages",
