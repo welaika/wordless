@@ -119,7 +119,7 @@ class ModelHelper {
       "edit_item" => sprintf(__("Edit %s", "wl"), $uc_singular),
       "update_item" => sprintf(__("Update %s", "wl"), $uc_singular),
       "add_new_item" => sprintf(__("Add new %s", "wl"), $uc_singular),
-      "new_item_name" => sprintf(__("New %n Name", "wl"), $uc_singular),
+      "new_item_name" => sprintf(__("New %s Name", "wl"), $uc_singular),
       "menu_name" => $uc_plural
     );
 
