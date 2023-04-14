@@ -12,9 +12,16 @@
   "restructuredtext.languageServer.trace.server": "messages",
   "restructuredtext.linter.executablePath": "/usr/local/bin/doc8",
   "cSpell.words": [
+    "corejs",
     "endcode",
+    "gifsicle",
     "helperclass",
     "helperfunc",
-    "runcommand"
+    "javascripts",
+    "jpegtran",
+    "MAILHOG",
+    "optipng",
+    "phpmailer",
+    "runcommand",
   ]
 }
