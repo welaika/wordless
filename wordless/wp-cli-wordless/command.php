@@ -49,8 +49,8 @@ class WordlessCommand {
     * backup of your theme or be sure to have a clean GiT state thus
     * a simple reset/checkout will eventually save you.
     *
-    * After the updgrade remember to launch `yarn install` in order
-    * to update `node_modules` based on new pacjage.json.
+    * After the updrade remember to launch `yarn install` in order
+    * to update `node_modules` based on new package.json.
     *
     * Newer configuration may require you to install an updated node
     * version too.
@@ -68,7 +68,7 @@ class WordlessCommand {
             WP_CLI::halt(1);
         }
 
-        WP_CLI::warning('Going to copy following files into your theme: ' . join(array_values(Wordless::$webpack_files_names), ', '));
+        WP_CLI::warning('Going to copy following files into your theme: ' . join(', ', array_values(Wordless::$webpack_files_names)));
 
         WP_CLI::confirm('This is a potentially destructive operation. Do you have a backup and would like to proceed?');
 
