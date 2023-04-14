@@ -63,6 +63,67 @@ The default path is ``blocks/``.
 
     The path will be always relative to ``views/`` folder
 
+wordless_tmp_dir_exists
+##########################
+
+.. literalinclude:: /../../wordless/helpers/render_helper.php
+    :emphasize-lines: 255
+    :language: php
+    :caption: wordless/helpers/render_helper.php
+
+**Usage example**
+
+.. code-block:: php
+
+    <?php
+    function validateWordlessTmpDir( $tmpdir, $coreCheckResult ){
+
+        if (false == $coreCheckResult) { // Just giving examples
+            sendAlertToSysadmin();
+        }
+
+        $file_counts = 0;
+
+        if ( file_exists( $tmpdir ) ) {
+            $file_counts = preg_grep('/(.*).(php|txt)$/', scandir( $tmpdir ) );
+        }
+
+        return count( $file_counts ) > 0;
+    }
+
+    add_filter('wordless_tmp_dir_exists', 'validateWordlessTmpDir', 10, 2);
+
+Sometimes tmp folder in theme directory, may not have write permission in dedicated server, Hence failure to load pug template from tmp.
+In tmp directory, if there is compiled files listed following hook can be used to check file counts and override ensure_tmp_dir function to return true.
+In some cases files can be compiled via command line to generate files in tmp dir.
+here the filter code is added in ``themes/exmaple-theme/config/initializers/hooks.php``
+
+wordless_environment
+##########################
+
+.. literalinclude:: /../../wordless/helpers/render_helper.php
+    :emphasize-lines: 110
+    :language: php
+    :caption: wordless/helpers/render_helper.php
+
+**Usage example**
+
+.. code-block:: php
+
+    <?php
+        add_filter( 'wordless_environment' , function( $pug_environment ) {
+	    $env = getCustomEnv(); // example a custom define global function
+	    if ( $env->is_local() ) {
+		    return $pug_environment;
+	    }
+
+	        return 'production';
+        } );
+
+Here the filter code is added in ``themes/exmaple-theme/config/initializers/hooks.php``
+
+If there is different or custom environment name defined this hook can override it, rather than defaulting to development always. For example if environment is called UAT or SIT.
+
 Actions
 =======
 
