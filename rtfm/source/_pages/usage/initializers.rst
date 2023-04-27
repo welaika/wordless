@@ -30,7 +30,7 @@ one with a specific target:
   at :ref:`Blocks`
 - **custom_post_types**: well... if you need to manage taxonomies, this is the
   place to be
-- **default_hooks**: these are used by wordless's default behaviours; tweak them
+- **default_hooks**: these are used by wordless's default behaviors; tweak them
   only if you know what are you doing
 - **login template**: utilities to customize the default WP login screen
 - **hooks**: this is intended to be your custom hooks collector
@@ -42,5 +42,5 @@ These are just some file name examples: you can organize them the way you
 prefer. Each file in this directory will be automatically required by Wordless.
 
 Moreover: each of these files comes already packed with interesting, often used functions and
-configurations. They are ready to be uncommented. Take youself a tour directly in the code
+configurations. They are ready to be uncommented. Take yourself a tour directly in the code
 @ https://github.com/welaika/wordless/tree/master/wordless/theme_builder/vanilla_theme/config/initializers
