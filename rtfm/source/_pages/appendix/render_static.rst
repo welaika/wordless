@@ -23,7 +23,7 @@ This is the definition of ``render_static()`` function:
 
 .. warning::
     Using static rendering could lead to undesired effects by design (not specifically with Wordless).
-    Be sure to know what you're doing. It's not alwas just a matter to be faster.
+    Be sure to know what you're doing. It's not always just a matter to be faster.
 
 Static template example
 #######################
@@ -97,7 +97,7 @@ You have 3 way to handle this:
 * blank ``tmp/`` folder with ``wp wordless theme clear_tmp``
 * from the "Cache management" menu within the admin panel
 
-The "Cache management" menu needs to be activated decommenting this line
+The "Cache management" menu needs to be activated uncommenting this line
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/config/initializers/backend.php
     :language: php

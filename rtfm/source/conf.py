@@ -26,7 +26,7 @@ author = u'weLaika'
 # The short X.Y version
 version = u''
 # The full version, including alpha/beta/rc tags
-release = u'4.0.0'
+release = u'6.0.0'
 
 
 # -- General configuration ---------------------------------------------------

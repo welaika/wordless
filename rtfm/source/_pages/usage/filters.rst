@@ -96,7 +96,7 @@ wordless_tmp_dir_exists
 Sometimes tmp folder in theme directory, may not have write permission in dedicated server, Hence failure to load pug template from tmp.
 In tmp directory, if there is compiled files listed following hook can be used to check file counts and override ensure_tmp_dir function to return true.
 In some cases files can be compiled via command line to generate files in tmp dir.
-here the filter code is added in ``themes/exmaple-theme/config/initializers/hooks.php``
+here the filter code is added in ``themes/example-theme/config/initializers/hooks.php``
 
 wordless_environment
 ##########################
@@ -120,7 +120,7 @@ wordless_environment
 	        return 'production';
         } );
 
-Here the filter code is added in ``themes/exmaple-theme/config/initializers/hooks.php``
+Here the filter code is added in ``themes/example-theme/config/initializers/hooks.php``
 
 If there is different or custom environment name defined this hook can override it, rather than defaulting to development always. For example if environment is called UAT or SIT.
 
@@ -139,10 +139,10 @@ wordless_component_validation_exception
 
 When an object of class ``Wordless\Component`` fails its validation, it will throw an exception
 only if ``ENVIRONMENT`` **is not** ``production``. When in ``production`` nothing will happen, in
-order to be unobstrusive and not breaking the site to your users. The developer will still see
-specific excpetion happening.
+order to be unobtrusive and not breaking the site to your users. The developer will still see
+specific exception happening.
 
-You can customize the behaviour by adding your action as documented in the code.
+You can customize the behavior by adding your action as documented in the code.
 
 What we like to do is to add here a notification to our Sentry account (thanks to
 https://github.com/stayallive/wp-sentry/ plugin)

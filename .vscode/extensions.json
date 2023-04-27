@@ -1,8 +1,7 @@
 {
   "recommendations": [
-    "lextudio.restructuredtext",
     "trond-snekvik.simple-rst",
     "streetsidesoftware.code-spell-checker",
-    "streetsidesoftware.code-spell-checker-italian"
+    "swyddfa.esbonio"
   ]
 }

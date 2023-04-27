@@ -42,12 +42,12 @@ Vanilla theme ships this ``default.pug`` layout:
     :language: pug
     :caption: views/layouts/default.pug
 
-Please, do ignore the function of the ``include`` keyword at the moment. Will exmplain it
+Please, do ignore the function of the ``include`` keyword at the moment. Will explain it
 in the "Partial" paragraph of this same chapter.
 
 We can note what it brings in:
 
-* doctype declaretion
+* doctype declaration
 * ``<html>`` tag
 * ``<head>`` tag
 * site header
@@ -135,11 +135,11 @@ The result, just to easily imagine it out, would be:
 
 Obviously this composition is transparently handled by PUG.
 
-So we have a structured template now; we're ready to undestand **partials** and how to use them
+So we have a structured template now; we're ready to understand **partials** and how to use them
 with the ``include`` keyword.
 
 .. note::
-    You will notice that ``extend`` and ``include`` argument always strarts with a trailing slash.
+    You will notice that ``extend`` and ``include`` argument always starts with a trailing slash.
     This is the PUG convention to search for files into the ``views/`` folder, which is configured
     as the "root" search folder.
 
@@ -147,7 +147,7 @@ Partials
 """"""""
 
 Partials are optional but powerful; they're a tool for split your bigger into smaller
-and more managable chunks.
+and more manageable chunks.
 
 They are included into parent files using the ``include`` keyword.
 
@@ -225,7 +225,7 @@ By using ``include /components/post.pug`` we're now able to invoke the mixin usi
 .. note::
     Wordless supports the ``component`` keyword as an alias to the default ``mixin`` keyword
     in PUG templates. This is much more expressive. The counter-effect is that your syntax
-    highligter won't appreciate it that much :)
+    highlighter won't appreciate it that much :)
 
 .. seealso::
     PHUG ``mixin`` documentation @ https://www.phug-lang.com/#mixins
@@ -238,7 +238,7 @@ In the previous example you've seen that the ``$component`` argument is an insta
 
 .. note::
     When you write your mixins, you decide what and how many arguments they will
-    require. Validators aren't mandatory, but a useful and poweful tool you're free to use or not.
+    require. Validators aren't mandatory, but a useful and powerful tool you're free to use or not.
 
 Visual components, given they accept arguments, are strictly dependent on data passed to them
 through arguments. This is true in any front-end development stack/scenario/framework.
@@ -296,7 +296,7 @@ This is how's intended to be used inside Wordless:
 * define a class extending ``\Wordless\Component``
 * declare as many public attributes as your component needs
 * instance the object passing arguments as an associative array ``$component = new ComponentPost(['post' => get_post()])``
-* each key will be automatically cheked to be declared as an attribute into the component
+* each key will be automatically checked to be declared as an attribute into the component
   and the corresponding attribute will be set to the corresponding value. You can pass
   arguments only if they are declared into the component class.
 * into the component is mandatory to implement a ``loadValidatorMetadata`` public static
@@ -307,7 +307,7 @@ This is how's intended to be used inside Wordless:
 * passing ``$component`` as your mixin's argument, inside the mixin you will be able to get
   its properties as expected: ``$component->attribute``.
 
-Revisiting our previous exaple:
+Revisiting our previous example:
 
 .. code-block:: php
 

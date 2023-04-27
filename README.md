@@ -20,7 +20,7 @@ Wordless is a junction between a WordPress plugin and a theme boilerplate that d
 
 ### Complete documentation
 
-Read the complete Wordless documentation at [wordless.readthedocs.io](https://wordless.readthedocs.io/en/latest/?badge=latest) where you'll find - hopefully - all the informations about installation, usage guide, in depth explanation about the stack.
+Read the complete Wordless documentation at [wordless.readthedocs.io](https://wordless.readthedocs.io/en/latest/?badge=latest) where you'll find - hopefully - all the information about installation, usage guide, in depth explanation about the stack.
 
 If you want to contribute to the documentation.
 

@@ -55,7 +55,7 @@ Where are test configurations?
 How should I write tests?
 #########################
 
-This documentation is not intended to giude you thourgh testing concepts nor on Codeception's syntax. You can already find great documentation and I advice you to start from
+This documentation is not intended to guide you through testing concepts nor on Codeception's syntax. You can already find great documentation and I advice you to start from
 
 * https://wpbrowser.wptestkit.dev/modules/wpwebdriver
 

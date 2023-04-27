@@ -14,7 +14,7 @@ Routing
 As you can see, you first determine the type of the page using `WordPress conditional tags`_, and then delegate the rendering to an individual view.
 
 While ``index.php`` is the entry point of any WordPress theme, as it is called/required by it,
-the ``render_template()`` function is where we connect WordPress core with Wordless' powerups.
+the ``render_template()`` function is where we connect WordPress core with Wordless' power-ups.
 
 The next chapter is all about rendering.
 

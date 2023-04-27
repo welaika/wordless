@@ -48,7 +48,7 @@ interface. If absent, then the second will be used.
 You will be obviously free to render the block anywhere in your
 front-end template, since it's a simple partial:
 
-.. code-block:: jade
+.. code-block:: pug
 
     render_partial('blocks/slider')
 

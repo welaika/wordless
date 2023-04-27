@@ -78,13 +78,13 @@ and go on as usual.
 Linters
 """""""
 
-Wordless ships with preconfigured linting of SCSS
+Wordless ships with pre-configured linting of SCSS
 using `Stylelint`_.
 
 It is configured in ``.stylelintrc.json``, you can add exclusion in
 ``.stylelintignore``; all is really standard.
 
-The script ``yarn lint`` is preconfigured to run lint tasks.
+The script ``yarn lint`` is pre-configured to run lint tasks.
 
 .. tip::
 

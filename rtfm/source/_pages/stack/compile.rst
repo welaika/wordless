@@ -66,7 +66,7 @@ We love it because it is concise, clear, tidy and clean.
 
 Certainly, becoming fluent in PUG usage could have a not-so-flat
 learning curve,
-but starting from the basics shuold be affordable and the reward is high.
+but starting from the basics should be affordable and the reward is high.
 
 Who compiles PUG?
 """""""""""""""""
@@ -77,7 +77,7 @@ compile (and cache) it. As far as you have the plugin activated you are ok.
 .. important::
 
     By default, you have nothing to do to deploy in production, but if performance is
-    crucial in your project, then you can optimize. See :ref:`PHUGoptimizer` for more informations.
+    crucial in your project, then you can optimize. See :ref:`PHUGoptimizer` for more information.
 
 
 .. _Pug: https://github.com/pugjs/pug
@@ -110,18 +110,18 @@ and are used by the ``entry`` and ``output`` configurations:
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
     :language: js
     :caption: webpack.config.js
-    :lineno-start: 18
-    :lines: 18-26
+    :lineno-start: 23
+    :lines: 23-38
 
 CSS will be extracted from the bundle by the standard mini-css-extract-plugin_
 
 .. _mini-css-extract-plugin: https://webpack.js.org/plugins/extract-text-webpack-plugin/
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
-    :language: js$
+    :language: js
     :caption: webpack.config.js
-    :lineno-start: 129
-    :lines: 129-131
+    :lineno-start: 99
+    :lines: 99-101
 
 Inclusion of compiled files
 """""""""""""""""""""""""""
@@ -193,36 +193,36 @@ Add another *entry* and producing new bundles is as easy as
 
   .. code-block:: php
 
-        function enqueue_stylesheets() {
-            wp_register_style("main", stylesheet_url("main"), [], false, 'all');
-            wp_register_style("backend", stylesheet_url("backend"), [], false, 'all');
-            wp_enqueue_style("main");
-            wp_enqueue_style("backend");
-        }
+    function enqueue_stylesheets() {
+        wp_register_style("main", stylesheet_url("main"), [], false, 'all');
+        wp_register_style("backend", stylesheet_url("backend"), [], false, 'all');
+        wp_enqueue_style("main");
+        wp_enqueue_style("backend");
+    }
 
-        function enqueue_javascripts() {
-            wp_enqueue_script("jquery");
-            wp_register_script("main", javascript_url("main"), [], false, true);
-            wp_register_script("backend", javascript_url("backend"), [], false, true);
-            wp_enqueue_script("main");
-            wp_enqueue_script("backend");
-        }
+    function enqueue_javascripts() {
+        wp_enqueue_script("jquery");
+        wp_register_script("main", javascript_url("main"), [], false, true);
+        wp_register_script("backend", javascript_url("backend"), [], false, true);
+        wp_enqueue_script("main");
+        wp_enqueue_script("backend");
+    }
 
   or add it anywhere in your templates:
 
-  .. code-block:: jade
+  .. code-block:: pug
 
-        header
-            = stylesheet_link_tag('backend')
-        footer
-            = javascript_include_tag('backend')
+    header
+        = stylesheet_link_tag('backend')
+    footer
+        = javascript_include_tag('backend')
 
 Browserslist
 """"""""""""
 
 At theme's root you'll find the `.browserlistsrc`_ file.
 
-By default it's used by Babel and Core-js3 to understand how to polifill
+By default it's used by Babel and Core-js3 to understand how to polyfill
 your ES2015 code. You can understand more about our default configuration
 reading Babel docs at https://babeljs.io/docs/en/babel-preset-env#browserslist-integration
 

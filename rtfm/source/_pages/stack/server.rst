@@ -21,7 +21,7 @@ YARN
 section inside your ``package.json`` file and will execute the matched script.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/package.json
-    :lines: 13-20
+    :lines: 13-32
     :language: javascript
     :caption: package.json
 
@@ -44,7 +44,7 @@ As you can see, each line has a simple named command. Each command will be
 launched and *foreman* will:
 
 * run all the listed processes
-* collect all STDOUTs from processes and print theme as one - with fancyness
+* collect all STDOUTs from processes and print theme as one - with fanciness
 * when stopped (CTRL-C) it will stop all of the processes
 
 wp server
@@ -69,7 +69,7 @@ start a web server at address ``127.0.0.1`` on port 3000.
 This is where your browser will automatically go once launched.
 
 .. literalinclude:: /../../wordless/theme_builder/vanilla_theme/webpack.config.js
-    :lines: 94-108
+    :lines: 83-97
     :language: js
     :caption: webpack.config.js
 
@@ -78,10 +78,10 @@ underlying ``wp server``.
 
 Since *BrowserSync* is invoked through a Webpack plugin
 (`browser-sync-webpack-plugin`_) we will benefit from automatic
-**browser autoreloading** when assets are recompiled by Webpack itself.
+**browser auto-reloading** when assets are recompiled by Webpack itself.
 
 The ``files`` option is there because ``.pug`` files are not compiled by
-webpack, so we force watching those files too, thus calling autoreload on
+webpack, so we force watching those files too, thus calling auto-reload on
 template changes too.
 
 .. seealso::
@@ -111,7 +111,7 @@ MailHog
 * View messages in the web UI, or retrieve them with the JSON API
 * Optionally release messages to real SMTP servers for delivery
 
-Wordless is configured to use it by default, so you can test mailouts from
+Wordless is configured to use it by default, so you can test outgoing emails from
 your site, from WordPress and from your forms.
 
 The UI will be at
@@ -134,7 +134,7 @@ This will trigger the ``smtp.php`` initializer:
 Debug in VSCode
 ###############
 
-We ship a ``.vscode/launch.json`` in theme's root which is preconfigured to
+We ship a ``.vscode/launch.json`` in theme's root which is pre-configured to
 launch debugger for XDebug and for JS (both Chrome and FireFox). In order to
 use these configuration you'll need to install some plugins in the editor:
 
@@ -148,6 +148,6 @@ use these configuration you'll need to install some plugins in the editor:
 
 .. note::
     You may need to move ``.vscode/launch.json`` in another location if you
-    are not opening the theme's folder as workspace in VSCode (maybe you prefere to
+    are not opening the theme's folder as workspace in VSCode (maybe you prefer to
     open all the WordPress installation? Don't know...). It's up to you to use it
     as you need it.

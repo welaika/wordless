@@ -56,6 +56,7 @@ directly including the PHP file.
     we need to use plain PHP functions.
 
 .. _RenderingPhp:
+
 PHP render helpers
 ##################
 
