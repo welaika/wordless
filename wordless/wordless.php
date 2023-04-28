@@ -22,7 +22,6 @@ class Wordless {
         'webpack' => 'webpack.config.js',
         'webpack.env' => 'webpack.env.js',
         'main' => 'src/main.js',
-        'yarn' => 'yarn.lock',
         'nvmrc' => '.nvmrc',
         'stylelintignore' => '.stylelintignore',
         'stylelintrc' => '.stylelintrc.json',
