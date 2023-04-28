@@ -1,14 +1,12 @@
 const path = require('path');
 const srcDir = path.resolve(__dirname, 'src');
 const dstDir = path.resolve(__dirname, 'dist');
-const javascriptsDstPath = path.join(dstDir, '/javascripts');
-const _stylesheetsDstPath = path.join(dstDir, '/stylesheets');
+
 const BrowserSyncPlugin = require('browser-sync-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const ImageMinimizerPlugin = require('image-minimizer-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
-const wordpressDir = path.resolve('../../../');
 const imageFolderName = 'images'
 const entries = ['main'];
 
@@ -26,15 +24,9 @@ module.exports = (env) => {
     }, {}),
 
     output: {
-      filename: "[name].js",
-      path: javascriptsDstPath,
-      publicPath: () => {
-        return path.join(
-          '/', // prepend slash to make an absolute web path
-          path.relative(wordpressDir, dstDir) // dist folder relative to wordpress folder. Will be
-                                              // something like `wp-content/theme/themeName/dist`
-        )
-      }
+      filename: "javascripts/[name].js",
+      path: dstDir,
+      publicPath: '../'
     },
 
     devtool: envOptions.devtool,
@@ -73,7 +65,9 @@ module.exports = (env) => {
           test: /\.(jpe?g|png|gif|svg)$/i,
           type: 'asset/resource',
           generator: {
-            filename: 'dist/images/[name][ext]'
+            filename: (asset_obj) => {
+              return asset_obj.filename.replace('src/', '');
+            }
           }
         }
       ]
@@ -97,7 +91,7 @@ module.exports = (env) => {
       }),
 
       new MiniCssExtractPlugin({
-        filename: '../stylesheets/[name].css'
+        filename: 'stylesheets/[name].css'
       }),
 
       new CopyWebpackPlugin({
@@ -113,15 +107,6 @@ module.exports = (env) => {
     ].concat(envOptions.plugins),
 
     optimization: {
-      splitChunks: {
-        cacheGroups: {
-          commons: {
-            name: 'commons',
-            chunks: 'all',
-            minChunks: 2
-          }
-        }
-      },
       minimizer: [
         new ImageMinimizerPlugin({
           minimizer: {
